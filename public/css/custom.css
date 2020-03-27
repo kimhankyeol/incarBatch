@@ -1,0 +1,16 @@
+/* 모니터링 custom css  */
+.container {
+    width: 250px;
+  }
+  label {
+    color: #999;
+    display: block;
+    font-size: 14px;
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  input[type="text"] {
+    width: 100px;
+  }
+  #datatable>tbody>tr:hover {
+    background-color: #daddeb;
+  }
