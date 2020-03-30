@@ -16,16 +16,17 @@ class JobController extends Controller
     //잡등록뷰 
     public function jobRegisterView()
     {
-        if (\Request::is('/')) { 
-            $jobDB= DB::table('JOB')->get();
-            return view('index',compact('jobDB'));
-        } 
+        // if (\Request::is('/')) { 
+        //     $jobDB= DB::table('JOB')->get();
+        //     return view('index',compact('jobDB'));
+        // } 
+        return view('index');
     }
 
     //잡구성뷰
     public function batchProcessRegisterView(){
-        $jobDB2= DB::table('JOB')->get();
-        return view('index',compact('jobDB2'));
+        // $jobDB2= DB::table('JOB')->get();
+        return view('index');
     }
 
     //잡실행뷰  

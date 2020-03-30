@@ -58,14 +58,14 @@
                 </tr>
               </thead>
               <tbody>
-              @foreach($jobDB as $job)
+              {{-- @foreach($jobDB as $job)
                 <tr>
                   <td>{{$job->job_name}}</td>
                   <td>{{$job->job_exp}}</td>
                   <td>{{$job->job_regDate}}</td>
                   <td>{{$job->job_register}}</td>
                 </tr>
-              @endforeach
+              @endforeach --}}
               </tbody>
             </table>
           </div>
