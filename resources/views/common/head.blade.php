@@ -4,13 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <?php
         $titleList = array(
-            // array('title' => '배치 작업', 'url' => '/'),
-            // array('title' => '배치 등록', 'url' => '/batchRegisterView'),
-            // array('title' => '프로세스 등록', 'url' => '/processRegisterView'),
-            // array('title' => '모니터링', 'url' => '/monitoringView'),
-            // array('title' => '작업내역', 'url' => '/jobHistoryView')
             array('title' => '잡 등록', 'url' => '/'),
             array('title' => '잡-프로세스 구성', 'url' => '/job/batchProcessRegisterView'),
             array('title' => '프로세스 등록', 'url' => '/process/processRegisterView'),
@@ -31,6 +27,7 @@
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="/css/custom.css"  rel="stylesheet">
+    <script type="text/javascript" src="/vendor/jquery/jquery.js"></script>
     {{--모니터링 css js 추가--}}
     {{-- <link rel="stylesheet" type="text/css" href="css/foopicker.css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
@@ -40,6 +37,7 @@
      $resource = array(
         array('res' => '/css/foopicker.css','url'=>'/monitoring/monitoringView','type'=>'css'),
         array('res' => '/js/foopicker.js','url'=>'/monitoring/monitoringView','type'=>'js'),
+        array('res' => '/js/jobJS/jobFunc.js','url'=>'/','type'=>'js'),
      );
      foreach ($resource as $r){
         if($_SERVER['REQUEST_URI']==$r['url']){

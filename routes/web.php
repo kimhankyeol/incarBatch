@@ -27,6 +27,8 @@ Route::prefix('job')->group(function(){
     Route::get('/batchProcessRegisterView','JobController@batchProcessRegisterView');
     //잡실행 뷰
     Route::get('/batchExecuteView','JobController@batchExecuteView');
+    //잡 검색 조회 비동기
+    Route::get('/batchSearch','JobController@batchSearch');
     
 });
 //프로세스 prefix

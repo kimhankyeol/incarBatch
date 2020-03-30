@@ -8,7 +8,7 @@
       <div class="card shadow mb-4">
         <div class="d-flex justify-content-end card-header py-3">
           <h5 class="p-2 font-weight-bold text-primary">잡</h5>
-          <form class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
+          <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group align-items-center">
               <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무구분</div>
               <div class=" text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
@@ -37,14 +37,14 @@
                       등록자
                     </option>
                   </select>
-                  <input type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                  <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
                   <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">
+                    <div class="btn btn-primary" onclick="job.search()">
                       <i class="fas fa-search fa-sm"></i>
-                    </button>
+                    </div>
                   </div>
             </div>
-          </form>
+          </div>
         </div>
         <div class="card-body py-3">
           <div class="table-responsive">
@@ -57,15 +57,9 @@
                   <th style="background-color:#47579c; color : #fff">등록자</th>
                 </tr>
               </thead>
-              <tbody>
-              {{-- @foreach($jobDB as $job)
-                <tr>
-                  <td>{{$job->job_name}}</td>
-                  <td>{{$job->job_exp}}</td>
-                  <td>{{$job->job_regDate}}</td>
-                  <td>{{$job->job_register}}</td>
-                </tr>
-              @endforeach --}}
+              {{-- AJAX 로 조회된 값이 렌더링 되는 위치 --}}
+              <tbody id="searchContentView">
+             
               </tbody>
             </table>
           </div>
@@ -178,20 +172,9 @@
 
           <input type="button" class="mt-3 btn btn-info float-right" value="수정" style="margin: 0px 5px;" />
           <input type="button" class="mt-3 btn btn-danger float-right" value="취소" style="margin: 0px 5px;" />
-          <input type="button" class="mt-3 btn btn-primary float-right" value="등록" onclick="alert()" />
+          <input type="button" class="mt-3 btn btn-primary float-right" value="등록" onclick="job.register()" />
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    function alert() {
-      var result = confirm("등록하시겠습니까?");
-      if (result) {
-        console.log("등록 되었습니다.");
-      } else {
-        return false;
-        console.log("삭제 되었습니다.");
-      }
-    }
-  </script>
