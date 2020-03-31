@@ -51,10 +51,14 @@
             <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th style="background-color:#47579c; color : #fff">작업명</th>
-                  <th style="background-color:#47579c; color : #fff">설명</th>
-                  <th style="background-color:#47579c; color : #fff">등록일</th>
-                  <th style="background-color:#47579c; color : #fff">등록자</th>
+                  <th style="background-color:#47579c; color : #fff">잡ID</th>
+                  <th style="background-color:#47579c; color : #fff">잡명</th>
+                  <th style="background-color:#47579c; color : #fff">업무구분(대분류)</th>
+                  <th style="background-color:#47579c; color : #fff">업무구분(중분류)</th>
+                  <th style="background-color:#47579c; color : #fff">잡 설명</th>
+                  <th style="background-color:#47579c; color : #fff">잡 등록자</th>
+                  <th style="background-color:#47579c; color : #fff">잡 등록일</th>
+                  <th style="background-color:#47579c; color : #fff">온라인 실행</th>
                 </tr>
               </thead>
               {{-- AJAX 로 조회된 값이 렌더링 되는 위치 --}}
