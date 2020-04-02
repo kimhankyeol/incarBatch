@@ -196,7 +196,7 @@
       id: 'datepicker2'
     });
   </script>
-
+{{-- /popup/batchDetailInfoPopup --}}
   <script type="text/javascript">
     function winPopup() {
       var popUrl = "jobList.html";
@@ -210,7 +210,10 @@
     }
     function retry() {
       if (confirm("재작업 하시겠습니까?") == true) {
-        document.form.submit();
+        var popUrl = "/popup/batchDetailInfoPopup";
+        var popOption = "top=10, left=10, width=750, height=600, status=no, menubar=no, toolbar=no, resizable=no, location=no";
+        window.open(popUrl, "_blank", popOption);
+        //document.form.submit();
       } else {
         return;
       }
