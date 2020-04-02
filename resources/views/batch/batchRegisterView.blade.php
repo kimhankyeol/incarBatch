@@ -58,7 +58,6 @@
                   <th style="background-color:#47579c; color : #fff">잡 설명</th>
                   <th style="background-color:#47579c; color : #fff">잡 등록자</th>
                   <th style="background-color:#47579c; color : #fff">잡 등록일</th>
-                  <th style="background-color:#47579c; color : #fff">온라인 실행</th>
                 </tr>
               </thead>
               {{-- AJAX 로 조회된 값이 렌더링 되는 위치 --}}
@@ -75,15 +74,17 @@
         </div>
         <div class="card-body">
           <div class="row">
+            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 ID</div>
+            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="잡 ID" readonly>
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡명</div>
-            <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="잡명">
+            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="잡명">
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
-            <textarea type="text" class="col-md-7 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
+            <textarea type="text" class="col-md-5 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
           </div>
           <hr>
           <div class="row">
             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 등록자</div>
-            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="김한결">
+            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="김한결" readonly>
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">업무구분</div>
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">대분류</div>
             <select class="col-md-2 form-control form-control-sm">
@@ -106,10 +107,24 @@
           </div>
           <hr>
           <div class="row">
+            <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
+            <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="-" readonly>
+            <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">구성 프로세스</div>
+            <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="-" readonly>              
+          </div>
+          <hr>
+          <div class="row">
             <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 예상 시간</div>
             <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="분단위로 입력해주세요">
             <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 최대 예상 시간</div>
             <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="분단위로 입력해주세요">              
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">등록일</div>
+            <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="" readonly>
+            <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">최종 수정일</div>
+            <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="" readonly>              
           </div>
           <hr>
           <div class="row">

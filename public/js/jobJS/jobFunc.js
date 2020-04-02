@@ -39,5 +39,6 @@ const job = {
     //
     detail:function(jobSeq){
         alert(jobSeq);
+        
     }
 };

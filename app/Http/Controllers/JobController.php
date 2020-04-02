@@ -44,7 +44,11 @@ class JobController extends Controller
             //모델이 없이 쓰려면 
             //$jobSearchContent= DB::table('JOB')->where('JOB.job_name','like',"%$searchWord%")->get();
             //모델존재 쓰는법
-            $jobSearchContent= APP\Job::where('job_name','like',"%$searchWord%")->get();
+            //프로시저 없이
+            //$jobSearchContent= APP\Job::where('job_name','like',"%$searchWord%")->get();
+            //프로시저 있다면
+            //maria db 에서 프로시저를 생성하고 호출함
+            $jobSearchContent = DB::select('CALL searchJobList(?)',[$searchWord]);
             $msg="success";
             $returnHTML=view("/batch/batchSearchListAjaxView",compact('jobSearchContent'))->render();
             return response()->json(array('data'=>$jobSearchContent,'msg'=>$msg,'html'=>$returnHTML),200);
