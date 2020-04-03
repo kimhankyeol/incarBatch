@@ -10,7 +10,7 @@
     <?php
     // print($_SERVER['REQUEST_URI'] );
     $links = array(
-        //batchRegisterView
+        //pageMove.js 무관
         array('label' => '잡 등록', 'url' => '/','icon'=>'fas fa-fw fa-cog'),
         array('label' => '프로세스 등록', 'url' => '/process/processRegisterView','icon'=>'fas fa-fw fa-cog'),
         array('label' => '잡 구성', 'url' => '/job/batchProcessRegisterView','icon'=>'fas fa-fw fa-cog'),

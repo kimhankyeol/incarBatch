@@ -3,7 +3,7 @@ const job = {
     search: function(){
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url:'/job/batchSearch',
+            url:'/job/jobSearch',
             method:"get",
             data:{
                 'searchWord': document.getElementById('searchWord').value
@@ -35,10 +35,5 @@ const job = {
     //삭제
     delete:function(){
 
-    },
-    //
-    detail:function(jobSeq){
-        alert(jobSeq);
-        
     }
 };

@@ -28,6 +28,7 @@
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="/css/custom.css"  rel="stylesheet">
     <script type="text/javascript" src="/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/js/pageMove/pageMove.js"></script>
     {{--모니터링 css js 추가--}}
     {{-- <link rel="stylesheet" type="text/css" href="css/foopicker.css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">

@@ -17,18 +17,20 @@
 //웹 / 앱 서버의 SELinux 설정이 잘못 되었기 때문에 문제가 발생했습니다
 
 
-//잡등록 뷰
-Route::get('/', 'JobController@jobRegisterView');
+//잡리스트 뷰
+Route::get('/', 'JobController@jobListView');
 //잡 prefix
 Route::prefix('job')->group(function(){
-    // //잡등록 뷰
-    // Route::get('/registerView', 'JobController@jobRegisterView');
-    //잡구성 뷰
-    Route::get('/batchProcessRegisterView','JobController@batchProcessRegisterView');
-    //잡실행 뷰
-    Route::get('/batchExecuteView','JobController@batchExecuteView');
+    //잡 등록 뷰
+    Route::get('/jobRegisterView', 'JobController@jobRegisterView');
+    //잡 구성 뷰
+    Route::get('/jobProcessRegisterView','JobController@jobProcessRegisterView');
+    //잡 상세 뷰
+    Route::get('/jobDetailView','JobController@jobDetailView');
+    //잡 실행 뷰
+    Route::get('/jobExecuteView','JobController@jobExecuteView');
     //잡 검색 조회 비동기
-    Route::get('/batchSearch','JobController@batchSearch');
+    Route::get('/jobSearch','JobController@jobSearch');
     
 });
 //프로세스 prefix

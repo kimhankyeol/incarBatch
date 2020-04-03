@@ -14,17 +14,27 @@
     {{--이 부분은 요청 경로를 통해 유동적으로 변경--}}
     <div id="content-wrapper" class="d-flex flex-column">
       {{--화면 분기 처리함 --}}
+       {{-- @include('job.jobDetailView') --}}
+
+      
       @if($_SERVER['REQUEST_URI'] === '/')
-        @include('batch.batchRegisterView')
+        @include('job.jobListView')
+      @endif
+      @if($_SERVER['REQUEST_URI'] === '/job/jobRegisterView')
+        @include('job.jobRegisterView')
+      @endif
+      {{-- detailview 대한 요청 확인 --}}
+      @if($_SERVER['REQUEST_URI'] === '/job/jobDetailView')
+        @include('job.jobDetailView')
       @endif
       @if($_SERVER['REQUEST_URI'] === '/process/processRegisterView')
         @include('process.processRegisterView')
       @endif
-      @if($_SERVER['REQUEST_URI'] === '/job/batchProcessRegisterView')
-        @include('batch.batchProcessRegisterView')
+      @if($_SERVER['REQUEST_URI'] === '/job/jobProcessRegisterView')
+        @include('job.jobProcessRegisterView')
       @endif
-      @if($_SERVER['REQUEST_URI'] === '/job/batchExecuteView')
-        @include('batch.batchExecuteView')
+      @if($_SERVER['REQUEST_URI'] === '/job/jobExecuteView')
+        @include('job.jobExecuteView')
       @endif
       @if($_SERVER['REQUEST_URI'] === '/monitoring/monitoringView')
         @include('monitoring.monitoringView')

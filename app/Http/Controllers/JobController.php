@@ -1,42 +1,42 @@
 <?php
-
+/*
+@Author 
+2020.04.03 김한결 작성
+*/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-//DB 사용하기 위해 다음에는 controller 로 관리하는것 만들어야됨
 use Illuminate\Support\Facades\DB;
 use App;
 class JobController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    //잡등록뷰 
-    public function jobRegisterView()
-    {
-        // if (\Request::is('/')) { 
-        //     $jobDB= DB::table('JOB')->get();
-        //     return view('index',compact('jobDB'));
-        // } 
+    //모든 view는 index로 연결하고  index.blade.php 에서 화면을 분기해서 렌더링함
+    //잡 리스트 뷰 
+    public function jobListView(){
         return view('index');
     }
-
-    //잡구성뷰
-    public function batchProcessRegisterView(){
+    //잡 등록뷰
+    public function jobRegisterView(){
         return view('index');
     }
-
-    //잡실행뷰  
-    public function batchExecuteView(){
+    //잡 상세뷰
+    public function jobDetailView(Request $request){
+        $job_seq = $request->input('job_seq');
+        $jobDetail=DB::select('CALL jobDetail(?)',[$job_seq]);
+        return view('index',compact('jobDetail'));
+    }
+    //잡 구성뷰
+    public function jobProcessRegisterView(){
+        return view('index');
+    }
+    //잡 실행뷰  
+    public function jobExecuteView(){
         return view('index');
     }
 
     //잡 조회검색 
-    public function batchSearch(Request $request){
+    public function jobSearch(Request $request){
         $searchWord = $request->input('searchWord');
         $msg = "error";
         //검색어 있으면
@@ -50,7 +50,7 @@ class JobController extends Controller
             //maria db 에서 프로시저를 생성하고 호출함
             $jobSearchContent = DB::select('CALL searchJobList(?)',[$searchWord]);
             $msg="success";
-            $returnHTML=view("/batch/batchSearchListAjaxView",compact('jobSearchContent'))->render();
+            $returnHTML=view("/job/jobSearchListAjaxView",compact('jobSearchContent'))->render();
             return response()->json(array('data'=>$jobSearchContent,'msg'=>$msg,'html'=>$returnHTML),200);
         }
         //검색어 없으면 
