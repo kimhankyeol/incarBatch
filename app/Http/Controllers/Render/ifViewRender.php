@@ -12,10 +12,12 @@ class ifViewRender {
     private $resourceNull = "";
     //view 정보 리스트  컨트롤러에서 작업이 끝나면 여기에 추가 해줘야됨  화면분기를 해야되기 때문  (비동기식 처리는 따로 진행됨)
     private $viewInfoList = array(
-        array('title' => '잡 등록', 'url' => '/','view'=>'job.jobListView'),
+        array('title' => '잡 조회', 'url' => '/','view'=>'job.jobListView'),
         array('title' => '잡 상세', 'url' => '/job/jobDetailView','view'=>'job.jobDetailView'),
+        array('title' => '잡 등록', 'url' => '/job/jobRegisterView','view'=>'job.jobRegisterView'),
         array('title' => '잡-프로세스 구성', 'url' => '/job/jobProcessRegisterView','view'=>'job.jobProcessRegisterView'),
-        array('title' => '프로그램 등록', 'url' => '/process/processListView','view'=>'process.processListView'),
+        array('title' => '프로그램 조회', 'url' => '/process/processListView','view'=>'process.processListView'),
+        array('title' => '프로그램 등록', 'url' => '/process/processRegisterView','view'=>'process.processRegisterView'),
         array('title' => '프로그램 상세', 'url' => '/process/processDetailView','view'=>'process.processDetailView'),
         array('title' => '잡 실행', 'url' => '/job/jobExecuteView','view'=>'job.jobExecuteView'),
         array('title' => '모니터링', 'url' => '/monitoring/monitoringView','view'=>'monitoring.monitoringView'),
