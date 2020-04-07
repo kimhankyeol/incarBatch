@@ -16,26 +16,27 @@ class JobController extends Controller
     public function jobListView(){
         return view('index');
     }
-    //잡 등록뷰
+    //잡 등록 뷰
     public function jobRegisterView(){
         return view('index');
     }
-    //잡 상세뷰
+    //잡 상세 뷰
     public function jobDetailView(Request $request){
         $job_seq = $request->input('job_seq');
+        //프로시저를 통한 잡 상세정보 검색
         $jobDetail=DB::select('CALL jobDetail(?)',[$job_seq]);
         return view('index',compact('jobDetail'));
     }
-    //잡 구성뷰
+    //잡 구성 뷰
     public function jobProcessRegisterView(){
         return view('index');
     }
-    //잡 실행뷰  
+    //잡 실행 뷰  
     public function jobExecuteView(){
         return view('index');
     }
 
-    //잡 조회검색 
+    //잡 조회 검색 
     public function jobSearch(Request $request){
         $searchWord = $request->input('searchWord');
         $msg = "error";
@@ -62,72 +63,5 @@ class JobController extends Controller
         else{
             return response()->json(array('msg'=>$msg));
         }      
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -1,4 +1,17 @@
-
+<?php
+//분기 처리 해주는 php 위치 
+$ifViewRender = new App\Http\Controllers\Render\ifViewRender;
+$ifViewRender->setRenderInfo($_SERVER['REQUEST_URI'],$_SERVER['QUERY_STRING']);
+//include 될 blade.php 의 경로 + 파일명을 가져옴
+//render 할 viewName index.blade include에 들어감
+$renderInfo = $ifViewRender->getRender();
+//title 변경 스크립트  common/head.blade 쓰이는 변수 
+$titleInfo  = $ifViewRender->getHtmlTitle();
+//url 에따른 resource 변경 추가 할떄   common/head.blade 쓰이는 변수 
+$resourceInfo = $ifViewRender->getResource();
+//사이드바 정보   common/sidebar.blade
+$sidebarInfo = $ifViewRender->getSidebarArray();
+?>
 <!DOCTYPE html>
 <html lang="en">
   {{--include 의 경로는 public/resource/view/부터 시작함--}}
@@ -13,44 +26,11 @@
     {{--content 시작--}}
     {{--이 부분은 요청 경로를 통해 유동적으로 변경--}}
     <div id="content-wrapper" class="d-flex flex-column">
-      {{--화면 분기 처리함 --}}
-       {{-- @include('job.jobDetailView') --}}
-
-      
-      @if($_SERVER['REQUEST_URI'] === '/')
-        @include('job.jobListView')
-      @endif
-      @if($_SERVER['REQUEST_URI'] === '/job/jobRegisterView')
-        @include('job.jobRegisterView')
-      @endif
-      {{-- detailview 대한 요청 확인 --}}
-      @if($_SERVER['REQUEST_URI'] === '/job/jobDetailView')
-        @include('job.jobDetailView')
-      @endif
-      @if($_SERVER['REQUEST_URI'] === '/process/processRegisterView')
-        @include('process.processRegisterView')
-      @endif
-      @if($_SERVER['REQUEST_URI'] === '/job/jobProcessRegisterView')
-        @include('job.jobProcessRegisterView')
-      @endif
-      @if($_SERVER['REQUEST_URI'] === '/job/jobExecuteView')
-        @include('job.jobExecuteView')
-      @endif
-      @if($_SERVER['REQUEST_URI'] === '/monitoring/monitoringView')
-        @include('monitoring.monitoringView')
-      @endif
-      @if($_SERVER['REQUEST_URI'] === '/jobHistory/jobHistoryView')
-        @include('jobHistory.jobHistoryView')
-      @endif
-    {{--Footer start  --}}
+      @include($renderInfo)
+     {{--Footer start  --}}
       @include('common.footer')
       {{--Footer end  --}}
     {{--content 끝--}}
   </div>
-  {{-- <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a> --}}
- 
-
 </body>
 </html>

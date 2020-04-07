@@ -7,18 +7,9 @@
     {{--$_SERVER['REQUEST_URI']  요청경로 확인--}}
     {{--foreach문은 배열에 입력한 순서대로 나옴--}}
     {{--for문은 1,2,3,4 인덱스 순으로 나옴 --}}
-    <?php
-    // print($_SERVER['REQUEST_URI'] );
-    $links = array(
-        //pageMove.js 무관
-        array('label' => '잡 등록', 'url' => '/','icon'=>'fas fa-fw fa-cog'),
-        array('label' => '프로세스 등록', 'url' => '/process/processRegisterView','icon'=>'fas fa-fw fa-cog'),
-        array('label' => '잡 구성', 'url' => '/job/batchProcessRegisterView','icon'=>'fas fa-fw fa-cog'),
-        array('label' => '잡 실행', 'url' => '/job/batchExecuteView','icon'=>'fas fa-fw fa-wrench'),
-        array('label' => '모니터링', 'url' => '/monitoring/monitoringView','icon'=>'fas fa-fw fa-wrench'),
-        array('label' => '작업내역', 'url' => '/jobHistory/jobHistoryView','icon'=>'fas fa-fw fa-folder')
-    );
-    foreach ($links as $r){
+   <?php
+     //index.blade 에서 선언한 ifViewRender 에서 가져온 사이드바 정보
+    foreach ($sidebarInfo as $r){
         $r['active']= ($_SERVER['REQUEST_URI'] == $r['url'])? 'nav-item active':'nav-item';
         echo '<li class="'.$r['active'].'"> <a class="nav-link" href="'.$r['url'].'"><i class="'.$r['icon'].'"></i><span>'.$r['label'].'</span></a></li>';
     };

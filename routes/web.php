@@ -3,15 +3,8 @@
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
-
-//잡 등록 뷰
 //권한문제 뜨면 
 //sudo setsebool -P httpd_can_network_connect_db 1
 //웹 / 앱 서버의 SELinux 설정이 잘못 되었기 때문에 문제가 발생했습니다
@@ -35,8 +28,14 @@ Route::prefix('job')->group(function(){
 });
 //프로세스 prefix
 Route::prefix('process')->group(function(){
+    //프로세스 리스트 뷰
+    Route::get('/processListView', 'ProcessController@processListView');
     //프로세스 등록 뷰
     Route::get('/processRegisterView', 'ProcessController@processRegisterView');
+    //잡 상세 뷰
+    Route::get('/processDetailView','ProcessController@processDetailView');
+    //프로세스 검색 조회 비동기
+    Route::get('/processSearch','ProcessController@processSearch');
 });
 
 //모니터링 prefix
