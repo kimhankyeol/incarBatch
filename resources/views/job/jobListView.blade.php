@@ -55,7 +55,7 @@
               <thead>
                 <tr>
                   <th style="background-color:#47579c; color : #fff">잡ID</th>
-                  <th style="background-color:#47579c; color : #fff">잡명</th>
+                  <th style="background-color:#47579c; color : #fff">잡 설명</th>
                   <th style="background-color:#47579c; color : #fff">업무구분(대분류)</th>
                   <th style="background-color:#47579c; color : #fff">업무구분(중분류)</th>
                   <th style="background-color:#47579c; color : #fff">잡 설명</th>

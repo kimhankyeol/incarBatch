@@ -69,63 +69,14 @@
               잡 파라미터 입력
             </div>
             <hr>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 1</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 2</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 3</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 4</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 5</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
+            {{-- 잡변수가 추가되는 부분 --}}
+            <div class="col-md-12" id="jobParams">
             </div>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 6</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 7</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 8</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 9</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
-              <div class="row">
-                <div class="col-md-2 small align-self-center text-center">파라미터 10</div>
-                <input type="text" class="col-md-4  form-control form-control-sm" placeholder="파라미터 명">
-                <input type="text" class="col-md-6  form-control form-control-sm" placeholder="설명">
-              </div>
+            <div style="width:100%; text-align: center">
+              <input type="button" class="mt-3 btn btn-info " value="잡 변수 추가 +" style="margin: 0px 5px;"  onclick="job.addDivParam()"/>
             </div>
           </div>
           <hr>
-
           <input type="button" class="mt-3 btn btn-info float-right" value="수정" style="margin: 0px 5px;" />
           <input type="button" class="mt-3 btn btn-danger float-right" value="취소" style="margin: 0px 5px;" />
           <input type="button" class="mt-3 btn btn-primary float-right" value="등록" onclick="job.register()" />
@@ -133,4 +84,8 @@
       </div>
     </div>
   </div>
+<script>
 
+
+         
+  </script>
