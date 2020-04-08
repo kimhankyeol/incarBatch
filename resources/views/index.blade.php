@@ -24,8 +24,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    {{--이 부분은 요청 경로를 통해 유동적으로 변경--}}
     <div id="content-wrapper" class="d-flex flex-column">
+       {{--이 부분은 요청 경로를 통해 유동적으로 변경--}}
       @include($renderInfo)
      {{--Footer start  --}}
       @include('common.footer')
