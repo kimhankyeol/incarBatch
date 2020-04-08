@@ -1,6 +1,6 @@
 <?php
 //분기 처리 해주는 php 위치 
-$ifViewRender = new App\Http\Controllers\Render\ifViewRender;
+$ifViewRender = new App\Http\Controllers\Render\IfViewRender;
 $ifViewRender->setRenderInfo($_SERVER['REQUEST_URI']);
 //include 될 blade.php 의 경로 + 파일명을 가져옴
 //render 할 viewName index.blade include에 들어감

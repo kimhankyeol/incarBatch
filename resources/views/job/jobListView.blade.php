@@ -37,9 +37,15 @@
                       등록자
                     </option>
                   </select>
-                  <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                  {{-- 검색 단어가 있을떄 없을때 구분 ajax 비동기로 페이징 유지하기 위해  --}}
+                  @if(!isset($searchWord))
+                    <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                  @elseif(isset($searchWord))
+                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-0 small" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                  @endif
+                 
                   <div class="input-group-append">
-                    <div class="btn btn-primary" onclick="job.search()">
+                    <div class="btn btn-primary" onclick="job.search('1')">
                       <i class="fas fa-search fa-sm"></i>
                     </div>
                   </div>
@@ -63,9 +69,12 @@
                   <th style="background-color:#47579c; color : #fff">잡 등록일</th>
                 </tr>
               </thead>
-              {{-- AJAX 로 조회된 값이 렌더링 되는 위치 --}}
-              <tbody id="searchContentView">
-             
+              {{--  조회된 값이 보여주는 위치 --}}
+              <tbody>
+                {{-- isset 변수 존재여부 --}}
+                @if(isset($itemsForCurrentPage))
+                  @include('job.jobSearchListView')
+                @endif
               </tbody>
             </table>
           </div>

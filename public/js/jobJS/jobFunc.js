@@ -1,24 +1,29 @@
+
 const job = {
     //조회
-    search: function(){
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url:'/job/jobSearch',
-            method:"get",
-            data:{
-                'searchWord': document.getElementById('searchWord').value
-            },
-            success:function(resp){
-                if(resp.msg=="success"){
-                    console.table(resp);
-                   $('#searchContentView').html(resp.html);
-                }else{
-                    console.log(resp.msg);
-                }
-            },error:function(error){
-                console.error(error);
-            }
-        })
+    search: function(page){
+        var searchWord = document.getElementById('searchWord').value
+        location.href="/job/jobSearch?searchWord="+searchWord+'&page='+page;
+       
+        // $.ajax({
+        //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        //     url:'/job/jobSearch',
+        //     method:"get",
+        //     data:{
+        //         'page':pageNo,
+        //         'searchWord': document.getElementById('searchWord').value
+        //     },
+        //     success:function(resp){
+        //         if(resp.msg=="success"){
+        //             console.table(resp);
+        //             $('#searchContentView').html(resp.html);
+        //         }else{
+        //             console.log(resp.msg);
+        //         }
+        //     },error:function(error){
+        //         console.error(error);
+        //     }
+        // })
     },
     //등록
     register:function(){

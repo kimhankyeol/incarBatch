@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
+//정적 메서드를 호출할때 ::   그외 ->
 class JobController extends Controller
 {
     //모든 view는 index로 연결하고  index.blade.php 에서 화면을 분기해서 렌더링함
@@ -44,15 +45,30 @@ class JobController extends Controller
         if($searchWord!=""){
             //모델이 없이 쓰려면 
             //$jobSearchContent= DB::table('JOB')->where('JOB.job_name','like',"%$searchWord%")->get();
-            //모델존재 쓰는법
             //프로시저 없이
             //$jobSearchContent= APP\Job::where('job_name','like',"%$searchWord%")->get();
             //프로시저 있다면
             //maria db 에서 프로시저를 생성하고 호출함
             $jobSearchContent = DB::select('CALL searchJobList(?)',[$searchWord]);
+            $page=$request->input('page');
+              
+
+            //페이징 부분
+            $paginate=30;
+            $offSet = ($page * $paginate)-$paginate;
+            $itemsForCurrentPage=array_slice($jobSearchContent, $offSet, $paginate, true);  
+            $paginator = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($jobSearchContent),$paginate, $page); 
+
+            //이 부분은 나중에 jobSearchContent 값이 있는지  없는지 여부를 판단해서 if문 분기 처리 해줘야됨
             $msg="success";
-            $returnHTML=view("/job/jobSearchListAjaxView",compact('jobSearchContent'))->render();
-            return response()->json(array('data'=>$jobSearchContent,'msg'=>$msg,'html'=>$returnHTML),200);
+
+            //페이지 이동시 쿼리스트링에 넣어줄 파라미터
+            //라라벨에서 페이지 < 1 2 3 4 5 >  이 부분은 link()로 자동생성 param변수로 page를 기본으로 가지고 있음 
+            //url 변수가 추가된다면 array에 담고 jobSearchListView에서 append 해주면됨
+            $searchParams = array( 'searchWord' => $searchWord);
+     
+            return view("index",compact('paginator','itemsForCurrentPage','searchWord','searchParams'));
+
         }
         //검색어 없으면 
         else if($searchWord==""){

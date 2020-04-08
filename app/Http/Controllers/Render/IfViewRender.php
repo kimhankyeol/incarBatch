@@ -1,4 +1,8 @@
 <?php
+/*
+Author : 김한결
+2020-04-08 페이징커스텀
+*/
 namespace App\Http\Controllers\Render;
 class ifViewRender {
  //멤버변수
