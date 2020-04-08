@@ -43,7 +43,7 @@ class ifViewRender {
 
 
 //메소드
-    public function setRenderInfo($url,$query){
+    public function setRenderInfo($url){
         //  /경로를 제외하고 나머지는 경로(job/jobListView) 와 파일 위치 (job/jogListView) 같음
         // 이 부분은 화면에 필요한 정보들 title, view 네임을 지정해주는 곳임
         
