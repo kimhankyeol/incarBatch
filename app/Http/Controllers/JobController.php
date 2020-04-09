@@ -23,7 +23,7 @@ class JobController extends Controller
     }
     //잡 상세 뷰
     public function jobDetailView(Request $request){
-        $job_seq = $request->input('job_seq');
+        $job_seq = $request->input('Job_Seq');
         //프로시저를 통한 잡 상세정보 검색
         $jobDetail=DB::select('CALL jobDetail(?)',[$job_seq]);
         return view('index',compact('jobDetail'));

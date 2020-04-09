@@ -18,7 +18,7 @@ class ProcessController extends Controller
     }
     //프로세스 상세 뷰
     public function processDetailView(Request $request){
-        $p_seq = $request->input('p_seq');
+        $p_seq = $request->input('P_Seq');
         //프로시저를 통한 프로세스 상세정보 검색
         $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
         return view('index',compact('processDetail'));
