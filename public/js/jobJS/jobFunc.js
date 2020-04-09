@@ -48,7 +48,7 @@ const job = {
         var jobParamDiv2 = document.createElement('div');
         var delBtnDiv = document.createElement('div');
         var jobParamInputText = '<input type="text" class="col-md-3  form-control form-control-sm" placeholder="파라미터 명">'+
-        '<input type="text" class="col-md-4  form-control form-control-sm" placeholder="설명">';
+        '<input type="text" name="jobParamsInput" class="col-md-4  form-control form-control-sm" placeholder="설명">';
         jobParamDiv.className="row delYN";
         jobParamDiv.style.paddingBottom="10px";
         jobParamDiv2.className="col-md-2 small align-self-center text-center"
