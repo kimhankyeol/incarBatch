@@ -53,13 +53,12 @@ class JobController extends Controller
             $page=$request->input('page');
             
             //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
-            $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,30,$jobSearchContent);
+            $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,20,$jobSearchContent);
             //페이징 정보를 가져옴
             $paginator = $PaginationCustom->getPaging();
             //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
             $itemsForCurrentPage =$PaginationCustom->getItemsForCurrentPage();
             
-
             //이 부분은 나중에 jobSearchContent 값이 있는지  없는지 여부를 판단해서 if문 분기 처리 해줘야됨
             $msg="success";
 

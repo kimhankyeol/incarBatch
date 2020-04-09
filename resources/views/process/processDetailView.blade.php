@@ -12,7 +12,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{$processDetail[0]->p_seq}}" readonly>
+            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{$processDetail[0]->P_Seq}}" readonly>
             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
             <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="프로그램 명">
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>

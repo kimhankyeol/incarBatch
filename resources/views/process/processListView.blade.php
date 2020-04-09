@@ -37,9 +37,14 @@
                       등록자
                     </option>
                   </select>
-                  <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                  {{-- 검색 단어가 있을떄 없을때 구분  --}}
+                  @if(!isset($searchWord))
+                    <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                  @elseif(isset($searchWord))
+                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-0 small" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                  @endif
                   <div class="input-group-append">
-                    <div class="btn btn-primary" onclick="process.search()">
+                    <div class="btn btn-primary" onclick="process.search('1')">
                       <i class="fas fa-search fa-sm"></i>
                     </div>
                   </div>
@@ -64,8 +69,11 @@
                 </tr>
               </thead>
               {{-- AJAX 로 조회된 값이 렌더링 되는 위치 --}}
-              <tbody id="searchContentView">
-             
+              <tbody>
+               {{-- isset 변수 존재여부 --}}
+                @if(isset($itemsForCurrentPage))
+                  @include('process.processSearchListView')
+                @endif
               </tbody>
             </table>
           </div>

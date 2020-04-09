@@ -5,7 +5,7 @@ const pageMove={
             location.href="/job/"+urlName;
         },
         detail:function(urlName,param1){
-            location.href="/job/"+urlName+"?job_seq="+param1;
+            location.href="/job/"+urlName+"?Job_Seq="+param1;
         }
     },
     process:{

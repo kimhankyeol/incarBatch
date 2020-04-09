@@ -22,7 +22,7 @@ Route::prefix('job')->group(function(){
     Route::get('/jobDetailView','JobController@jobDetailView');
     //잡 실행 뷰
     Route::get('/jobExecuteView','JobController@jobExecuteView');
-    //잡 검색 조회 비동기
+    //잡 검색 조회 
     Route::get('/jobSearch','JobController@jobSearch');
     
 });
@@ -34,7 +34,7 @@ Route::prefix('process')->group(function(){
     Route::get('/processRegisterView', 'ProcessController@processRegisterView');
     //잡 상세 뷰
     Route::get('/processDetailView','ProcessController@processDetailView');
-    //프로세스 검색 조회 비동기
+    //프로세스 검색 조회 
     Route::get('/processSearch','ProcessController@processSearch');
 });
 

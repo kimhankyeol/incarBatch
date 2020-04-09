@@ -73,24 +73,9 @@ const job = {
 //프로세스
 const process ={
     //조회
-    search: function(){
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url:'/process/processSearch',
-            method:"get",
-            data:{
-                'searchWord': document.getElementById('searchWord').value
-            },
-            success:function(resp){
-                if(resp.msg=="success"){
-                   $('#searchContentView').html(resp.html);
-                }else{
-                    console.log(resp.msg);
-                }
-            },error:function(error){
-                console.error(error);
-            }
-        })
+    search: function(page){
+        var searchWord = document.getElementById('searchWord').value;
+        location.href="/process/processSearch?searchWord="+searchWord+'&page='+page;
     },
     //등록
     register:function(){

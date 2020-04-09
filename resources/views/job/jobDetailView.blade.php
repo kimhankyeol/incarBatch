@@ -12,7 +12,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 ID</div>
-          <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->job_seq}}" readonly>
+          <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->Job_Seq}}" readonly>
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡명</div>
             <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="잡명">
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
