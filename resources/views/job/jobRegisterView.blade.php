@@ -66,7 +66,7 @@
           <hr>
           <div class="row">
             <div class="col-md-12 font-weight-bold text-primary">
-              잡 파라미터 입력
+              잡 파라미터 타입
             </div>
             <hr>
             {{-- 잡변수가 추가되는 부분 --}}

@@ -81,7 +81,7 @@
           <hr>
           <div class="row">
             <div class="col-md-12 font-weight-bold text-primary">
-            프로그램 파라미터 입력
+            프로그램 파라미터 타입
             </div>
             <hr>
             {{-- program 변수가 추가되는 부분 --}}
