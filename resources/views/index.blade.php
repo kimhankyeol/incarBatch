@@ -11,6 +11,7 @@ $titleInfo  = $ifViewRender->getHtmlTitle();
 $resourceInfo = $ifViewRender->getResource();
 //사이드바 정보   common/sidebar.blade
 $sidebarInfo = $ifViewRender->getSidebarArray();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

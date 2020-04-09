@@ -51,13 +51,14 @@ class JobController extends Controller
             //maria db 에서 프로시저를 생성하고 호출함
             $jobSearchContent = DB::select('CALL searchJobList(?)',[$searchWord]);
             $page=$request->input('page');
-              
-
-            //페이징 부분
-            $paginate=30;
-            $offSet = ($page * $paginate)-$paginate;
-            $itemsForCurrentPage=array_slice($jobSearchContent, $offSet, $paginate, true);  
-            $paginator = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($jobSearchContent),$paginate, $page); 
+            
+            //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
+            $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,30,$jobSearchContent);
+            //페이징 정보를 가져옴
+            $paginator = $PaginationCustom->getPaging();
+            //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
+            $itemsForCurrentPage =$PaginationCustom->getItemsForCurrentPage();
+            
 
             //이 부분은 나중에 jobSearchContent 값이 있는지  없는지 여부를 판단해서 if문 분기 처리 해줘야됨
             $msg="success";
@@ -72,12 +73,12 @@ class JobController extends Controller
         }
         //검색어 없으면 
         else if($searchWord==""){
-            $msg="blank";
-            return response()->json(array('msg'=>$msg));
+            
+            return view("index");
         }
         //다른 에러 
         else{
-            return response()->json(array('msg'=>$msg));
+            return view("index");
         }      
     }
 }

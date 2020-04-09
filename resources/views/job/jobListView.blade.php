@@ -37,7 +37,7 @@
                       등록자
                     </option>
                   </select>
-                  {{-- 검색 단어가 있을떄 없을때 구분 ajax 비동기로 페이징 유지하기 위해  --}}
+                  {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
                     <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
                   @elseif(isset($searchWord))
