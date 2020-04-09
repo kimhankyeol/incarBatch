@@ -67,7 +67,8 @@ class JobController extends Controller
             //라라벨에서 페이지 < 1 2 3 4 5 >  이 부분은 link()로 자동생성 param변수로 page를 기본으로 가지고 있음 
             //url 변수가 추가된다면 array에 담고 jobSearchListView에서 append 해주면됨
             $searchParams = array( 'searchWord' => $searchWord);
-     
+        
+            //job/jobSearchListView.blade.php 화면반환  
             return view("index",compact('paginator','itemsForCurrentPage','searchWord','searchParams'));
 
         }
