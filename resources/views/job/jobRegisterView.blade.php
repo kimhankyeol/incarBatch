@@ -14,9 +14,9 @@
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 ID</div>
             <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="잡 ID" readonly>
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡명</div>
-            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="잡명">
+            <input type="text" name="Job_Name" class="col-md-2 form-control form-control-sm align-self-center" placeholder="잡명">
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
-            <textarea type="text" class="col-md-5 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
+            <textarea type="text" name="Job_Sulmyung" class="col-md-5 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
           </div>
           <hr>
           <div class="row">

@@ -47,8 +47,9 @@ const job = {
         var jobParamDiv = document.createElement('div');
         var jobParamDiv2 = document.createElement('div');
         var delBtnDiv = document.createElement('div');
-        var jobParamInputText = '<input type="text" class="col-md-3  form-control form-control-sm" placeholder="파라미터 명">'+
-        '<input type="text" name="jobParamsInput" class="col-md-4  form-control form-control-sm" placeholder="설명">';
+        //onchange 걸어야됨
+        var jobParamInputText = '  <select name="jobParamType" class="col-md-3  form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>'+
+        '<input type="text" name="jobParamSulmyungInput" class="col-md-4  form-control form-control-sm" placeholder="설명">';
         jobParamDiv.className="row delYN";
         jobParamDiv.style.paddingBottom="10px";
         jobParamDiv2.className="col-md-2 small align-self-center text-center"
@@ -100,14 +101,16 @@ const process ={
         var proParamDiv = document.createElement('div');
         var proParamDiv2 = document.createElement('div');
         var delBtnDiv = document.createElement('div');
-        var proParamInputText = '<input type="text" class="col-md-3  form-control form-control-sm" placeholder="파라미터 명">'+
-        '<input type="text" class="col-md-4  form-control form-control-sm" placeholder="설명">';
+
+        //onchange 걸어야됨
+        var proParamInputText = '  <select name="proParamType" class="col-md-3  form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>'+
+        '<input type="text" name="proParamSulmyungInput" class="col-md-4  form-control form-control-sm" placeholder="설명">';
         proParamDiv.className="row delYN";
         proParamDiv.style.paddingBottom="10px";
         proParamDiv2.className="col-md-2 small align-self-center text-center"
         proParamDiv2.innerHTML="프로그램 파라미터";
         
-        delBtnDiv.className="delParam btn btn-danger  form-control form-control-sm col-md-2" ;
+        delBtnDiv.className="delParam btn-danger  form-control form-control-sm col-md-2 text-center" ;
         delBtnDiv.onclick=process.deleteDivParam;
         delBtnDiv.innerText="삭제";
 
