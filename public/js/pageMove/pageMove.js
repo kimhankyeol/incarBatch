@@ -13,7 +13,7 @@ const pageMove={
             location.href="/process/"+urlName;
         },
         detail:function(urlName,param1){
-            location.href="/process/"+urlName+"?p_seq="+param1;
+            location.href="/process/"+urlName+"?P_Seq="+param1;
         }
     },
     //잡실행 href
