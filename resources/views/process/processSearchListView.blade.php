@@ -1,5 +1,5 @@
 @foreach($itemsForCurrentPage as $proSc)
-<tr onclick="pageMove.process.detail('processDetailView','{{$proSc->p_seq}}')">
+<tr onclick="pageMove.process.detail('processDetailView','{{$proSc->P_Seq}}')">
     <td>{{$proSc->P_Name}}</td>
     <td>{{$proSc->P_Name}}</td>
     <td>{{$proSc->P_Name}}</td>
