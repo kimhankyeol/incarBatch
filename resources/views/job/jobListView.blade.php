@@ -2,14 +2,14 @@
   <div id="content">
     <!-- End of Topbar -->
     <!-- Begin Page Content -->
-    <div class="container-fluid" style="height: 100%">
+    <div class="container-fluid">
       <!-- Page Heading -->
       <!-- DataTales Example -->
-      <div class="card shadow mb-4" style="height: 100%">
+      <h4 class="h3 my-4 font-weight-bold text-primary">잡</h4>
+      <div class="card shadow mb-4">
         <div class="d-flex justify-content-end card-header py-3">
-          <h5 class="p-2 font-weight-bold text-primary">잡</h5>
           <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group align-items-center" style="display:inline-flex">
+            <div class="input-group align-items-center">
               <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무구분</div>
               <div class=" text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
                   <select class="form-control form-control-sm">
@@ -29,19 +29,11 @@
                       제도관리
                     </option>
                   </select>
-                  <select class="form-control bg-light small" style="border: 1px solid #4e73df !important;">
-                    <option>
-                      잡명
-                    </option>
-                    <option>
-                      등록자
-                    </option>
-                  </select>
                   {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
                   @elseif(isset($searchWord))
-                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-0 small" aria-label="Search" style="border: 1px solid #4e73df !important;">
+                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
                   @endif
                  
                   <div class="input-group-append">
@@ -50,7 +42,7 @@
                     </div>
                   </div>
                   <div class=" text-center align-self-center font-weight-bold text-primary mx-2">
-                    <div class="btn btn-primary" onclick="pageMove.job.list('jobRegisterView')" style="cursor:pointer">등록</div>
+                    <div class="btn btn-info" onclick="pageMove.job.list('jobRegisterView')">등록</div>
                   </div>
             </div>
           </div>
@@ -58,15 +50,24 @@
         <div class="card-body py-3">
           <div class="table-responsive">
             <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
+              <colgroup>
+                  <col width="100px"/>
+                  <col width="100px"/>
+                  <col width="100px"/>
+                  <col width="100px"/>
+                  <col width="400px"/>
+                  <col width="100px"/>
+                  <col width="200px"/>
+              </colgroup>
               <thead>
                 <tr>
-                  <th style="background-color:#47579c; color : #fff">잡ID</th>
-                  <th style="background-color:#47579c; color : #fff">잡 설명</th>
-                  <th style="background-color:#47579c; color : #fff">업무구분(대분류)</th>
-                  <th style="background-color:#47579c; color : #fff">업무구분(중분류)</th>
-                  <th style="background-color:#47579c; color : #fff">잡 설명</th>
-                  <th style="background-color:#47579c; color : #fff">잡 등록자</th>
-                  <th style="background-color:#47579c; color : #fff">잡 등록일</th>
+                  <th scope="col">잡ID</th>
+                  <th scope="col">잡 명</th>
+                  <th scope="col">업무구분(대분류)</th>
+                  <th scope="col">업무구분(중분류)</th>
+                  <th scope="col">잡 설명</th>
+                  <th scope="col">잡 등록자</th>
+                  <th scope="col">잡 등록일</th>
                 </tr>
               </thead>
               {{--  조회된 값이 보여주는 위치 --}}

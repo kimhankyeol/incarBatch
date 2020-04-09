@@ -14,3 +14,20 @@
   #datatable>tbody>tr:hover {
     background-color: #daddeb;
   }
+
+/* table */
+.table {
+  table-layout:fixed;
+}
+.table tr th {
+  background-color : #4e73df;
+  vertical-align: middle;
+  color: #fff;
+}
+.table tr td {
+  vertical-align: middle;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
