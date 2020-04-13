@@ -6,8 +6,6 @@ Author : 김한결
 namespace App\Http\Controllers\Render;
 class ifViewRender {
  //멤버변수
-    //index 부분 include 변수로 들어갈 폴더+파일 경로
-    private $renderInfo;
     //html 타이틀 보여줄변수
     private $titleInfo;
     //추가되는 리소스를 담은 변수
@@ -16,18 +14,16 @@ class ifViewRender {
     private $resourceNull = "";
     //view 정보 리스트  컨트롤러에서 작업이 끝나면 여기에 추가 해줘야됨  화면분기를 해야되기 때문  (비동기식 처리는 따로 진행됨)
     private $viewInfoList = array(
-        array('title' => '잡 조회', 'url' => '/','view'=>'job.jobListView'),
-        array('title' => '잡 검색 조회', 'url' => '/job/jobSearch','view'=>'job.jobListView'),
-        array('title' => '잡 상세', 'url' => '/job/jobDetailView','view'=>'job.jobDetailView'),
-        array('title' => '잡 등록', 'url' => '/job/jobRegisterView','view'=>'job.jobRegisterView'),
-        array('title' => '잡-프로세스 구성', 'url' => '/job/jobProcessRegisterView','view'=>'job.jobProcessRegisterView'),
-        array('title' => '프로그램 조회', 'url' => '/process/processListView','view'=>'process.processListView'),
-        array('title' => '프로그램 검색 조회', 'url' => '/process/processSearch','view'=>'process.processListView'),
-        array('title' => '프로그램 등록', 'url' => '/process/processRegisterView','view'=>'process.processRegisterView'),
-        array('title' => '프로그램 상세', 'url' => '/process/processDetailView','view'=>'process.processDetailView'),
-        array('title' => '잡 실행', 'url' => '/job/jobExecuteView','view'=>'job.jobExecuteView'),
-        array('title' => '모니터링', 'url' => '/monitoring/monitoringView','view'=>'monitoring.monitoringView'),
-        array('title' => '작업내역', 'url' => '/jobHistory/jobHistoryView','view'=>'jobHistory.jobHistoryView')
+        array('title' => '메인', 'url' => '/'),
+        array('title' => '잡 조회', 'url' => '/job/jobListView'),
+        array('title' => '잡 상세', 'url' => '/job/jobDetailView'),
+        array('title' => '잡 등록', 'url' => '/job/jobRegisterView'),
+        array('title' => '프로그램 조회', 'url' => '/process/processListView'),
+        array('title' => '프로그램 등록', 'url' => '/process/processRegisterView'),
+        array('title' => '프로그램 상세', 'url' => '/process/processDetailView'),
+        array('title' => '잡 실행', 'url' => '/job/jobExecuteView'),
+        array('title' => '모니터링', 'url' => '/monitoring/monitoringView'),
+        array('title' => '작업내역', 'url' => '/jobHistory/jobHistoryView')
     );
     //view 마다 추가/변경되는 리소스 관리 
     //url 에 따른 css /js 추가 
@@ -39,9 +35,8 @@ class ifViewRender {
      //사이드바 링크 배열
     private $sidebarInfo = array(
         //pageMove.js 무관
-        array('label' => '잡 등록', 'url' => '/','icon'=>'fas fa-fw fa-cog'),
+        array('label' => '잡 등록', 'url' => '/job/jobListView','icon'=>'fas fa-fw fa-cog'),
         array('label' => '프로그램 등록', 'url' => '/process/processListView','icon'=>'fas fa-fw fa-cog'),
-        array('label' => '잡 구성', 'url' => '/job/jobProcessRegisterView','icon'=>'fas fa-fw fa-cog'),
         array('label' => '잡 실행', 'url' => '/job/jobExecuteView','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '모니터링', 'url' => '/monitoring/monitoringView','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '작업내역', 'url' => '/jobHistory/jobHistoryView','icon'=>'fas fa-fw fa-folder')
@@ -52,49 +47,24 @@ class ifViewRender {
     public function setRenderInfo($url){
         //  /경로를 제외하고 나머지는 경로(job/jobListView) 와 파일 위치 (job/jogListView) 같음
         // 이 부분은 화면에 필요한 정보들 title, view 네임을 지정해주는 곳임
-        
-            //1 . 경로가 /  일때 
-            if($url==="/"){
-                $this->titleInfo = '<script>document.title="잡 등록"</script>';
-                $this->renderInfo = 'job.jobListView';
-                
-                foreach ($this->resourceArray as $r){
-                    // / 경로
-                    if($r['url']==="/"){
-                        if($r['type']=='css'){
-                            array_push($this->resourceInfo,'<link rel="stylesheet" type="text/css" href="'.$r['res'].'">');
-                        }else if($r['type']=='js'){
-                            array_push($this->resourceInfo,'<script type="text/javascript" src="'.$r['res'].'"></script>');
-                        }
+            //요청마다 타이틀/뷰를 다르게 지정해야되기 때문
+            foreach ($this->viewInfoList as $r){
+                if(preg_match_all("/".str_replace("/","\\/",$r['url'])."/","/".$url."/")){
+                    $this->titleInfo = '<script>document.title="'.$r['title'].'"</script>';
+                }
+            };
+            //이 부분은 화면(요청)에 따라 리소스 추가/변경 해주는 부분
+            foreach ($this->resourceArray as $r){
+                if(preg_match_all("/".str_replace("/","\\/",$r['url'])."/","/".$url."/")&&$r['url']!=="/"){
+                    if($r['type']=='css'){
+                        array_push($this->resourceInfo,'<link rel="stylesheet" type="text/css" href="'.$r['res'].'">');
+                    }else if($r['type']=='js'){
+                        array_push($this->resourceInfo,'<script type="text/javascript" src="'.$r['res'].'"></script>');
                     }
                 }
-            }
-            //2. 경로가 / 아닐때 
-            else {
-                //요청마다 타이틀/뷰를 다르게 지정해야되기 때문
-                foreach ($this->viewInfoList as $r){
-                    if(preg_match_all("/".str_replace("/","\\/",$r['url'])."/","/".$url."/")){
-                        $this->titleInfo = '<script>document.title="'.$r['title'].'"</script>';
-                        $this->renderInfo = $r['view'];
-                    }
-                };
-                //이 부분은 화면(요청)에 따라 리소스 추가/변경 해주는 부분
-                foreach ($this->resourceArray as $r){
-                    if(preg_match_all("/".str_replace("/","\\/",$r['url'])."/","/".$url."/")&&$r['url']!=="/"){
-                        if($r['type']=='css'){
-                            array_push($this->resourceInfo,'<link rel="stylesheet" type="text/css" href="'.$r['res'].'">');
-                        }else if($r['type']=='js'){
-                            array_push($this->resourceInfo,'<script type="text/javascript" src="'.$r['res'].'"></script>');
-                        }
-                    }
-                };
-            
             };
         }
-    //title, include 경로(view 네임)를 알려주는 메서드
-    public function getRender(){
-        return $this->renderInfo;
-    }
+   
     //html title 변경 script 반환
     public function getHtmlTitle(){
         return $this->titleInfo;

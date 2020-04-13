@@ -1,3 +1,5 @@
+  {{--include 의 경로는 public/resource/view/부터 시작함--}}
+{{-- head 부분 --}}
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,6 +16,7 @@
     <script type="text/javascript" src="/vendor/jquery/jquery.js"></script>
     <script type="text/javascript" src="/js/pageMove/pageMove.js"></script>
     <script type="text/javascript" src="/js/jobJS/jobFunc.js"></script>
+    <script type="text/javascript" src="/js/jobJS/proFunc.js"></script>
     <?php
     //index.blade 에서 선언한 ifViewRender 에서 가져온 title 변경 script 
     echo $titleInfo;
@@ -27,5 +30,4 @@
     }
 
     ?>
-
 </head>

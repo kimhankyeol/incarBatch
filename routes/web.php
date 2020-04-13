@@ -10,10 +10,12 @@
 //웹 / 앱 서버의 SELinux 설정이 잘못 되었기 때문에 문제가 발생했습니다
 
 
-//잡리스트 뷰
-Route::get('/', 'JobController@jobListView');
+Route::get('/', 'JobController@index');
+
 //잡 prefix
 Route::prefix('job')->group(function(){
+    //잡리스트 뷰
+    Route::get('/jobListView', 'JobController@jobListView');
     //잡 등록 뷰
     Route::get('/jobRegisterView', 'JobController@jobRegisterView');
     //잡 구성 뷰
@@ -22,8 +24,8 @@ Route::prefix('job')->group(function(){
     Route::get('/jobDetailView','JobController@jobDetailView');
     //잡 실행 뷰
     Route::get('/jobExecuteView','JobController@jobExecuteView');
-    //잡 검색 조회 
-    Route::get('/jobSearch','JobController@jobSearch');
+    //잡 등록 
+    Route::post('/jobRegister','JobController@jobRegister');
     
 });
 //프로세스 prefix
@@ -32,10 +34,10 @@ Route::prefix('process')->group(function(){
     Route::get('/processListView', 'ProcessController@processListView');
     //프로세스 등록 뷰
     Route::get('/processRegisterView', 'ProcessController@processRegisterView');
-    //잡 상세 뷰
+    //프로세스 상세 뷰
     Route::get('/processDetailView','ProcessController@processDetailView');
-    //프로세스 검색 조회 
-    Route::get('/processSearch','ProcessController@processSearch');
+    //프로세스 등록
+    Route::post('/processRegister','ProcessController@processRegister');
 });
 
 //모니터링 prefix
