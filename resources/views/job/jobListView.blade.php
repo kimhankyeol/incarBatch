@@ -33,33 +33,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <h5 class="p-2 font-weight-bold text-primary">잡</h5>
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group align-items-center" style="display:inline-flex">
-                  <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무구분</div>
-                  <div class=" text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
-                      <select class="form-control form-control-sm">
-                        <option>
-                          인카금융서비스
-                        </option>
-                      </select>
-                      <div class="text-center align-self-center font-weight-bold text-primary mx-2">중분류</div>
-                      <select class="form-control form-control-sm ml-2 mr-5">
-                        <option>
-                        정보기술연구소
-                        </option>
-                        <option>
-                          교육
-                        </option>
-                        <option>
-                          제도관리
-                        </option>
-                      </select>
+                {{-- 대분류 중분류 선택 --}}
+                <div id="codeLargeView" style="display:inline-flex"></div>
+                      {{-- 검색 조건 --}}
                       <select class="form-control bg-light small" style="border: 1px solid #4e73df !important;">
-                        <option>
-                          잡명
-                        </option>
-                        <option>
-                          등록자
-                        </option>
-                      </select>
+                      <option>
+                        잡명
+                      </option>
+                    </select>
                       {{-- 검색 단어가 있을떄 없을때 구분  --}}
                       @if(!isset($searchWord))
                         <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
@@ -81,6 +62,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <div class="card-body py-3">
               <div class="table-responsive">
                 <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
+                  <colgroup>
+                    <col width="80px" />
+                    <col width="150px" />
+                    <col width="120px" />
+                    <col width="120px" />
+                    <col width="340px" />
+                    <col width="100px" />
+                    <col width="190px" />
+                  </colgroup>
                     <thead>
                       <tr>
                         <th style="background-color:#47579c; color : #fff">잡 ID</th>
@@ -111,6 +101,43 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       @include('common.footer')
     {{--content 끝--}}
     </div>
+    <script>
+    //대분류 조회 
+    function workLargeCtg(){
+      $.ajax({
+        url:"/code/workLargeCtg",
+        method:"get",
+        data:{
+          "codeType":"B"
+        },
+        success:function(data){
+          console.table(data);
+          $('#codeLargeView').html(data.returnHTML);
+        },error:function(err){
+
+        }
+      })
+    }
+    //대분류에서 onchange 걸어서 중분류 조회
+    function workMediumCtg(){
+      $.ajax({
+        url:"/code/workMediumCtg",
+        method:"get",
+        data:{
+          //대분류 코드 
+          "codeType":"B",
+          "code":$('#workLargeVal').val()
+        },
+        success:function(data){
+          console.table(data);
+          $('#workMediumVal').html(data.returnHTML);
+        },error:function(err){
+
+        }
+      })
+    }
+    workLargeCtg();
+    </script>
 </body>
 </html>
   

@@ -46,25 +46,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 등록자</div>
                   <input type="text" id="Job_RegID" class="col-md-2 form-control form-control-sm align-self-center" placeholder="김한결" value="김한결" readonly>
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">업무구분</div>
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary" name="Job_WorkLargeCtg">대분류</div>
-                  <select class="col-md-2 form-control form-control-sm">
-                    <option>
-                      인카금융서비스
-                    </option>
-                  </select>
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary" name="Job_WorkMediumCtg">중분류</div>
-                  <select class="col-md-2 form-control form-control-sm">
-                    <option>
-                      정보기술연구소
-                    </option>
-                    <option>
-                      교육
-                    </option>
-                    <option>
-                      제도관리
-                    </option>
-                  </select>
+                  {{-- 대분류 중분류 선택 --}}
+                  <div id="codeLargeView" class="col-md-8" style="display:inline-flex"></div>
                 </div>
                 <hr>
                 <div class="row">
@@ -131,6 +114,43 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     $(this).val($(this).val().replace(/[^0-9]/g,""));
   });    
 </script>
+<script>
+  //대분류 조회 
+  function workLargeCtg(){
+    $.ajax({
+      url:"/code/workLargeCtg",
+      method:"get",
+      data:{
+        "codeType":"B"
+      },
+      success:function(data){
+        console.table(data);
+        $('#codeLargeView').html(data.returnHTML);
+      },error:function(err){
+
+      }
+    })
+  }
+  //대분류에서 onchange 걸어서 중분류 조회
+  function workMediumCtg(){
+    $.ajax({
+      url:"/code/workMediumCtg",
+      method:"get",
+      data:{
+        //대분류 코드 
+        "codeType":"B",
+        "code":$('#workLargeVal').val()
+      },
+      success:function(data){
+        console.table(data);
+        $('#workMediumVal').html(data.returnHTML);
+      },error:function(err){
+
+      }
+    })
+  }
+  workLargeCtg();
+  </script>
     </div>
   </div>
 </body>

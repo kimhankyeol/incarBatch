@@ -36,7 +36,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <form id="jobRegisterForm">
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명(쉘 명) </div>
-                  <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_Seq.'_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg}}" readonly>
+                  <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job'.$jobDetail[0]->Job_Seq.'_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'.sh'}}" readonly>
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
                 <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" readonly>
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
@@ -79,7 +79,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">일</div>
                 <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangTime1" value="{{intval($jobDetail[0]->Job_YesangTime/1440)}}" readonly numberOnly>
                   <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangTime2" value="{{intval($jobDetail[0]->Job_YesangTime%24/60)}}" readonly numberOnly>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangTime2" value="{{intval($jobDetail[0]->Job_YesangTime%1440/60)}}" readonly numberOnly>
                   <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">분</div>
                   <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangTime3" value="{{intval($jobDetail[0]->Job_YesangTime%60)}}" readonly numberOnly>
                   
@@ -90,7 +90,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">일</div>
                   <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1" value="{{intval($jobDetail[0]->Job_YesangMaxTime/1440)}}" readonly numberOnly>
                   <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" value="{{intval($jobDetail[0]->Job_YesangMaxTime%24/60)}}" readonly numberOnly>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" value="{{intval($jobDetail[0]->Job_YesangMaxTime%1440/60)}}" readonly numberOnly>
                   <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">분</div>
                   <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" value="{{intval($jobDetail[0]->Job_YesangMaxTime%60)}}" readonly numberOnly>
                 </div>
@@ -114,8 +114,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
                           $jobParamSulArr=explode("||",$jobDetail[0]->Job_ParamSulmyungs);
                           for ($i = 0; $i < count($jobParamArr); $i++) {
-                           echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
-                           echo '<select name="Job_Params" class="col-md-4  form-control form-control-sm" >';
+                           echo '<div class="col-md-2 small align-self-center text-center">잡 파라미터</div>';
+                           echo '<select name="Job_Params" class="col-md-5  form-control form-control-sm" readonly>';
                            if($jobParamArr[$i]=="paramDate"){
                             echo '<option value="'.$jobParamArr[$i].'" selected>날짜</option></select>';
                            }else if($jobParamArr[$i]=="paramNum"){
@@ -123,7 +123,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                            }else if($jobParamArr[$i]=="paramStr"){
                             echo '<option value="'.$jobParamArr[$i].'" selected>문자</option></select>';
                            }
-                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-4  form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly>';
+                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-5  form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly>';
                           }
                         @endphp
                       </div>

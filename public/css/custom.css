@@ -1,16 +1,54 @@
 /* 모니터링 custom css  */
 .container {
-    width: 250px;
-  }
-  label {
-    color: #999;
-    display: block;
-    font-size: 14px;
-    font-family: 'Source Sans Pro', sans-serif;
-  }
-  input[type="text"] {
-    width: 100px;
-  }
-  #datatable>tbody>tr:hover {
-    background-color: #daddeb;
-  }
+  width: 250px;
+}
+label {
+  color: #999;
+  display: block;
+  font-size: 14px;
+  font-family: "Source Sans Pro", sans-serif;
+}
+input[type="text"] {
+  width: 100px;
+}
+#datatable > tbody > tr:hover {
+  background-color: #daddeb;
+}
+
+/* table */
+.table {
+  table-layout: fixed;
+}
+.table tr th {
+  background-color: #4e73df;
+  vertical-align: middle;
+  text-align: center;
+  color: #fff;
+}
+.table tr td {
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+/* pointer */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* gusung-popup */
+.gusung-popup > .container-fluid > div > div > .row > div .table-responsive {
+  height: 410px;
+  max-height: 410px;
+}
+.gusung-popup > .container-fluid > div > div > .row > div button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* textarea */
+textarea {
+  resize: none !important;
+  resize: none;
+}

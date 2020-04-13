@@ -70,3 +70,13 @@ Route::get('/popup/batchDetailInfoPopup',function(){
 Route::get('/popup/processDetailInfoPopup',function(){
     return view('/popup/popupMain');
 });
+
+
+//////////////공통 코드 컨트롤러//////////////
+Route::prefix('code')->group(function(){
+    //업무 대분류
+    Route::get('/workLargeCtg','CodeController@workLargeCtg');
+    //업무 중분류
+    Route::get('/workMediumCtg','CodeController@workMediumCtg');
+});
+

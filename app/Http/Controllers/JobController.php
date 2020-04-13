@@ -15,12 +15,32 @@ class JobController extends Controller
     }
     //잡 리스트/검색 뷰
     public function jobListView(Request $request){
+        $codeType ="B";
         $searchWord = $request->input('searchWord');
+        $workLargeCtg = $request->input('workLargeCtg');
+        $workMediumCtg = $request->input('workMediumCtg');
         if($searchWord==""){
             return view('job.jobListView');
         }else{
-            $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-            $searchParams = array( 'searchWord' => $searchWord);
+            //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
+            //대분류 , 중분류 전체일 조건
+            if($workLargeCtg=="all"&&$workMediumCtg=="all"){
+                $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
+                $searchParams = array( 'searchWord' => $searchWord);
+            }
+            //대분류 선택, 중분류 전체
+            else if($workLargeCtg!="all"&&$workMediumCtg=="all"){
+                $reCodeL=$codeType.$workLargeCtg;
+                $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->where('OnlineBatch_Job.Job_WorkLargeCtg','like',"$reCodeL%%")->paginate(10);
+                $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $reCodeL,'workMediumCtg'=>'all');
+            }
+            //대분류 선택 ,중분류 선택
+            else if($workLargeCtg!="all"&&$workMediumCtg!="all"){
+                $reCodeL=$codeType.$workLargeCtg;
+                $reCodeM=$codeType.$workLargeCtg.$workMediumCtg;
+                $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->where('OnlineBatch_Job.Job_WorkLargeCtg','like',"%$reCodeL%")->where('OnlineBatch_Job.Job_WorkMediumCtg','like',"%$reCodeM%")->paginate(10);
+                $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $reCodeL,'workMediumCtg' => $reCodeM);
+            }
             return view('job.jobListView',compact('data','searchWord','searchParams'));
         }      
     }

@@ -2,8 +2,20 @@
 const job = {
     //조회
     search: function(page){
-        var searchWord = document.getElementById('searchWord').value
-        location.href="/job/jobListView?searchWord="+searchWord+'&page='+page;
+        var searchWord = $('#searchWord').val();
+        var codeType="B";
+        var workLargeCtg = $('#workLargeVal option:selected').val();
+        var workMediumCtg = $('#workMediumVal option:selected').val();
+        // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
+        if($('#workLargeVal option:selected').val()==all&&$('#workMediumVal option:selected').val()==all){
+          location.href="/job/jobListView?searchWord="+searchWord+"&workLargeCtg="+workLargeCtg+"&workMediumCtg="+workMediumCtg
+        }else if($('#workLargeVal option:selected').val()!=all&&$('#workMediumVal option:selected').val()==all){
+          location.href="/job/jobListView?searchWord="+searchWord+"&workLargeCtg="+codeType+workLargeCtg+"&workMediumCtg="+workMediumCtg
+        }else if($('#workLargeVal option:selected').val()!=all&&$('#workMediumVal option:selected').val()!=all){
+          location.href="/job/jobListView?searchWord="+searchWord+"&workLargeCtg="+codeType+workLargeCtg+"&workMediumCtg="+codeType+workLargeCtg+workMediumCtg
+        }
+       
+      
     },
     //등록
     register:function(){
@@ -75,11 +87,8 @@ const job = {
                   },
                   success:function(resp){
                     if(resp.msg=="success"){
-                      const result = confirm('잡 초기구성을 위해 잡 상세 페이지로 이동하시겠습니까?')
-                      if(result){
-                        location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
-                      }else{
-                      }
+                      alert("잡이 등록되었습니다.");
+                      location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
                     }else if(resp.msg=="faile"){
                       alert("잡 등록 실패");
                       location.href="/job/jobListView";
@@ -104,7 +113,7 @@ const job = {
                 data:{
                     'Job_Name':Job_Name,
                     'Job_Sulmyung':Job_Sulmyung,
-                    'Job_RegId':111,
+                    'Job_RegId':1611698,
                     'Job_Params':Job_Params,
                     'Job_ParamSulmyungs':Job_ParamSulmyungs,
                     'Job_YesangTime':Job_YesangTime,
@@ -112,11 +121,8 @@ const job = {
                 },
                 success:function(resp){
                   if(resp.msg=="success"){
-                    const result = confirm('잡 초기구성을 위해 잡 상세 페이지로 이동하시겠습니까?')
-                    if(result){
+                      alert("잡이 등록되었습니다.");
                       location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
-                    }else{
-                    }
                   }else if(resp.msg=="faile"){
                     alert("잡 등록 실패");
                     location.href="/job/jobListView";
@@ -158,6 +164,9 @@ const job = {
       }else if(Job_YesangMaxTime==0){
         alert('잡 예상 최대 시간이 입력되지 않았습니다.');
         $('#Job_YesangMaxTime').focus();
+        return false;
+      }else if(parseInt(Job_YesangMaxTime)<parseInt(Job_YesangTime)){
+        alert('잡 예상 시간이 잡 최대 예상 시간보다 길 수 없습니다. ');
         return false;
       }else{
         return true;
