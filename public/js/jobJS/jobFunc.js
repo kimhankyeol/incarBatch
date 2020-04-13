@@ -79,7 +79,6 @@ const job = {
                       if(result){
                         location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
                       }else{
-                        location.href="/job/jobListView?searchword="+Job_Name+"page=1";
                       }
                     }else if(resp.msg=="faile"){
                       alert("잡 등록 실패");
@@ -117,7 +116,6 @@ const job = {
                     if(result){
                       location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
                     }else{
-                      location.href="/job/jobListView?searchword="+Job_Name+"page=1";
                     }
                   }else if(resp.msg=="faile"){
                     alert("잡 등록 실패");
@@ -195,7 +193,7 @@ const job = {
         var delBtnDiv = document.createElement('div');
         //onchange 걸어야됨
         var jobParamInputText = '<select name="Job_Params" class="col-md-3  form-control form-control-sm" > <option value="paramDate" selected>날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>'+
-        '<input type="text" name="Job_pazramSulmyungs" class="col-md-4  form-control form-control-sm" placeholder="설명">';
+        '<input type="text" name="Job_paramSulmyungs" class="col-md-4  form-control form-control-sm" placeholder="설명">';
         jobParamDiv.className="row delYN";
         jobParamDiv.style.paddingBottom="10px";
         jobParamDiv2.className="col-md-2 small align-self-center text-center"
