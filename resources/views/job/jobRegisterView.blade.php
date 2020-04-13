@@ -36,9 +36,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <form id="jobRegisterForm">
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명(쉘 명) </div>
-                  <input type="text" id="Job_Name" class="col-md-2 form-control form-control-sm align-self-center" placeholder="batch1.sh">
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
                   <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>
+                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
+                  <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="예)손해보험 수수료" >
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
                   <textarea type="text" id="Job_Sulmyung" class="col-md-4 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
                 </div>
@@ -116,9 +116,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
               </form>
-              <input type="button" class="mt-3 btn btn-info float-right" value="수정" style="margin: 0px 5px;" />
-              <input type="button" class="mt-3 btn btn-danger float-right" value="취소" style="margin: 0px 5px;" />
-              <div style="cursor: pointer" class="mt-3 btn btn-primary float-right" onclick="job.register()">등록</div>
+              <div id="jobBtnRender">
+                <div style="cursor: pointer" class="mt-3 btn btn-danger float-right" onclick="history.back()">취소</div>
+                <div style="cursor: pointer" class="mt-3 btn btn-primary float-right" onclick="job.register()">등록</div>
+              </div>
             </div>
           </div>
         </div>

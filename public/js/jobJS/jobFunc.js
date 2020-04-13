@@ -75,10 +75,15 @@ const job = {
                   },
                   success:function(resp){
                     if(resp.msg=="success"){
-                      alert("성공");
-                    }else if(resp.msg=="FileNotFound"){
-                      alert("쉘 파일을 서버에서 찾을 수 없습니다.\\n 쉘 명 확인바랍니다.");
-
+                      const result = confirm('잡 초기구성을 위해 잡 상세 페이지로 이동하시겠습니까?')
+                      if(result){
+                        location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
+                      }else{
+                        location.href="/job/jobListView?searchword="+Job_Name+"page=1";
+                      }
+                    }else if(resp.msg=="faile"){
+                      alert("잡 등록 실패");
+                      location.href="/job/jobListView";
                     }
                   },error:function(error){
                     console.error(error);
@@ -107,7 +112,17 @@ const job = {
                     'Job_YesangMaxTime':Job_YesangMaxTime
                 },
                 success:function(resp){
-                  console.table(resp);
+                  if(resp.msg=="success"){
+                    const result = confirm('잡 초기구성을 위해 잡 상세 페이지로 이동하시겠습니까?')
+                    if(result){
+                      location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
+                    }else{
+                      location.href="/job/jobListView?searchword="+Job_Name+"page=1";
+                    }
+                  }else if(resp.msg=="faile"){
+                    alert("잡 등록 실패");
+                    location.href="/job/jobListView";
+                  }
                 },error:function(error){
                   console.error(error);
                 }
@@ -168,10 +183,10 @@ const job = {
       }else if(d!=""&&h!=""&&m!=""){
         return parseInt(d)*24*60+parseInt(h)*60+parseInt(m);
       }
-      
-      
-
-      
+    },
+    //잡 구성 팝업 버튼
+    jobProcessConf:function(){
+      alert("구성");
     },
     //파라미터 추가
     addDivParam:function(){
@@ -179,8 +194,8 @@ const job = {
         var jobParamDiv2 = document.createElement('div');
         var delBtnDiv = document.createElement('div');
         //onchange 걸어야됨
-        var jobParamInputText = '  <select name="Job_Params" class="col-md-3  form-control form-control-sm" > <option value="paramDate" selected>날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>'+
-        '<input type="text" name="Job_paramSulmyungs" class="col-md-4  form-control form-control-sm" placeholder="설명">';
+        var jobParamInputText = '<select name="Job_Params" class="col-md-3  form-control form-control-sm" > <option value="paramDate" selected>날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>'+
+        '<input type="text" name="Job_pazramSulmyungs" class="col-md-4  form-control form-control-sm" placeholder="설명">';
         jobParamDiv.className="row delYN";
         jobParamDiv.style.paddingBottom="10px";
         jobParamDiv2.className="col-md-2 small align-self-center text-center"
