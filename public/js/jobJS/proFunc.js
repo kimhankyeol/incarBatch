@@ -11,56 +11,30 @@ const process = {
     },
     //등록
     register: function () {
-        const proParamSulmyungInput = document.getElementsByName(
-            "proParamSulmyungInput"
-        );
+        var programName = document.getElementById("programName").value;
+        var programExplain = document.getElementById("programExplain").value;
+        var UseDb = document.getElementById("UseDb").value;
+        console.log(programName);
+        var path = "/home/incar/incarproject/program/"+programName;
+        //var path = document.getElementById("path").value;
+        //var gojungPath = "/home/incar/incarproject/";
+        var Pro_YesangTime= process.timeCalc($('#Pro_YesangTime1').val(),$('#Pro_YesangTime2').val(),$('#Pro_YesangTime3').val());
+        var Pro_YesangMaxTime= process.timeCalc($('#Pro_YesangMaxTime1').val(),$('#Pro_YesangMaxTime2').val(),$('#Pro_YesangMaxTime3').val());
+        //파라미터 getElementsByName처리하는 부분
+        var proParamType = document.getElementsByName("proParamType");
+        const proParamSulmyungInput = document.getElementsByName("proParamSulmyungInput");
         const res1 = [];
         for (var i = 0; i < proParamSulmyungInput.length; i++) {
             res1.push(proParamSulmyungInput[i].value);
         }
-        // const t1 = document.getElementsByName("proParamSulmyungInput");
-        // for(var i =0 ; i < t1.length; i++) {
-        //     if(t1[i].value != "") {
-        //         alert("값이 없습니다.");
-        //         return false;
-        //     }
-        // }
-        //getElementsByName으로 한번에 받은 배열을 /로 나눈어 합친다.
         const Arr1 = res1.join("||");
-        if (document.getElementById("programName").value == "") {
-            alert("프로그램 명을 입력하세요");
-            return false;
-        } else if (document.getElementById("programExplain").value == "") {
-            alert("프로그램 설명을 입력하세요");
-            return false;
-        } else if (document.getElementById("UseDb").value == "") {
-            alert("프로그램 사용 DB를 입력하세요");
-            return false;
-        } else if (document.getElementById("yaeTime").value == "") {
-            alert("프로그램 예상 시간을 입력하세요");
-            return false;
-        } else if (document.getElementById("yaeMaxTime").value == "") {
-            alert("프로그램 최대 예상 시간을 입력하세요");
-            return false;
-        } else if (document.getElementById("path").value == "") {
-            alert("경로를 입력하세요");
-            return false;
-        } else if (document.getElementsByName("proParamType").length != 0) {
-            //Arr2에 /를 기준으로 split하여 저장. split 사용하면 나누어진 문자열은 각각 배열로 들어감
-            var Arr2 = Arr1.split("||");
-            for (var i = 0; i < Arr2.length; i++) {
-                if (Arr2[i] == "") {
-                    alert("파라미터 설명을 입력하세요");
-                    return false;
-                }
-            }
-        }
-        var con = confirm("프로그램을 등록하시겠습니까?");
+        //유효성 검사 함수로
+        var provalcheck = process.validation(programName,programExplain,UseDb,path,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
+        if(provalcheck){
+            var con = confirm("프로그램을 등록하시겠습니까?");
         if (con == true) {
             const paramArr1 = document.getElementsByName("proParamType");
-            const paramArr2 = document.getElementsByName(
-                "proParamSulmyungInput"
-            );
+            const paramArr2 = document.getElementsByName("proParamSulmyungInput");
             const res1 = [];
             const res2 = [];
             for (var i = 0; i < paramArr1.length; i++) {
@@ -81,24 +55,88 @@ const process = {
                 method: "post",
                 data: {
                     programName: document.getElementById("programName").value,
-                    programExplain: document.getElementById("programExplain")
-                        .value,
+                    programExplain: document.getElementById("programExplain").value,
                     retry: document.getElementById("retry").value,
                     UseDb: document.getElementById("UseDb").value,
-                    yaeTime: document.getElementById("yaeTime").value,
-                    yaeMaxTime: document.getElementById("yaeMaxTime").value,
-                    path: document.getElementById("path").value,
+                    path: path,
                     proParamType: paramStr1,
                     proParamSulmyungInput: paramStr2,
+                    Pro_YesangTime : Pro_YesangTime,
+                    Pro_YesangMaxTime : Pro_YesangMaxTime
                 },
                 success: function (data) {
-                    console.log("등록 되었습니다.");
                     console.table(data);
-                    location.href = "/process/processListView";
+                    if(data.result==1&&data.fileResult==1){
+                        location.href = "/process/processListView";
+                        console.log("등록 되었습니다.");
+                        console.table(data);
+                    }else{
+                        alert("경로에 파일이 존재하지 않습니다.");
+                    }
                 },
             });
         }
+      }
     },
+    //프로세스 유효성 검사
+    validation:function(programName,programExplain,UseDb,path,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1){
+        if (programName == "") {
+            alert("프로그램 명을 입력하세요");
+            return false;
+        } else if (programExplain == "") {
+            alert("프로그램 설명을 입력하세요");
+            return false;
+        } else if (UseDb == "") {
+            alert("프로그램 사용 DB를 입력하세요");
+            return false;
+        } else if (path == "") {
+            alert("프로그램 경로를 입력하세요");
+            return false;
+        } else if (Pro_YesangTime == "") {
+            alert("프로그램 예상 시간을 입력하세요");
+            return false;
+        } else if (Pro_YesangMaxTime == "") {
+            alert("프로그램 최대 예상 시간을 입력하세요");
+            return false;
+        } else if(parseInt(Pro_YesangMaxTime)<parseInt(Pro_YesangTime)){
+            alert('프로그램 예상 시간이 프로그램 최대 예상 시간보다 길 수 없습니다. ');
+            return false;
+        } else if(proParamType.length == 0){
+            var con = confirm("프로그램 파라미터가 없습니다. 이대로 진행하시겠습니까?");
+            if (con) {
+                return true;
+            }else{
+                return false;
+            }
+        } else if (proParamType.length != 0) {
+            //Arr2에 /를 기준으로 split하여 저장. split 사용하면 나누어진 문자열은 각각 배열로 들어감
+            var Arr2 = Arr1.split("||");
+            for (var i = 0; i < Arr2.length; i++) {
+                if (Arr2[i] == "") {
+                    alert("파라미터 설명을 입력하세요");
+                    return false;
+                }
+            }
+        }
+        return true;
+    },
+    timeCalc:function(d,h,m){
+        if(d==""&&h==""&&m==""){
+          return 0;
+        }else if(d!=""&&h==""&&m==""){
+          return parseInt(d)*24*60;
+        }else if(d==""&&h!=""&&m==""){
+          return parseInt(h)*60
+        }else if(d==""&&h==""&&m!=""){
+          return parseInt(m)
+        }else if(d!=""&&h!=""&&m==""){
+          return parseInt(d)*24*60+parseInt(h)*60;
+        }else if(d==""&&h!=""&&m!=""){
+          return parseInt(h)*60+parseInt(m);
+        }else if(d!=""&&h!=""&&m!=""){
+          return parseInt(d)*24*60+parseInt(h)*60+parseInt(m);
+        }
+      },
     //수정
     update: function () {},
     //삭제

@@ -17,6 +17,7 @@
     <script type="text/javascript" src="/js/pageMove/pageMove.js"></script>
     <script type="text/javascript" src="/js/jobJS/jobFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/proFunc.js"></script>
+    <script type="text/javascript" src="/js/jobJS/codeFunc.js"></script>
     <?php
     //index.blade 에서 선언한 ifViewRender 에서 가져온 title 변경 script 
     echo $titleInfo;

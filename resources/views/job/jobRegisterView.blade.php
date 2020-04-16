@@ -30,7 +30,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary" style="text-align: center;">잡 정보 등록</h6>
+              <h5 class="m-0 font-weight-bold text-primary">잡 정보 등록</h5>
             </div>
             <div class="card-body">
               <form id="jobRegisterForm">
@@ -38,70 +38,66 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명(쉘 명) </div>
                   <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
-                  <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="예)손해보험 수수료" >
+                  <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="예)손해보험 수수료">
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
                   <textarea type="text" id="Job_Sulmyung" class="col-md-4 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
                 </div>
                 <hr>
                 <div class="row">
+                  {{-- 업무 구분 대분류 중분류 선택 --}}
+                  <div id="codeLargeView" class="col-md-6 d-inline-flex"></div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
+                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
+                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>              
+                </div>
+                <hr>
+                <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 등록자</div>
                   <input type="text" id="Job_RegID" class="col-md-2 form-control form-control-sm align-self-center" placeholder="김한결" value="김한결" readonly>
-                  {{-- 대분류 중분류 선택 --}}
-                  <div id="codeLargeView" class="col-md-8" style="display:inline-flex"></div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">등록일</div>
+                  <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">최종 수정일</div>
+                  <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>     
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="-" readonly>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">구성 프로세스</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="-" readonly>              
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">잡 예상 시간</div>
-                  <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">일</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangTime1" placeholder="일 단위(숫자)로 입력해주세요" numberOnly>
-                  <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangTime2" placeholder="시 단위(숫자)로 입력해주세요" numberOnly>
-                  <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">분</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangTime3" placeholder="분 단위(숫자)로 입력해주세요" numberOnly>
-                  
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">잡 최대 예상 시간</div>
-                  <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">일</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1" placeholder="일 단위(숫자)로 입력해주세요" numberOnly>
-                  <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" placeholder="시 단위(숫자)로 입력해주세요" numberOnly>
-                  <div class="col-md-1 font-weight-bold text-primary" style="text-align: right">분</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" placeholder="분 단위(숫자)로 입력해주세요" numberOnly>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">등록일</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="" readonly>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">최종 수정일</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="" readonly>              
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-12 font-weight-bold text-primary">
-                    잡 파라미터 타입
+                  <div class="col-md-6 text-center">
+                      <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" value="0" numberOnly>
+                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime2" value="0" numberOnly>
+                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime3" value="0" numberOnly>
+                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
-                  <hr>
+                  <div class="col-md-6 text-center">
+                      <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1" value="0" numberOnly>
+                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" value="0" numberOnly>
+                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" value="0" numberOnly>
+                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
+                  </div>
+                </div>
+                <hr>
+                <div class="col-md-12 font-weight-bold text-primary">
+                  잡 파라미터 타입
+                </div>
+                <hr>
+                <div class="row">
                   {{-- 잡변수가 추가되는 부분 --}}
-                  <div class="col-md-12" id="jobParams">
-                  </div>
-                  <div style="width:100%; text-align: center">
-                    <input type="button" class="mt-3 btn btn-info " value="잡 변수 추가 +" style="margin: 0px 5px;"  onclick="job.addDivParam()"/>
+                  <div class="col-md-12" id="jobParams"></div>
+                  <div class="col-md-12 text-center">
+                    <input type="button" class="mt-3 btn btn-info " value="잡 변수 추가 +"  onclick="job.addDivParam()"/>
                   </div>
                 </div>
                 <hr>
               </form>
-              <div id="jobBtnRender">
-                <div style="cursor: pointer" class="mt-3 btn btn-danger float-right" onclick="history.back()">취소</div>
-                <div style="cursor: pointer" class="mt-3 btn btn-primary float-right" onclick="job.register()">등록</div>
+              <div class="row justify-content-end">
+                <button type="button" class="mt-3 mr-2 btn btn-primary" onclick="job.register()">등록</button>
+                <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</b>
               </div>
             </div>
           </div>
@@ -115,43 +111,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   });    
 </script>
 <script>
-  //대분류 조회 
-  function workLargeCtg(){
-    $.ajax({
-      url:"/code/workLargeCtg",
-      method:"get",
-      data:{
-        "codeType":"B"
-      },
-      success:function(data){
-        console.table(data);
-        $('#codeLargeView').html(data.returnHTML);
-      },error:function(err){
-
-      }
-    })
-  }
-  //대분류에서 onchange 걸어서 중분류 조회
-  function workMediumCtg(){
-    $.ajax({
-      url:"/code/workMediumCtg",
-      method:"get",
-      data:{
-        //대분류 코드 
-        "codeType":"B",
-        "code":$('#workLargeVal').val()
-      },
-      success:function(data){
-        console.table(data);
-        $('#workMediumVal').html(data.returnHTML);
-      },error:function(err){
-
-      }
-    })
-  }
-  workLargeCtg();
-  </script>
+  // jobJS/codeFunc 대분류 조회
+   code.workLargeCtg();
+</script>
     </div>
   </div>
 </body>
 </html>
+

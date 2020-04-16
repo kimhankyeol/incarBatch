@@ -25,43 +25,40 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       <div id="content">
         <!-- End of Topbar -->
         <!-- Begin Page Content -->
-        <div class="container-fluid" style="height: 100%">
+        <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
-          <div class="card shadow mb-4" style="height: 100%">
+          <h4 class="h3 my-4 font-weight-bold text-primary">잡</h4>
+          <div class="card shadow mb-4">
             <div class="d-flex justify-content-end card-header py-3">
-              <h5 class="p-2 font-weight-bold text-primary">잡</h5>
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group align-items-center" style="display:inline-flex">
-                {{-- 대분류 중분류 선택 --}}
-                <div id="codeLargeView" style="display:inline-flex"></div>
-                      {{-- 검색 조건 --}}
-                      <select class="form-control bg-light small" style="border: 1px solid #4e73df !important;">
-                      <option>
-                        잡명
-                      </option>
-                    </select>
-                      {{-- 검색 단어가 있을떄 없을때 구분  --}}
-                      @if(!isset($searchWord))
-                        <input id="searchWord" type="text" class="form-control bg-light border-0 small" placeholder="조회" aria-label="Search" style="border: 1px solid #4e73df !important;">
-                      @elseif(isset($searchWord))
-                        <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-0 small" aria-label="Search" style="border: 1px solid #4e73df !important;">
-                      @endif
-                    
-                      <div class="input-group-append">
-                        <div class="btn btn-primary" onclick="job.search('1')">
-                          <i class="fas fa-search fa-sm"></i>
-                        </div>
-                      </div>
-                      <div class=" text-center align-self-center font-weight-bold text-primary mx-2">
-                        <div class="btn btn-primary" onclick="pageMove.job.list('jobRegisterView')" style="cursor:pointer">등록</div>
-                      </div>
+                <div class="input-group align-items-center">
+                  {{-- 대분류 중분류 선택 --}}
+                  <div id="codeLargeView"></div>
+                  {{-- 검색 조건 --}}
+                  <select class="form-control bg-light border-primary small">
+                    <option>
+                      잡명
+                    </option>
+                  </select>
+                  {{-- 검색 단어가 있을떄 없을때 구분  --}}
+                  @if(!isset($searchWord))
+                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
+                  @elseif(isset($searchWord))
+                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                  @endif
+                  <div class="input-group-append">
+                    <div class="btn btn-primary" onclick="job.search('1')">
+                      <i class="fas fa-search fa-sm"></i>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary mx-2" onclick="pageMove.job.list('jobRegisterView')">등록</button>
                 </div>
               </div>
             </div>
             <div class="card-body py-3">
               <div class="table-responsive">
-                <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
+                <table id="datatable" class="table table-bordered" cellspacing="0">
                   <colgroup>
                     <col width="80px" />
                     <col width="150px" />
@@ -73,13 +70,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </colgroup>
                     <thead>
                       <tr>
-                        <th style="background-color:#47579c; color : #fff">잡 ID</th>
-                        <th style="background-color:#47579c; color : #fff">잡 명</th>
-                        <th style="background-color:#47579c; color : #fff">업무구분(대분류)</th>
-                        <th style="background-color:#47579c; color : #fff">업무구분(중분류)</th>
-                        <th style="background-color:#47579c; color : #fff">잡 설명</th>
-                        <th style="background-color:#47579c; color : #fff">잡 등록자</th>
-                        <th style="background-color:#47579c; color : #fff">잡 등록일</th>
+                        <th>잡 ID</th>
+                        <th>잡 명</th>
+                        <th>업무구분<br>(대분류)</th>
+                        <th>업무구분<br>(중분류)</th>
+                        <th>잡 설명</th>
+                        <th>잡 등록자</th>
+                        <th>잡 등록일</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -90,8 +87,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </tbody>
                 </table>
                 {{-- 페이징 이동 경로 --}}
-                    @if(isset($data))
-                    {{$data->setPath('/job/jobListView')->appends(request()->except($searchParams))->links()}}
+                    @if(isset($paginator))
+                    {{$paginator->setPath('/job/jobListView')->appends(request()->except($searchParams))->links()}}
                     @endIf
               </div>
             </div>
@@ -102,43 +99,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     {{--content 끝--}}
     </div>
     <script>
-    //대분류 조회 
-    function workLargeCtg(){
-      $.ajax({
-        url:"/code/workLargeCtg",
-        method:"get",
-        data:{
-          "codeType":"B"
-        },
-        success:function(data){
-          console.table(data);
-          $('#codeLargeView').html(data.returnHTML);
-        },error:function(err){
-
-        }
-      })
-    }
-    //대분류에서 onchange 걸어서 중분류 조회
-    function workMediumCtg(){
-      $.ajax({
-        url:"/code/workMediumCtg",
-        method:"get",
-        data:{
-          //대분류 코드 
-          "codeType":"B",
-          "code":$('#workLargeVal').val()
-        },
-        success:function(data){
-          console.table(data);
-          $('#workMediumVal').html(data.returnHTML);
-        },error:function(err){
-
-        }
-      })
-    }
-    workLargeCtg();
-    </script>
+      // jobJS/codeFunc 대분류 조회
+      code.workLargeCtg();
+   </script>
 </body>
 </html>
-  
-  

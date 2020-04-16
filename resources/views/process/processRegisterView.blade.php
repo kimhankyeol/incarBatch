@@ -13,7 +13,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
-<body id="page-top" onload="common.timeSet()">
+<body id="page-top">
   <div id="wrapper">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
@@ -39,29 +39,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         </div>
                         <hr>
                         <div class="row align-items-center">
-                            <!-- <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 등록자</div>
-                            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="김한결" readonly> -->
-                            <span class="col-md-1 font-weight-bold text-primary">업무구분</span>
-                            <span class="col-md-1 text-center align-self-center font-weight-bold text-primary">대분류</span>
-                            <select class="col-md-2 form-control form-control-sm">
-                                <option>
-                                    인카금융서비스
-                                </option>
-                            </select>
-                            <span class="col-md-1 text-center align-self-center font-weight-bold text-primary">중분류</span>
-                            <select class="col-md-2 form-control form-control-sm">
-                                <option>
-                                    정보기술연구소
-                                </option>
-                                <option>
-                                    교육
-                                </option>
-                                <option>
-                                    제도관리
-                                </option>
-                            </select>
+                             {{-- 업무 구분 대분류 중분류 선택 --}}
+                            <div id="codeLargeView" class="col-md-7 d-inline-flex"></div>
                             <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                <input id="customCheck" type="checkbox" class="custom-control-input" >
                                 <label class="custom-control-label font-weight-bold text-primary" for="customCheck">재작업</label>
                             </div>
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
@@ -72,27 +53,27 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <input id="UseDb" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="사용 DB">           
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
-                            <input id="UseDb" type="text" class="col-md-6 form-control form-control-sm align-self-center" placeholder="경로">           
+                            <input id="path" type="text" class="col-md-6 form-control form-control-sm align-self-center" placeholder="/home/incar/incarproject/program/" readonly>           
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-6 text-center">
                                 <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" placeholder="일" numberOnly>
+                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime1" value="0" numberOnly>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" placeholder="시간" numberOnly>
+                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime2" value="0" numberOnly>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
-                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" placeholder="분" numberOnly>
+                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime3" value="0" numberOnly>
                             </div>
                             <div class="col-md-6 text-center">
                                 <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" placeholder="일" numberOnly>
+                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime1" value="0" numberOnly>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" placeholder="시간" numberOnly>
+                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime2" value="0" numberOnly>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
-                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" placeholder="분" numberOnly>
+                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="0" numberOnly>
                             </div>
                         </div>
                         <hr>
@@ -101,7 +82,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록자</div>
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly>
                                 <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">등록자IP</div>
-                                <input type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="192.168.168.168" readonly>
+                                <input id="P_RegIp" type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="" readonly>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록일</div>
                                 <input type="text" class="d-inline-block col-md-3 form-control form-control-sm align-self-center" placeholder="2020-02-02" readonly>              
                             </div>
@@ -143,3 +124,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     </div>
   </body>
   </html>
+<script>
+   // jobJS/codeFunc 대분류 조회
+    code.workLargeCtg();
+</script>
