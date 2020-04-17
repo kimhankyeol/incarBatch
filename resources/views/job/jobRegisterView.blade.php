@@ -64,20 +64,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="row">
                   <div class="col-md-6 text-center">
                       <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" value="0" numberOnly>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1"  numberOnly>
                       <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime2" value="0" numberOnly>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime2"  numberOnly>
                       <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime3" value="0" numberOnly>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime3"  numberOnly>
                       <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
                   <div class="col-md-6 text-center">
                       <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1" value="0" numberOnly>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1"  numberOnly>
                       <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" value="0" numberOnly>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2"  numberOnly>
                       <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" value="0" numberOnly>
+                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" numberOnly>
                       <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
                 </div>

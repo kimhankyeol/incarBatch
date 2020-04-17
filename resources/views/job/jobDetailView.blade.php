@@ -36,7 +36,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <form id="jobRegisterForm">
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명(쉘 명) </div>
-                  <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job'.$jobDetail[0]->Job_Seq.'_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.date("YmdHis",strtotime($jobDetail[0]->Job_RegDate)).'.sh'}}" readonly>
+                  <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_Seq.'_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.date("YmdHis",strtotime($jobDetail[0]->Job_RegDate))}}" readonly>
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
                 <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" readonly>
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
@@ -47,13 +47,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div id="codeLargeView" class="col-md-6 d-inline-flex">
                     <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">업무구분</div>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary" >대분류</div>
-                    <select id="workLargeVal" class="col-md-2 form-control form-control-sm" readonly>
-                      <option value="{{$jobDetail[0]->Job_WorkLargeCtg}}" selected>{{$jobDetail[0]->Job_WorkLargeName}}</option>
-                    </select>
+                    <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkLargeName}}"/>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">중분류</div>
-                    <select id="workMediumVal" class="col-md-2 form-control form-control-sm" readonly>
-                      <option value="{{$jobDetail[0]->Job_WorkMediumCtg}}" selected>{{$jobDetail[0]->Job_WorkMediumName}}</option>
-                    </select>
+                    <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkMediumName}}"/>
                   </div>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
                   <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
@@ -122,10 +118,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               </form>
               <div class="row justify-content-end">
                 <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</b>
-                @if($jobDetail[0]->Job_RegId=="1611698")
                 <div class="mt-3 mr-2 btn btn-primary" onclick="">수정 </div>
                 <div class="mt-3 mr-2 btn btn-success" onclick="job.jobProcessConf()">구성</div>
-                @endIf
               </div>
             </div>
           </div>

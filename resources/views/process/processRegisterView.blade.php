@@ -30,9 +30,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-                            <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="프로그램 ID" readonly>
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
+                            <input id ="id1" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="/home/incar/incarproject" readonly>
+                            <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="경로">
+                            <input id ="id3" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
                             <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="프로그램 명">
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
                             <textarea id = "programExplain" type="text" class="col-md-3 form-control form-control-sm" placeholder="설명"></textarea>
@@ -41,19 +43,17 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
                             <div id="codeLargeView" class="col-md-7 d-inline-flex"></div>
-                            <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                <input id="customCheck" type="checkbox" class="custom-control-input" >
-                                <label class="custom-control-label font-weight-bold text-primary" for="customCheck">재작업</label>
-                            </div>
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
-                            <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="" readonly>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <input id="UseDb" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="사용 DB">           
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
-                            <input id="path" type="text" class="col-md-6 form-control form-control-sm align-self-center" placeholder="/home/incar/incarproject/program/" readonly>           
+                            <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                                <input id="retry" type="checkbox" class="custom-control-input" value="0">
+                                <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
+                            </div>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
+                            <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="" readonly>
                         </div>
                         <hr>
                         <div class="row">
@@ -80,7 +80,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록자</div>
-                                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly>
+                                <input id="P_RegId" type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="이수연" value="이수연" readonly>
                                 <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">등록자IP</div>
                                 <input id="P_RegIp" type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="" readonly>
                                 <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록일</div>

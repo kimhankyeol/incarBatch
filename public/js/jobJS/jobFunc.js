@@ -14,6 +14,25 @@ const job = {
       var Job_Name=$('#Job_Name').val();
       var Job_Sulmyung=$('#Job_Sulmyung').val();     
       //시간계산 분단위 ()
+      if($('#Job_YesangTime1').val()==""){
+        $('#Job_YesangTime1').val(0);
+      }
+      if($('#Job_YesangTime2').val()==""){
+        $('#Job_YesangTime2').val(0);
+      }
+      if($('#Job_YesangTime3').val()==""){
+        $('#Job_YesangTime3').val(0);
+      }
+      if($('#Job_YesangMaxTime1').val()==""){
+        $('#Job_YesangMaxTime1').val(0);
+      }
+      if($('#Job_YesangMaxTime2').val()==""){
+        $('#Job_YesangMaxTime2').val(0);
+      }
+      if($('#Job_YesangMaxTime3').val()==""){
+        $('#Job_YesangMaxTime3').val(0);
+      }
+
       var Job_YesangTime= job.timeCalc($('#Job_YesangTime1').val(),$('#Job_YesangTime2').val(),$('#Job_YesangTime3').val());
       var Job_YesangMaxTime=job.timeCalc($('#Job_YesangMaxTime1').val(),$('#Job_YesangMaxTime2').val(),$('#Job_YesangMaxTime3').val());
       var Job_Params="";
@@ -56,6 +75,7 @@ const job = {
                   jobParamIndex++;
               }
             });
+            console.log(jobParamIndex);
             //변수 설명에 빈값이 있는지 없는지
             if(jobParamIndex==0){
                 //입력된 잡파라미터의 타입, 설명을 1||2||3 이런변수 형태로 바꾸기위해
@@ -97,7 +117,6 @@ const job = {
               alert("파라미터 설명이 입력되지 않았습니다.")
               return false;
             }
-              
           }else{
             //잡등록 x
             console.log('잡 파라미터는 있는데 confirm에서 아니오/취소 누른경우');
@@ -139,6 +158,8 @@ const job = {
             return false;
           }
         }
+      }else{
+        return false;
       }
       
   },
@@ -179,6 +200,15 @@ const job = {
       return false;
     }else{
       return true;
+    }
+  },
+  ifNullChg:function(param){
+    if(param=="" || param==null || param==undefined || param=="undefined"){
+      console.log("바뀐다.")
+      param=0;
+      return param;
+    }else{
+      return param;
     }
   },
   //분 계산 변수 ( 일 , 시 , 분) 경우는 7가지 

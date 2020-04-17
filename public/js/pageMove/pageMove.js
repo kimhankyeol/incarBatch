@@ -6,6 +6,9 @@ const pageMove={
         },
         detail:function(urlName,param1){
             location.href="/job/"+urlName+"?Job_Seq="+param1;
+        },
+        register:function(urlName){
+            location.href="/job/"+urlName;
         }
     },
     process:{
@@ -21,5 +24,17 @@ const pageMove={
      //모니터링
     monitoring:{},
     //잡 히스토리
-    jobHistory:{}
+    jobHistory:{},
+    //관리자
+    admin:{
+        commonCodeManageDetail:function(Codetype,WorkLarge,WorkMedium){
+            location.href="/admin/commonCodeDetailView?Codetype="+Codetype+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
+        },
+        register:function(urlName){
+            location.href="/admin/"+urlName;
+        },
+        detail:function(urlName){
+            location.href="/admin/"+urlName;
+        }
+    }
 }

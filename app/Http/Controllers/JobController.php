@@ -19,9 +19,9 @@ class JobController extends Controller
         $workLargeCtg = $request->input('workLargeCtg');
         $workMediumCtg = $request->input('workMediumCtg');
 
-        if($searchWord==""){
-            return view('job.jobListView');
-        }else{
+        // if($searchWord==""){
+        //     return view('job.jobListView');
+        // }else{ }    
             //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
             
                 // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
@@ -48,7 +48,7 @@ class JobController extends Controller
                 $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg' => $workMediumCtg);
             }
             return view('job.jobListView',compact('data','searchWord','searchParams','paginator'));
-        }      
+         
     }
     //잡 상세 뷰
     public function jobDetailView(Request $request){
@@ -80,6 +80,7 @@ class JobController extends Controller
 
      
         //insert 된 last seq 를 조회 해야됨
+        //등록일 CURRENT_TIMESTAMP  db에서 지정
         $last_job_seq = DB::table('OnlineBatch_Job')->insertGetId(
             ['Job_Name' => $Job_Name,
             'Job_Sulmyung'=> $Job_Sulmyung,
@@ -92,7 +93,8 @@ class JobController extends Controller
             'Job_DeleteYN'=>$Job_DeleteYN,
             'Job_GusungVersion'=>$Job_GusungVersion,
             'Job_WorkLargeCtg'=>$Job_WorkLargeCtg,
-            'Job_WorkMediumCtg'=>$Job_WorkMediumCtg]
+            'Job_WorkMediumCtg'=>$Job_WorkMediumCtg
+            ]
         );
         //등록이 되었으면
         if($last_job_seq!=""){

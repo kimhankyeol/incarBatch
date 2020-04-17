@@ -1,23 +1,28 @@
-//프로세스
 const process = {
     //조회
     search: function (page) {
-        var searchWord = document.getElementById("searchWord").value;
-        location.href =
-            "/process/processListView?searchWord=" +
-            searchWord +
-            "&page=" +
-            page;
+        var searchWord = $('#searchWord').val();
+        var workLargeCtg = $('#workLargeVal option:selected').val();
+        var workMediumCtg = $('#workMediumVal option:selected').val();
+      // 대분류 , 중분류 전체 선택일때 아닐떄 경우의 수
+      location.href="/process/processListView?searchWord="+searchWord+"&workLargeCtg="+workLargeCtg+"&workMediumCtg="+workMediumCtg
     },
     //등록
     register: function () {
+        if($("#retry").is(":checked")){
+            $("#retry").val(1);
+        }else{
+        }
+        var id1 = document.getElementById("id1").value; //filepath 고정
+        var id2 = document.getElementById("id2").value; //filepath 상대
+        var id3 = document.getElementById("id3").value; //.php
         var programName = document.getElementById("programName").value;
         var programExplain = document.getElementById("programExplain").value;
+        var workLargeCtg = $('#workLargeVal option:selected').val();
+        var workMediumCtg = $('#workMediumVal option:selected').val();
         var UseDb = document.getElementById("UseDb").value;
-        console.log(programName);
-        var path = "/home/incar/incarproject/program/"+programName;
-        //var path = document.getElementById("path").value;
-        //var gojungPath = "/home/incar/incarproject/";
+        var retry = $("#retry").val();
+        var P_RegId=1611699;
         var Pro_YesangTime= process.timeCalc($('#Pro_YesangTime1').val(),$('#Pro_YesangTime2').val(),$('#Pro_YesangTime3').val());
         var Pro_YesangMaxTime= process.timeCalc($('#Pro_YesangMaxTime1').val(),$('#Pro_YesangMaxTime2').val(),$('#Pro_YesangMaxTime3').val());
         //파라미터 getElementsByName처리하는 부분
@@ -29,7 +34,7 @@ const process = {
         }
         const Arr1 = res1.join("||");
         //유효성 검사 함수로
-        var provalcheck = process.validation(programName,programExplain,UseDb,path,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
+        var provalcheck = process.validation(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,id3,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
         if(provalcheck){
             var con = confirm("프로그램을 등록하시겠습니까?");
         if (con == true) {
@@ -54,11 +59,16 @@ const process = {
                 url: "/process/processRegister",
                 method: "post",
                 data: {
-                    programName: document.getElementById("programName").value,
-                    programExplain: document.getElementById("programExplain").value,
-                    retry: document.getElementById("retry").value,
-                    UseDb: document.getElementById("UseDb").value,
-                    path: path,
+                    id1 : id1,
+                    id2 : id2,
+                    id3 : id3,
+                    P_RegId : P_RegId,
+                    programName: programName,
+                    programExplain: programExplain,
+                    workMediumCtg:workMediumCtg,
+                    workLargeCtg:workLargeCtg,
+                    retry: retry,
+                    UseDb: UseDb,
                     proParamType: paramStr1,
                     proParamSulmyungInput: paramStr2,
                     Pro_YesangTime : Pro_YesangTime,
@@ -66,12 +76,15 @@ const process = {
                 },
                 success: function (data) {
                     console.table(data);
-                    if(data.result==1&&data.fileResult==1){
-                        location.href = "/process/processListView";
+                    if(data.fileResult1==true){
+                        alert("프로그램이 등록되었습니다.");
                         console.log("등록 되었습니다.");
                         console.table(data);
-                    }else{
-                        alert("경로에 파일이 존재하지 않습니다.");
+                        location.href = "/process/processDetailView?P_Seq="+data.last_p_seq;
+                    }else if(data.fileResult2==true){
+                        alert("해당 경로에 이미 같은 이름의 파일이 존재합니다.");
+                    }else if(data.fileResult1==false){
+                        alert("경로가 존재하지 않습니다.");
                     }
                 },
             });
@@ -79,18 +92,33 @@ const process = {
       }
     },
     //프로세스 유효성 검사
-    validation:function(programName,programExplain,UseDb,path,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1){
-        if (programName == "") {
+    validation:function(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,id3,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1){
+        // alert(id2.charAt(0));
+        // alert(id3.charAt(0));
+        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        if(id2 != "" && regExp.test(id2)==true){
+            alert("특수 문자를 제거하세요");
+            return false;
+        }else if(id3 != "" && regExp.test(id3)==true){
+            alert("특수 문자를 제거하세요");
+            return false;
+        }else if(id3 == ""){
+            alert("파일명을 입력하세요");
+            return false;
+        }else if(programName == "") {
             alert("프로그램 명을 입력하세요");
             return false;
         } else if (programExplain == "") {
             alert("프로그램 설명을 입력하세요");
             return false;
-        } else if (UseDb == "") {
-            alert("프로그램 사용 DB를 입력하세요");
+        } else if(workLargeCtg=="all"){
+            alert('업무 대분류를 선택해주세요');
             return false;
-        } else if (path == "") {
-            alert("프로그램 경로를 입력하세요");
+        }else if(workMediumCtg=="all"){
+            alert('업무 중분류를 선택해주세요');
+            return false;
+        }else if (UseDb == "") {
+            alert("프로그램 사용 DB를 입력하세요");
             return false;
         } else if (Pro_YesangTime == "") {
             alert("프로그램 예상 시간을 입력하세요");
@@ -138,7 +166,10 @@ const process = {
         }
       },
     //수정
-    update: function () {},
+    update: function () {
+        var p_seq = document.getElementById("p_seq").value;
+        location.href="/process/processEditView"+"?P_Seq="+p_seq;
+    },
     //삭제
     delete: function () {},
     //파라미터 추가

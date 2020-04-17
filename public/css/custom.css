@@ -1,20 +1,3 @@
-/* 모니터링 custom css  */
-.container {
-  width: 250px;
-}
-label {
-  color: #999;
-  display: block;
-  font-size: 14px;
-  font-family: "Source Sans Pro", sans-serif;
-}
-input[type="text"] {
-  width: 100px;
-}
-#datatable > tbody > tr:hover {
-  background-color: #daddeb;
-}
-
 /* table */
 .table {
   table-layout: fixed;
@@ -37,6 +20,15 @@ input[type="text"] {
   cursor: pointer;
 }
 
+/* popup */
+.info-popup {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* gusung-popup */
 .gusung-popup > .container-fluid > div > div > .row > div .table-responsive {
   height: 410px;
@@ -51,4 +43,60 @@ input[type="text"] {
 textarea {
   resize: none !important;
   resize: none;
+}
+
+/* label */
+
+.custom-control-label {
+  line-height: 1.5rem;
+}
+
+/* fieldset */
+
+.cistp-fieldset {
+  width: 100%;
+  border: 1px solid #ededed;
+  padding: 0.35rem;
+}
+.cistp-fieldset legend {
+  color: #4e73df !important;
+  font-weight: bold;
+  width: auto;
+  font-size: initial;
+  padding: 0px;
+}
+
+/* gusung */
+
+#gusungList > .list-group-item {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+#gusungList > .list-group-item:hover {
+  border: 2px solid #839de8;
+  z-index: 999;
+}
+#gusungList > .list-group-item:active {
+  border: 2px solid #839de8;
+  z-index: 999;
+  background-color: aliceblue;
+}
+
+/* 로그인 */
+.bg-login-image {
+  background: url(/img/logo.png) center center !important;
+  background-size: 70% !important;
+  background-repeat: no-repeat !important;
+  background-position: center;
+}
+
+/* 실행 */
+.right-line {
+  border-right: 2px solid #f1f1f1;
+}
+.d-inline-table {
+  display: inline-table !important;
 }
