@@ -44,7 +44,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  <div id="codeLargeView" class="col-md-6 d-inline-flex">
+                  <div id="codeLargeView" class="outher-code">
                     <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">업무구분</div>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary" >대분류</div>
                     <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkLargeName}}"/>
