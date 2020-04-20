@@ -55,7 +55,11 @@ class ProcessController extends Controller
         $id1 = $request->input('id1');
         $id2 = $request->input('id2');
         $id3 = $request->input('id3');
-        $P_FilePath = $id1."/".$id2;
+        if($id2==""){
+            $P_FilePath = $id1;
+        }else if($id2!=""){
+            $P_FilePath = $id1."/".$id2;
+        }
         $programName = $request->input('programName');
         $programExplain = $request->input('programExplain');
         $workLargeCtg = $request->input('workLargeCtg');
