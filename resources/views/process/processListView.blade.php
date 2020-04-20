@@ -35,7 +35,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group align-items-center">
                   {{-- 대분류 중분류 선택 --}}
-                  <div id="codeLargeView"></div>
+                  <div id="codeLargeView" class="list-code"></div>
                   <select class="form-control bg-light border-primary small">
                     <option>
                       프로그램 명
@@ -64,13 +64,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="table-responsive">
                   <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
                     <colgroup>
-                      <col width="110px" />
+                      <col width="190px" />
                       <col width="150px" />
-                      <col width="120px" />
-                      <col width="120px" />
+                      <col width="100px" />
+                      <col width="100px" />
                       <col width="310px" />
                       <col width="100px" />
-                      <col width="190px" />
+                      <col width="100px" />
                     </colgroup>
                     <thead>
                       <tr>
