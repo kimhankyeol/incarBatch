@@ -100,3 +100,42 @@ textarea {
 .d-inline-table {
   display: inline-table !important;
 }
+
+/* 업무구분 */
+.list-code {
+  display: inline-flex !important;
+}
+
+.outher-code {
+  width: 50%;
+  display: inline-flex !important;
+}
+
+.outher-code > div{
+  width: 100%;
+  margin: 0px !important;
+}
+
+/* 예상시간 */
+.limit-time-text {
+  display: inline-block;
+  text-align: center;
+  align-self: center;
+  width: 12%;
+  color: #4e73df!important;
+  font-weight: 700!important;
+  font-size: small;
+}
+.limit-time-input {
+  display: inline-block;
+  font-size: small;
+}
+.limit-time-input:nth-child(2) {
+  width: 17% !important;
+}
+.limit-time-input:nth-child(4) {
+  width: 25% !important;
+}
+.limit-time-input:nth-child(6) {
+  width: 16% !important;
+}

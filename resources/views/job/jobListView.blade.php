@@ -34,7 +34,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group align-items-center">
                   {{-- 대분류 중분류 선택 --}}
-                  <div id="codeLargeView"></div>
+                  <div id="codeLargeView" class="list-code"></div>
                   {{-- 검색 조건 --}}
                   <select class="form-control bg-light border-primary small">
                     <option>

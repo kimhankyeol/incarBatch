@@ -98,20 +98,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <hr>
             <div class="row">
               <div class="col-md-6">
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록자</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly>
-                  <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">등록자IP</div>
-                  <input type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="192.168.168.168" readonly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록일</div>
-                  <input type="text" class="d-inline-block col-md-3 form-control form-control-sm align-self-center" placeholder="2020-02-02" readonly>              
+                  <div class="limit-time-text">등록자</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input" placeholder="11111111" readonly>
+                  <div class="limit-time-text">등록자IP</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input" placeholder="192.168.168.168" readonly>
+                  <div class="limit-time-text">등록일</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input" placeholder="2020-02-02" readonly>              
               </div>
               <div class="col-md-6">
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">수정자</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly>
-                  <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">수정자IP</div>
-                  <input type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="192.168.168.168" readonly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">수정일</div>
-                  <input type="text" class="d-inline-block col-md-3 form-control form-control-sm align-self-center" placeholder="2020-02-02" readonly>              
+                  <div class="limit-time-text">수정자</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input" placeholder="11111111" readonly>
+                  <div class="limit-time-text">수정자IP</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input" placeholder="192.168.168.168" readonly>
+                  <div class="limit-time-text">수정일</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input" placeholder="2020-02-02" readonly>              
               </div>
             </div>
             <hr>

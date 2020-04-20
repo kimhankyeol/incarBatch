@@ -7,9 +7,15 @@
         {{-- 프로그램 ID, 설명 --}}
         <div class="row mb-3">
             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-            <input type="text" class="col-md-2 text-center align-self-center form-control form-control-sm" value="" readonly>
-            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
-            <textarea class="col-md-6 form-control form-control-sm small" readonly></textarea>
+            <input id ="id1" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="/home/incar/incarproject" readonly>
+            <input id ="id2" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="경로">
+            <input id ="id3" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="파일명">
+            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
+            <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="프로그램 명">
+            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">설명</div>
+            <input id = "programExplain" type="text" class="col-md-6 form-control form-control-sm mt-2" placeholder="설명">
+            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">프로그램 상태</div>
+            <input type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" placeholder="" readonly>
         </div>
         {{-- 업무구분, 재작업 유무, 상태 --}}
         <div class="row mb-3">
@@ -18,19 +24,12 @@
             <input type="text" class="col-md-1 text-center align-self-center form-control form-control-sm" value="대분류" readonly>
             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">중분류</div>
             <input type="text" class="col-md-1 text-center align-self-center form-control form-control-sm" value="중분류" readonly>
+            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
+            <input type="text" class="col-md-2 text-center align-self-center form-control form-control-sm" value="사용 DB" readonly>
             <div class="col-md-1 mx-4 custom-control custom-checkbox small align-self-center">
                 <input type="checkbox" class="custom-control-input" id="customCheck">
                 <label class="custom-control-label font-weight-bold text-primary" for="customCheck">재작업</label>
             </div>
-            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
-            <input type="text" class="col-md-2 text-center align-self-center form-control form-control-sm" value="중분류" readonly>
-        </div>
-        {{-- 사용DB, 경로 --}}
-        <div class="row mb-3">
-            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
-            <input type="text" class="col-md-2 text-center align-self-center form-control form-control-sm" value="사용 DB" readonly>
-            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
-            <input type="text" class="col-md-6 text-center align-self-center form-control form-control-sm" value="PATH" readonly>
         </div>
         {{-- 예상시간, 최대 예상시간 --}}
         <div class="row mb-3">
@@ -60,20 +59,20 @@
         {{-- 등록자, 수정자 정보 --}}
         <div class="row mb-3">
             <div class="col-md-6">
-                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록자</div>
-                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly="">
-                <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">등록자IP</div>
-                <input type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="192.168.168.168" readonly="">
-                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록일</div>
-                <input type="text" class="d-inline-block col-md-3 form-control form-control-sm align-self-center" placeholder="2020-02-02" readonly="">              
+                <div class="limit-time-text">등록자</div>
+                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="11111111" readonly="">
+                <div class="limit-time-text">등록자IP</div>
+                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="192.168.168.168" readonly="">
+                <div class="limit-time-text">등록일</div>
+                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="2020-02-02" readonly="">              
             </div>
             <div class="col-md-6">
-                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">수정자</div>
-                <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly="">
-                <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">수정자IP</div>
-                <input type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="192.168.168.168" readonly="">
-                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">수정일</div>
-                <input type="text" class="d-inline-block col-md-3 form-control form-control-sm align-self-center" placeholder="2020-02-02" readonly="">              
+                <div class="limit-time-text">수정자</div>
+                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="11111111" readonly="">
+                <div class="limit-time-text">수정자IP</div>
+                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="192.168.168.168" readonly="">
+                <div class="limit-time-text">수정일</div>
+                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="2020-02-02" readonly="">              
             </div>
         </div>
         <hr>
