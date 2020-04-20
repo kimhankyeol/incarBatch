@@ -46,7 +46,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                              {{-- 업무 구분 대분류 중분류 선택 --}}
                             <div id="codeLargeView" class="outher-code"></div>
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
-                            <input id="UseDb" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="사용 DB">           
+                            <input id="UseDb" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="사용 DB">
                             <div class="col-md-1 mx-2 custom-control custom-checkbox small">
                                 <input id="retry" type="checkbox" class="custom-control-input" value="0">
                                 <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>

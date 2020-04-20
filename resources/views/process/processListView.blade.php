@@ -64,13 +64,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="table-responsive">
                   <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
                     <colgroup>
-                      <col width="110px" />
+                      <col width="190px" />
                       <col width="150px" />
-                      <col width="120px" />
-                      <col width="120px" />
+                      <col width="100px" />
+                      <col width="100px" />
                       <col width="310px" />
                       <col width="100px" />
-                      <col width="190px" />
+                      <col width="100px" />
                     </colgroup>
                     <thead>
                       <tr>

@@ -6,6 +6,9 @@
   background-color: #4e73df;
   vertical-align: middle;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #fff;
 }
 .table tr td {
@@ -137,5 +140,5 @@ textarea {
   width: 25% !important;
 }
 .limit-time-input:nth-child(6) {
-  width: 16% !important;
+  width: 17% !important;
 }
