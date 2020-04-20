@@ -93,7 +93,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </div>
                   <hr>
                   {{-- 잡변수가 추가되는 부분 --}}
-                    <div class="col-md-12 text-center" id="jobParams">
+                    <div class="col-md-12" id="jobParams">
                       <div class="d-inline-flex w-50 delYN mb-2">
                         @php
                           $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
@@ -117,9 +117,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
               </form>
               <div class="row justify-content-end">
-                <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</b>
+                <div class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</div>
                 <div class="mt-3 mr-2 btn btn-primary" onclick="">수정 </div>
-                <div class="mt-3 mr-2 btn btn-success" onclick="job.jobProcessConf()">구성</div>
+                <div class="mt-3 mr-2 btn btn-success" onclick="popup.jobGusung()">구성</div>
               </div>
             </div>
           </div>
@@ -131,6 +131,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       $("input:text[numberOnly]").on("keyup", function() {
         $(this).val($(this).val().replace(/[^0-9]/g,""));
       });    
+      const popup = {
+        jobGusung:function(){
+          window.open('/popup/jobGusung', '잡 구성', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+        }
+      }
     </script>
     </div>
   </div>

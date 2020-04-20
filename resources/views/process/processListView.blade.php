@@ -90,10 +90,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       @endIf
                     </tbody>
                   </table>
-                  @if(isset($data))
-                    {{-- 페이징 이동 경로 --}}
-                    {{$data->setPath('/process/processListView')->appends(request()->except($searchParams))->links()}}
-                  @endIf
+                  @if(isset($paginator))
+                    {{$paginator->setPath('/process/processListView')->appends(request()->except($searchParams))->links()}}
+                    @endIf
                 </div>
               </div>
             </div>
@@ -110,6 +109,3 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
  </script>
 </body>
 </html>
-  
-  
-

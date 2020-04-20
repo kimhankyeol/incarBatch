@@ -1,3 +1,4 @@
+//프로세스
 const process = {
     //조회
     search: function (page) {
@@ -23,6 +24,28 @@ const process = {
         var UseDb = document.getElementById("UseDb").value;
         var retry = $("#retry").val();
         var P_RegId=1611699;
+
+        //시간계산 분단위 ()
+      if($('#Pro_YesangTime1').val()==""){
+        $('#Pro_YesangTime1').val(0);
+      }
+      if($('#Pro_YesangTime2').val()==""){
+        $('#Pro_YesangTime2').val(0);
+      }
+      if($('#Pro_YesangTime3').val()==""){
+        $('#Pro_YesangTime3').val(0);
+      }
+      if($('#Pro_YesangMaxTime1').val()==""){
+        $('#Pro_YesangMaxTime1').val(0);
+      }
+      if($('#Pro_YesangMaxTime2').val()==""){
+        $('#Pro_YesangMaxTime2').val(0);
+      }
+      if($('#Pro_YesangMaxTime3').val()==""){
+        $('#Pro_YesangMaxTime3').val(0);
+      }
+
+
         var Pro_YesangTime= process.timeCalc($('#Pro_YesangTime1').val(),$('#Pro_YesangTime2').val(),$('#Pro_YesangTime3').val());
         var Pro_YesangMaxTime= process.timeCalc($('#Pro_YesangMaxTime1').val(),$('#Pro_YesangMaxTime2').val(),$('#Pro_YesangMaxTime3').val());
         //파라미터 getElementsByName처리하는 부분

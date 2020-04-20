@@ -19,21 +19,16 @@ class JobController extends Controller
         $workLargeCtg = $request->input('workLargeCtg');
         $workMediumCtg = $request->input('workMediumCtg');
 
-        // if($searchWord==""){
-        //     return view('job.jobListView');
-        // }else{ }    
-            //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
-            
-                // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-                $jobContents = DB::select('CALL searchJobList(?,?,?)',[$searchWord,$workLargeCtg, $workMediumCtg]);
-                $page=$request->input('page');
-                 //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
-                $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$jobContents);
-                //페이징 정보를 가져옴
-                $paginator = $PaginationCustom->getPaging();
-                //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
-                $data =$PaginationCustom->getItemsForCurrentPage();
-                $searchParams = array( 'searchWord' => $searchWord);
+        // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
+        $jobContents = DB::select('CALL searchJobList(?,?,?)',[$searchWord,$workLargeCtg, $workMediumCtg]);
+        $page=$request->input('page');
+            //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
+        $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$jobContents);
+        //페이징 정보를 가져옴
+        $paginator = $PaginationCustom->getPaging();
+        //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
+        $data =$PaginationCustom->getItemsForCurrentPage();
+        $searchParams = array( 'searchWord' => $searchWord);
                
              //대분류 , 중분류 전체일 조건  
             if($workLargeCtg=="all"&&$workMediumCtg=="all"){
