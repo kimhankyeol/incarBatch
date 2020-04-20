@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 //분기 처리 해주는 php 위치 
 $ifViewRender = new App\Http\Controllers\Render\IfViewRender;
