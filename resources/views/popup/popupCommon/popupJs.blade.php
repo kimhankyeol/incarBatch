@@ -6,3 +6,6 @@
  <!-- Custom scripts for all pages-->
  <script src="/js/sb-admin-2.min.js"></script>
  <script type="text/javascript" src="/js/jobJS/jobFunc.js"></script>
+ <script type="text/javascript" src="/js/jobJS/proFunc.js"></script>
+ <script type="text/javascript" src="/js/jobJS/codeFunc.js"></script>
+ <script type="text/javascript" src="/js/jobJS/popupFunc.js"></script>

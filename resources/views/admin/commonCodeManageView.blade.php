@@ -11,6 +11,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 @include('common.head')
 <body id="page-top">
     <div id="wrapper">
@@ -42,7 +43,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   @if(!isset($searchWord))
                     <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
                   @elseif(isset($searchWord))
+                    @if($searchWord=="searchWordNot")
+                    <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" aria-label="Search">
+                    @elseif($searchWord!="searchWordNot")
                     <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                    @endif
                   @endif
                   <div class="input-group-append">
                     <div class="btn btn-primary" onclick="code.search('1')">
@@ -58,11 +63,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <table id="datatable" class="table table-bordered" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>코드 타입</th>
                         <th>대분류</th>
                         <th>중분류</th>
+                        <th>코드 분류</th>
                         <th>코드 명</th>
-                        <th>코드 전체 명</th>
                         <th>사용 여부</th>
                       </tr>
                     </thead>
@@ -73,9 +77,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         @endIf
                     </tbody>
                 </table>
-                {{-- 페이징 이동 경로 --}}
-                    @if(isset($data))
-                    {{$data->links()}}
+                    {{-- 페이징 이동 경로 --}}
+                    @if(isset($paginator))
+                    {{$paginator->setPath('/admin/commonCodeManageView')->appends(request()->except($searchParams))->links()}}
                     @endIf
               </div>
             </div>

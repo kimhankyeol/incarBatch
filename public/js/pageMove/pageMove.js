@@ -27,8 +27,8 @@ const pageMove={
     jobHistory:{},
     //관리자
     admin:{
-        commonCodeManageDetail:function(Codetype,WorkLarge,WorkMedium){
-            location.href="/admin/commonCodeDetailView?Codetype="+Codetype+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
+        commonCodeManageDetail:function(WorkLarge,WorkMedium){
+            location.href="/admin/commonCodeDetailView?WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
         },
         register:function(urlName){
             location.href="/admin/"+urlName;

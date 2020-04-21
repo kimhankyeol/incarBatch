@@ -5,10 +5,6 @@ const code = {
         $.ajax({
             url:"/code/workLargeCtg",
             method:"get",
-            data:{
-                "CodeType":"B",
-                "WorkMedium":"all"
-            },
             success:function(data){
                 console.table(data);
                 $('#codeLargeView').html(data.returnHTML);
@@ -23,8 +19,6 @@ const code = {
             url:"/code/workMediumCtg",
             method:"get",
             data:{
-                //코드타입
-                "CodeType":"B",
                 "WorkLarge":$('#workLargeVal').val()
             },
             success:function(data){

@@ -6,6 +6,9 @@
   background-color: #4e73df;
   vertical-align: middle;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #fff;
 }
 .table tr td {
@@ -19,7 +22,6 @@
 .cursor-pointer {
   cursor: pointer;
 }
-
 /* popup */
 .info-popup {
   position: absolute;
@@ -28,7 +30,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 /* gusung-popup */
 .gusung-popup > .container-fluid > div > div > .row > div .table-responsive {
   height: 410px;
@@ -38,21 +39,16 @@
   margin-left: 10px;
   margin-right: 10px;
 }
-
 /* textarea */
 textarea {
   resize: none !important;
   resize: none;
 }
-
 /* label */
-
 .custom-control-label {
   line-height: 1.5rem;
 }
-
 /* fieldset */
-
 .cistp-fieldset {
   width: 100%;
   border: 1px solid #ededed;
@@ -65,9 +61,7 @@ textarea {
   font-size: initial;
   padding: 0px;
 }
-
 /* gusung */
-
 #gusungList > .list-group-item {
   -ms-user-select: none;
   -moz-user-select: -moz-none;
@@ -84,7 +78,6 @@ textarea {
   z-index: 999;
   background-color: aliceblue;
 }
-
 /* 로그인 */
 .bg-login-image {
   background: url(/img/logo.png) center center !important;
@@ -92,11 +85,45 @@ textarea {
   background-repeat: no-repeat !important;
   background-position: center;
 }
-
 /* 실행 */
 .right-line {
   border-right: 2px solid #f1f1f1;
 }
 .d-inline-table {
   display: inline-table !important;
+}
+/* 업무구분 */
+.list-code {
+  display: inline-flex !important;
+}
+.outher-code {
+  width: 50%;
+  display: inline-flex !important;
+}
+.outher-code > div{
+  width: 100%;
+  margin: 0px !important;
+}
+/* 예상시간 */
+.limit-time-text {
+  display: inline-block;
+  text-align: center;
+  align-self: center;
+  width: 12%;
+  color: #4e73df!important;
+  font-weight: 700!important;
+  font-size: small;
+}
+.limit-time-input {
+  display: inline-block;
+  font-size: small;
+}
+.limit-time-input:nth-child(2) {
+  width: 17% !important;
+}
+.limit-time-input:nth-child(4) {
+  width: 25% !important;
+}
+.limit-time-input:nth-child(6) {
+  width: 17% !important;
 }

@@ -48,7 +48,8 @@ class ProcessController extends Controller
     }
     //프로세스 등록 뷰
     public function processRegisterView(){
-        return view('process.processRegisterView');
+        $db_list = DB::table('OnlineBatch_CommonCode')->where('Codetype','=','C')->get();
+        return view('process.processRegisterView',compact('db_list'));
     }
     //프로세스 등록 저장
     public function processRegister(Request $request){

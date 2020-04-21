@@ -45,7 +45,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
                 <div class="row">
                   {{-- 업무 구분 대분류 중분류 선택 --}}
-                  <div id="codeLargeView" class="col-md-6 d-inline-flex"></div>
+                  <div id="codeLargeView" class="outher-code"></div>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
                   <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>

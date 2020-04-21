@@ -33,10 +33,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <h5 class="m-0 font-weight-bold text-primary">코드 정보 등록</h5>
             </div>
             <div class="card-body">
-                <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">코드 타입</div>
-                  <input type="text" id="Codetype"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->Codetype}}" readonly>
-                </div>
                 <hr>
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">대분류 코드 번호</div>
@@ -64,7 +60,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
-                  <textarea type="text" id="CodeSulmyung" class="col-md-10 form-control form-control-sm" value="{{$commonCodeDetail[0]->CodeSulmyung}}" style="resize: none;" readonly></textarea>
+                  <textarea type="text" id="CodeSulmyung" class="col-md-10 form-control form-control-sm" value="{{$commonCodeDetail[0]->Sulmyung}}" style="resize: none;" readonly></textarea>
                 </div>
                 <hr>
               <div class="row justify-content-end">
@@ -94,22 +90,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         </div>
       </div>
     @include('common.footer')
-      <script>
-        //0인것이 가장 큰 범례
-        function codeTypeView(){
-          $.ajax({
-            url:'/admin/codeTypeView',
-            method:'get',
-            data:{
-              Codetype:"0"
-            },
-            success:function(data){
-              $('#Codetype').html(data.returnHTML);
-            }
-          })
-        }
-        codeTypeView();
-      </script>
+      
     </div>
   </div>
 </body>
