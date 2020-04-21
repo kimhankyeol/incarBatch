@@ -25,4 +25,12 @@ class CodeController extends Controller
         $returnHTML=view('code.codeMediumSelect',compact('workMediumCtgData'))->render();
         return response()->json(array('workMediumCtgData'=>$workMediumCtgData,'returnHTML'=>$returnHTML),200);
     }
+    //대분류, 중분류 전송해서 경로 설정
+    public function workDataSelect(Request $request){
+        $workLargeVal = $request->input('workLargeVal');
+        $workMediumVal = $request->input('workMediumVal');
+        $workFilePath = DB::table('OnlineBatch_WorkMediumCode')->select('FilePath')->where('WorkLarge',$workLargeVal)->where('WorkMedium',$workMediumVal)->get();
+        return response()->json(array('workFilePath'=>$workFilePath));
+    }
+
 }

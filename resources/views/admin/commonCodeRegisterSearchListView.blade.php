@@ -2,11 +2,10 @@
     <table id="datatable" class="table table-bordered" cellspacing="0">
         <thead>
         <tr>
-            <th>코드 타입</th>
             <th>대분류</th>
             <th>중분류</th>
-            <th>코드 명</th>
-            <th>코드 전체 명</th>
+            <th>코드</th>
+            <th>경로</th>
             <th>사용 여부</th>
         </tr>
         </thead>
@@ -17,4 +16,7 @@
             @endIf
         </tbody>
     </table>
+    @if(isset($paginator))
+    {{$paginator->setPath('/admin/commonCodeExist')->appends(request()->except($searchParams))->links()}}
+    @endIf
 </div>

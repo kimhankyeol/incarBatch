@@ -65,8 +65,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       <tr>
                         <th>대분류</th>
                         <th>중분류</th>
-                        <th>코드 분류</th>
-                        <th>코드 명</th>
+                        <th>코드</th>
+                        <th>경로</th>
                         <th>사용 여부</th>
                       </tr>
                     </thead>

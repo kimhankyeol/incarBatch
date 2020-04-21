@@ -14,9 +14,8 @@ const process = {
             $("#retry").val(1);
         }else{
         }
-        var id1 = document.getElementById("id1").value; //filepath 고정
-        var id2 = document.getElementById("id2").value; //filepath 상대
-        var id3 = document.getElementById("id3").value; //.php
+        var id1 = document.getElementById("id1").value; 
+        var id2 = document.getElementById("id2").value; 
         var programName = document.getElementById("programName").value;
         var programExplain = document.getElementById("programExplain").value;
         var workLargeCtg = $('#workLargeVal option:selected').val();
@@ -24,7 +23,6 @@ const process = {
         var UseDb = document.getElementById("UseDb").value;
         var retry = $("#retry").val();
         var P_RegId=1611699;
-
         //시간계산 분단위 ()
       if($('#Pro_YesangTime1').val()==""){
         $('#Pro_YesangTime1').val(0);
@@ -44,8 +42,6 @@ const process = {
       if($('#Pro_YesangMaxTime3').val()==""){
         $('#Pro_YesangMaxTime3').val(0);
       }
-
-
         var Pro_YesangTime= process.timeCalc($('#Pro_YesangTime1').val(),$('#Pro_YesangTime2').val(),$('#Pro_YesangTime3').val());
         var Pro_YesangMaxTime= process.timeCalc($('#Pro_YesangMaxTime1').val(),$('#Pro_YesangMaxTime2').val(),$('#Pro_YesangMaxTime3').val());
         //파라미터 getElementsByName처리하는 부분
@@ -57,7 +53,7 @@ const process = {
         }
         const Arr1 = res1.join("||");
         //유효성 검사 함수로
-        var provalcheck = process.validation(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,id3,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
+        var provalcheck = process.validation(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
         if(provalcheck){
             var con = confirm("프로그램을 등록하시겠습니까?");
         if (con == true) {
@@ -84,7 +80,6 @@ const process = {
                 data: {
                     id1 : id1,
                     id2 : id2,
-                    id3 : id3,
                     P_RegId : P_RegId,
                     programName: programName,
                     programExplain: programExplain,
@@ -98,13 +93,12 @@ const process = {
                     Pro_YesangMaxTime : Pro_YesangMaxTime
                 },
                 success: function (data) {
-                    console.table(data);
-                    if(data.fileResult1==true){
+                    console.table(data.count);
+                    if(data.fileResult1==true&&data.count==0){
                         alert("프로그램이 등록되었습니다.");
                         console.log("등록 되었습니다.");
-                        console.table(data);
                         location.href = "/process/processDetailView?P_Seq="+data.last_p_seq;
-                    }else if(data.fileResult2==true){
+                    }else if(data.count!=0){
                         alert("해당 경로에 이미 같은 이름의 파일이 존재합니다.");
                     }else if(data.fileResult1==false){
                         alert("경로가 존재하지 않습니다.");
@@ -115,20 +109,11 @@ const process = {
       }
     },
     //프로세스 유효성 검사
-    validation:function(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,id3,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1){
-        // alert(id2.charAt(0));
-        // alert(id3.charAt(0));
-        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        if(id2 != "" && regExp.test(id2)==true){
-            alert("특수 문자를 제거하세요");
-            return false;
-        }else if(id3 != "" && regExp.test(id3)==true){
-            alert("특수 문자를 제거하세요");
-            return false;
-        }else if(id3 == ""){
+    validation:function(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1){
+        if(id2 == ""){
             alert("파일명을 입력하세요");
             return false;
-        }else if(programName == "") {
+        } else if(programName == "") {
             alert("프로그램 명을 입력하세요");
             return false;
         } else if (programExplain == "") {
@@ -202,7 +187,7 @@ const process = {
         var delBtnDiv = document.createElement("div");
         //onchange 걸어야됨
         var proParamInputText =
-            '<select name="proParamType" class="col-md-2 form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>' +
+            '<select name="proParamType" class="col-md-2 form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
             '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" placeholder="설명">';
         proParamDiv.className = "d-inline-flex w-50 delYN mb-2";
         proParamDiv2.className = "col-md-3 small align-self-center text-center";

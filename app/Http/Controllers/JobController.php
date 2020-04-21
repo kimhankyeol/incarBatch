@@ -18,7 +18,15 @@ class JobController extends Controller
         $searchWord = $request->input('searchWord');
         $workLargeCtg = $request->input('workLargeCtg');
         $workMediumCtg = $request->input('workMediumCtg');
-
+        if($searchWord==""){
+            $searchWord="searchWordNot";
+        }
+        if($workLargeCtg==""){
+            $workLargeCtg="all";
+        }
+        if($workMediumCtg==""){
+            $workMediumCtg="all";
+        }
         // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
         $jobContents = DB::select('CALL searchJobList(?,?,?)',[$searchWord,$workLargeCtg, $workMediumCtg]);
         $page=$request->input('page');

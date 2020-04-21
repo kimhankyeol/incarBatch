@@ -27,6 +27,9 @@ const pageMove={
     jobHistory:{},
     //관리자
     admin:{
+        commonCodeUpdateView:function(WorkLarge,WorkMedium){
+            location.href ="/admin/commonCodeUpdateView?WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
+        },
         commonCodeManageDetail:function(WorkLarge,WorkMedium){
             location.href="/admin/commonCodeDetailView?WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
         },

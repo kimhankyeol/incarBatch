@@ -34,13 +34,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
             <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">코드 타입</div>
-                  <select  id="Codetype"  class="col-md-3 form-control form-control-sm align-self-center">
-                  </select>
-                </div>
-                <hr>
-                <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">대분류 코드 번호</div>
+                  
                   <input type="text" id="WorkLarge"  class="col-md-3 form-control form-control-sm align-self-center" placeholder="예)10">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">중분류 코드 번호</div>
                   <input type="text" id="WorkMedium"  class="col-md-3 form-control form-control-sm align-self-center" placeholder="예)01">     
@@ -64,8 +59,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
+                  <input type="text" id="FilePath"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="/incar/incarproject">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
-                  <textarea type="text" id="CodeSulmyung" class="col-md-10 form-control form-control-sm" placeholder="코드 설명" style="resize: none;"></textarea>
+                  <textarea type="text" id="CodeSulmyung" class="col-md-6 form-control form-control-sm" placeholder="코드 설명" style="resize: none;"></textarea>
                 </div>
                 <hr>
               <div class="row justify-content-end">
@@ -77,14 +74,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="table-responsive">
                   <table id="datatable" class="table table-bordered" cellspacing="0">
                       <thead>
-                      <tr>
-                          <th>코드 타입</th>
-                          <th>대분류</th>
-                          <th>중분류</th>
-                          <th>코드 명</th>
-                          <th>코드 전체 명</th>
-                          <th>사용 여부</th>
-                      </tr>
+                        <tr>
+                            <th>대분류</th>
+                            <th>중분류</th>
+                            <th>코드</th>
+                            <th>경로</th>
+                            <th>사용 여부</th>
+                        </tr>
                       </thead>
                       <tbody>
                       </tbody>
@@ -95,24 +91,38 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         </div>
       </div>
     @include('common.footer')
-      <script>
-        //0인것이 가장 큰 범례
-        function codeTypeView(){
-          $.ajax({
-            url:'/admin/codeTypeView',
-            method:'get',
-            data:{
-              Codetype:"0"
-            },
-            success:function(data){
-              $('#Codetype').html(data.returnHTML);
-            }
-          })
-        }
-        codeTypeView();
-      </script>
     </div>
   </div>
+  <script>
+    $(document).ready(function(){
+        $(document).on('click','.pagination a',function(event){
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            var WorkLarge = $(this).attr('href').split('WorkLarge=')[1].split('&')[0];
+            var WorkMedium = $(this).attr('href').split('WorkMedium=')[1].split('&')[0];
+            
+            fetch_data(page,WorkLarge,WorkMedium);
+        });
+
+        function fetch_data(page,WorkLarge,WorkMedium){
+            $.ajax({
+                url:"/admin/commonCodeExist",
+                method:"get",
+                data:{
+                    'page':page,
+                    'WorkLarge':WorkLarge,
+                    'WorkMedium':WorkMedium
+                },
+                success:function(resp){
+                    $('#commonCodeSearchList').html(resp.returnHTML)
+                },
+                error:function(err){
+
+                }
+            })
+        }
+    })
+</script>
 </body>
 </html>
 

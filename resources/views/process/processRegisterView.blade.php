@@ -30,28 +30,27 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            <div id="codeLargeView" class="outher-code"></div>
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-                            <input id ="id1" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="/home/incar/incarproject" readonly>
-                            <input id ="id2" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="경로">
-                            <input id ="id3" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="파일명">
+                            <input id ="id1" type="text" class="col-md-1 form-control form-control-sm align-self-center"readonly>
+                            <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
                             <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="프로그램 명">
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">설명</div>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">프로그램 설명</div>
                             <input id = "programExplain" type="text" class="col-md-6 form-control form-control-sm mt-2" placeholder="설명">
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">프로그램 상태</div>
-                            <input type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" placeholder="" readonly>
                         </div>
                         <hr>
                         <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
-                            <div id="codeLargeView" class="outher-code"></div>
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <select id="UseDb" class="col-md-2 form-control form-control-sm">
-                                <option>전체</option>
-                                @foreach ($db_list as $list)
-                                    <option value="{{ $list -> LongName}}">{{ $list -> LongName}}</option>
-                                @endforeach
-                            </select>
+                                    @foreach ($db_list as $list)
+                                        <option value="{{ $list -> LongName}}">{{ $list -> LongName}}</option>
+                                    @endforeach  
+                            </select>  
                             <div class="col-md-1 mx-2 custom-control custom-checkbox small">
                                 <input id="retry" type="checkbox" class="custom-control-input" value="0">
                                 <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
@@ -90,11 +89,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             </div>
                             <div class="col-md-6">
                                 <div class="limit-time-text">수정자</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="11111111" readonly>
+                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>
                                 <div class="limit-time-text">수정자IP</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="192.168.168.168" readonly>
+                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>
                                 <div class="limit-time-text">수정일</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="2020-02-02" readonly>              
+                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>              
+                            </div>
+                        </div>
+                        <hr>
+                            <div class="row align-items-center">
+                             {{-- 업무 구분 대분류 중분류 선택 --}}
+                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
+                            <input type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" placeholder="">
+                            <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                                <input id="file" type="checkbox" class="custom-control-input" value="0">
+                                <label class="custom-control-label font-weight-bold text-primary" for="file">파일 입력 여부</label>
                             </div>
                         </div>
                         <hr>
@@ -113,7 +122,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <hr>
                         <div class="row justify-content-end">
                             <input type="button" class="mt-3 mr-2 btn btn-primary" value="등록" onclick="process.register()" />
-                            <input type="button" class="mt-3 mr-2 btn btn-info" value="수정"/>
+                            {{-- <input type="button" class="mt-3 mr-2 btn btn-info" value="수정"/> --}}
                             <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소"/>
                         </div>
                     </div>

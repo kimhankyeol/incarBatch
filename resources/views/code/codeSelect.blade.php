@@ -9,6 +9,6 @@
 </select>
 
 <div class="text-center align-self-center font-weight-bold text-primary  mx-2">중분류</div>
-<select id="workMediumVal" class="form-control form-control-sm ml-2 mr-5">
+<select id="workMediumVal" onchange="code.workDataSelect()" class="form-control form-control-sm ml-2 mr-5">
     <option value="all" selected>전체</option>
 </select> 

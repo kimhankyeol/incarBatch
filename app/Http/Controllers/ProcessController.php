@@ -11,7 +11,9 @@ class ProcessController extends Controller
         $searchWord = $request -> input('searchWord');
         $workLargeCtg = $request->input('workLargeCtg');
         $workMediumCtg = $request->input('workMediumCtg');
-     
+        if($searchWord==""){
+            $searchWord="searchWordNot";
+        }
             //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
             // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
             $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$workLargeCtg, $workMediumCtg]);
@@ -36,14 +38,12 @@ class ProcessController extends Controller
                 $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg' => $workMediumCtg);
             }
             return view('process.processListView',compact('data','searchWord','searchParams','paginator'));
-           
     }
     //프로세스 상세 뷰
     public function processDetailView(Request $request){
         $p_seq = $request->input('P_Seq');
-        $Codetype="B";
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL processDetail(?,?)',[$p_seq,$Codetype]);
+        $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
         return view('process.processDetailView',compact('processDetail'));
     }
     //프로세스 등록 뷰
@@ -53,16 +53,11 @@ class ProcessController extends Controller
     }
     //프로세스 등록 저장
     public function processRegister(Request $request){
-        $id1 = $request->input('id1');
-        $id2 = $request->input('id2');
-        $id3 = $request->input('id3');
-        if($id2==""){
-            $P_FilePath = $id1;
-        }else if($id2!=""){
-            $P_FilePath = $id1."/".$id2;
-        }
+        $id1 = $request->input('id1');//경로
+        $id2 = $request->input('id2');//파일명
         $programName = $request->input('programName');
         $programExplain = $request->input('programExplain');
+        //대분류 중분류
         $workLargeCtg = $request->input('workLargeCtg');
         $workMediumCtg = $request->input('workMediumCtg');
         $retry=$request->input('retry');
@@ -72,18 +67,22 @@ class ProcessController extends Controller
         $proParamType=$request->input('proParamType');
         $proParamSulmyungInput=$request->input('proParamSulmyungInput');
         $P_RegId = $request->input('P_RegId');
-        $fileOverlap = $P_FilePath."/".$id3;
-        $fileResult1 = file_exists($P_FilePath); // 경로 확인 위해
-        $fileResult2 = file_exists($fileOverlap); // 파일명 중복 체크 위해
-        if($fileResult1){// 경로가 존재하는가?
-            if($fileResult2==false){// 0: 파일명이 겹치는가?
+        //고정경로 + 대분류 중분류에 따른 경로(id1) + 파일(id2)
+        $P_FilePath="/home/incar/work".$id1."/".$id2;
+        //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
+        $fileResult1 = file_exists($P_FilePath); 
+        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$workLargeCtg)->where('P_WorkMediumCtg',$workMediumCtg)->where('P_File',$id2)->count();
+        if($fileResult1){// 경로+파일이 존재하는가?
+            if($count==0){
                 $last_p_seq = DB::table('OnlineBatch_Process')->insertGetId(
-                    ['P_FilePath'=>$fileOverlap,
-                    'P_Name' =>$programName,
+                    ['P_Name' =>$programName,
                     'P_RegId'=>$P_RegId,
                     'P_Sulmyung'=>$programExplain,
+                    //대분류, 중분류 저장
                     'P_WorkLargeCtg'=>$workLargeCtg,
                     'P_WorkMediumCtg'=>$workMediumCtg,
+                    //파일명 저장
+                    'P_File'=>$id2,
                     'P_ReworkYN'=>$retry,
                     'P_UseDB'=>$UseDb,
                     'P_YesangTime'=>$Pro_YesangTime,
@@ -91,13 +90,12 @@ class ProcessController extends Controller
                     'P_Params'=>$proParamType,
                     'P_ParamSulmyungs'=>$proParamSulmyungInput]
                 );
-                return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1));// 경로가 존재하고 파일명이 안겹치는 경우 (성공)
-            }else if($fileResult2){// 0: 겹침
-                return response()->json(array('fileResult2'=>$fileResult2));// 경로는 존재하나 파일명이 겹치는 경우
-            }            
-        }
-        else{
-            return response()->json(array('fileResult1'=>$fileResult1)); //경로가 존재하지 않는 경우
+                return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
+            }else{
+                return response()->json(array('count'=>$count));
+            }
+        }else{
+            return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1));
         }
     }
     //프로세스 등록 수정 뷰

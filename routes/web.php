@@ -83,6 +83,8 @@ Route::prefix('code')->group(function(){
     Route::get('/workLargeCtg','CodeController@workLargeCtg');
     //업무 중분류
     Route::get('/workMediumCtg','CodeController@workMediumCtg');
+    //대분류 중분류 전송
+    Route::get('/workDataSelect','CodeController@workDataSelect');
 });
 
 
@@ -96,8 +98,10 @@ Route::prefix('admin')->group(function(){
     Route::get('/commonCodeRegisterView','AdminController@commonCodeRegisterView');
     //공통코드 등록
     Route::post('/commonCodeRegister','AdminController@commonCodeRegister');
-    //코드타입 조회 
-    Route::get('/codeTypeView','AdminController@codeTypeView');
     //공통코드 존재유무 조회 
     Route::get('/commonCodeExist','AdminController@commonCodeExist');
+    //공통코드 수정 뷰
+    Route::get('/commonCodeUpdateView','AdminController@commonCodeUpdateView');
+    //공통코드 수정 
+    Route::post('/commonCodeUpdate','AdminController@commonCodeUpdate');
 });

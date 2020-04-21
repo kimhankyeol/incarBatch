@@ -46,9 +46,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </select>
                   {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
+                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
                   @elseif(isset($searchWord))
+                  @if($searchWord=="searchWordNot")
+                      <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
+                  @else
                     <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                  @endif
                   @endif
                   <div class="input-group-append">
                     <div class="btn btn-primary" onclick="process.search('1')">
@@ -74,13 +78,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </colgroup>
                     <thead>
                       <tr>
-                        <th>프로그램 ID</th>
-                        <th>프로그램 명</th>
-                        <th>업무구분<br>(대분류)</th>
-                        <th>업무구분<br>(중분류)</th>
-                        <th>프로그램 설명</th>
-                        <th>프로그램<br>등록자</th>
-                        <th>프로그램<br>등록시점</th>
+                        <th>ID</th>
+                        <th>대분류</th>
+                        <th>중분류</th>
+                        <th>프로그램</th>
+                        <th>명</th>
+                        <th>설명</th>
+                        <th>등록자</th>
+                        <th>등록일자</th>
                       </tr>
                     </thead>
                     <tbody>

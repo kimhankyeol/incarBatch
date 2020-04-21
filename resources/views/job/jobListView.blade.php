@@ -43,9 +43,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </select>
                   {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
+                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
                   @elseif(isset($searchWord))
-                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                    @if($searchWord=="searchWordNot")
+                      <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
+                    @else
+                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                    @endif
                   @endif
                   <div class="input-group-append">
                     <div class="btn btn-primary" onclick="job.search('1')">
@@ -71,9 +75,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>잡 명</th>
                         <th>대분류</th>
                         <th>중분류</th>
+                        <th>잡 명</th>
                         <th>설명</th>
                         <th>등록자</th>
                         <th>등록일</th>
