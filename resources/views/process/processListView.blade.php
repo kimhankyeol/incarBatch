@@ -82,7 +82,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <th>대분류</th>
                         <th>중분류</th>
                         <th>프로그램</th>
-                        <th>명</th>
+                        <th>프로그램 명</th>
                         <th>설명</th>
                         <th>등록자</th>
                         <th>등록일자</th>
@@ -108,9 +108,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       {{--content 끝--}}
     </div>
   </div>
-  <script>
-    // jobJS/codeFunc 대분류 조회
-    code.workLargeCtg();
- </script>
+@php
+  echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'");</script>'
+@endphp
 </body>
 </html>

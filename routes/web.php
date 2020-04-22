@@ -45,6 +45,8 @@ Route::prefix('process')->group(function(){
     Route::post('/processRegister','ProcessController@processRegister');
     //프로세스 수정 뷰
     Route::get('/processEditView','ProcessController@processEditView');
+    //프로세스 수정
+    Route::post('/processEdit','ProcessController@processEdit');
 });
 
 //모니터링 prefix

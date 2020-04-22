@@ -9,14 +9,20 @@ class ProcessController extends Controller
     //프로세스 리스트/검색 뷰
     public function processListView(Request $request){
         $searchWord = $request -> input('searchWord');
-        $workLargeCtg = $request->input('workLargeCtg');
-        $workMediumCtg = $request->input('workMediumCtg');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
         if($searchWord==""){
             $searchWord="searchWordNot";
         }
+        if($WorkLarge==""){
+            $WorkLarge="all";
+        }
+        if($WorkMedium==""){
+            $WorkMedium="all";
+        }
             //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
             // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-            $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$workLargeCtg, $workMediumCtg]);
+            $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
             $page=$request->input('page');
                 //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
             $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$processContents);
@@ -26,18 +32,18 @@ class ProcessController extends Controller
             $data =$PaginationCustom->getItemsForCurrentPage();
             $searchParams = array( 'searchWord' => $searchWord);
              //대분류 , 중분류 전체일 조건  
-            if($workLargeCtg=="all"&&$workMediumCtg=="all"){
+            if($WorkLarge=="all"&&$WorkMedium=="all"){
                 $searchParams = array( 'searchWord' => $searchWord);
             }
             //대분류 선택, 중분류 전체
-            else if($workLargeCtg!="all"&&$workMediumCtg=="all"){
-                $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg'=>'all');
+            else if($WorkLarge!="all"&&$WorkMedium=="all"){
+                $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium'=>'all');
             }
             //대분류 선택 ,중분류 선택
-            else if($workLargeCtg!="all"&&$workMediumCtg!="all"){
-                $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg' => $workMediumCtg);
+            else if($WorkLarge!="all"&&$WorkMedium!="all"){
+                $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
             }
-            return view('process.processListView',compact('data','searchWord','searchParams','paginator'));
+            return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium'));
     }
     //프로세스 상세 뷰
     public function processDetailView(Request $request){
@@ -48,7 +54,7 @@ class ProcessController extends Controller
     }
     //프로세스 등록 뷰
     public function processRegisterView(){
-        $db_list = DB::table('OnlineBatch_CommonCode')->where('Codetype','=','C')->get();
+        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','30')->get();
         return view('process.processRegisterView',compact('db_list'));
     }
     //프로세스 등록 저장
@@ -57,11 +63,13 @@ class ProcessController extends Controller
         $id2 = $request->input('id2');//파일명
         $programName = $request->input('programName');
         $programExplain = $request->input('programExplain');
+        $P_DevId=$request->input('P_DevId');
         //대분류 중분류
-        $workLargeCtg = $request->input('workLargeCtg');
-        $workMediumCtg = $request->input('workMediumCtg');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
         $retry=$request->input('retry');
         $UseDb=$request->input('UseDb');
+        $P_RegIP=$request->input('P_RegIP');
         $Pro_YesangTime=$request->input('Pro_YesangTime');
         $Pro_YesangMaxTime=$request->input('Pro_YesangMaxTime');
         $proParamType=$request->input('proParamType');
@@ -71,7 +79,7 @@ class ProcessController extends Controller
         $P_FilePath="/home/incar/work".$id1."/".$id2;
         //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
         $fileResult1 = file_exists($P_FilePath); 
-        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$workLargeCtg)->where('P_WorkMediumCtg',$workMediumCtg)->where('P_File',$id2)->count();
+        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_File',$id2)->count();
         if($fileResult1){// 경로+파일이 존재하는가?
             if($count==0){
                 $last_p_seq = DB::table('OnlineBatch_Process')->insertGetId(
@@ -79,14 +87,16 @@ class ProcessController extends Controller
                     'P_RegId'=>$P_RegId,
                     'P_Sulmyung'=>$programExplain,
                     //대분류, 중분류 저장
-                    'P_WorkLargeCtg'=>$workLargeCtg,
-                    'P_WorkMediumCtg'=>$workMediumCtg,
+                    'P_WorkLargeCtg'=>$WorkLarge,
+                    'P_WorkMediumCtg'=>$WorkMedium,
                     //파일명 저장
                     'P_File'=>$id2,
+                    'P_RegIP'=> ip2long($P_RegIP),
                     'P_ReworkYN'=>$retry,
                     'P_UseDB'=>$UseDb,
                     'P_YesangTime'=>$Pro_YesangTime,
                     'P_YesangMaxTime'=>$Pro_YesangMaxTime,
+                    'P_DevId'=>$P_DevId,
                     'P_Params'=>$proParamType,
                     'P_ParamSulmyungs'=>$proParamSulmyungInput]
                 );
@@ -98,12 +108,63 @@ class ProcessController extends Controller
             return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1));
         }
     }
+    //프로세스 수정
+    public function processEdit(Request $request){
+        $p_seq = $request->input('p_seq');
+        $id1 = $request->input('id1');//경로
+        $P_File = $request->input('id2');//파일명
+        $P_Name = $request->input('programName');
+        $P_Sulmyung = $request->input('programExplain');
+        $WorkLarge= $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        $P_ReworkYN=$request->input('retry');
+        $P_UseDB=$request->input('UseDb');
+        $P_YesangTime=$request->input('Pro_YesangTime');
+        $P_YesangMaxTime=$request->input('Pro_YesangMaxTime');
+        // $P_Params=$request->input('proParamType');
+        // $P_ParamSulmyungs=$request->input('proParamSulmyungInput');
+        $P_UpdIP=$request->input('P_UpdIP');
+        $P_UpDate = $request->input('P_UpDate');
+        $P_FileInputCheck = $request->input('P_FileInputCheck');
+        $P_FileInput=$request->input('P_FileInput');
+        //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
+        $P_FilePath="/home/incar/work".$id1."/".$P_File;
+        $fileResult1 = file_exists($P_FilePath);
+        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_Seq','!=',$p_seq)->count();
+        if($fileResult1){// 경로+파일이 존재하는가?
+            if($count==0){
+                $result = DB::table('incar.OnlineBatch_Process')->where('P_Seq',$p_seq)->update([
+                    'P_File'=>$P_File,
+                    'P_Name'=>$P_Name,
+                    'P_Sulmyung'=>$P_Sulmyung,
+                    'P_WorkLargeCtg'=>$WorkLarge,
+                    'P_WorkMediumCtg'=>$WorkMedium,
+                    'P_UseDB'=>$P_UseDB,
+                    'P_ReworkYN'=>$P_ReworkYN,
+                    'P_YesangTime'=>$P_YesangTime,
+                    'P_YesangMaxTime'=>$P_YesangMaxTime,
+                    // 'P_Params'=>$P_Params,
+                    // 'P_ParamSulmyungs'=>$P_ParamSulmyungs,
+                    'P_UpdIP'=>ip2long($P_UpdIP),
+                    'P_UpdDate'=>$P_UpDate,
+                    'P_FileInput'=>$P_FileInput
+                ]);
+                return response()->json(array('result'=>$result, 'fileResult1'=>$fileResult1, 'count'=>$count,'P_Seq'=>$p_seq));//성공
+            }else{
+                return response()->json(array('count'=>$count));
+            }
+        }else{
+            return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1));
+        }
+    }
     //프로세스 등록 수정 뷰
     public function processEditView(Request $request){
         $p_seq = $request->input('P_Seq');
-        $Codetype="B";
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','30')->get();
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL processDetail(?,?)',[$p_seq,$Codetype]);
-        return view('process.processEditView',compact('processDetail'));
+        $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
+        return view('process.processEditView',compact('processDetail','db_list','WorkLarge','WorkMedium'));
     }
 }

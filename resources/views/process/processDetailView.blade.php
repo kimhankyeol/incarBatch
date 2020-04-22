@@ -30,30 +30,18 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="outher-code">
-                              <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무구분</div>
+                            <div class="outher-code-PD">
+                              <input id="P_Seq" type="hidden" value="{{$processDetail[0]->P_Seq}}"/>
                               <div class="text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
                               <input id="workLargeVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkLargeName}}" readonly>
                               <div class="text-center align-self-center font-weight-bold text-primary mx-2">중분류</div>
                               <input id="workMediumVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkMediumName}}" readonly>
                             </div>
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
                             <input id ="id1" type="text" class="col-md-1 form-control form-control-sm align-self-center"  value="{{$processDetail[0]->P_FileName}}" readonly>
                             <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" readonly>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
-                            <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_Name}}" readonly>
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">설명</div>
-                            <input id = "programExplain" type="text" class="col-md-6 form-control form-control-sm mt-2" value="{{$processDetail[0]->P_Sulmyung}}" readonly>
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">프로그램 상태</div>
-                            <input type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" placeholder="-" readonly>
-                        </div>
-                        <hr>
-                        <div class="row align-items-center">
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
-                            <input id="UseDb" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_UseDB}}" readonly>
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
+                            <input id="UseDb" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_UseDB}}" readonly>
                             @if(($processDetail[0]->P_ReworkYN)==1)
                             <div class="col-md-1 mx-2 custom-control custom-checkbox small">
                                 <input id="retry" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_ReworkYN }}" onclick = "return false">
@@ -65,6 +53,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                               <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
                             </div>
                             @endif
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
+                            <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_Name}}" readonly>
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary mt-2">설명</div>
+                            <input id = "programExplain" type="text" class="col-md-5 form-control form-control-sm mt-2" value="{{$processDetail[0]->P_Sulmyung}}" readonly>
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary mt-2">프로그램 상태</div>
+                            <input type="text" class="col-md-1 form-control form-control-sm align-self-center mt-2" placeholder="-" readonly>
                         </div>
                         <hr>
                         <div class="row">
@@ -91,19 +88,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="limit-time-text">등록자</div>
-                                <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input" placeholder="이수연" value="이수연" readonly>
+                                <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_RegId}}" readonly>
                                 <div class="limit-time-text">등록자IP</div>
-                                <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" placeholder="" readonly>
+                                <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" value="{{long2ip($processDetail[0]->P_RegIP)}}" readonly>
                                 <div class="limit-time-text">등록일</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>              
+                                <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_RegDate}}" readonly>              
                             </div>
                             <div class="col-md-6">
                                 <div class="limit-time-text">수정자</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>
+                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdId}}" readonly>
                                 <div class="limit-time-text">수정자IP</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>
+                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdIP}}" readonly>
                                 <div class="limit-time-text">수정일</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>              
+                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdDate}}" readonly>              
                             </div>
                         </div>
                         <hr>
@@ -135,9 +132,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         </div>
                         <hr>
                         <div class="row justify-content-end">
-                            <input type="button" class="mt-3 mr-2 btn btn-primary" value="저장" onclick="process.register()" />
-                            <input type="button" class="mt-3 mr-2 btn btn-info" value="수정"/>
-                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소"/>
+                            <input type="button" class="mt-3 mr-2 btn btn-info" value="수정" onclick="process.edit()"/>
+                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
                         </div>
                     </div>
                 </div>
@@ -147,6 +143,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         {{--content 끝--}}
       </div>
     </div>
+    <input id="WorkLarge" hidden  value="{{$processDetail[0]->P_WorkLargeCtg}}" readonly>
+    <input id="WorkMedium" hidden  value="{{$processDetail[0]->P_WorkMediumCtg}}" readonly>
   </body>
   </html>
 <script>

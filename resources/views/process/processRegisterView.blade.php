@@ -30,10 +30,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div id="codeLargeView" class="outher-code"></div>
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
+                            <div id="codeLargeView" class="outher-code-PR upmoo"></div>
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
                             <input id ="id1" type="text" class="col-md-1 form-control form-control-sm align-self-center"readonly>
                             <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
+                            <select id="UseDb" class="col-md-1 form-control form-control-sm">
+                                    @foreach ($db_list as $list)
+                                        <option value="{{ $list -> LongName}}">{{ $list -> LongName}}</option>
+                                    @endforeach  
+                            </select>  
+                            <div class="col-md-1 mx-1 custom-control custom-checkbox small">
+                                <input id="retry" type="checkbox" class="custom-control-input" value="0">
+                                <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
+                            </div>
                         </div>
                         <hr>
                         <div class="row">
@@ -41,20 +51,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="프로그램 명">
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">프로그램 설명</div>
                             <input id = "programExplain" type="text" class="col-md-6 form-control form-control-sm mt-2" placeholder="설명">
-                        </div>
-                        <hr>
-                        <div class="row align-items-center">
-                             {{-- 업무 구분 대분류 중분류 선택 --}}
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
-                            <select id="UseDb" class="col-md-2 form-control form-control-sm">
-                                    @foreach ($db_list as $list)
-                                        <option value="{{ $list -> LongName}}">{{ $list -> LongName}}</option>
-                                    @endforeach  
-                            </select>  
-                            <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                <input id="retry" type="checkbox" class="custom-control-input" value="0">
-                                <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
-                            </div>
                         </div>
                         <hr>
                         <div class="row">
@@ -83,7 +79,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <div class="limit-time-text">등록자</div>
                                 <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input" placeholder="이수연" value="이수연" readonly>
                                 <div class="limit-time-text">등록자IP</div>
-                                <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" placeholder="" readonly>
+                                <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" value="{{$_SERVER["REMOTE_ADDR"]}}" readonly>
                                 <div class="limit-time-text">등록일</div>
                                 <input type="text" class="form-control form-control-sm limit-time-input" placeholder="2020-02-02" readonly>              
                             </div>
@@ -100,10 +96,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
-                            <input type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" placeholder="">
+                            <input id="P_FileInput" type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" readonly>
                             <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                <input id="file" type="checkbox" class="custom-control-input" value="0">
-                                <label class="custom-control-label font-weight-bold text-primary" for="file">파일 입력 여부</label>
+                                <input id="P_FileInputCheck" type="checkbox" class="custom-control-input">
+                                <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일 입력 여부</label>
                             </div>
                         </div>
                         <hr>
@@ -136,6 +132,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   </body>
   </html>
 <script>
-   // jobJS/codeFunc 대분류 조회
+
     code.workLargeCtg();
+    $(function(){
+        $('#P_FileInputCheck').click(function(){
+            var chk = $(this).is(":checked");
+            if(chk){
+                $("#FileInputCheck").val(1);
+                var FileName = $('#id2').val();
+                var FileNameText = FileName.replace('php','txt');
+                $('#P_FileInput').val($('#id1').val()+"/"+FileNameText);
+            }else{
+                $("#FileInputCheck").val(0);
+                $('#P_FileInput').val("");
+            }
+        })
+    })
 </script>

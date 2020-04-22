@@ -20,144 +20,134 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">   
-    <!-- Main Content -->
-    <div id="content">
-      <!-- End of Topbar -->
-      <!-- Begin Page Content -->
-      <div class="container-fluid">
-        <!-- Page Heading -->
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-          <div class="card-header py-3">
-            <h5 class="m-0 font-weight-bold text-primary">프로그램 정보 상세</h5>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-              <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'pro'.$processDetail[0]->P_Seq.'_'.$processDetail[0]->P_WorkLargeCtg.'_'.$processDetail[0]->P_WorkMediumCtg.'_'.date("YmdHis",strtotime($processDetail[0]->P_RegDate))}}" readonly>
-              <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
-              <input type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_Name}}" >
-              <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
-              <textarea type="text" class="col-md-3 form-control form-control-sm" >{{$processDetail[0]->P_Sulmyung}}</textarea>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <div class="container-fluid">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">프로그램 정보 수정</h5>
+                        <input id="P_UpdIP" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
+                        <input id="P_UpDate" type="hidden" value="{{date("Y-m-d H:i:s")}}"/>
+                        <input id="P_Seq" type="hidden" value="{{$processDetail[0]->P_Seq}}"/>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {{-- <div id="codeLargeView" class="outher-code-PR upmoo"></div> --}}
+                            <div id="codeLargeView" class="outher-code"></div>
+
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
+                            <input id ="id1" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_FileName}}" readonly>
+                            <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}">
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
+                            <select id="UseDb" class="col-md-1 form-control form-control-sm">
+                                    @foreach ($db_list as $list)
+                                        <option value="{{ $list -> LongName}}">{{ $list -> LongName}}</option>
+                                    @endforeach  
+                            </select>  
+                            @if(($processDetail[0]->P_ReworkYN)==1)
+                            <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                                <input id="retry" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_ReworkYN }}">
+                                <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
+                            </div>
+                            @else
+                            <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                              <input id="retry" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_ReworkYN }}">
+                              <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
+                            </div>
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
+                            <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_Name}}">
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary mt-2">설명</div>
+                            <input id = "programExplain" type="text" class="col-md-5 form-control form-control-sm mt-2" value="{{$processDetail[0]->P_Sulmyung}}">
+                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary mt-2">프로그램 상태</div>
+                            <input type="text" class="col-md-1 form-control form-control-sm align-self-center mt-2" placeholder="-" readonly>
+                        </div>
+                        <hr>
+                        <div class="row">
+                              <div class="col-md-6 text-center">
+                              <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
+                              <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                              <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime1" value="{{intval($processDetail[0]->P_YesangTime/1440)}}" numberOnly>
+                              <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
+                              <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime2" value="{{intval($processDetail[0]->P_YesangTime%1440/60)}}" numberOnly>
+                              <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
+                              <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime3" value="{{intval($processDetail[0]->P_YesangTime%60)}}">
+                          </div>
+                          <div class="col-md-6 text-center">
+                              <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
+                              <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                              <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime1" value="{{intval($processDetail[0]->P_YesangMaxTime/1440)}}"numberOnly>
+                              <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
+                              <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime2" value="{{intval($processDetail[0]->P_YesangMaxTime%1440/60)}}" numberOnly>
+                              <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
+                              <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="{{intval($processDetail[0]->P_YesangMaxTime%60)}}" numberOnly>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="limit-time-text">등록자</div>
+                                <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_RegId}}" readonly>
+                                <div class="limit-time-text">등록자IP</div>
+                                <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" value="{{long2ip($processDetail[0]->P_RegIP)}}" readonly>
+                                <div class="limit-time-text">등록일</div>
+                                <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_RegDate}}" readonly>              
+                            </div>
+                            <div class="col-md-6">
+                               <div class="limit-time-text">수정자</div>
+                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdId}}" readonly>
+                                <div class="limit-time-text">수정자IP</div>
+                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdIP}}" readonly>
+                                <div class="limit-time-text">수정일</div>
+                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdDate}}" readonly> 
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                        <h6 class="col-md-12 font-weight-bold text-primary">
+                          프로그램 파라미터 타입
+                        </div>
+                        <hr>
+                        {{-- 프로그램변수가 추가되는 부분 --}}
+                        <div class="w-75 m-auto">
+                          <div class="row">
+                              @php
+                                $proParamArr=explode("||",$processDetail[0]->P_Params);
+                                $proParamSulArr=explode("||",$processDetail[0]->P_ParamSulmyungs);
+                                for ($i = 0; $i < count($proParamArr); $i++) {
+                                echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
+                                echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" readonly>';
+                                if($proParamArr[$i]=="paramDate"){
+                                  echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
+                                }else if($proParamArr[$i]=="paramNum"){
+                                  echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
+                                }else if($proParamArr[$i]=="paramStr"){
+                                  echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
+                                }
+                                echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly>';
+                                }
+                              @endphp
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row justify-content-end">
+                            <input type="button" class="mt-3 mr-2 btn btn-primary" value="저장" onclick="process.update()" />
+                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <hr>
-             <div class="row align-items-center">
-             <div id="codeLargeView" class="col-md-7 d-inline-flex"></div>
-              {{-- <span class="col-md-1 font-weight-bold text-primary">업무구분</span>
-              <span class="col-md-1 text-center align-self-center font-weight-bold text-primary">대분류</span>
-              <select id="workLargeVal" class="col-md-2 form-control form-control-sm" >
-                <option value="{{$processDetail[0]->P_WorkLargeCtg}}" selected>{{$processDetail[0]->P_WorkLargeName}}</option>
-              </select>
-              <span class="col-md-1 text-center align-self-center font-weight-bold text-primary">중분류</span>
-              <select id="workMediumVal" class="col-md-2 form-control form-control-sm" >
-                <option value="{{$processDetail[0]->P_WorkMediumCtg}}" selected>{{$processDetail[0]->P_WorkMediumName}}</option>
-              </select> --}}
-              @if(($processDetail[0]->P_ReworkYN)==1)
-              <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                  <input id="retry" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_ReworkYN }}">
-                  <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
-              </div>
-              @else
-              <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                <input id="retry" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_ReworkYN }}">
-                <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
-              </div>
-              @endif
-              <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
-              <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="" >
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
-              <input id="UseDb" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{ $processDetail[0]->P_UseDB }}" >           
-              <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
-              <input id="path" type="text" class="col-md-6 form-control form-control-sm align-self-center" placeholder="/home/incar/incarproject/program" readonly >           
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-6 text-center">
-                  <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime1" value="{{intval($processDetail[0]->P_YesangTime/1440)}}"  numberOnly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime2" value="{{intval($processDetail[0]->P_YesangTime%1440/60)}}"  numberOnly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime3" value="{{intval($processDetail[0]->P_YesangTime%60)}}"  >
-              </div>
-              <div class="col-md-6 text-center">
-                  <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime1" value="{{intval($processDetail[0]->P_YesangMaxTime/1440)}}"  numberOnly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime2" value="{{intval($processDetail[0]->P_YesangMaxTime%1440/60)}}"  numberOnly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="{{intval($processDetail[0]->P_YesangMaxTime%60)}}"  numberOnly>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-6">
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록자</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly>
-                  <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">등록자IP</div>
-                  <input type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="192.168.168.168" readonly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">등록일</div>
-                  <input type="text" class="d-inline-block col-md-3 form-control form-control-sm align-self-center" placeholder="2020-02-02" readonly>              
-              </div>
-              <div class="col-md-6">
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">수정자</div>
-                  <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" placeholder="11111111" readonly>
-                  <div class="d-inline-block col-md-2 text-center align-self-center font-weight-bold text-primary small p-0">수정자IP</div>
-                  <input type="text" class="d-inline-block w-auto col-md-3 form-control form-control-sm align-self-center" placeholder="192.168.168.168" readonly>
-                  <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary small p-0">수정일</div>
-                  <input type="text" class="d-inline-block col-md-3 form-control form-control-sm align-self-center" value="{{date("Y-m-d H:i:s")}}" readonly>              
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <h6 class="col-md-12 font-weight-bold text-primary">
-                프로그램 파라미터 타입
-              </div>
-              <hr>
-              {{-- 프로그램변수가 추가되는 부분 --}}
-              <div class="w-75 m-auto">
-                <div class="row">
-                    @php
-                      $proParamArr=explode("||",$processDetail[0]->P_Params);
-                      $proParamSulArr=explode("||",$processDetail[0]->P_ParamSulmyungs);
-                      for ($i = 0; $i < count($proParamArr); $i++) {
-                       echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
-                       echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" >';
-                       if($proParamArr[$i]=="paramDate"){
-                        echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
-                       }else if($proParamArr[$i]=="paramNum"){
-                        echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
-                       }else if($proParamArr[$i]=="paramStr"){
-                        echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
-                       }
-                       echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" >';
-                      }
-                    @endphp
-                  </div>
-              </div>
-            <hr>
-            <div class="row justify-content-end">
-              <input type="button" class="mt-3 mr-2 btn btn-primary" value="등록" onclick="process.register()" />
-              <input type="button" class="mt-3 mr-2 btn btn-info" value="수정" onclick=""/>
-              <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
-            </div>
-          </div>
         </div>
+        @include('common.footer')
+        {{--content 끝--}}
       </div>
     </div>
-    @include('common.footer')
-{{--content 끝--}}
-    </div>
-  </div>
-</body>
-</html>
-<script>
-   // jobJS/codeFunc 대분류 조회
-    code.workLargeCtg();
-</script>
+  </body>
+  </html>
+@php
+  echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'");</script>'
+@endphp
