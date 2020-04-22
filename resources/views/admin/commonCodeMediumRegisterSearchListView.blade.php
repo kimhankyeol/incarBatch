@@ -12,7 +12,7 @@
         <tbody>
             {{--  조회된 값이 보여주는 위치 --}}
             @if(isset($data))
-            @include('admin.commonCodeSearchListView')
+            @include('admin.commonCodeMediumSearchListView')
             @endIf
         </tbody>
     </table>

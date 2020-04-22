@@ -73,7 +73,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
               <div class="row justify-content-end">
-                <button type="button" class="mt-3 mr-2 btn btn-success" onclick="pageMove.admin.commonCodeUpdateView('{{$commonCodeDetail[0]->WorkLarge}}','{{$commonCodeDetail[0]->WorkMedium}}')">수정</button>
+                <button type="button" class="mt-3 mr-2 btn btn-success" onclick="pageMove.admin.commonCodeMediumUpdateView('{{$commonCodeDetail[0]->WorkLarge}}','{{$commonCodeDetail[0]->WorkMedium}}')">수정</button>
                 <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</b>
               </div>
               {{-- 코드타입 / 대분류 /중분류 검색된 리스트  --}}

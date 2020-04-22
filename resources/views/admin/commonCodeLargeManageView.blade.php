@@ -21,6 +21,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     {{--사이드바 끝--}}
     {{--content 시작--}}
     <div id="content-wrapper" class="d-flex flex-column">
+   
            <!-- Main Content -->
       <div id="content">
         <!-- End of Topbar -->
@@ -28,7 +29,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
-          <h4 class="h3 my-4 font-weight-bold text-primary">공통 코드 관리</h4>
+          <h4 class="h3 my-4 font-weight-bold text-primary">대분류 코드 관리</h4>
           <div class="card shadow mb-4">
             <div class="d-flex justify-content-end card-header py-3">
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
@@ -50,11 +51,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     @endif
                   @endif
                   <div class="input-group-append">
-                    <div class="btn btn-primary" onclick="code.search('1')">
+                    <div class="btn btn-primary" onclick="code.largeSearch('1')">
                       <i class="fas fa-search fa-sm"></i>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-primary mx-2" onclick="pageMove.admin.register('commonCodeRegisterView')">등록</button>
+                  <button type="button" class="btn btn-primary mx-2" onclick="pageMove.admin.register('commonCodeLargeRegisterView')">등록</button>
                 </div>
               </div>
             </div>
@@ -63,23 +64,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <table id="datatable" class="table table-bordered" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>대분류</th>
-                        <th>중분류</th>
                         <th>코드</th>
-                        <th>경로</th>
+                        <th>대분류</th>
                         <th>사용 여부</th>
                       </tr>
                     </thead>
                     <tbody>
                         {{--  조회된 값이 보여주는 위치 --}}
                         @if(isset($data))
-                        @include('admin.commonCodeSearchListView')
+                        @include('admin.commonCodeLargeSearchListView')
                         @endIf
                     </tbody>
                 </table>
                     {{-- 페이징 이동 경로 --}}
-                    @if(isset($paginator))
-                    {{$paginator->setPath('/admin/commonCodeManageView')->appends(request()->except($searchParams))->links()}}
+                    @if(isset($data))
+                    {{$data->setPath('/admin/commonCodeLargeManageView')->appends(request()->except($searchParams))->links()}}
                     @endIf
               </div>
             </div>

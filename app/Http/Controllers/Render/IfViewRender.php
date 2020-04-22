@@ -39,8 +39,7 @@ class ifViewRender {
         array('label' => '프로그램 등록', 'url' => '/process/processListView','icon'=>'fas fa-fw fa-cog'),
         array('label' => '잡 실행', 'url' => '/job/jobExecuteView','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '모니터링', 'url' => '/monitoring/monitoringView','icon'=>'fas fa-fw fa-wrench'),
-        array('label' => '작업내역', 'url' => '/jobHistory/jobHistoryView','icon'=>'fas fa-fw fa-folder'),
-        array('label' => '관리자','url'=> '/admin/commonCodeManageView','icon'=>'fas fa-fw fa-folder')
+        array('label' => '작업내역', 'url' => '/jobHistory/jobHistoryView','icon'=>'fas fa-fw fa-folder')
     );
 
 

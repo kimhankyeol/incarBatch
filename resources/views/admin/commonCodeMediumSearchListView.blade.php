@@ -1,5 +1,5 @@
 @foreach($data as $code)
-<tr onclick="pageMove.admin.commonCodeManageDetail('{{$code->WorkLarge}}','{{$code->WorkMedium}}')">
+<tr onclick="pageMove.admin.commonCodeMediumDetail('{{$code->WorkLarge}}','{{$code->WorkMedium}}')">
     <td>{{$code->WorkLargeName}}</td>
     <td>{{$code->ShortName}}</td>
     <td>{{$code->WorkLarge.$code->WorkMedium}}</td>

@@ -16,19 +16,19 @@ class JobController extends Controller
     //잡 리스트/검색 뷰
     public function jobListView(Request $request){
         $searchWord = $request->input('searchWord');
-        $workLargeCtg = $request->input('workLargeCtg');
-        $workMediumCtg = $request->input('workMediumCtg');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
         if($searchWord==""){
             $searchWord="searchWordNot";
         }
-        if($workLargeCtg==""){
-            $workLargeCtg="all";
+        if($WorkLarge==""){
+            $WorkLarge="all";
         }
-        if($workMediumCtg==""){
-            $workMediumCtg="all";
+        if($WorkMedium==""){
+            $WorkMedium="all";
         }
         // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-        $jobContents = DB::select('CALL searchJobList(?,?,?)',[$searchWord,$workLargeCtg, $workMediumCtg]);
+        $jobContents = DB::select('CALL searchJobList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$jobContents);
@@ -39,18 +39,18 @@ class JobController extends Controller
         $searchParams = array( 'searchWord' => $searchWord);
                
         //대분류 , 중분류 전체일 조건  
-        if($workLargeCtg=="all"&&$workMediumCtg=="all"){
+        if($WorkLarge=="all"&&$WorkMedium=="all"){
             $searchParams = array( 'searchWord' => $searchWord);
         }
         //대분류 선택, 중분류 전체
-        else if($workLargeCtg!="all"&&$workMediumCtg=="all"){
-            $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg'=>'all');
+        else if($WorkLarge!="all"&&$WorkMedium=="all"){
+            $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium'=>'all');
         }
         //대분류 선택 ,중분류 선택
-        else if($workLargeCtg!="all"&&$workMediumCtg!="all"){
-            $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg' => $workMediumCtg);
+        else if($WorkLarge!="all"&&$WorkMedium!="all"){
+            $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
-        return view('job.jobListView',compact('data','searchWord','searchParams','paginator'));
+        return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium'));
          
     }
     //잡 상세 뷰

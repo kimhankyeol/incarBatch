@@ -27,11 +27,17 @@ const pageMove={
     jobHistory:{},
     //관리자
     admin:{
-        commonCodeUpdateView:function(WorkLarge,WorkMedium){
-            location.href ="/admin/commonCodeUpdateView?WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
+        commonCodeLargeDetail:function(WorkLarge){
+            location.href="/admin/commonCodeLargeDetailView?WorkLarge="+WorkLarge;
         },
-        commonCodeManageDetail:function(WorkLarge,WorkMedium){
-            location.href="/admin/commonCodeDetailView?WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
+        commonCodeMediumDetail:function(WorkLarge,WorkMedium){
+            location.href="/admin/commonCodeMediumDetailView?WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
+        },
+        commonCodeMediumUpdateView:function(WorkLarge,WorkMedium){
+            location.href ="/admin/commonCodeMediumUpdateView?WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium;
+        },
+        commonCodeLargeUpdateView:function(WorkLarge){
+            location.href="/admin/commonCodeLargeUpdateView?WorkLarge="+WorkLarge;
         },
         register:function(urlName){
             location.href="/admin/"+urlName;

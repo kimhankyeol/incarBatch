@@ -3,10 +3,10 @@ const job = {
   //조회
   search: function(page){
       var searchWord = $('#searchWord').val();
-      var workLargeCtg = $('#workLargeVal option:selected').val();
-      var workMediumCtg = $('#workMediumVal option:selected').val();
+      var WorkLarge = $('#workLargeVal option:selected').val();
+      var WorkMedium = $('#workMediumVal option:selected').val();
       // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
-      location.href="/job/jobListView?searchWord="+searchWord+"&workLargeCtg="+workLargeCtg+"&workMediumCtg="+workMediumCtg
+      location.href="/job/jobListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
   },
   //등록
   register:function(){

@@ -90,18 +90,30 @@ Route::prefix('code')->group(function(){
 
 ////////////관리자 /////////////////////////
 Route::prefix('admin')->group(function(){
-    //공통코드 관리 뷰
-    Route::get('/commonCodeManageView','AdminController@commonCodeManageView');
-    //공통코드 상세 뷰
-    Route::get('/commonCodeDetailView','AdminController@commonCodeDetailView');
-    //공통코드 등록 뷰
-    Route::get('/commonCodeRegisterView','AdminController@commonCodeRegisterView');
-    //공통코드 등록
-    Route::post('/commonCodeRegister','AdminController@commonCodeRegister');
-    //공통코드 존재유무 조회 
+    //공통코드 대분류 관리 뷰
+    Route::get('/commonCodeLargeManageView','AdminController@commonCodeLargeManageView');
+    //공통코드 중분류 관리 뷰
+    Route::get('/commonCodeMediumManageView','AdminController@commonCodeMediumManageView');
+    //공통코드 대분류 상세 뷰
+    Route::get('/commonCodeLargeDetailView','AdminController@commonCodeLargeDetailView');
+    //공통코드 중분류 상세 뷰
+    Route::get('/commonCodeMediumDetailView','AdminController@commonCodeMediumDetailView');
+    //공통코드 대분류 등록 뷰
+    Route::get('/commonCodeLargeRegisterView','AdminController@commonCodeLargeRegisterView');
+    //공통코드 중분류 등록 뷰
+    Route::get('/commonCodeMediumRegisterView','AdminController@commonCodeMediumRegisterView');
+    //공통코드 대분류 등록
+    Route::post('/commonCodeLargeRegister','AdminController@commonCodeLargeRegister');
+    //공통코드 중분류 등록
+    Route::post('/commonCodeMediumRegister','AdminController@commonCodeMediumRegister');
+    //공통코드 대분류 수정 뷰 
+    Route::get('/commonCodeLargeUpdateView','AdminController@commonCodeLargeUpdateView');
+    //공통코드 중분류 수정 뷰
+    Route::get('/commonCodeMediumUpdateView','AdminController@commonCodeMediumUpdateView');
+    //공통코드 대분류 존재유무 조회 commonCodeLargeExist
+    Route::get('/commonCodeLargeExist','AdminController@commonCodeLargeExist');
+    //공통코드 중분류 존재유무 조회 
     Route::get('/commonCodeExist','AdminController@commonCodeExist');
-    //공통코드 수정 뷰
-    Route::get('/commonCodeUpdateView','AdminController@commonCodeUpdateView');
     //공통코드 수정 
-    Route::post('/commonCodeUpdate','AdminController@commonCodeUpdate');
+    Route::post('/commonCodeMediumUpdate','AdminController@commonCodeMediumUpdate');
 });

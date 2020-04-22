@@ -1,40 +1,125 @@
 //공통 코드
 const code = {
-    //대분류 
-    workLargeCtg:function(){
+    //대분류 즉시 조회 
+    workLargeCtg:function(WorkLarge,WorkMedium){
         $.ajax({
             url:"/code/workLargeCtg",
             method:"get",
+            data:{
+                "WorkLarge":WorkLarge,
+                "WorkMedium":WorkMedium
+            },
             success:function(data){
                 console.table(data);
                 $('#codeLargeView').html(data.returnHTML);
+                code.workMediumCtg2(WorkLarge,WorkMedium)
             },error:function(err){
         
             }
         })
     },
-    //중분류
+    //중분류  대분류를 클릭하면 나오는 select
     workMediumCtg:function(){
         $.ajax({
             url:"/code/workMediumCtg",
             method:"get",
             data:{
-                "WorkLarge":$('#workLargeVal').val()
+                "WorkLarge":$('#workLargeVal').val(),
             },
             success:function(data){
-                console.table(data);
+                $('#workMediumVal').html(data.returnHTML);
+            },error:function(err){
+            }
+        })
+    },
+    workMediumCtg2:function(WorkLarge,WorkMedium){
+        $.ajax({
+            url:"/code/workMediumCtg",
+            method:"get",
+            data:{
+                "WorkLarge":WorkLarge,
+                "WorkMedium":WorkMedium
+            },
+            success:function(data){
                 $('#workMediumVal').html(data.returnHTML);
             },error:function(err){
         
             }
         })
     },
-    //관리자 공통 코드 검색
+    //관리자 대분류 공통 코드 검색
+    largeSearch:function(page){
+        var searchWord = $('#searchWord').val();
+        location.href="/admin/commonCodeLargeManageView?searchWord="+searchWord;        
+    },
+    //관리자 중분류 공통 코드 검색
     search:function(page){
         var searchWord = $('#searchWord').val();
-        location.href="/admin/commonCodeManageView?searchWord="+searchWord;        
+        var WorkLarge = $('#workLargeVal option:selected').val();
+        var WorkMedium = $('#workMediumVal option:selected').val();
+        location.href="/admin/commonCodeMediumManageView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;        
     },
-    //관리자 공통 코드 등록
+    //관리자 대분류 공통 코드 등록
+    largeRegister:function(){
+        var WorkLarge = $('#WorkLarge');
+        var CodeShortName =$('#CodeShortName');
+        var CodeLongName =$('#CodeLongName');
+        var CodeSulmyung =$('#CodeSulmyung');
+        var Used = $('#Used option:selected');
+       
+        if(WorkLarge.val()==""){
+            alert("대분류 코드번호가 입력되지 않았습니다.");
+            WorkLarge.focus();
+            return false;
+        }else if(CodeShortName.val()==""){
+            alert("코드명이 입력되지 않았습니다.");
+            CodeShortName.focus();
+            return false;
+        }else if(CodeLongName.val()==""){
+            alert("코드 전체명이 입력되지 않았습니다.");
+            CodeLongName.focus();
+            return false;
+        }else if(CodeSulmyung.val()==""){
+            alert("코드 설명이 입력되지 않았습니다.");
+            CodeSulmyung.focus();
+            return false;
+        }else{
+            var result = confirm("대분류 코드를 등록하시겠습니까?");
+            if(result){
+                $.ajax({
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"/admin/commonCodeLargeRegister",
+                    method:"POST",
+                    data:{
+                       "WorkLarge":WorkLarge.val(),
+                       "CodeShortName":CodeShortName.val(),
+                       "CodeLongName":CodeLongName.val(),
+                       "CodeSulmyung":CodeSulmyung.val(),
+                       "Used":Used.val()
+                    },
+                    success:function(data){
+                        if(data.msg=="exist"){
+                            alert('코드가 존재합니다.');
+                            return false;
+                        }else if(data.msg=="success"){
+                            alert('코드가 등록되었습니다.');
+                            location.href ="/admin/commonCodeLargeManageView"
+                        }else if(data.msg=="failed"){
+                            alert('코드 등록이 실패되었습니다.');
+                            location.href ="/admin/commonCodeLargeManageView"
+                        }
+                    },
+                    error:function(error){
+                    }
+                })
+            }else{
+                return false;
+            }
+        }
+    },
+    //관리자 중분류 공통 코드 등록
     register:function(){
         var WorkLarge = $('#WorkLarge');
         var WorkMedium = $('#WorkMedium');
@@ -92,10 +177,10 @@ const code = {
                             return false;
                         }else if(data.msg=="success"){
                             alert('코드가 등록되었습니다.');
-                            location.href ="/admin/commonCodeManageView"
+                            location.href ="/admin/commonCodeMediumManageView"
                         }else if(data.msg=="failed"){
                             alert('코드 등록이 실패되었습니다.');
-                            location.href ="/admin/commonCodeManageView"
+                            location.href ="/admin/commonCodeMediumManageView"
                         }else if(data.msg=="folderExist"){
                             alert('이미 폴더경로를 사용중인 코드가 있습니다.');
                             return false;
@@ -110,26 +195,16 @@ const code = {
             }
         }
     },
-    //관리자 코드 수정
+    //관리자 중분류 코드 수정
     update:function(){
         var WorkLarge =$('#WorkLarge');
         var WorkMedium =$('#WorkMedium');
         var CodeShortName =$('#CodeShortName');
         var CodeLongName =$('#CodeLongName');
-        var CodeShortName =$('#CodeShortName');
-        var CodeLongName =$('#CodeLongName');
         var CodeSulmyung =$('#CodeSulmyung');
         var FilePath = $('#FilePath');
         var Used = $('#Used option:selected');
-        if(WorkLarge.val()==""){
-            alert("대분류 코드번호가 입력되지 않았습니다.");
-            WorkLarge.focus();
-            return false;
-        }else if(WorkMedium.val()==""){
-            alert("중분류 코드번호가 입력되지 않았습니다.");
-            WorkMedium.focus();
-            return false;
-        }else if(CodeShortName.val()==""){
+       if(CodeShortName.val()==""){
             alert("코드명이 입력되지 않았습니다.");
             CodeShortName.focus();
             return false;
@@ -146,13 +221,13 @@ const code = {
             FilePath.focus();
             return false;
         }else{
-            var result = confirm(" 코드를 수정 하시겠습니까?");
+            var result = confirm("중분류 코드를 수정 하시겠습니까?");
             if(result){
                 $.ajax({
                     headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url:"/admin/commonCodeUpdate",
+                    url:"/admin/commonCodeMediumUpdate",
                     method:"POST",
                     data:{
                        "WorkLarge":WorkLarge.val(),
@@ -164,7 +239,14 @@ const code = {
                        "Used":Used.val()
                     },
                     success:function(data){
-                       location.href="/admin/commonCodeManageView";
+                        if(data.msg=="success"){
+                            alert('중분류 코드를 수정하였습니다.');
+                            location.href="/admin/commonCodeMediumManageView";
+                        }else{
+                            alert('코드 수정에 실패했습니다.');
+                             location.href="/admin/commonCodeMediumManageView";
+                        }
+                       
                     },
                     error:function(error){
 
@@ -176,9 +258,87 @@ const code = {
         }
 
     },
-    //관리자 코드 존재유무 조회
-    commonCodeExist(){
+    //관리자 대분류 코드 존재유무 조회
+    commonLargeCodeExist:function(){
         var WorkLarge = $('#WorkLarge');
+        $.ajax({
+            url:'/admin/commonLargeCodeExist',
+            method:'get',
+            data:{
+                "WorkLarge":WorkLarge.val(),
+            },
+            success:function(data){
+              $('#commonCodeSearchList').html(data.returnHTML);
+            }
+          })
+    },
+    //관리자 중분류 onchange
+    workMediumInfo:function(){
+        var WorkLarge = $('#WorkLarge option:selected');
+        if(WorkLarge.val()==""){
+            WorkLarge.val('all');
+        }
+        $.ajax({
+            url:'/admin/commonCodeExist',
+            method:'get',
+            data:{
+                "WorkLarge":WorkLarge.val(),
+                "WorkMedium":"all"
+            },
+            success:function(data){
+                if($('#WorkLarge').val()=="all"){
+                    $('#WorkLarge').val('');
+                }
+                if($('#WorkMedium').val()=="all"){
+                $('#WorkMedium').val('');
+                }
+              $('#commonCodeSearchList').html(data.returnHTML);
+            }
+          })
+    },
+    //관리자 대분류 초기 조회
+    commonCodeLargeInfo:function(){
+        var WorkLarge = $('#WorkLarge');
+        if(WorkLarge.val()==""){
+            WorkLarge.val('all');
+        }
+        $.ajax({
+            url:'/admin/commonCodeLargeExist',
+            method:'get',
+            data:{
+                "WorkLarge":WorkLarge.val(),
+            },
+            success:function(data){
+                if($('#WorkLarge').val()=="all"){
+                    $('#WorkLarge').val('');
+                }
+              $('#commonCodeSearchList').html(data.returnHTML);
+            }
+          })
+    },
+     //관리자 대분류 코드 존재유무 조회
+     commonCodeLargeExist:function(){
+        var WorkLarge = $('#WorkLarge');
+        if(WorkLarge.val()==""){
+            WorkLarge.val('all');
+        }
+        $.ajax({
+            url:'/admin/commonCodeLargeExist',
+            method:'get',
+            data:{
+                "WorkLarge":WorkLarge.val(),
+            },
+            success:function(data){
+                if($('#WorkLarge').val()=="all"){
+                    $('#WorkLarge').val('');
+                }
+              $('#commonCodeSearchList').html(data.returnHTML);
+            }
+          })
+    },
+    //관리자 중분류 코드 존재유무 조회
+    commonCodeExist:function(){
+        var WorkLarge = $('#WorkLarge option:selected');
         var WorkMedium = $('#WorkMedium');
         if(WorkLarge.val()==""){
             WorkLarge.val('all');
@@ -216,10 +376,62 @@ const code = {
                 workMediumVal : $('#workMediumVal option:selected').val()
             },
             success:function(data){
-                console.log(data.workFilePath);
                 $('#id1').val(data.workFilePath[0].FilePath);
             },error:function(err){
             }
         })
+    },
+    //관리자 대분류 수정
+    largeUpdate:function(){
+        var WorkLarge =$('#WorkLarge');
+        var CodeShortName =$('#CodeShortName');
+        var CodeLongName =$('#CodeLongName');
+        var CodeSulmyung =$('#CodeSulmyung');
+        var Used = $('#Used option:selected');
+        if(CodeShortName.val()==""){
+            alert("코드명이 입력되지 않았습니다.");
+            CodeShortName.focus();
+            return false;
+        }else if(CodeLongName.val()==""){
+            alert("코드 전체명이 입력되지 않았습니다.");
+            CodeLongName.focus();
+            return false;
+        }else if(CodeSulmyung.val()==""){
+            alert("코드 설명이 입력되지 않았습니다.");
+            CodeSulmyung.focus();
+            return false;
+        }else{
+            var result = confirm("대분류 코드를 수정 하시겠습니까?");
+            if(result){
+                $.ajax({
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"/admin/commonCodeLargeUpdate",
+                    method:"POST",
+                    data:{
+                       "WorkLarge":WorkLarge.val(),
+                       "CodeShortName":CodeShortName.val(),
+                       "CodeLongName":CodeLongName.val(),
+                       "CodeSulmyung":CodeSulmyung.val(),
+                       "Used":Used.val()
+                    },
+                    success:function(data){
+                        if(data.msg=="success"){
+                            alert('대분류 코드를 수정하였습니다.');
+                            location.href="/admin/commonCodeLargeManageView";
+                        }else{
+                            alert('코드 수정에 실패했습니다.');
+                             location.href="/admin/commonCodeLargeManageView";
+                        }
+                    },
+                    error:function(error){
+
+                    }
+                })
+            }else{
+                return false;
+            }
+        }
     }
 }
