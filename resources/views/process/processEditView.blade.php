@@ -149,5 +149,5 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   </body>
   </html>
 @php
-  echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'");</script>'
-@endphp
+  echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'","'.$_SERVER["REQUEST_URI"].'");</script>';
+ @endphp

@@ -108,8 +108,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       {{--content 끝--}}
     </div>
   </div>
-@php
-  echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'");</script>'
-@endphp
+  @php
+  echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'","'.$_SERVER["REQUEST_URI"].'");</script>';
+ @endphp
 </body>
 </html>

@@ -1,13 +1,14 @@
 //공통 코드
 const code = {
     //대분류 즉시 조회 
-    workLargeCtg:function(WorkLarge,WorkMedium){
+    workLargeCtg:function(WorkLarge,WorkMedium,URI){
         $.ajax({
             url:"/code/workLargeCtg",
             method:"get",
             data:{
                 "WorkLarge":WorkLarge,
-                "WorkMedium":WorkMedium
+                "WorkMedium":WorkMedium,
+                "URI":URI
             },
             success:function(data){
                 console.table(data);

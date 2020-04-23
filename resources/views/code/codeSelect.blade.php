@@ -1,5 +1,11 @@
 
-<div class="text-center align-self-center font-weight-bold text-primary mx-2">업무구분</div>
+
+@if(preg_match_all("/".str_replace("/","\\/","/admin/commonCodeMediumManageView" )."/","/".$URI."/"))
+    <div class="text-center align-self-center font-weight-bold text-primary mx-2">코드 구분</div>
+@else
+    <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+@endif
+
 <div class="text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
 {{-- jobJs/codeFunc.js --}}
 {{-- 대분류를 클릭하면 code.workMediumCtg 호출하여 중분류를 나타낸다.   --}}
