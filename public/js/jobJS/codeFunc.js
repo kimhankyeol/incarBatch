@@ -377,7 +377,7 @@ const code = {
                 workMediumVal : $('#workMediumVal option:selected').val()
             },
             success:function(data){
-                $('#id1').val(data.workFilePath[0].FilePath);
+                $('#processPath').val(data.workFilePath[0].FilePath);
             },error:function(err){
             }
         })

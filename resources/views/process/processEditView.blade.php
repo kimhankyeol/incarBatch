@@ -37,14 +37,25 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <div id="codeLargeView" class="outher-code"></div>
 
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-                            <input id ="id1" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_FileName}}" readonly>
-                            <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}">
+                            <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_FileName}}" readonly>
+                            <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}">
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <select id="UseDb" class="col-md-1 form-control form-control-sm">
-                                    @foreach ($db_list as $list)
-                                        <option value="{{ $list -> LongName}}">{{ $list -> LongName}}</option>
-                                    @endforeach  
-                            </select>  
+                              @php
+                              $i = 0;
+                              $len = count($db_list);
+                              @endphp
+                              @foreach ($db_list as $Db_list)
+                              @if ($i == 0) {
+                                  <option value="{{ $Db_list->ShortName }}" selected>{{ $Db_list->ShortName }}</option>  
+                              @else
+                              <option value="{{ $Db_list->ShortName }}">{{ $Db_list->ShortName }}</option>  
+                              @endIf
+                              @php
+                                  $i++;
+                              @endphp
+                              @endforeach
+                            </select>   
                             @if(($processDetail[0]->P_ReworkYN)==1)
                             <div class="col-md-1 mx-2 custom-control custom-checkbox small">
                                 <input id="retry" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_ReworkYN }}">
@@ -107,6 +118,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             </div>
                         </div>
                         <hr>
+                        <div class="row align-items-center">
+                             {{-- 업무 구분 대분류 중분류 선택 --}}
+                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
+                            <input id="P_FileInput" type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" value="{{$processDetail[0]->P_FileInput}}" readonly>
+                               @if(($processDetail[0]->P_FileInputCheck)==1)
+                                  <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                                      <input id="P_FileInputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_FileInputCheck }}">
+                                      <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
+                                  </div>
+                                  @else
+                                  <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                                    <input id="P_FileInputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_FileInputCheck }}">
+                                    <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
+                                  </div>
+                                @endif
+                        </div>
+                        <hr>
                         <div class="row">
                         <h6 class="col-md-12 font-weight-bold text-primary">
                           프로그램 파라미터 타입
@@ -119,26 +147,38 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 $proParamArr=explode("||",$processDetail[0]->P_Params);
                                 $proParamSulArr=explode("||",$processDetail[0]->P_ParamSulmyungs);
                                 for ($i = 0; $i < count($proParamArr); $i++) {
-                                echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
-                                echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" readonly>';
+                                  echo '<div class="d-inline-flex w-50 delYN mb-2">';
+                                  echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
+                                  echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm">';
                                 if($proParamArr[$i]=="paramDate"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
+                                  echo '<option value="'.$proParamArr[$i].'" selected>날짜</option> <option value="paramStr">문자</option> <option value="paramNum">숫자</option> </select>';
                                 }else if($proParamArr[$i]=="paramNum"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
+                                  echo '<option value="paramDate">날짜</option> <option value="paramStr">문자</option> <option value="'.$proParamArr[$i].'" selected>숫자</option> </select>';
                                 }else if($proParamArr[$i]=="paramStr"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
+                                  echo '<option value="paramDate">날짜</option> <option value="'.$proParamArr[$i].'" selected>문자</option> <option value="paramNum">숫자</option> </select>';
                                 }
-                                echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly>';
+                                echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'">';
+                                echo '<div class="delParam btn-danger  form-control form-control-sm col-md-1 text-center" onclick="process.deleteDivParam()">삭제</div>';
+                                echo '</div>';
                                 }
                               @endphp
                             </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col-md-12" id="proParams"></div>
+                            {{-- 프로그램변수가 추가되는 함수  process.addDivParam()   삭제되는 함수는 process.delDivParam() //jobF unc.js 에 있음 --}}
+                            <div class="col-md-12 text-center">
+                                <input type="button" class="mt-3 btn btn-info" value="프로그램 변수 추가 +"  onclick="process.addDivParam()"/>
+                            </div>
+                          </div>
+                          <hr>
+                        
+                          <div class="row justify-content-end">
+                              <input type="button" class="mt-3 mr-2 btn btn-primary" value="저장" onclick="process.update()" />
+                              <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
+                          </div>
                         </div>
-                        <hr>
-                        <div class="row justify-content-end">
-                            <input type="button" class="mt-3 mr-2 btn btn-primary" value="저장" onclick="process.update()" />
-                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -151,3 +191,37 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 @php
   echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'","'.$_SERVER["REQUEST_URI"].'");</script>';
  @endphp
+
+ <script>
+    $(function(){
+        $('#P_FileInputCheck').click(function(){
+
+            var workLargeVal=$('#workLargeVal');
+            var workMediumVal=$('#workMediumVal');
+            var processFile=$('#processFile');
+
+            if(workLargeVal.val()!="all"&&workMediumVal.val()!="all"&&processFile.val()!=""){
+                var chk = $(this).is(":checked");
+                if(chk){
+                    var FileName = $('#processFile').val();
+                    var FileNameText = FileName.replace('php','txt');
+                    $('#P_FileInput').val($('#processPath').val()+"/"+FileNameText);
+
+                    processFile.prop('readonly', true);
+                    workLargeVal.attr("disabled","disabled");
+                    workMediumVal.attr("disabled","disabled");
+
+                }else{
+                    $('#P_FileInput').val("");
+                    processFile.prop('readonly', false);
+                    workLargeVal.removeAttr("disabled", "disabled");
+                    workMediumVal.removeAttr("disabled", "disabled");
+                }
+            }else{
+                return false;
+            }
+        })
+    })
+</script>
+
+ 

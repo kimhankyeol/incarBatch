@@ -68,6 +68,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="table-responsive">
                   <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
                     <colgroup>
+                      <col width="130px" />
                       <col width="110px" />
                       <col width="150px" />
                       <col width="120px" />
@@ -78,11 +79,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </colgroup>
                     <thead>
                       <tr>
-                        <th>ID</th>
-                        <th>대분류</th>
-                        <th>중분류</th>
+                        <th>경로</th>
                         <th>프로그램</th>
                         <th>프로그램 명</th>
+                        <th>대분류</th>
+                        <th>중분류</th>
                         <th>설명</th>
                         <th>등록자</th>
                         <th>등록일자</th>
