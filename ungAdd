@@ -1,0 +1,62 @@
+* 445b0e1 (HEAD, jiheum) 2020-04-24 17:27 update
+* f76278a (origin/master, origin/kim, master) css 재업로드
+* b5d5ee1 css 파일 빼먹으심;;
+* 61d9cec 2020 04 23 09 00
+* 20dcf29 2020 04 22 19 36
+* ac82826 2020 04 22 18 05 job , commoncode modify
+* 5a486c6 2020-04-21 5:23pm processSearchListView modified
+* 6b0c6a0 2020 04 21 17 09
+* f9b3a6f 2020 04 21 16 56 JOB , PROGRAM 수정
+* 86dd318 del file
+* df234b2 2020 04 27 09 00
+| * 5fdbe88 (origin/ljh, ljh) 2020-04-20 14:01 수정
+| * 8904032 css 수정
+| * aa4772a 재수정 업데이트
+| * ae8e91b .
+| *   7e9cf17 Merge branch 'ljh' of https://github.com/kimhankyeol/incarproject into ljh
+| |\  
+| | * c76a19f 2020-04-09 16:40
+| * | 49e007c CSS 수정사항
+| * | 84ecb96 first
+|/ /  
+* | 8b5665e 2020-04-20
+* | 8012112 2020 04 20 09 12 통합
+* | 102f0d7 2020 04 14 19 28
+* | 4a8c152 2020 04 16 09 14 program 제외 하고 올림
+* | 61047b6 2020-04-14 20:40 git commit 통합
+* | 6c3354b 2020 04 13 15 50
+* | 269b6b9 2020 04 13 15 37 잡상세 완료
+* | 3460b3c 2020 04 13 10 27 delete file
+* | 7b00b4b 2020 04 13 10 21 수정
+* | d86313d 2020 04 13 09 28 all update
+|/  
+* e582dc5 2020 04 09 13 54 modify
+* 4f3b1d2  2020 04 09 13 41  잡파라미터 입력-> 잡파라미터 타입
+* ad6cfa3 2020 04 09 13 29 param add css update
+* 205a36f 20200409 13 04
+* fd25368 12
+* b29b25a 2020-04-09 12:33 job/process Register param css add
+* 3b62bc2  2020 04 09 12 11
+* b3f7c8f 2020-04-09 jobcontroller processcontroller p_seq large str change
+* d2ca00d 2020-04-09 11:32 job, process paging complete
+* feac579 2020 04 09 09:48
+* f18ce7b 2020-04-09 09:33  paginationCustom 완료
+* d328f2d 2020-04-09 08 16
+* ab5d8aa 2020 04 08 19 41
+* a0e1741 2020 04 08 10 30
+* 7e3c45c 2020-04-08 slack git 연동
+* a6afb84 2020 04 07 18 36 param add del
+* 8617a68  2020 04 07 13 52 modify ifViewRender
+* 4baa74c 2020 04 07 13 30  kim php laravel structure complete
+* 073a2c2 remove webstorm .idea directory
+* 0d13dd4 2020 0403 17 56
+* eca38e1  2020 04 03 08:41 job code update
+* 32ea338 gitigonore cache rm
+* 1d8e8d5 2020 04 02 13 45
+* 75469e2 2020 03 31 readme gitignore
+* 21c2fba 2020  03 21 17 28
+* 1291611 2020 03 30 18:17
+* d5d5630 2020-03-30 18:12
+* 0be445e 2020 03 30 10 14 Jobcontroller , batchRegister update
+* cf7a25b 2020-03-27 gitignore
+* ad0dd0b 2020-03-27 incarbatch laravel project create
