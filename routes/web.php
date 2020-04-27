@@ -17,6 +17,11 @@ Route::get('/login', function(){
     return view('/common/login');
 });
 
+//로그인 validationCheck
+Route::prefix('/login')->group(function(){
+    Route::get('/loginCheck','LoginController@loginCheck');
+});
+
 //잡 prefix
 Route::prefix('job')->group(function(){
     //잡리스트 뷰

@@ -30,16 +30,16 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="outher-code-PD">
+                            <div class="outher-code">
                               <input id="P_Seq" type="hidden" value="{{$processDetail[0]->P_Seq}}"/>
                               <div class="text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
-                              <input id="workLargeVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkLargeName}}" readonly>
+                              <input id="workLargeVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkLargeName}}" style="cursor:not-allowed" readonly>
                               <div class="text-center align-self-center font-weight-bold text-primary mx-2">중분류</div>
                               <input id="workMediumVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkMediumName}}" readonly>
                             </div>
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-                            <input id ="id1" type="text" class="col-md-1 form-control form-control-sm align-self-center"  value="{{$processDetail[0]->P_FileName}}" readonly>
-                            <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" readonly>
+                            <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center"  value="{{$processDetail[0]->P_FileName}}" readonly>
+                            <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" readonly>
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <input id="UseDb" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_UseDB}}" readonly>
                             @if(($processDetail[0]->P_ReworkYN)==1)
@@ -95,13 +95,30 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_RegDate}}" readonly>              
                             </div>
                             <div class="col-md-6">
-                                <div class="limit-time-text">수정자</div>
+                               <div class="limit-time-text">수정자</div>
                                 <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdId}}" readonly>
                                 <div class="limit-time-text">수정자IP</div>
                                 <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdIP}}" readonly>
                                 <div class="limit-time-text">수정일</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdDate}}" readonly>              
+                                <input type="text" class="form-control form-control-sm limit-time-input" value="{{$processDetail[0]->P_UpdDate}}" readonly> 
                             </div>
+                        </div>
+                        <hr>
+                        <div class="row align-items-center">
+                             {{-- 업무 구분 대분류 중분류 선택 --}}
+                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
+                            <input id="P_FileInput" type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" value="{{$processDetail[0]->P_FileInput}}" readonly>
+                              @if(($processDetail[0]->P_FileInputCheck)==1)
+                                <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                                    <input id="retry" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_FileInputCheck }}" onclick = "return false">
+                                    <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
+                                </div>
+                                @else
+                                <div class="col-md-1 mx-2 custom-control custom-checkbox small">
+                                  <input id="retry" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_FileInputCheck }}" onclick = "return false">
+                                  <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
+                                </div>
+                                @endif
                         </div>
                         <hr>
                         <div class="row">
@@ -116,8 +133,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 $proParamArr=explode("||",$processDetail[0]->P_Params);
                                 $proParamSulArr=explode("||",$processDetail[0]->P_ParamSulmyungs);
                                 for ($i = 0; $i < count($proParamArr); $i++) {
-                                echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
-                                echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" readonly>';
+                                  echo '<div class="d-inline-flex w-50 delYN mb-2">';
+                                  echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
+                                  echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" readonly>';
                                 if($proParamArr[$i]=="paramDate"){
                                   echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
                                 }else if($proParamArr[$i]=="paramNum"){
@@ -125,7 +143,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 }else if($proParamArr[$i]=="paramStr"){
                                   echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
                                 }
-                                echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly>';
+                                echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly></div>';
                                 }
                               @endphp
                             </div>

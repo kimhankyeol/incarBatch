@@ -17,9 +17,10 @@ class PopupController extends Controller
     public function jobGusung(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $jobGusungContents = DB::select('CALL getJobGusungList(?)',[$Job_Seq]);
+        $jobDetail = DB::select('CALL jobDetail(?)',[$Job_Seq]);
         $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
         $jobName = $jobName[0]->Job_Name;
-        return view('/popup/jobGusung',compact('jobGusungContents','jobName'));
+        return view('/popup/jobGusung',compact('jobGusungContents','jobName','jobDetail'));
     }
     //팝업- 잡 구성 수정/ 등록
     public function jobGusungModify(Request $request){
@@ -50,35 +51,46 @@ class PopupController extends Controller
     }
     //팝업 프로세스 검색조회
     public function popupPsSearch(Request $request){
-        $searchWord = $request->input('searchWord');
-        $workLargeCtg = $request->input('workLargeCtg');
-        $workMediumCtg = $request->input('workMediumCtg');
-
-         //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
-        $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$workLargeCtg, $workMediumCtg]);
+        $searchWord = $request -> input('searchWord');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        if($searchWord==""){
+            $searchWord="searchWordNot";
+        }
+        if($WorkLarge==""){
+            $WorkLarge="all";
+        }
+        if($WorkMedium==""){
+            $WorkMedium="all";
+        }
+        //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
+        // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
+        $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
         $page=$request->input('page');
-        //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
-        $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$processContents);
-        // //페이징 정보를 가져옴
+            //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
+        $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$processContents);
+        //페이징 정보를 가져옴
         $paginator = $PaginationCustom->getPaging();
-        // //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
-        $dataSearch =$PaginationCustom->getItemsForCurrentPage();
+        //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
+        $data =$PaginationCustom->getItemsForCurrentPage();
         $searchParams = array( 'searchWord' => $searchWord);
         //대분류 , 중분류 전체일 조건  
-        if($workLargeCtg=="all"&&$workMediumCtg=="all"){
+        if($WorkLarge=="all"&&$WorkMedium=="all"){
             $searchParams = array( 'searchWord' => $searchWord);
         }
         //대분류 선택, 중분류 전체
-        else if($workLargeCtg!="all"&&$workMediumCtg=="all"){
-            $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg'=>'all');
+        else if($WorkLarge!="all"&&$WorkMedium=="all"){
+            $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium'=>'all');
         }
         //대분류 선택 ,중분류 선택
-        else if($workLargeCtg!="all"&&$workMediumCtg!="all"){
-            $searchParams = array( 'searchWord' => $searchWord,'workLargeCtg' => $workLargeCtg,'workMediumCtg' => $workMediumCtg);
+        else if($WorkLarge!="all"&&$WorkMedium!="all"){
+            $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
-        $returnHTML = view('popup.processSearchList',compact('dataSearch','searchWord','searchParams','paginator'))->render();
+        $returnHTML = view('/popup/gusungProcessSearchListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium'))->render();
 
         return response()->json(array('returnHTML'=>$returnHTML,200));
+        //return $data;
+
     }
     
     //팝업- 잡 실행
