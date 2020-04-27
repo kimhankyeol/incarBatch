@@ -32,7 +32,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div id="codeLargeView" class="outher-code"></div>
+                            <div class="outher-code">
+                                {{-- 업무 구분 대분류 중분류 선택 --}}
+                                <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+                                @include("code.codeSelect")
+                              </div>
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
                             <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center"readonly>
                             <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
@@ -134,7 +138,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   </body>
   </html>
 <script>
-    code.workLargeCtg();
     $(function(){
         $('#P_FileInputCheck').click(function(){
 
@@ -165,3 +168,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
     })
 </script>
+<script>
+    function workLargeChgSel(){
+     var WorkLarge =  $('#workLargeVal').val();
+          $.ajax({
+            url:"/code/workMediumCtg",
+            method:"get",
+            data:{
+              "WorkLarge":$('#workLargeVal').val()
+            },
+            success:function(resp){
+              $("#workMediumVal").html(resp.returnHTML);
+            },
+            error:function(error){
+  
+            }
+          })
+    }
+    </script>
