@@ -65,7 +65,7 @@ class ProcessController extends Controller
         $searchWord="searchWordNot";
         $WorkLarge="all";
         $WorkMedium="all";
-        $usedLarge = DB::select('CALL Process_searchUsedLargeCode');
+        $usedLarge = DB::select('CALL Job_RegViewLargeCode');
         $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->where('Used','1')->get();
         return view('process.processRegisterView',compact('db_list','WorkLarge','WorkMedium','usedLarge'));
     }

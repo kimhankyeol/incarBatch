@@ -74,7 +74,7 @@ class JobController extends Controller
         $searchWord="searchWordNot";
         $WorkLarge="all";
         $WorkMedium="all";
-        $usedLarge = DB::select('CALL Job_searchUsedLargeCode');
+        $usedLarge = DB::select('CALL Job_RegViewLargeCode');
         return view('job.jobRegisterView',compact('usedLarge','WorkMedium','WorkLarge'));
     }
     //잡 수정 뷰
