@@ -72,7 +72,7 @@ class AdminController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        $commonCodeDetail=DB::select('CALL getCommonCodeAll(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $commonCodeDetail=DB::select('CALL Common_codeDetail(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         return view('/admin/commonCodeMediumDetailView',compact('commonCodeDetail'));
     }
     //공통코드 대분류 등록 뷰 
@@ -180,7 +180,7 @@ class AdminController extends Controller
         if($WorkMedium==""||$WorkMedium=="all"){
             $WorkMedium="all";
         }
-        $data=DB::select('CALL getCommonCodeAll(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $data=DB::select('CALL Common_codeDetail(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
 
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
@@ -213,7 +213,7 @@ class AdminController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        $commonCodeDetail=DB::select('CALL getCommonCodeAll(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $commonCodeDetail=DB::select('CALL Common_codeDetail(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         return view('/admin/commonCodeMediumUpdateView',compact('commonCodeDetail'));
     }
     //공통코드 대분류 수정

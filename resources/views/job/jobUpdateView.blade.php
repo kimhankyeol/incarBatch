@@ -37,9 +37,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">ID</div>
                   <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
-                <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" readonly>
+                <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" >
                   <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
-                <textarea type="text" id="Job_Sulmyung" class="col-md-4 form-control form-control-sm" readonly>{{$jobDetail[0]->Job_Sulmyung}}</textarea>
+                <textarea type="text" id="Job_Sulmyung" class="col-md-4 form-control form-control-sm" >{{$jobDetail[0]->Job_Sulmyung}}</textarea>
                 </div>
                 <hr>
                 <div class="row">
@@ -110,7 +110,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
                           $jobParamSulArr=explode("||",$jobDetail[0]->Job_ParamSulmyungs);
                           for ($i = 0; $i < count($jobParamArr); $i++) {
-                          echo '<div class="d-inline-flex w-50 delYN mb-2">';
+                          echo '<div class="d-inline-flex w-50 delYN mb-2" style="float: left">';
                           echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
                           echo '<select name="Job_Params" class="col-md-2 form-control form-control-sm" >';
                           if($jobParamArr[$i]=="paramDate"){
@@ -121,7 +121,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             echo '<option value="paramDate" selected>날짜</option><option value="paramNum" >숫자</option><option value="'.$jobParamArr[$i].'" selected>문자</option></select>';
                           }
                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'">' ;
-                          echo '<button type="button" onclick="deleteDivParam()" class="delParam btn-danger form-control form-control-sm col-md-1">삭제</button>';
+                          echo '<button type="button" class="delParam btn-danger form-control form-control-sm col-md-1">삭제</button>';
                           echo '</div>';
                           }
                         @endphp

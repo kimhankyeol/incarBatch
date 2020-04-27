@@ -325,21 +325,16 @@ const process = {
             '<select name="proParamType" class="col-md-2 form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
             '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" placeholder="설명">';
         proParamDiv.className = "d-inline-flex w-50 delYN mb-2";
+        proParamDiv.style.cssFloat="left";
         proParamDiv2.className = "col-md-3 small align-self-center text-center";
         proParamDiv2.innerHTML = "파라미터";
         delBtnDiv.className =
-            "delParam btn-danger  form-control form-control-sm col-md-1 text-center";
-        delBtnDiv.onclick = process.deleteDivParam;
+            "delParam btn-danger form-control form-control-sm col-md-1 text-center";
         delBtnDiv.innerText = "삭제";
         proParamDiv.appendChild(proParamDiv2);
         proParamDiv.innerHTML += proParamInputText;
         proParamDiv.appendChild(delBtnDiv);
         document.getElementById("proParams").appendChild(proParamDiv);
         document.getElementById("proParams").scrollIntoView();
-    },
-    //파라미터 삭제
-    deleteDivParam: function () {
-        var delIndex = $(".delParam").index(this);
-        $(".delYN").eq(delIndex).remove();
-    },
+    }
 };

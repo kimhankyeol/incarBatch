@@ -22,7 +22,9 @@ class ProcessController extends Controller
         }
             //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
             // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-            $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
+            //$processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
+            $processContents = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+            $usedLarge = DB::select('CALL Process_searchUsedLargeCode()');
             $page=$request->input('page');
                 //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
             $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$processContents);
@@ -43,18 +45,24 @@ class ProcessController extends Controller
             else if($WorkLarge!="all"&&$WorkMedium!="all"){
                 $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
             }
-            return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium'));
+            
+            if($WorkLarge!="all"){
+                $usedMedium = DB::select('CALL Job_searchUsedMediumCode(?)',[$WorkLarge]);
+                return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
+            }else{
+                return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));
+            }
     }
     //프로세스 상세 뷰
     public function processDetailView(Request $request){
         $p_seq = $request->input('P_Seq');
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
+        $processDetail=DB::select('CALL Process_detail(?)',[$p_seq]);
         return view('process.processDetailView',compact('processDetail'));
     }
     //프로세스 등록 뷰
     public function processRegisterView(){
-        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->get();
+        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->where('Used','1')->get();
         return view('process.processRegisterView',compact('db_list'));
     }
     //프로세스 등록 저장
