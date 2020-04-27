@@ -38,6 +38,8 @@ Route::prefix('job')->group(function(){
     Route::get('/jobUpdateView','JobController@jobUpdateView');
     //잡 등록 
     Route::post('/jobRegister','JobController@jobRegister');
+    //잡 수정 
+    Route::post('/jobUpdate','JobController@jobUpdate');
     
 });
 //프로세스 prefix

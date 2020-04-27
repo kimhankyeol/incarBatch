@@ -135,8 +135,141 @@ const job = {
       
   },
   //수정
-  update:function(){
+  update:function(Job_Seq){
+      var Job_Name=$('#Job_Name').val();
+      var Job_Sulmyung=$('#Job_Sulmyung').val();     
+      var Job_Params="";
+      var Job_ParamSulmyungs="";
+      var Job_WorkLargeCtg=$('#Job_WorkLargeCtg').val();
+      var Job_WorkMediumCtg=$('#Job_WorkMediumCtg').val();
+      //유효성 체크 여부
+      var jobValCheck=false;
+      //잡 파라미터 존재 유무 변수, 하나라도 빈값이 있는지 체크해주기 위해 jobParamIndex
+      var jobParamExist=false;
+      var jobParamIndex=0;
+      
+      //유효성 (입력여부 공백이 있는지 없는지만 체크)
+      jobValCheck=job.validation(Job_Name,Job_Sulmyung,Job_WorkLargeCtg,Job_WorkMediumCtg);
+      //잡 파라미터가 있으면
+      if($('input[name=Job_paramSulmyungs]').length>0){
+        jobParamExist=true;
+      } 
+      //잡 파라미터가 없으면
+      if($('input[name=Job_paramSulmyungs]').length==0){
+        jobParamExist=false;
+      }
+      //유효성 체크 여부 반환값이 true가 된후
+      if(jobValCheck){
+        //잡 파라미터의 유무에 따라 confirm 창을 나눠서 보여줌
+        if(jobParamExist){
+          var result = confirm('잡을 수정하시겠습니까?');
+          if(result){
+            $('input[name=Job_paramSulmyungs]').each(function(){
+              if (!$.trim($(this).val()).length) {
+                jobParamIndex++;
+              }
+            });
+            //변수 설명에 빈값이 있는지 없는지
+            if(jobParamIndex==0){
+                 //입력된 잡파라미터의 타입, 설명을 1||2||3 이런변수 형태로 바꾸기위해
+                 Job_Params =$('select[name=Job_Params] option:selected').map(function(){
+                  return $(this).val();
+                }).get().join('\|\|');
 
+                Job_ParamSulmyungs =$('input[name=Job_paramSulmyungs]').map(function(){
+                  return $(this).val();
+                }).get().join('\|\|');
+         
+               
+                $.ajax({
+                  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                  url:'/job/jobUpdate',
+                  method:"post",
+                  data:{
+                      'Job_Seq':Job_Seq,
+                      'Job_Name':Job_Name,
+                      'Job_Sulmyung':Job_Sulmyung,
+                      'Job_RegId':111,
+                      'Job_Params':Job_Params,
+                      'Job_ParamSulmyungs':Job_ParamSulmyungs,
+                      'Job_WorkLargeCtg':Job_WorkLargeCtg,
+                      'Job_WorkMediumCtg':Job_WorkMediumCtg
+                  },
+                  success:function(resp){
+                    if(resp.msg=="success"){
+                      alert("잡이 수정되었습니다.");
+                      location.href="/job/jobDetailView?Job_Seq="+Job_Seq;
+                    }else if(resp.msg=="notChg"){
+                      var result = confirm("잡 수정사항이 없습니다. 진행하시겠습니까?");
+                      if(result){
+                        location.href="/job/jobDetailView?Job_Seq="+Job_Seq;
+                      }else{
+                        return false;
+                      }
+                    }
+                    else{
+                      alert("잡 수정 실패");
+                      location.href="/job/jobListView";
+                    }
+                  },error:function(error){
+                    console.error(error);
+                  }
+                })
+            }else{
+              alert("파라미터 설명이 입력되지 않았습니다.")
+              return false;
+            }
+          }else{
+            //잡등록 x
+            console.log('잡 파라미터는 있는데 confirm에서 아니오/취소 누른경우');
+            return false;
+          }
+        //잡 파라미터 수정사항 없는경우
+        }else{
+          var result = confirm('잡 파라미터없이 잡을 수정하시겠습니까?');
+          if(result){
+            $.ajax({
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              url:'/job/jobUpdate',
+              method:"post",
+              data:{
+                  'Job_Seq':Job_Seq,
+                  'Job_Name':Job_Name,
+                  'Job_Sulmyung':Job_Sulmyung,
+                  'Job_RegId':1611698,
+                  'Job_Params':Job_Params,
+                  'Job_ParamSulmyungs':Job_ParamSulmyungs,
+                  'Job_WorkLargeCtg':Job_WorkLargeCtg,
+                  'Job_WorkMediumCtg':Job_WorkMediumCtg
+              },
+              success:function(resp){
+                if(resp.msg=="success"){
+                  alert("잡이 수정되었습니다.");
+                  location.href="/job/jobDetailView?Job_Seq="+Job_Seq;
+                }else if(resp.msg=="notChg"){
+                  var result = confirm("잡 수정사항이 없습니다. 진행하시겠습니까?");
+                  if(result){
+                    location.href="/job/jobDetailView?Job_Seq="+Job_Seq;
+                  }else{
+                    return false;
+                  }
+                }
+                else{
+                  alert("잡 수정 실패");
+                  location.href="/job/jobListView";
+                }
+              },error:function(error){
+                console.error(error);
+              }
+            })
+          }else{
+            console.log('잡 파라미터는 없는데 confirm에서 아니오/취소 누른경우');
+            return false;
+          }
+        }
+      }else{
+        return false;
+      }
   },
   //삭제
   delete:function(){
