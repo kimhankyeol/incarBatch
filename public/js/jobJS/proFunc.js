@@ -10,6 +10,7 @@ const process = {
     },
     //등록
     register: function () {
+        
         $('#workLargeVal').removeAttr("disabled", "disabled");
         $('#workMediumVal').removeAttr("disabled", "disabled");
 
@@ -29,6 +30,7 @@ const process = {
 
         var WorkLarge = $('#workLargeVal option:selected').val();
         var WorkMedium = $('#workMediumVal option:selected').val();
+     
         var processPath = document.getElementById("processPath").value; 
         var processFile = document.getElementById("processFile").value;
         var UseDb = document.getElementById("UseDb").value;
@@ -130,7 +132,6 @@ const process = {
     },
     //db 업데이트
     update : function () {
-        
         if($("#retry").is(":checked")){
             $("#retry").val(1);
         }else{
@@ -143,8 +144,8 @@ const process = {
         var processFile = $('#processFile').val();
         var programName = $('#programName').val();
         var programExplain = $('#programExplain').val();
-        var WorkLarge = $('#workLargeVal option:selected').val();
-        var WorkMedium = $('#workMediumVal option:selected').val();
+        var WorkLarge = $('#P_WorkLargeCtg').val();
+        var WorkMedium = $('#P_WorkMediumCtg').val();
         var UseDb = $('#UseDb').val();
         var retry = $("#retry").val();
         var P_UpdIP= $('#P_UpdIP').val();
