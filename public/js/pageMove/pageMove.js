@@ -22,6 +22,11 @@ const pageMove={
             location.href="/process/"+urlName+"?P_Seq="+param1;
         }
     },
+    login:{
+        list:function(urlName){
+            location.href="/login/"+urlName;
+        }
+    },
     //잡실행 href
     jobExecute:{},
      //모니터링

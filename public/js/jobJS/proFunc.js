@@ -10,24 +10,38 @@ const process = {
     },
     //등록
     register: function () {
+        $('#workLargeVal').removeAttr("disabled", "disabled");
+        $('#workMediumVal').removeAttr("disabled", "disabled");
+
         //체크박스 체크되어 있으면 1, 아니면 0으로 val설정
         if($("#retry").is(":checked")){
             $("#retry").val(1);
         }else{
+            $("#retry").val(0);
         }
-        var id1 = document.getElementById("id1").value; 
-        var id2 = document.getElementById("id2").value;
-        var P_RegIP = $('#P_RegIp').val();
-        var programName = document.getElementById("programName").value;
-        var programExplain = document.getElementById("programExplain").value;
+        if($("#P_FileInputCheck").is(":checked")){
+            $("#P_FileInputCheck").val(1);
+        }else{
+            $("#P_FileInputCheck").val(0);
+        }
+
+        console.log($('#P_FileInputCheck').val());
+
         var WorkLarge = $('#workLargeVal option:selected').val();
         var WorkMedium = $('#workMediumVal option:selected').val();
+        var processPath = document.getElementById("processPath").value; 
+        var processFile = document.getElementById("processFile").value;
         var UseDb = document.getElementById("UseDb").value;
         var retry = $("#retry").val();
-        var P_RegId="이수연";
+
+        var programName = document.getElementById("programName").value;
+        var programExplain = document.getElementById("programExplain").value;
+
+        var P_RegId=$('#P_RegId').val();
         var P_DevId="16161616";
         var P_FileInputCheck = $('#P_FileInputCheck').val();
-
+        var P_FileInput=$('#P_FileInput').val();
+        
         //시간계산 분단위 ()
       if($('#Pro_YesangTime1').val()==""){
         $('#Pro_YesangTime1').val(0);
@@ -53,28 +67,21 @@ const process = {
         var proParamType = document.getElementsByName("proParamType");
         const proParamSulmyungInput = document.getElementsByName("proParamSulmyungInput");
         const res1 = [];
-        for (var i = 0; i < proParamSulmyungInput.length; i++) {
-            res1.push(proParamSulmyungInput[i].value);
+        const res2 = [];
+
+        for (var i = 0; i < proParamType.length; i++) {
+            res1.push(proParamType[i].value);
         }
-        const Arr1 = res1.join("||");
-        //유효성 검사 함수로
-        var provalcheck = process.validation(programName,programExplain,WorkMedium,WorkLarge,UseDb,id2,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
+        for (var i = 0; i < proParamSulmyungInput.length; i++) {
+            res2.push(proParamSulmyungInput[i].value);
+        }
+        const Arr1 = res1.join("||"); //type
+        const Arr2 = res2.join("||"); //input
+    //     //유효성 검사 함수로
+        var provalcheck = process.validation(WorkLarge,WorkMedium,UseDb,processFile,programName,programExplain,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr2);
         if(provalcheck){
             var con = confirm("프로그램을 등록하시겠습니까?");
         if (con == true) {
-            const paramArr1 = document.getElementsByName("proParamType");
-            const paramArr2 = document.getElementsByName("proParamSulmyungInput");
-            const res1 = [];
-            const res2 = [];
-            for (var i = 0; i < paramArr1.length; i++) {
-                res1.push(paramArr1[i].value);
-            }
-            for (var i = 0; i < paramArr2.length; i++) {
-                res2.push(paramArr2[i].value);
-            }
-            const paramStr1 = res1.join("\|\|");
-            const paramStr2 = res2.join("\|\|");
-
             $.ajax({
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -84,26 +91,29 @@ const process = {
                 url: "/process/processRegister",
                 method: "post",
                 data: {
-                    id1 : id1,
-                    id2 : id2,
-                    P_RegId : P_RegId,
-                    P_RegIP : P_RegIP,
-                    programName: programName,
-                    programExplain: programExplain,
                     WorkLarge:WorkLarge,
                     WorkMedium:WorkMedium,
-                    retry: retry,
+                    processPath : processPath,
+                    processFile : processFile,
                     UseDb: UseDb,
-                    proParamType: paramStr1,
-                    proParamSulmyungInput: paramStr2,
+                    retry: retry,
+
+                    programName: programName,
+                    programExplain: programExplain,
+
                     Pro_YesangTime : Pro_YesangTime,
                     Pro_YesangMaxTime : Pro_YesangMaxTime,
-                    P_DevId:P_DevId,
+                    
+                    proParamType: Arr1,
+                    proParamSulmyungInput: Arr2,
+                    
                     P_FileInputCheck:P_FileInputCheck,
-                    P_FileInput:P_FileInput
+                    P_FileInput:P_FileInput,
+
+                    P_DevId:P_DevId,
+                    P_RegId:P_RegId
                 },
                 success: function (data) {
-                    console.table(data.count);
                     if(data.fileResult1==true&&data.count==0){
                         alert("프로그램이 등록되었습니다.");
                         console.log("등록 되었습니다.");
@@ -124,12 +134,13 @@ const process = {
         if($("#retry").is(":checked")){
             $("#retry").val(1);
         }else{
+            $("#retry").val(0);
         }
         //console.table($('#P_RegIp').val());
         //alert($('#proParamSulmyungInput').val());
         var p_seq = $('#P_Seq').val();
-        var id1 = $('#id1').val();
-        var id2 = $('#id2').val();
+        var processPath = $('#processPath').val();
+        var processFile = $('#processFile').val();
         var programName = $('#programName').val();
         var programExplain = $('#programExplain').val();
         var WorkLarge = $('#workLargeVal option:selected').val();
@@ -138,7 +149,8 @@ const process = {
         var retry = $("#retry").val();
         var P_UpdIP= $('#P_UpdIP').val();
         var P_UpDate=$('#P_UpDate').val();
-
+        var P_FileInputCheck = $('#P_FileInputCheck').val();
+        var P_FileInput=$('#P_FileInput').val();
         //시간계산 분단위 ()
       if($('#Pro_YesangTime1').val()==""){
         $('#Pro_YesangTime1').val(0);
@@ -169,7 +181,7 @@ const process = {
         }
         const Arr1 = res1.join("||");
         //유효성 검사 함수로
-        var provalcheck = process.validation(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
+        var provalcheck = process.validation(programName,programExplain,WorkLarge,WorkMedium,UseDb,processFile,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1);
         if(provalcheck){
             var con = confirm("프로그램을 수정 완료 하시겠습니까?");
         if (con == true) {
@@ -196,8 +208,8 @@ const process = {
                 method: "post",
                 data: {
                     'p_seq' : p_seq,
-                    id1 : id1,
-                    id2 : id2,
+                    processPath : processPath,
+                    processFile : processFile,
                     P_UpdIP : P_UpdIP,
                     P_UpDate : P_UpDate,
                     programName: programName,
@@ -206,19 +218,15 @@ const process = {
                     WorkLarge:WorkLarge,
                     retry: retry,
                     UseDb: UseDb,
-                    // proParamType: paramStr1,
-                    // proParamSulmyungInput: paramStr2,
+                    proParamType: paramStr1,
+                    proParamSulmyungInput: paramStr2,
                     Pro_YesangTime : Pro_YesangTime,
-                    Pro_YesangMaxTime : Pro_YesangMaxTime
+                    Pro_YesangMaxTime : Pro_YesangMaxTime,
+                    P_FileInputCheck:P_FileInputCheck,
+                    P_FileInput:P_FileInput
                 },
                 success: function (data) {
-                    // console.table(data.p_seq);
-                    // console.table(data.id1);
-                    // console.table(data.P_File);
-                    // console.table(data.P_UpdIP);
-                    // console.table(data.count);
                     console.table(data);
-
                     if(data.fileResult1==true&&data.count==0){
                         alert("프로그램이 수정되었습니다.");
                         console.log("수정 되었습니다.");
@@ -234,8 +242,8 @@ const process = {
       }
     },
     //프로세스 유효성 검사
-    validation:function(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,id2,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr1){
-        if(id2 == ""){
+    validation:function(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,processFile,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr2){
+        if(processFile == ""){
             alert("파일명을 입력하세요");
             return false;
         } else if(programName == "") {
@@ -271,9 +279,9 @@ const process = {
             }
         } else if (proParamType.length != 0) {
             //Arr2에 /를 기준으로 split하여 저장. split 사용하면 나누어진 문자열은 각각 배열로 들어감
-            var Arr2 = Arr1.split("||");
-            for (var i = 0; i < Arr2.length; i++) {
-                if (Arr2[i] == "") {
+            var Sulmyungs = Arr2.split("||");
+            for (var i = 0; i < Sulmyungs.length; i++) {
+                if (Sulmyungs[i] == "") {
                     alert("파라미터 설명을 입력하세요");
                     return false;
                 }

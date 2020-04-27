@@ -27,13 +27,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="card shadow">
                     <div class="card-header py-3">
                         <h5 class="m-0 font-weight-bold text-primary">프로그램 정보 등록</h5>
+                        <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
+                        <input id="P_RegId" type="hidden" value="이수연"/>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div id="codeLargeView" class="outher-code-PR upmoo"></div>
+                            <div id="codeLargeView" class="outher-code"></div>
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-                            <input id ="id1" type="text" class="col-md-1 form-control form-control-sm align-self-center"readonly>
-                            <input id ="id2" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
+                            <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center"readonly>
+                            <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <select id="UseDb" class="col-md-1 form-control form-control-sm">
                                     @foreach ($db_list as $list)
@@ -73,7 +75,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="0" numberOnly>
                             </div>
                         </div>
-                        <hr>
+                        {{-- <hr>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="limit-time-text">등록자</div>
@@ -81,7 +83,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <div class="limit-time-text">등록자IP</div>
                                 <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" value="{{$_SERVER["REMOTE_ADDR"]}}" readonly>
                                 <div class="limit-time-text">등록일</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" placeholder="2020-02-02" readonly>              
+                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>              
                             </div>
                             <div class="col-md-6">
                                 <div class="limit-time-text">수정자</div>
@@ -91,9 +93,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <div class="limit-time-text">수정일</div>
                                 <input type="text" class="form-control form-control-sm limit-time-input" readonly>              
                             </div>
-                        </div>
+                        </div> --}}
                         <hr>
-                            <div class="row align-items-center">
+                        <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
                             <input id="P_FileInput" type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" readonly>
@@ -132,19 +134,33 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   </body>
   </html>
 <script>
-
     code.workLargeCtg();
     $(function(){
         $('#P_FileInputCheck').click(function(){
-            var chk = $(this).is(":checked");
-            if(chk){
-                $("#FileInputCheck").val(1);
-                var FileName = $('#id2').val();
-                var FileNameText = FileName.replace('php','txt');
-                $('#P_FileInput').val($('#id1').val()+"/"+FileNameText);
+
+            var workLargeVal=$('#workLargeVal');
+            var workMediumVal=$('#workMediumVal');
+            var processFile=$('#processFile');
+
+            if(workLargeVal.val()!="all"&&workMediumVal.val()!="all"&&processFile.val()!=""){
+                var chk = $(this).is(":checked");
+                if(chk){
+                    var FileName = $('#processFile').val();
+                    var FileNameText = FileName.replace('php','txt');
+                    $('#P_FileInput').val($('#processPath').val()+"/"+FileNameText);
+
+                    processFile.prop('readonly', true);
+                    workLargeVal.attr("disabled","disabled");
+                    workMediumVal.attr("disabled","disabled");
+
+                }else{
+                    $('#P_FileInput').val("");
+                    processFile.prop('readonly', false);
+                    workLargeVal.removeAttr("disabled", "disabled");
+                    workMediumVal.removeAttr("disabled", "disabled");
+                }
             }else{
-                $("#FileInputCheck").val(0);
-                $('#P_FileInput').val("");
+                return false;
             }
         })
     })

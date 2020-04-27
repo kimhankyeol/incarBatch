@@ -54,51 +54,58 @@ class ProcessController extends Controller
     }
     //프로세스 등록 뷰
     public function processRegisterView(){
-        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','30')->get();
+        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->get();
         return view('process.processRegisterView',compact('db_list'));
     }
     //프로세스 등록 저장
     public function processRegister(Request $request){
-        $id1 = $request->input('id1');//경로
-        $id2 = $request->input('id2');//파일명
-        $programName = $request->input('programName');
-        $programExplain = $request->input('programExplain');
-        $P_DevId=$request->input('P_DevId');
-        //대분류 중분류
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
-        $retry=$request->input('retry');
+        $processPath = $request->input('processPath');//경로
+        $processFile = $request->input('processFile');//파일명
         $UseDb=$request->input('UseDb');
-        $P_RegIP=$request->input('P_RegIP');
+        $retry=$request->input('retry');
+
+        $programName = $request->input('programName');
+        $programExplain = $request->input('programExplain');
+
         $Pro_YesangTime=$request->input('Pro_YesangTime');
         $Pro_YesangMaxTime=$request->input('Pro_YesangMaxTime');
+
         $proParamType=$request->input('proParamType');
         $proParamSulmyungInput=$request->input('proParamSulmyungInput');
+        $P_DevId=$request->input('P_DevId');
+        $P_RegIp = $_SERVER["REMOTE_ADDR"];
         $P_RegId = $request->input('P_RegId');
-        //고정경로 + 대분류 중분류에 따른 경로(id1) + 파일(id2)
-        $P_FilePath="/home/incar/work".$id1."/".$id2;
+
+        $P_FileInputCheck=$request->input('P_FileInputCheck');
+        $P_FileInput=$request->input('P_FileInput');
+       
+        //고정경로 + 대분류 중분류에 따른 경로(processPath) + 파일(processFile)
+        $P_FilePath="/home/incar/work".$processPath."/".$processFile;
         //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
         $fileResult1 = file_exists($P_FilePath); 
-        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_File',$id2)->count();
+        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_File',$processFile)->count();
         if($fileResult1){// 경로+파일이 존재하는가?
             if($count==0){
                 $last_p_seq = DB::table('OnlineBatch_Process')->insertGetId(
-                    ['P_Name' =>$programName,
-                    'P_RegId'=>$P_RegId,
-                    'P_Sulmyung'=>$programExplain,
-                    //대분류, 중분류 저장
-                    'P_WorkLargeCtg'=>$WorkLarge,
-                    'P_WorkMediumCtg'=>$WorkMedium,
-                    //파일명 저장
-                    'P_File'=>$id2,
-                    'P_RegIP'=> ip2long($P_RegIP),
-                    'P_ReworkYN'=>$retry,
-                    'P_UseDB'=>$UseDb,
-                    'P_YesangTime'=>$Pro_YesangTime,
-                    'P_YesangMaxTime'=>$Pro_YesangMaxTime,
-                    'P_DevId'=>$P_DevId,
-                    'P_Params'=>$proParamType,
-                    'P_ParamSulmyungs'=>$proParamSulmyungInput]
+                    ['P_WorkLargeCtg'=>$WorkLarge,
+                     'P_WorkMediumCtg'=>$WorkMedium,
+                     'P_File'=>$processFile,
+                     'P_UseDB'=>$UseDb,
+                     'P_ReworkYN'=>$retry,
+                     'P_Name' =>$programName,
+                     'P_Sulmyung'=>$programExplain,
+                     'P_YesangTime'=>$Pro_YesangTime,
+                     'P_YesangMaxTime'=>$Pro_YesangMaxTime,
+                     'P_Params'=>$proParamType,
+                     'P_ParamSulmyungs'=>$proParamSulmyungInput,
+                     'P_FileInput'=>$P_FileInput,
+                     'P_FileInputCheck'=>$P_FileInputCheck,
+                     'P_DevId'=>$P_DevId,
+                     'P_RegIp'=>ip2long($P_RegIp),
+                     'P_RegId'=>$P_RegId
+                    ]
                 );
                 return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
             }else{
@@ -111,8 +118,8 @@ class ProcessController extends Controller
     //프로세스 수정
     public function processEdit(Request $request){
         $p_seq = $request->input('p_seq');
-        $id1 = $request->input('id1');//경로
-        $P_File = $request->input('id2');//파일명
+        $processPath = $request->input('processPath');//경로
+        $P_File = $request->input('processFile');//파일명
         $P_Name = $request->input('programName');
         $P_Sulmyung = $request->input('programExplain');
         $WorkLarge= $request->input('WorkLarge');
@@ -121,16 +128,16 @@ class ProcessController extends Controller
         $P_UseDB=$request->input('UseDb');
         $P_YesangTime=$request->input('Pro_YesangTime');
         $P_YesangMaxTime=$request->input('Pro_YesangMaxTime');
-        // $P_Params=$request->input('proParamType');
-        // $P_ParamSulmyungs=$request->input('proParamSulmyungInput');
+        $P_Params=$request->input('proParamType');
+        $P_ParamSulmyungs=$request->input('proParamSulmyungInput');
         $P_UpdIP=$request->input('P_UpdIP');
         $P_UpDate = $request->input('P_UpDate');
         $P_FileInputCheck = $request->input('P_FileInputCheck');
         $P_FileInput=$request->input('P_FileInput');
         //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
-        $P_FilePath="/home/incar/work".$id1."/".$P_File;
+        $P_FilePath="/home/incar/work".$processPath."/".$P_File;
         $fileResult1 = file_exists($P_FilePath);
-        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_Seq','!=',$p_seq)->count();
+        $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_File',$P_File)->where('P_Seq','!=',$p_seq)->count();
         if($fileResult1){// 경로+파일이 존재하는가?
             if($count==0){
                 $result = DB::table('incar.OnlineBatch_Process')->where('P_Seq',$p_seq)->update([
@@ -143,8 +150,8 @@ class ProcessController extends Controller
                     'P_ReworkYN'=>$P_ReworkYN,
                     'P_YesangTime'=>$P_YesangTime,
                     'P_YesangMaxTime'=>$P_YesangMaxTime,
-                    // 'P_Params'=>$P_Params,
-                    // 'P_ParamSulmyungs'=>$P_ParamSulmyungs,
+                    'P_Params'=>$P_Params,
+                    'P_ParamSulmyungs'=>$P_ParamSulmyungs,
                     'P_UpdIP'=>ip2long($P_UpdIP),
                     'P_UpdDate'=>$P_UpDate,
                     'P_FileInput'=>$P_FileInput
@@ -162,7 +169,7 @@ class ProcessController extends Controller
         $p_seq = $request->input('P_Seq');
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
-        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','30')->get();
+        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->get();
         //프로시저를 통한 프로세스 상세정보 검색
         $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
         return view('process.processEditView',compact('processDetail','db_list','WorkLarge','WorkMedium'));
