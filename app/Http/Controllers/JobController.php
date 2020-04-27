@@ -27,8 +27,11 @@ class JobController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-        $jobContents = DB::select('CALL searchJobList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
+
+        //관리자 대분류 사용중인 것만 조회
+        $jobContents = DB::select('CALL Job_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $usedLarge = DB::select('CALL Job_searchUsedLargeCode()');
+
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$jobContents);
@@ -50,8 +53,13 @@ class JobController extends Controller
         else if($WorkLarge!="all"&&$WorkMedium!="all"){
             $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
-        return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium'));
-         
+
+        if($WorkLarge!="all"){
+            $usedMedium = DB::select('CALL Job_searchUsedMediumCode(?)',[$WorkLarge]);
+            return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
+        }else{
+            return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));
+        }
     }
     //잡 상세 뷰
     public function jobDetailView(Request $request){
@@ -62,7 +70,21 @@ class JobController extends Controller
     }
     //잡 등록 뷰
     public function jobRegisterView(){
-        return view('job.jobRegisterView');
+        //Job_searchUsedLargeCode 프로시저를 실행하기 위한 변수선언
+        $searchWord="searchWordNot";
+        $WorkLarge="all";
+        $WorkMedium="all";
+        $usedLarge = DB::select('CALL Job_searchUsedLargeCode(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        return view('job.jobRegisterView',compact('usedLarge'));
+    }
+    //잡 수정 뷰
+    public function jobUpdateView(Request $request){
+        $job_seq = $request->input('Job_Seq');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        //프로시저를 통한 잡 상세정보 검색
+        $jobDetail=DB::select('CALL jobDetail(?)',[$job_seq]);
+        return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium'));
     }
     //잡 등록
     public function jobRegister(Request $request){
@@ -70,8 +92,7 @@ class JobController extends Controller
         $Job_Sulmyung = $request->input('Job_Sulmyung');
         $Job_RegId = $request->input('Job_RegId');
         $Job_RegIP = $_SERVER["REMOTE_ADDR"];
-        $Job_YesangTime = $request->input('Job_YesangTime');
-        $Job_YesangMaxTime = $request->input('Job_YesangMaxTime');
+
         $Job_Params = $request->input('Job_Params');
         $Job_ParamSulmyungs = $request->input('Job_ParamSulmyungs');
         $Job_DeleteYN = "n";
@@ -88,8 +109,6 @@ class JobController extends Controller
             'Job_Sulmyung'=> $Job_Sulmyung,
             'Job_RegId'=>$Job_RegId,
             'Job_RegIP'=>ip2long($Job_RegIP),
-            'Job_YesangTime'=>$Job_YesangTime,
-            'Job_YesangMaxTime'=>$Job_YesangMaxTime,
             'Job_Params'=>$Job_Params,
             'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
             'Job_DeleteYN'=>$Job_DeleteYN,

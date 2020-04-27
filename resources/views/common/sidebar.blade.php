@@ -22,8 +22,8 @@
         <div id="collapsePages" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">관리자 목록:</h6>
-            <a class="collapse-item" href="/admin/commonCodeLargeManageView">대분류 설정</a>
-            <a class="collapse-item" href="/admin/commonCodeMediumManageView">중분류 설정</a>
+            <a class="collapse-item" href="/admin/commonCodeLargeManageView?page=1">대분류 설정</a>
+            <a class="collapse-item" href="/admin/commonCodeMediumManageView?page=1">중분류 설정</a>
             {{-- <div class="collapse-divider"></div>
             <h6 class="collapse-header">Other Pages:</h6>
             <a class="collapse-item" href="404.html">404 Page</a>

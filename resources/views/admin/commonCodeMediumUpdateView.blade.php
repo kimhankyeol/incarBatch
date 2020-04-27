@@ -59,8 +59,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
-                  <input type="text" id="FilePath"  class="col-md-2 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->FilePath}}">
+                  @if($commonCodeDetail[0]->WorkLarge<2000)
+                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
+                    <input type="text" id="FilePath"  class="col-md-2 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->FilePath}}">
+                  @endif
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
                   <textarea type="text" id="CodeSulmyung" class="col-md-6 form-control form-control-sm" style="resize: none;">{{$commonCodeDetail[0]->Sulmyung}}</textarea>
                 </div>

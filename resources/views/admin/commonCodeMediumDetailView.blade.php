@@ -51,7 +51,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="row">
                   <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">경로</div>
                   <input type="text" id="FilePath"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->FilePath}}" readonly>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">사용 여부</div>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">중분류 사용 여부</div>
                   @if($commonCodeDetail[0]->Used=="1")
                   <input  id="Used" type="text"  class="col-md-3 form-control form-control-sm align-self-center" value="사용" readonly>
                   @else

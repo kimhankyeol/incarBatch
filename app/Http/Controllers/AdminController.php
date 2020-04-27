@@ -16,7 +16,6 @@ class AdminController extends Controller
         }else{
             $data=DB::table('OnlineBatch_WorkLargeCode')->where('LongName','like',"%$searchWord%")->orderBy('WorkLarge')->paginate(10);
         }
-       
         $page=$request->input('page');
         $searchParams = array( 'searchWord' => $searchWord);
         return view('/admin/commonCodeLargeManageView',compact('data','searchParams','searchWord'));
@@ -26,6 +25,7 @@ class AdminController extends Controller
         $searchWord = $request->input('searchWord');
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
+        $Used = $request->input('Used');
 
         //프로시저에 공백값이 안들어가서 임의의 값으로 분기처리함
         if($searchWord==""){
@@ -37,7 +37,12 @@ class AdminController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        $data=DB::select('CALL getCommonCode(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        if($Used==""){
+            $Used="all";
+        }
+        
+        $data=DB::select('Call Common_searchUsedList(?,?,?)',[$Used,$WorkLarge,$searchWord]);
+        $usedLarge=DB::select('Call Common_searchUsedLargeCode(?,?,?)',[$Used,$WorkLarge,$searchWord]);
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$data);
@@ -46,7 +51,7 @@ class AdminController extends Controller
         //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
         $data =$PaginationCustom->getItemsForCurrentPage();
         $searchParams = array( 'searchWord' => $searchWord);
-        return view('/admin/commonCodeMediumManageView',compact('data','searchParams','paginator','searchWord','WorkLarge','WorkMedium'));
+        return view('/admin/commonCodeMediumManageView',compact('data','paginator','searchParams','WorkLarge','WorkMedium','searchWord','Used','usedLarge'));
     }
     //공통코드 대분류 상세 뷰
     public function commonCodeLargeDetailView(Request $request){
@@ -67,8 +72,7 @@ class AdminController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        $commonCodeDetail=DB::select('CALL getCommonCode(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-
+        $commonCodeDetail=DB::select('CALL getCommonCodeAll(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         return view('/admin/commonCodeMediumDetailView',compact('commonCodeDetail'));
     }
     //공통코드 대분류 등록 뷰 
@@ -116,29 +120,39 @@ class AdminController extends Controller
         $Used = $request->input('Used');
         $FilePath = $request->input('FilePath');
 
-        $result1 = DB::table('OnlineBatch_WorkMediumCode')->where('OnlineBatch_WorkMediumCode.WorkLarge',$WorkLarge)->where('OnlineBatch_WorkMediumCode.WorkMedium',$WorkMedium)->count();
+        $result1 = DB::table('OnlineBatch_WorkMediumCode')->where('OnlineBatch_WorkMediumCode.WorkLarge',$WorkLarge)->where('OnlineBatch_WorkMediumCode.WorkMedium',$WorkMedium)->exists();
         //1.db에 중복되는경로가 있는지 확인하기 위해 2.리눅스서버에서도 판단해야함
-        $FolderPathCount = DB::table('OnlineBatch_WorkMediumCode')->where('OnlineBatch_WorkMediumCode.FilePath',$FilePath)->count();
-
-        if($result1>0){
-            $msg="exist";
-            return response()->json(array('msg'=>$msg),200);
-        }else if($result1==0){
-            if($FolderPathCount>0){
-                $msg="folderExist";
-                return response()->json(array('msg'=>$msg),200);
-            }else if($FolderPathCount=0){
-                $result2 = DB::insert('insert into OnlineBatch_WorkMediumCode(WorkLarge,WorkMedium,ShortName,LongName,Sulmyung,Used,FilePath) values(?,?,?,?,?,?,?)',[$WorkLarge,$WorkMedium,$CodeShortName,$CodeLongName,$CodeSulmyung,$Used,$FilePath]);
-                if($result2==1){
-                    $msg="success";
-                    return response()->json(array('msg'=>$msg),200);
+        // 2000이상 코드들은 폴더경로를 지정하지 않으므로  FilePath 가 공백
+        if($FilePath!=""){
+            $FolderPathCount = DB::table('OnlineBatch_WorkMediumCode')->where('OnlineBatch_WorkMediumCode.FilePath',$FilePath)->exists();
+            if($result1){
+                $msg="exist";
+                
+            }else{
+                if($FolderPathCount){
+                    $msg="folderExist";
                 }else{
-                    $msg="failed";
-                    return response()->json(array('msg'=>$msg),200);
+                    $result2 = DB::insert('insert into OnlineBatch_WorkMediumCode(WorkLarge,WorkMedium,ShortName,LongName,Sulmyung,Used,FilePath) values(?,?,?,?,?,?,?)',[$WorkLarge,$WorkMedium,$CodeShortName,$CodeLongName,$CodeSulmyung,$Used,$FilePath]);
+                    if($result2==1){
+                        $msg="success";
+                    }else{
+                        $msg="failed";
+                    }
                 }
             }
+        }else{
+            if($result1){
+                $msg="exist";
+            }else{
+                $result2 = DB::insert('insert into OnlineBatch_WorkMediumCode(WorkLarge,WorkMedium,ShortName,LongName,Sulmyung,Used) values(?,?,?,?,?,?)',[$WorkLarge,$WorkMedium,$CodeShortName,$CodeLongName,$CodeSulmyung,$Used]);
+                if($result2==1){
+                    $msg="success";
+                }else{
+                    $msg="failed";
+                }
+            } 
         }
-        
+        return response()->json(array('msg'=>$msg),200);
     }
     
     //공통코드 대분류 존재유무 조회 
@@ -166,7 +180,7 @@ class AdminController extends Controller
         if($WorkMedium==""||$WorkMedium=="all"){
             $WorkMedium="all";
         }
-        $data=DB::select('CALL getCommonCode(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $data=DB::select('CALL getCommonCodeAll(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
 
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
@@ -199,7 +213,7 @@ class AdminController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        $commonCodeDetail=DB::select('CALL getCommonCode(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $commonCodeDetail=DB::select('CALL getCommonCodeAll(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         return view('/admin/commonCodeMediumUpdateView',compact('commonCodeDetail'));
     }
     //공통코드 대분류 수정
@@ -210,7 +224,7 @@ class AdminController extends Controller
         $CodeSulmyung = $request->input('CodeSulmyung');
         $Used = $request->input('Used');
         
-        $result = DB::table('incar.OnlineBatch_WorkMediumCode')->Where('WorkLarge',$WorkLarge)->update([
+        $result = DB::table('incar.OnlineBatch_WorkLargeCode')->Where('WorkLarge',$WorkLarge)->update([
             'ShortName'=>$CodeShortName,
             'LongName'=>$CodeLongName,
             'Sulmyung'=>$CodeSulmyung,

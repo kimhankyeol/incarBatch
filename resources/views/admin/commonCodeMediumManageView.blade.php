@@ -35,21 +35,33 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group align-items-center">
                   {{-- 대분류 중분류 선택 --}}
-                  <div id="codeLargeView" class="list-code"></div>
+                  @include("code.admin.codeSelect")
                   {{-- 검색 조건 --}}
-                  <select class="form-control bg-light border-primary small">
-                    <option>
-                      코드 명칭
-                    </option>
+                  <div class="text-center align-self-center font-weight-bold text-primary mx-2">사용 여부</div>
+                  <select id="Used" class="form-control form-control-sm" style="margin-right:20px">
+                      @if($Used == "1")
+                        <option value="all">전체</option>
+                        <option value="1" selected>사용</option>
+                        <option value="0">미사용</option>
+                      @endif
+                      @if($Used == "0")
+                        <option value="all">전체</option>
+                        <option value="1">사용</option>
+                        <option value="0" selected>미사용</option>
+                      @endif
+                      @if($Used=="all")
+                        <option value="all" selected>전체</option>
+                        <option value="1">사용</option>
+                        <option value="0">미사용</option>
+                      @endif
                   </select>
-                  {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
+                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
                   @elseif(isset($searchWord))
                     @if($searchWord=="searchWordNot")
-                    <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" aria-label="Search">
-                    @elseif($searchWord!="searchWordNot")
-                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                      <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
+                    @else
+                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
                     @endif
                   @endif
                   <div class="input-group-append">
@@ -92,8 +104,5 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         @include('common.footer')
     {{--content 끝--}}
     </div>
-    @php
-    echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'","'.$_SERVER["REQUEST_URI"].'");</script>';
-   @endphp
 </body>
 </html>

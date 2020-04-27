@@ -9,6 +9,9 @@ const pageMove={
         },
         register:function(urlName){
             location.href="/job/"+urlName;
+        },
+        update:function(urlName,param1,param2,param3){
+            location.href="/job/"+urlName+"?Job_Seq="+param1+"&WorkLarge="+param2+"&WorkMedium="+param3;
         }
     },
     process:{

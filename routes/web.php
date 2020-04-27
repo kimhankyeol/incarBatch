@@ -29,6 +29,8 @@ Route::prefix('job')->group(function(){
     Route::get('/jobDetailView','JobController@jobDetailView');
     //잡 실행 뷰
     Route::get('/jobExecuteView','JobController@jobExecuteView');
+    //잡 수정 뷰
+    Route::get('/jobUpdateView','JobController@jobUpdateView');
     //잡 등록 
     Route::post('/jobRegister','JobController@jobRegister');
     
@@ -116,6 +118,8 @@ Route::prefix('admin')->group(function(){
     Route::get('/commonCodeLargeExist','AdminController@commonCodeLargeExist');
     //공통코드 중분류 존재유무 조회 
     Route::get('/commonCodeExist','AdminController@commonCodeExist');
-    //공통코드 수정 
+    //공통코드 대분류 수정 
+    Route::post('/commonCodeLargeUpdate','AdminController@commonCodeLargeUpdate');
+    //공통코드 중분류 수정 
     Route::post('/commonCodeMediumUpdate','AdminController@commonCodeMediumUpdate');
 });
