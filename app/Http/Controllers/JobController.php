@@ -66,7 +66,10 @@ class JobController extends Controller
         $job_seq = $request->input('Job_Seq');
         //프로시저를 통한 잡 상세정보 검색
         $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
-        return view('job.jobDetailView',compact('jobDetail'));
+        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
+        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
+        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        return view('job.jobDetailView',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
     //잡 등록 뷰
     public function jobRegisterView(){
@@ -83,8 +86,9 @@ class JobController extends Controller
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
         //프로시저를 통한 잡 상세정보 검색
-        $jobDetail=DB::select('CALL jobDetail(?)',[$job_seq]);
-        return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium'));
+        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
+        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium','jobTotalTime'));
     }
     //잡 등록
     public function jobRegister(Request $request){
@@ -109,6 +113,7 @@ class JobController extends Controller
             'Job_Sulmyung'=> $Job_Sulmyung,
             'Job_RegId'=>$Job_RegId,
             'Job_RegIP'=>ip2long($Job_RegIP),
+            'Job_RegDate'=>now(),
             'Job_Params'=>$Job_Params,
             'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
             'Job_DeleteYN'=>$Job_DeleteYN,
@@ -125,5 +130,37 @@ class JobController extends Controller
             $msg="failed";
             return response()->json(array('msg'=>$msg),403);
         }
+    }
+    //잡 수정
+    public function jobUpdate(Request $request){
+        $Job_Seq=$request->input('Job_Seq');
+        $Job_Name=$request->input('Job_Name');
+        $Job_Sulmyung = $request->input('Job_Sulmyung');
+        $Job_UpdId = $request->input('Job_RegId');
+        $Job_UpdIP = $_SERVER["REMOTE_ADDR"];
+        $Job_Params = $request->input('Job_Params');
+        $Job_ParamSulmyungs = $request->input('Job_ParamSulmyungs');
+        //업무 대분류 중분류
+        $Job_WorkLargeCtg=$request->input('Job_WorkLargeCtg');
+        $Job_WorkMediumCtg=$request->input('Job_WorkMediumCtg');
+        $result = DB::table('incar.OnlineBatch_Job')->where('Job_Seq',$Job_Seq)->update([
+            'Job_Name'=>$Job_Name,
+            'Job_Sulmyung'=>$Job_Sulmyung,
+            'Job_UpdId'=>$Job_UpdId,
+            'Job_UpdIP'=>ip2long($Job_UpdIP),
+            'Job_Params'=>$Job_Params,
+            'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
+            'Job_WorkLargeCtg'=>$Job_WorkLargeCtg,
+            'Job_WorkMediumCtg'=>$Job_WorkMediumCtg
+        ]);
+        //변경사항이 있는지 없는지
+        if($result!=0){
+            $msg="success";
+            return response()->json(array('msg'=>$msg),200);
+        }else {
+            $msg="notChg";
+            return response()->json(array('msg'=>$msg),400);
+        }
+        
     }
 }
