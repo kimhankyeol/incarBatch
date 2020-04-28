@@ -62,7 +62,21 @@ class JobController extends Controller
     }
     //잡 등록 뷰
     public function jobRegisterView(){
-        return view('job.jobRegisterView');
+        //Job_searchUsedLargeCode 프로시저를 실행하기 위한 변수선언
+        $searchWord="searchWordNot";
+        $WorkLarge="all";
+        $WorkMedium="all";
+        $usedLarge = DB::select('CALL Job_searchUsedLargeCode');
+        return view('job.jobRegisterView',compact('usedLarge','WorkMedium','WorkLarge'));
+    }
+    //잡 수정 뷰
+    public function jobUpdateView(Request $request){
+        $job_seq = $request->input('Job_Seq');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        //프로시저를 통한 잡 상세정보 검색
+        $jobDetail=DB::select('CALL jobDetail(?)',[$job_seq]);
+        return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium'));
     }
     //잡 등록
     public function jobRegister(Request $request){

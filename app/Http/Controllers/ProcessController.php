@@ -54,8 +54,12 @@ class ProcessController extends Controller
     }
     //프로세스 등록 뷰
     public function processRegisterView(){
-        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->get();
-        return view('process.processRegisterView',compact('db_list'));
+        $searchWord="searchWordNot";
+        $WorkLarge="all";
+        $WorkMedium="all";
+        $usedLarge = DB::select('CALL Process_searchUsedLargeCode');
+        $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->where('Used','1')->get();
+        return view('process.processRegisterView',compact('db_list','WorkLarge','WorkMedium','usedLarge'));
     }
     //프로세스 등록 저장
     public function processRegister(Request $request){
