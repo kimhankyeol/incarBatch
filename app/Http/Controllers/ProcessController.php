@@ -108,8 +108,7 @@ class ProcessController extends Controller
                      'P_FileInputCheck'=>$P_FileInputCheck,
                      'P_DevId'=>$P_DevId,
                      'P_RegIp'=>ip2long($P_RegIp),
-                     'P_RegId'=>$P_RegId,
-                     'P_RegDate'=>now()
+                     'P_RegId'=>$P_RegId
                     ]
                 );
                 return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
@@ -158,6 +157,7 @@ class ProcessController extends Controller
                     'P_Params'=>$P_Params,
                     'P_ParamSulmyungs'=>$P_ParamSulmyungs,
                     'P_UpdIP'=>ip2long($P_UpdIP),
+                    'P_UpdDate'=>$P_UpDate,
                     'P_FileInput'=>$P_FileInput
                 ]);
                 return response()->json(array('result'=>$result, 'fileResult1'=>$fileResult1, 'count'=>$count,'P_Seq'=>$p_seq));//성공
@@ -175,7 +175,7 @@ class ProcessController extends Controller
         $WorkMedium = $request->input('WorkMedium');
         $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->get();
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL Process_Detail(?)',[$p_seq]);
+        $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
         return view('process.processEditView',compact('processDetail','db_list','WorkLarge','WorkMedium'));
     }
 }
