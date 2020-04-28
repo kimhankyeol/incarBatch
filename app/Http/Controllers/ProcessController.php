@@ -22,7 +22,9 @@ class ProcessController extends Controller
         }
             //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
             // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-            $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
+            //$processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
+            $processContents = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+            $usedLarge = DB::select('CALL Process_searchUsedLargeCode()');
             $page=$request->input('page');
                 //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
             $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$processContents);
@@ -43,13 +45,19 @@ class ProcessController extends Controller
             else if($WorkLarge!="all"&&$WorkMedium!="all"){
                 $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
             }
-            return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium'));
+            
+            if($WorkLarge!="all"){
+                $usedMedium = DB::select('CALL Job_searchUsedMediumCode(?)',[$WorkLarge]);
+                return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
+            }else{
+                return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));
+            }
     }
     //프로세스 상세 뷰
     public function processDetailView(Request $request){
         $p_seq = $request->input('P_Seq');
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
+        $processDetail=DB::select('CALL Process_detail(?)',[$p_seq]);
         return view('process.processDetailView',compact('processDetail'));
     }
     //프로세스 등록 뷰
@@ -57,7 +65,7 @@ class ProcessController extends Controller
         $searchWord="searchWordNot";
         $WorkLarge="all";
         $WorkMedium="all";
-        $usedLarge = DB::select('CALL Process_searchUsedLargeCode');
+        $usedLarge = DB::select('CALL Job_RegViewLargeCode');
         $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->where('Used','1')->get();
         return view('process.processRegisterView',compact('db_list','WorkLarge','WorkMedium','usedLarge'));
     }
@@ -143,6 +151,7 @@ class ProcessController extends Controller
         $P_FilePath="/home/incar/work".$processPath."/".$P_File;
         $fileResult1 = file_exists($P_FilePath);
         $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_File',$P_File)->where('P_Seq','!=',$p_seq)->count();
+        //return response()->json(array('count'=>$count));
         if($fileResult1){// 경로+파일이 존재하는가?
             if($count==0){
                 $result = DB::table('incar.OnlineBatch_Process')->where('P_Seq',$p_seq)->update([
@@ -158,7 +167,6 @@ class ProcessController extends Controller
                     'P_Params'=>$P_Params,
                     'P_ParamSulmyungs'=>$P_ParamSulmyungs,
                     'P_UpdIP'=>ip2long($P_UpdIP),
-                    'P_UpdDate'=>$P_UpDate,
                     'P_FileInput'=>$P_FileInput
                 ]);
                 return response()->json(array('result'=>$result, 'fileResult1'=>$fileResult1, 'count'=>$count,'P_Seq'=>$p_seq));//성공
@@ -176,7 +184,7 @@ class ProcessController extends Controller
         $WorkMedium = $request->input('WorkMedium');
         $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->get();
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
+        $processDetail=DB::select('CALL Process_Detail(?)',[$p_seq]);
         return view('process.processEditView',compact('processDetail','db_list','WorkLarge','WorkMedium'));
     }
 }
