@@ -129,18 +129,15 @@
                     파라미터</div>
                 </div>
                 <div id="gusungList" class="row px-0 gusungList">
-                    @if(isset($data))
-                        @include('popup.gusungProcessSearchListView')
-                    @endIf
-                    @if(isset($paginator))
-                        {{$paginator->setPath('/popup/jobGusung')->appends(request()->except($searchParams))->links()}}
+                    @if(isset($jobGusungContents))
+                      @include('popup.gusungProcessList')
                     @endIf
                 </div>
               </div>
             </div>
             <div class="col-md-12 text-center">
-              <button type="button" class="btn btn-info" onclick="popup.gusungAdd()">등록</button>
-              <button type="button" class="btn btn-danger">취소</button>
+              <button type="button" class="btn btn-info" onclick="popup.gusungAdd({{$jobDetail[0]->Job_Seq}})">등록</button>
+              <button type="button" class="btn btn-danger" onclick="window.close()">취소</button>
             </div>
           </div>
         </div>
@@ -152,6 +149,7 @@
     <script>
         // 검색 페이징
         $(document).ready(function () {
+            Sortable({ els: ".gusungData", type: "insert" });
             popup.search("1", "all", "all");
             $(document).on('click', '.pagination a', function (event) {
                 event.preventDefault();
@@ -173,7 +171,8 @@
         })
     </script>
     @php
-        echo  '<script>code.workLargeCtg("all","all","'.$_SERVER["REQUEST_URI"].'");</script>';
+      echo  '<script>code.workLargeCtg("all","all","'.$_SERVER["REQUEST_URI"].'");</script>';
+      //echo  var_dump($jobGusungContents);
     @endphp
 </body>
 </html>

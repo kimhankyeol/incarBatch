@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
+use Monolog\Handler\PHPConsoleHandler;
 
 class PopupController extends Controller
 {
@@ -13,41 +14,33 @@ class PopupController extends Controller
     public function processInfo(){
         return view('/popup/processInfo');
     }
-    //팝업- 잡 구성
+    //팝업- 잡 구성 (수정필요)
     public function jobGusung(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $jobGusungContents = DB::select('CALL getJobGusungList(?)',[$Job_Seq]);
         $jobDetail = DB::select('CALL jobDetail(?)',[$Job_Seq]);
-        $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
-        $jobName = $jobName[0]->Job_Name;
+        //$jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
+        //$jobName = $jobName[0]->Job_Name;
+        $jobName =  $jobDetail[0]-> Job_Name;
         return view('/popup/jobGusung',compact('jobGusungContents','jobName','jobDetail'));
     }
     //팝업- 잡 구성 수정/ 등록
     public function jobGusungModify(Request $request){
-        //delyn 으로 할지 삭제 하고 새로구성
         $Job_Seq = $request->input('Job_Seq');
-        $P_Seq = $request->input('P_SeqArr');
+        $gusungProcess = $request->input('gusungProcess');
+        $gusungData = $request->input('gusungData');
 
         $gusungCount = DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq);
         $gusungCount = $gusungCount->count();
 
-        //프로세스 및 작업이 실행중인지 아닌지
-        //잡구성버전
-        
-        // 1 || 2 || 3
-        $P_SeqArr = explode("||",$P_Seq);
-        $P_SeqCount =count($P_SeqArr);
-        if($gusungCount==0){
-            for($i = 0; $i<$P_SeqCount;$i++){
-                DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$P_SeqArr[$i],'JobGusung_Order'=>$i+1]);
-            }
-        }else{
+        if($gusungCount!=0){
             DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq)->delete();
-            for($i = 0; $i<$P_SeqCount;$i++){
-                DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$P_SeqArr[$i],'JobGusung_Order'=>$i+1]);
-            }
         }
-        return response()->json(array('P_SeqArr'=>$P_SeqCount,200));
+        for($i = 0; $i<count($gusungProcess);$i++){
+            DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobGusung_Order'=>$i+1,'JobGusung_ParamPos'=>$gusungData[$i]]);
+        }
+        //return response()->json(array('Job_Seq'=>$Job_Seq,'gusungData'=>$gusungData,'gusungProcess'=>count($gusungProcess),'gusungCount'=>$gusungCount,200)); 
+        return response()->json(array('count'=>count($gusungProcess),200));
     }
     //팝업 프로세스 검색조회
     public function popupPsSearch(Request $request){
