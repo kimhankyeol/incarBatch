@@ -33,17 +33,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-                            <div id="codeLargeView" class="outher-code">
-                              <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">업무구분</div>
-                              <div class="col-md-2 text-center align-self-center font-weight-bold text-primary" >대분류</div>
-                              <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$processDetail[0]->P_WorkLargeName}}"/>
-                              <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">중분류</div>
-                              <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$processDetail[0]->P_WorkMediumName}}"/>
-=======
->>>>>>> kim
                             <div class="outher-code">
                               <input id="P_Seq" type="hidden" value="{{$processDetail[0]->P_Seq}}"/>
                               <div class="text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
@@ -52,34 +41,16 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                               <div class="text-center align-self-center font-weight-bold text-primary mx-2">중분류</div>
                               <input  type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkMediumName}}" readonly>
                               <input id="P_WorkMediumCtg" type="hidden" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkMediumCtg}}"  readonly> 
-<<<<<<< HEAD
-=======
->>>>>>> 545bfcc710c9ea5a142747f5e516874ae83b6acd
->>>>>>> kim
                             </div>
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
                             <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center"  value="{{$processDetail[0]->P_FileName}}" readonly>
                             <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" >
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <select id="UseDb" class="col-md-1 form-control form-control-sm">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-                              
-                              @foreach ($db_list as $list)
-                                  <option value = {{$list->WorkLarge}}>{{$list->ShortName}}</option>
-                              @endforeach
-                            </select>   
-=======
->>>>>>> kim
                                     @foreach ($db_list as $list)
                                         <option value="{{$list->WorkMedium}}">{{ $list -> LongName}}</option>
                                     @endforeach  
                             </select>
-<<<<<<< HEAD
-=======
->>>>>>> 545bfcc710c9ea5a142747f5e516874ae83b6acd
->>>>>>> kim
                             @if(($processDetail[0]->P_ReworkYN)==1)
                             <div class="col-md-1 mx-2 custom-control custom-checkbox small">
                                 <input id="retry" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_ReworkYN }}">
@@ -167,14 +138,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         {{-- 프로그램변수가 추가되는 부분 --}}
                         <div class="w-75 m-auto">
                           <div class="row" id="proParams">
-<<<<<<< HEAD
-=======
                             @if(isset($processDetail[0]->P_Params))
-<<<<<<< HEAD
->>>>>>> origin/lsy
-=======
->>>>>>> 545bfcc710c9ea5a142747f5e516874ae83b6acd
->>>>>>> kim
                               @php
                                 $proParamArr=explode("||",$processDetail[0]->P_Params);
                                 $proParamSulArr=explode("||",$processDetail[0]->P_ParamSulmyungs);
@@ -221,6 +185,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     </div>
   </body>
   </html>
+
  <script>
     $(function(){
         $('#P_FileInputCheck').click(function(){

@@ -165,9 +165,4 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             }
           })
     }
-<<<<<<< HEAD
     </script>
->>>>>>> origin/lsy
-=======
-    </script>
->>>>>>> kim
