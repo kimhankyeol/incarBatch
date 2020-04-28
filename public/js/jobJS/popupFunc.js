@@ -1,4 +1,3 @@
-Sortable({ els: '.gusungData', type: 'insert' });
 const popup = {
   // Row 선택시 스타일 변경 및 체크
   selectRow: function (obj) {
@@ -52,7 +51,7 @@ const popup = {
     proList.className = "list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center";
     nameList.className = "list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center";
     parmList.className = "list-group-item col-md-8 p-2 rounded-0";
-    parmSelect.className = "form-control form-control-sm w-25 d-inline-block";
+    parmSelect.className = "form-control form-control-sm w-25 d-inline-block parmSelect";
     //체크박스
     chk.className = "gusungChk";
     chk.type = "checkbox";
@@ -71,6 +70,7 @@ const popup = {
     for (var j = 0; j < jobParm.childElementCount; j += 2) {
       var option = document.createElement('option');
       if (jobParm.children[j + 1].value) {
+        option.value = j == 0 ? 0 : (j / 2);
         option.textContent = jobParm.textContent.trim().split(' ')[selectCount] + ' ' + jobParm.children[j + 1].value;
         parmSelect.appendChild(option);
         selectCount++;
@@ -79,16 +79,16 @@ const popup = {
     // {{-- TEXT 설명 --}}
     var label = document.createElement('label');
     label.className = "m-0 w-100"
-
     for (var k = 0; k < processChecks[i].parentElement.parentElement.children[4].children[0].children[0].childElementCount; k++) {
       var gusungValue = document.createElement('input');
-      console.log("processChecks[i].parentElement.parentElement.children[4].children[0].children[0].children[k]");
-      console.log(processChecks[i].parentElement.parentElement.children[4].children[0].children[0].children[k]);
       gusungValue.className = "form-control form-control-sm w-auto d-inline-block border-0 bg-transparent shadow-none"
       gusungValue.type = "text"
       gusungValue.value = (k + 1) + ') ' + processChecks[i].parentElement.parentElement.children[4].children[0].children[0].children[k].value;
       //gusungValue.appendChild(p)
       label.appendChild(gusungValue.cloneNode(true));
+      for (var t = 0; t < processChecks[i].parentElement.parentElement.children[4].children[0].children[0].childElementCount; t++) {
+        parmSelect[t].removeAttribute("selected")
+      }
       parmSelect[k].setAttribute("selected", true)
       label.appendChild(parmSelect.cloneNode(true));
     }
@@ -108,15 +108,27 @@ const popup = {
       gusungList = document.getElementById("gusungList"),
       processChecks = document.getElementsByClassName("processChecks"),
       gusungData = document.getElementsByClassName("gusungData");
+    // 잡 파라미터 개수 체크
+    var jobParmCount = 0;
+    for (var i = 1; i < jobParm.childElementCount; i += 2) {
+      if (jobParm.children[i].value) {
+        jobParmCount++;
+      }
+    }
     // 중복 체크 변수
     var duplChk = 0;
     // 프로세스 처음 추가 시
     if (gusungList.childElementCount == 0) {
       for (var i = 0; i < processChecks.length; i++) {
         if (processChecks[i].checked) {
-          popup.processGusung(i)
-          processChecks[i].parentElement.parentElement.style.backgroundColor = "#fff"
-          processChecks[i].checked = false;
+          if (jobParmCount < processChecks[i].parentElement.parentElement.children[4].children[0].children[0].childElementCount) {
+            alert("파라미터의 개수가 맞지 않습니다.")
+            return false;
+          } else {
+            popup.processGusung(i)
+            processChecks[i].parentElement.parentElement.style.backgroundColor = "#fff"
+            processChecks[i].checked = false;
+          }
         }
       }
     } else {
@@ -136,23 +148,28 @@ const popup = {
       if (count == 0) {
         for (var i = 0; i < processChecks.length; i++) {
           if (processChecks[i].checked) {
-            var processVal = processChecks[i].value;
-            for (var j = 0; j < gusungList.childElementCount; j++) {
-              var gusungVal = gusungList.children[j].children[0].children[0].value;
-              if (processVal == gusungVal) {
-                duplChk++;
-                continue;
+            if (jobParmCount < processChecks[i].parentElement.parentElement.children[4].children[0].children[0].childElementCount) {
+              alert("파라미터의 개수가 맞지 않습니다.")
+              return false;
+            } else {
+              var processVal = processChecks[i].value;
+              for (var j = 0; j < gusungList.childElementCount; j++) {
+                var gusungVal = gusungList.children[j].children[0].children[0].value;
+                if (processVal == gusungVal) {
+                  duplChk++;
+                  continue;
+                }
+                for (var t = 0; t < gusungList.children[j].childElementCount; t++) {
+                  gusungList.children[j].children[t].style.backgroundColor = "#fff";
+                  gusungList.children[j].children[t].checked = false;
+                }
               }
-              for (var t = 0; t < gusungList.children[j].childElementCount; t++) {
-                gusungList.children[j].children[t].style.backgroundColor = "#fff";
-                gusungList.children[j].children[t].checked = false;
+              if (duplChk == 0) {
+                popup.processGusung(i);
               }
+              processChecks[i].parentElement.parentElement.style.backgroundColor = "#fff"
+              processChecks[i].checked = false;
             }
-            if (duplChk == 0) {
-              popup.processGusung(i);
-            }
-            processChecks[i].parentElement.parentElement.style.backgroundColor = "#fff"
-            processChecks[i].checked = false;
           }
         }
       } else {
@@ -216,10 +233,35 @@ const popup = {
     })
   },
   // 구성 등록 스크립트
-  gusungAdd: function () {
+  gusungAdd: function (Job_Seq) {
+    var gusungData = []
+    var gusungProcess = []
+    var gusungDataArr = []
     const addYN = confirm("등록 하시겠습니까?")
     if (addYN) {
-      return alert("등록 되었습니다."), window.close();
+      for (var i = 0; i < document.getElementsByClassName("gusungData").length; i++) {
+        gusungProcess.push(document.getElementsByClassName("gusungData")[i].children[0].children[0].value);
+        gusungDataArr[i] = new Array();
+        for (var j = 1; j < document.getElementsByClassName("gusungData")[i].children[5].children[0].childElementCount; j += 2) {
+          gusungDataArr[i][parseInt(j / 2)] = document.getElementsByClassName("gusungData")[i].children[5].children[0].children[j].value;
+        }
+        gusungData.push(gusungDataArr[i].join("||"));
+      }
+      console.log(Job_Seq)
+      console.log(gusungProcess)
+      console.log(gusungData)
+      $.ajax({
+        url: "/popup/jobGusungModify",
+        method: "get",
+        data: {
+          "Job_Seq": Job_Seq,
+          "gusungProcess": gusungProcess,
+          "gusungData": gusungData
+        },
+        success: function (data) {
+          return alert("등록 되었습니다."), window.close();
+        }
+      })
     } else {
       return false;
     }
