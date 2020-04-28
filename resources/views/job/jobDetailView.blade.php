@@ -65,7 +65,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>              
                 </div>
                 <hr>
-                <div class="row">
+                {{-- <div class="row">
                   <div class="col-md-6 text-center">
                     <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" value="{{intval($jobDetail[0]->Job_YesangTime/1440)}}" readonly numberOnly>
@@ -84,6 +84,25 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" value="{{intval($jobDetail[0]->Job_YesangMaxTime%60)}}" readonly numberOnly>
                     <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
+                </div> --}}
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="limit-time-text">등록자</div>
+                        <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input" value="{{$jobDetail[0]->Job_RegId}}" readonly>
+                        <div class="limit-time-text">등록자IP</div>
+                        <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" value="{{long2ip($jobDetail[0]->Job_RegIP)}}" readonly>
+                        <div class="limit-time-text">등록일</div>
+                        <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input" value="{{$jobDetail[0]->Job_RegDate}}" readonly>              
+                    </div>
+                    <div class="col-md-6">
+                        <div class="limit-time-text">수정자</div>
+                        <input type="text" class="form-control form-control-sm limit-time-input" value="{{$jobDetail[0]->Job_UpdId}}" readonly>
+                        <div class="limit-time-text">수정자IP</div>
+                        <input type="text" class="form-control form-control-sm limit-time-input" value="{{$jobDetail[0]->Job_UpdIP}}" readonly>
+                        <div class="limit-time-text">수정일</div>
+                        <input type="text" class="form-control form-control-sm limit-time-input" value="{{$jobDetail[0]->Job_UpdDate}}" readonly>              
+                    </div>
                 </div>
                 <hr>
                 <div class="row">
@@ -93,31 +112,32 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <hr>
                   {{-- 잡변수가 추가되는 부분 --}}
                     <div class="col-md-12" id="jobParams">
-                      
+                      @if(isset($jobDetail[0]->Job_Params))
                         @php
                           $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
                           $jobParamSulArr=explode("||",$jobDetail[0]->Job_ParamSulmyungs);
                           for ($i = 0; $i < count($jobParamArr); $i++) {
                           echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                           echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
-                           echo '<select name="Job_Params" class="col-md-2 form-control form-control-sm" readonly>';
-                           if($jobParamArr[$i]=="paramDate"){
+                          echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
+                          echo '<select name="Job_Params" class="col-md-2 form-control form-control-sm" readonly>';
+                          if($jobParamArr[$i]=="paramDate"){
                             echo '<option value="'.$jobParamArr[$i].'" selected>날짜</option></select>';
-                           }else if($jobParamArr[$i]=="paramNum"){
+                          }else if($jobParamArr[$i]=="paramNum"){
                             echo '<option value="'.$jobParamArr[$i].'" selected>숫자</option></select>';
-                           }else if($jobParamArr[$i]=="paramStr"){
+                          }else if($jobParamArr[$i]=="paramStr"){
                             echo '<option value="'.$jobParamArr[$i].'" selected>문자</option></select>';
-                           }
-                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly> </div>' ;
+                          }
+                          echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly> </div>' ;
                           }
                         @endphp
+                      @endif
                   </div>
                 </div>
                 <hr>
               <div class="row justify-content-end">
-                <div class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</div>
-                <div class="mt-3 mr-2 btn btn-primary" onclick="">수정 </div>
-              <div class="mt-3 mr-2 btn btn-success" onclick="popup.jobGusung('{{$_GET['Job_Seq']}}')">구성</div>
+                <div class="mt-3 mr-2 btn btn-danger" onclick="pageMove.job.list('jobListView')">취소</div>
+                <div class="mt-3 mr-2 btn btn-primary" onclick="pageMove.job.update('jobUpdateView','{{$jobDetail[0]->Job_Seq}}','{{$jobDetail[0]->Job_WorkLargeCtg}}','{{$jobDetail[0]->Job_WorkMediumCtg}}')">수정 </div>
+              <div class="mt-3 mr-2 btn btn-success" onclick="popup.jobGusung('{{$jobDetail[0]->Job_Seq}}')">구성</div>
               </div>
             </div>
           </div>

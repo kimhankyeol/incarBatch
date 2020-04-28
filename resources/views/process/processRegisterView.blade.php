@@ -32,14 +32,18 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div id="codeLargeView" class="outher-code"></div>
+                            <div class="outher-code">
+                                {{-- 업무 구분 대분류 중분류 선택 --}}
+                                <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+                                @include("code.codeSelect")
+                              </div>
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
                             <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center"readonly>
                             <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <select id="UseDb" class="col-md-1 form-control form-control-sm">
                                     @foreach ($db_list as $list)
-                                        <option value="{{ $list -> LongName}}">{{ $list -> LongName}}</option>
+                                        <option value="{{$list->WorkMedium}}">{{ $list -> LongName}}</option>
                                     @endforeach  
                             </select>  
                             <div class="col-md-1 mx-1 custom-control custom-checkbox small">
@@ -75,25 +79,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="0" numberOnly>
                             </div>
                         </div>
-                        {{-- <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="limit-time-text">등록자</div>
-                                <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input" placeholder="이수연" value="이수연" readonly>
-                                <div class="limit-time-text">등록자IP</div>
-                                <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input" value="{{$_SERVER["REMOTE_ADDR"]}}" readonly>
-                                <div class="limit-time-text">등록일</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>              
-                            </div>
-                            <div class="col-md-6">
-                                <div class="limit-time-text">수정자</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>
-                                <div class="limit-time-text">수정자IP</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>
-                                <div class="limit-time-text">수정일</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input" readonly>              
-                            </div>
-                        </div> --}}
                         <hr>
                         <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
@@ -109,10 +94,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             프로그램 파라미터 타입
                         </h6>
                         <hr>
-                        {{-- program 변수가 추가되는 부분 --}}
                         <div class="row">
+                        {{-- program 변수가 추가되는 부분 --}}
                             <div class="col-md-12" id="proParams"></div>
-                            {{-- 프로그램변수가 추가되는 함수  process.addDivParam()   삭제되는 함수는 process.delDivParam() //jobF unc.js 에 있음 --}}
                             <div class="col-md-12 text-center">
                                 <input type="button" class="mt-3 btn btn-info" value="프로그램 변수 추가 +"  onclick="process.addDivParam()"/>
                             </div>
@@ -134,7 +118,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   </body>
   </html>
 <script>
-    code.workLargeCtg();
     $(function(){
         $('#P_FileInputCheck').click(function(){
 
@@ -165,3 +148,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
     })
 </script>
+<script>
+    function workLargeChgSel(){
+     var WorkLarge =  $('#workLargeVal').val();
+          $.ajax({
+            url:"/code/workMediumCtg",
+            method:"get",
+            data:{
+              "WorkLarge":$('#workLargeVal').val()
+            },
+            success:function(resp){
+              $("#workMediumVal").html(resp.returnHTML);
+            },
+            error:function(error){
+  
+            }
+          })
+    }
+    </script>

@@ -1,4 +1,3 @@
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +7,9 @@
     <link href="/css/custom.css" rel="stylesheet">
      <script type="text/javascript" src="/js/sortable.js"></script>
     <script type="text/javascript" src="/js/jobJS/loginFunc.js"></script>
+    <script type="text/javascript" src="/js/sortable.js"></script>
+    <script type="text/javascript" src="/js/jobJS/codeFunc.js"></script>
+    <script type="text/javascript" src="/js/jobJS/popupFunc.js"></script>
     <?php
     $titleList = array(
         array('title' => '프로그램 상세', 'url' => '/popup/processInfo'),
