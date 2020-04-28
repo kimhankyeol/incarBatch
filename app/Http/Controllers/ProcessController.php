@@ -116,7 +116,8 @@ class ProcessController extends Controller
                      'P_FileInputCheck'=>$P_FileInputCheck,
                      'P_DevId'=>$P_DevId,
                      'P_RegIp'=>ip2long($P_RegIp),
-                     'P_RegId'=>$P_RegId
+                     'P_RegId'=>$P_RegId,
+                     'P_RegDate'=>now()
                     ]
                 );
                 return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
@@ -150,6 +151,7 @@ class ProcessController extends Controller
         $P_FilePath="/home/incar/work".$processPath."/".$P_File;
         $fileResult1 = file_exists($P_FilePath);
         $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_File',$P_File)->where('P_Seq','!=',$p_seq)->count();
+        //return response()->json(array('count'=>$count));
         if($fileResult1){// 경로+파일이 존재하는가?
             if($count==0){
                 $result = DB::table('incar.OnlineBatch_Process')->where('P_Seq',$p_seq)->update([
@@ -165,7 +167,6 @@ class ProcessController extends Controller
                     'P_Params'=>$P_Params,
                     'P_ParamSulmyungs'=>$P_ParamSulmyungs,
                     'P_UpdIP'=>ip2long($P_UpdIP),
-                    'P_UpdDate'=>$P_UpDate,
                     'P_FileInput'=>$P_FileInput
                 ]);
                 return response()->json(array('result'=>$result, 'fileResult1'=>$fileResult1, 'count'=>$count,'P_Seq'=>$p_seq));//성공
@@ -183,7 +184,7 @@ class ProcessController extends Controller
         $WorkMedium = $request->input('WorkMedium');
         $db_list = DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge','3000')->get();
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL processDetail(?)',[$p_seq]);
+        $processDetail=DB::select('CALL Process_Detail(?)',[$p_seq]);
         return view('process.processEditView',compact('processDetail','db_list','WorkLarge','WorkMedium'));
     }
 }
