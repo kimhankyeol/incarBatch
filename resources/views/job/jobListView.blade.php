@@ -33,9 +33,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <div class="d-flex justify-content-end card-header py-3">
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group align-items-center">
-                  {{-- 대분류 중분류 선택 --}}
-                  <div id="codeLargeView" class="list-code"></div>
-                  {{-- 검색 조건 --}}
+                   {{-- 업무 구분 대분류 중분류 선택 --}}
+                  <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+                  @include("code.codeSelect")
+                   {{-- 검색 조건 --}}
                   <select class="form-control bg-light border-primary small">
                     <option>
                       잡명
@@ -102,8 +103,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       @include('common.footer')
     {{--content 끝--}}
     </div>
-    @php
-      echo  '<script>code.workLargeCtg("'.$WorkLarge.'","'.$WorkMedium.'");</script>'
-    @endphp
+  <script>
+  function workLargeChgSel(){
+   var WorkLarge =  $('#workLargeVal').val();
+        $.ajax({
+          url:"/code/workMediumCtg",
+          method:"get",
+          data:{
+            "WorkLarge":WorkLarge
+          },
+          success:function(resp){
+            $("#workMediumVal").html(resp.returnHTML);
+          },
+          error:function(error){
+
+          }
+        })
+  }
+  </script>
 </body>
 </html>

@@ -73,7 +73,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
+                  <div id="FilePathDiv" class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
                   <input type="text" id="FilePath"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="/incar/incarproject">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
                   <textarea type="text" id="CodeSulmyung" class="col-md-6 form-control form-control-sm" placeholder="코드 설명" style="resize: none;"></textarea>

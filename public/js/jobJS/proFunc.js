@@ -10,6 +10,7 @@ const process = {
     },
     //등록
     register: function () {
+        
         $('#workLargeVal').removeAttr("disabled", "disabled");
         $('#workMediumVal').removeAttr("disabled", "disabled");
 
@@ -29,6 +30,7 @@ const process = {
 
         var WorkLarge = $('#workLargeVal option:selected').val();
         var WorkMedium = $('#workMediumVal option:selected').val();
+     
         var processPath = document.getElementById("processPath").value; 
         var processFile = document.getElementById("processFile").value;
         var UseDb = document.getElementById("UseDb").value;
@@ -130,7 +132,6 @@ const process = {
     },
     //db 업데이트
     update : function () {
-        
         if($("#retry").is(":checked")){
             $("#retry").val(1);
         }else{
@@ -143,8 +144,8 @@ const process = {
         var processFile = $('#processFile').val();
         var programName = $('#programName').val();
         var programExplain = $('#programExplain').val();
-        var WorkLarge = $('#workLargeVal option:selected').val();
-        var WorkMedium = $('#workMediumVal option:selected').val();
+        var WorkLarge = $('#P_WorkLargeCtg').val();
+        var WorkMedium = $('#P_WorkMediumCtg').val();
         var UseDb = $('#UseDb').val();
         var retry = $("#retry").val();
         var P_UpdIP= $('#P_UpdIP').val();
@@ -325,21 +326,16 @@ const process = {
             '<select name="proParamType" class="col-md-2 form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
             '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" placeholder="설명">';
         proParamDiv.className = "d-inline-flex w-50 delYN mb-2";
+        proParamDiv.style.cssFloat="left";
         proParamDiv2.className = "col-md-3 small align-self-center text-center";
         proParamDiv2.innerHTML = "파라미터";
         delBtnDiv.className =
-            "delParam btn-danger  form-control form-control-sm col-md-1 text-center";
-        delBtnDiv.onclick = process.deleteDivParam;
+            "delParam btn-danger form-control form-control-sm col-md-1 text-center";
         delBtnDiv.innerText = "삭제";
         proParamDiv.appendChild(proParamDiv2);
         proParamDiv.innerHTML += proParamInputText;
         proParamDiv.appendChild(delBtnDiv);
         document.getElementById("proParams").appendChild(proParamDiv);
         document.getElementById("proParams").scrollIntoView();
-    },
-    //파라미터 삭제
-    deleteDivParam: function () {
-        var delIndex = $(".delParam").index(this);
-        $(".delYN").eq(delIndex).remove();
-    },
+    }
 };

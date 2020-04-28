@@ -18,10 +18,9 @@ class PopupController extends Controller
     public function jobGusung(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $jobGusungContents = DB::select('CALL getJobGusungList(?)',[$Job_Seq]);
-        $jobDetail = DB::select('CALL jobDetail(?)',[$Job_Seq]);
-        //$jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
-        //$jobName = $jobName[0]->Job_Name;
-        $jobName =  $jobDetail[0]-> Job_Name;
+        $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
+        $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
+        $jobName = $jobName[0]->Job_Name;
         return view('/popup/jobGusung',compact('jobGusungContents','jobName','jobDetail'));
     }
     //팝업- 잡 구성 수정/ 등록
@@ -58,7 +57,7 @@ class PopupController extends Controller
         }
         //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
         // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-        $processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
+        $processContents = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
         $page=$request->input('page');
             //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$processContents);

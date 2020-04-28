@@ -33,7 +33,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <h5 class="m-0 font-weight-bold text-primary">잡 정보 등록</h5>
             </div>
             <div class="card-body">
-              <form id="jobRegisterForm">
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명(쉘 명) </div>
                   <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>
@@ -44,8 +43,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  {{-- 업무 구분 대분류 중분류 선택 --}}
-                  <div id="codeLargeView" class="outher-code"></div>
+                  <div class="outher-code">
+                    {{-- 업무 구분 대분류 중분류 선택 --}}
+                    <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+                    @include("code.codeSelect")
+                  </div>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
                   <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
@@ -55,31 +57,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 등록자</div>
                   <input type="text" id="Job_RegID" class="col-md-2 form-control form-control-sm align-self-center" placeholder="김한결" value="김한결" readonly>
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">등록일</div>
-                  <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">최종 수정일</div>
-                  <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>     
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-6 text-center">
-                      <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1"  numberOnly>
-                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime2"  numberOnly>
-                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime3"  numberOnly>
-                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
-                  </div>
-                  <div class="col-md-6 text-center">
-                      <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1"  numberOnly>
-                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2"  numberOnly>
-                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                      <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" numberOnly>
-                      <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
-                  </div>
                 </div>
                 <hr>
                 <div class="col-md-12 font-weight-bold text-primary">
@@ -94,7 +71,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </div>
                 </div>
                 <hr>
-              </form>
               <div class="row justify-content-end">
                 <button type="button" class="mt-3 mr-2 btn btn-primary" onclick="job.register()">등록</button>
                 <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</b>
@@ -111,9 +87,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   });    
 </script>
 <script>
-  // jobJS/codeFunc 대분류 조회
-   code.workLargeCtg();
-</script>
+  function workLargeChgSel(){
+   var WorkLarge =  $('#workLargeVal').val();
+        $.ajax({
+          url:"/code/workMediumCtg",
+          method:"get",
+          data:{
+            "WorkLarge":$('#workLargeVal').val()
+          },
+          success:function(resp){
+            $("#workMediumVal").html(resp.returnHTML);
+          },
+          error:function(error){
+
+          }
+        })
+  }
+  </script>
     </div>
   </div>
 </body>

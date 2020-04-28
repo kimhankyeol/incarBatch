@@ -1,4 +1,3 @@
-
 const job = {
   //조회
   search: function(page){
@@ -13,28 +12,6 @@ const job = {
      //변수 선언
       var Job_Name=$('#Job_Name').val();
       var Job_Sulmyung=$('#Job_Sulmyung').val();     
-      //시간계산 분단위 ()
-      if($('#Job_YesangTime1').val()==""){
-        $('#Job_YesangTime1').val(0);
-      }
-      if($('#Job_YesangTime2').val()==""){
-        $('#Job_YesangTime2').val(0);
-      }
-      if($('#Job_YesangTime3').val()==""){
-        $('#Job_YesangTime3').val(0);
-      }
-      if($('#Job_YesangMaxTime1').val()==""){
-        $('#Job_YesangMaxTime1').val(0);
-      }
-      if($('#Job_YesangMaxTime2').val()==""){
-        $('#Job_YesangMaxTime2').val(0);
-      }
-      if($('#Job_YesangMaxTime3').val()==""){
-        $('#Job_YesangMaxTime3').val(0);
-      }
-
-      var Job_YesangTime= job.timeCalc($('#Job_YesangTime1').val(),$('#Job_YesangTime2').val(),$('#Job_YesangTime3').val());
-      var Job_YesangMaxTime=job.timeCalc($('#Job_YesangMaxTime1').val(),$('#Job_YesangMaxTime2').val(),$('#Job_YesangMaxTime3').val());
       var Job_Params="";
       var Job_ParamSulmyungs="";
       var Job_WorkLargeCtg=$('#workLargeVal option:selected').val();
@@ -45,10 +22,9 @@ const job = {
       //잡 파라미터 존재 유무 변수, 하나라도 빈값이 있는지 체크해주기 위해 jobParamIndex
       var jobParamExist=false;
       var jobParamIndex=0;
-      console.log("잡  예상시간:"+Job_YesangTime);
-      console.log("잡 최대 예상시간:"+Job_YesangMaxTime);
+      
       //유효성 (입력여부 공백이 있는지 없는지만 체크)
-      jobValCheck=job.validation(Job_Name,Job_Sulmyung,Job_WorkLargeCtg,Job_WorkMediumCtg,Job_YesangTime,Job_YesangMaxTime);
+      jobValCheck=job.validation(Job_Name,Job_Sulmyung,Job_WorkLargeCtg,Job_WorkMediumCtg);
       console.log("유효성:",jobValCheck);
       ////////////////////////////////////////////////////////////////////
       //1. 잡상태에 따라 등록 여부 갈림
@@ -75,7 +51,6 @@ const job = {
                   jobParamIndex++;
               }
             });
-            console.log(jobParamIndex);
             //변수 설명에 빈값이 있는지 없는지
             if(jobParamIndex==0){
                 //입력된 잡파라미터의 타입, 설명을 1||2||3 이런변수 형태로 바꾸기위해
@@ -96,8 +71,6 @@ const job = {
                       'Job_RegId':111,
                       'Job_Params':Job_Params,
                       'Job_ParamSulmyungs':Job_ParamSulmyungs,
-                      'Job_YesangTime':Job_YesangTime,
-                      'Job_YesangMaxTime':Job_YesangMaxTime,
                       'Job_WorkLargeCtg':Job_WorkLargeCtg,
                       'Job_WorkMediumCtg':Job_WorkMediumCtg
                   },
@@ -136,8 +109,6 @@ const job = {
                   'Job_RegId':1611698,
                   'Job_Params':Job_Params,
                   'Job_ParamSulmyungs':Job_ParamSulmyungs,
-                  'Job_YesangTime':Job_YesangTime,
-                  'Job_YesangMaxTime':Job_YesangMaxTime,
                   'Job_WorkLargeCtg':Job_WorkLargeCtg,
                   'Job_WorkMediumCtg':Job_WorkMediumCtg
               },
@@ -172,7 +143,7 @@ const job = {
 
   },
   //잡 유효성 검사
-  validation:function(Job_Name,Job_Sulmyung,Job_WorkLargeCtg,Job_WorkMediumCtg,Job_YesangTime,Job_YesangMaxTime){
+  validation:function(Job_Name,Job_Sulmyung,Job_WorkLargeCtg,Job_WorkMediumCtg){
     if(Job_Name==""){
       alert('잡 명이 입력되지 않았습니다.');
       $('#Job_Name').focus();
@@ -187,55 +158,16 @@ const job = {
     }else if(Job_WorkMediumCtg=="all"){
       alert('업무 중분류를 선택해주세요');
       return false;
-    }else if(Job_YesangTime==0){
-      alert('잡 예상 시간이 입력되지 않았습니다.');
-      $('#Job_YesangTime').focus();
-      return false;
-    }else if(Job_YesangMaxTime==0){
-      alert('잡 예상 최대 시간이 입력되지 않았습니다.');
-      $('#Job_YesangMaxTime').focus();
-      return false;
-    }else if(parseInt(Job_YesangMaxTime)<parseInt(Job_YesangTime)){
-      alert('잡 예상 시간이 잡 최대 예상 시간보다 길 수 없습니다. ');
-      return false;
     }else{
       return true;
     }
   },
-  ifNullChg:function(param){
-    if(param=="" || param==null || param==undefined || param=="undefined"){
-      console.log("바뀐다.")
-      param=0;
-      return param;
-    }else{
-      return param;
-    }
-  },
-  //분 계산 변수 ( 일 , 시 , 분) 경우는 7가지 
-  //1.아무것도 입력받지 않았을떄   2.일만 입력 받았을떄 3. 시만 입력 받았을떄 4. 분만 입력 받았을떄 4. 일 ,시 만 입력받았을때 5. 시,분만 입력 받았을떄   6.일,분만입력받았을떄 7. 일시분 다입력
-  timeCalc:function(d,h,m){
-    if(d==""&&h==""&&m==""){
-      return 0;
-    }else if(d!=""&&h==""&&m==""){
-      return parseInt(d)*24*60;
-    }else if(d==""&&h!=""&&m==""){
-      return parseInt(h)*60
-    }else if(d==""&&h==""&&m!=""){
-      return parseInt(m)
-    }else if(d!=""&&h!=""&&m==""){
-      return parseInt(d)*24*60+parseInt(h)*60;
-    }else if(d==""&&h!=""&&m!=""){
-      return parseInt(h)*60+parseInt(m);
-    }else if(d!=""&&h!=""&&m!=""){
-      return parseInt(d)*24*60+parseInt(h)*60+parseInt(m);
-    }
-  },
-  //잡 구성 팝업 버튼
-  jobProcessConf:function(){
-    alert("구성");
-  },
   //파라미터 추가
   addDivParam: function () {
+    if(document.getElementsByName('Job_Params').length>9){
+      alert('잡 파라미터는 최대 10개 까지 등록가능 합니다.')
+      return false;
+    }
     var jobParamDiv = document.createElement("div");
     var jobParamDiv2 = document.createElement("div");
     var delBtn = document.createElement("button");
@@ -244,21 +176,24 @@ const job = {
         '<select name="Job_Params" class="col-md-2 form-control form-control-sm"> <option value="paramDate" selected>날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>' +
         '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" placeholder="설명">';
     jobParamDiv.className = "d-inline-flex w-50 delYN mb-2";
+    jobParamDiv.style.cssFloat="left";
     jobParamDiv2.className = "col-md-3 small align-self-center text-center";
     jobParamDiv2.innerHTML = "잡 파라미터";
     delBtn.type = "button";
     delBtn.className ="delParam btn-danger form-control form-control-sm col-md-1";
-    delBtn.onclick = job.deleteDivParam;
     delBtn.innerText = "삭제";
     jobParamDiv.appendChild(jobParamDiv2);
     jobParamDiv.innerHTML += jobParamInputText;
     jobParamDiv.appendChild(delBtn);
     document.getElementById("jobParams").appendChild(jobParamDiv);
     document.getElementById("jobParams").scrollIntoView();
+    
   },
   //파라미터 삭제
-  deleteDivParam:function(){
+  deleteDivParam: $(document).ready(function(){
+    $(document).on('click','.delParam',function(event){
       var delIndex = $('.delParam').index(this);
       $('.delYN').eq(delIndex).remove();
-  }
+    })
+  })
 };

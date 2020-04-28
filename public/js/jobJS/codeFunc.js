@@ -1,14 +1,13 @@
 //공통 코드
 const code = {
     //대분류 즉시 조회 
-    workLargeCtg:function(WorkLarge,WorkMedium,URI){
+    workLargeCtg:function(WorkLarge,WorkMedium){
         $.ajax({
             url:"/code/workLargeCtg",
             method:"get",
             data:{
                 "WorkLarge":WorkLarge,
                 "WorkMedium":WorkMedium,
-                "URI":URI
             },
             success:function(data){
                 console.table(data);
@@ -19,36 +18,21 @@ const code = {
             }
         })
     },
-    //중분류  대분류를 클릭하면 나오는 select
-    workMediumCtg:function(){
+    //중분류
+    workMediumCtg:function(WorkMedium){
         $.ajax({
             url:"/code/workMediumCtg",
             method:"get",
             data:{
                 "WorkLarge":$('#workLargeVal').val(),
-            },
-            success:function(data){
-                $('#workMediumVal').html(data.returnHTML);
-            },error:function(err){
-            }
-        })
-    },
-    workMediumCtg2:function(WorkLarge,WorkMedium){
-        $.ajax({
-            url:"/code/workMediumCtg",
-            method:"get",
-            data:{
-                "WorkLarge":WorkLarge,
                 "WorkMedium":WorkMedium
             },
             success:function(data){
                 $('#workMediumVal').html(data.returnHTML);
             },error:function(err){
-        
             }
         })
-    },
-    //관리자 대분류 공통 코드 검색
+    },//관리자 대분류 공통 코드 검색
     largeSearch:function(page){
         var searchWord = $('#searchWord').val();
         location.href="/admin/commonCodeLargeManageView?searchWord="+searchWord;        
@@ -56,9 +40,10 @@ const code = {
     //관리자 중분류 공통 코드 검색
     search:function(page){
         var searchWord = $('#searchWord').val();
-        var WorkLarge = $('#workLargeVal option:selected').val();
-        var WorkMedium = $('#workMediumVal option:selected').val();
-        location.href="/admin/commonCodeMediumManageView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;        
+        var WorkLarge = $('#workLargeVal').val();
+        var WorkMedium = $('#workMediumVal').val();
+        var Used = $('#Used').val();
+        location.href="/admin/commonCodeMediumManageView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&Used="+Used+"&page="+page;        
     },
     //관리자 대분류 공통 코드 등록
     largeRegister:function(){
@@ -122,14 +107,14 @@ const code = {
     },
     //관리자 중분류 공통 코드 등록
     register:function(){
-        var WorkLarge = $('#WorkLarge');
+       
+        var WorkLarge = $('#WorkLarge option:selected');
         var WorkMedium = $('#WorkMedium');
         var CodeShortName =$('#CodeShortName');
         var CodeLongName =$('#CodeLongName');
         var CodeSulmyung =$('#CodeSulmyung');
         var FilePath = $('#FilePath');
         var Used = $('#Used option:selected');
-       
         if(WorkLarge.val()==""){
             alert("대분류 코드번호가 입력되지 않았습니다.");
             WorkLarge.focus();
@@ -150,10 +135,13 @@ const code = {
             alert("코드 설명이 입력되지 않았습니다.");
             CodeSulmyung.focus();
             return false;
-        }else if(FilePath.val()==""){
-            alert("경로가 입력되지 않았습니다.");
-            FilePath.focus();
-            return false;
+        }
+        if(parseInt(WorkLarge.val())>=1000&&parseInt(WorkLarge.val()<2000)){
+            if(FilePath.val()==""){
+                alert("경로가 입력되지 않았습니다.");
+                FilePath.focus();
+                return false;
+            }
         }else{
             var result = confirm("대분류/중분류 코드를 등록하시겠습니까?");
             if(result){
@@ -161,7 +149,7 @@ const code = {
                     headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url:"/admin/commonCodeRegister",
+                    url:"/admin/commonCodeMediumRegister",
                     method:"POST",
                     data:{
                        "WorkLarge":WorkLarge.val(),
@@ -173,6 +161,7 @@ const code = {
                        "Used":Used.val()
                     },
                     success:function(data){
+                        console.table(data);
                         if(data.msg=="exist"){
                             alert('코드가 존재합니다.');
                             return false;
@@ -278,6 +267,16 @@ const code = {
         var WorkLarge = $('#WorkLarge option:selected');
         if(WorkLarge.val()==""){
             WorkLarge.val('all');
+        }
+        //업무구분 코드 1000~1999 까지는 업무구분 코드여서 경로가 필요하고 2000부터는 경로 필요없음
+        if(WorkLarge.val()>=2000){
+            $('#FilePathDiv').hide();
+            $('#FilePath').hide();
+            $('#FilePath').val("");
+        }else if(WorkLarge.val()<2000){
+            $('#FilePathDiv').show();
+            $('#FilePath').show();
+            $('#FilePath').val("");
         }
         $.ajax({
             url:'/admin/commonCodeExist',
