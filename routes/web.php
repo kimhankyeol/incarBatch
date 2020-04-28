@@ -76,7 +76,7 @@ Route::prefix('popup')->group(function(){
     // 잡 구성
     Route::get('/jobGusung','PopupController@jobGusung');
     // 잡 구성 수정 등록
-    Route::post('/jobGusungModify','PopupController@jobGusungModify');
+    Route::get('/jobGusungModify','PopupController@jobGusungModify');
     // 잡 구성 프로세스 리스트 조회
     Route::get('/popupPsSearch','PopupController@popupPsSearch');
     // 잡 실행
