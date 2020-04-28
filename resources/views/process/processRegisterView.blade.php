@@ -148,8 +148,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
     })
 </script>
-<<<<<<< HEAD
-=======
 <script>
     function workLargeChgSel(){
      var WorkLarge =  $('#workLargeVal').val();
@@ -167,5 +165,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             }
           })
     }
+<<<<<<< HEAD
     </script>
 >>>>>>> origin/lsy
+=======
+    </script>
+>>>>>>> kim

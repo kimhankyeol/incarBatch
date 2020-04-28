@@ -11,11 +11,6 @@
      $Job_ParamSulmyungs = explode('||',$data->Job_ParamSulmyungs);
      $paramSulmyungs = explode('||',$data->P_ParamSulmyungs);
      $JobGusung_ParamPos = explode('||',$data->JobGusung_ParamPos);
-     //  echo var_dump(sizeof($Job_ParamSulmyungs));
-     //echo var_dump(($paramSulmyungs));
-     //echo '<br>';
-    // echo var_dump(($JobGusung_ParamPos));
-    
      for ($i=0; $i < sizeof($paramSulmyungs); $i++) { 
        echo '<input class="form-control form-control-sm w-auto d-inline-block border-0 bg-transparent shadow-none" type="text" value="'.$paramSulmyungs[$i].'">';
        echo '<select class="form-control form-control-sm w-25 d-inline-block parmSelect">';
