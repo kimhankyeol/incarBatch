@@ -104,7 +104,8 @@ class ProcessController extends Controller
                      'P_FileInputCheck'=>$P_FileInputCheck,
                      'P_DevId'=>$P_DevId,
                      'P_RegIp'=>ip2long($P_RegIp),
-                     'P_RegId'=>$P_RegId
+                     'P_RegId'=>$P_RegId,
+                     'P_RegDate'=>now()
                     ]
                 );
                 return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
