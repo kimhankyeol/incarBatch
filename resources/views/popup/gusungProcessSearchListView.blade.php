@@ -20,7 +20,7 @@
     @if(isset($data))
     <tbody>
         @foreach($data as $proSc)
-        <tr onclick="popup.selectRow(this)" ondblclick="pageMove.process.detail('processDetailView','{{$proSc->P_Seq}}')">
+        <tr onclick="popup.selectRow(this)" ondblclick="popup.processInfo({{$proSc->P_Seq}})">
             <td class="d-none"><input type="checkbox" class="list-group-item processChecks" value="{{$proSc->P_Seq}}"></td>
             <td>{{$proSc->P_FileName}}</td>
             <td>{{$proSc->P_File}}</td>
