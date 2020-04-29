@@ -131,7 +131,6 @@ class JobController extends Controller
             return response()->json(array('msg'=>$msg),403);
         }
     }
-<<<<<<< HEAD
     //잡 수정
     public function jobUpdate(Request $request){
         $Job_Seq=$request->input('Job_Seq');
@@ -165,6 +164,4 @@ class JobController extends Controller
         
     }
 }
-=======
-}
->>>>>>> 4f3c91dd0aea6f729b85ebee5d6d23e3b5cd9e9b
+
