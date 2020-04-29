@@ -11,8 +11,10 @@ use Monolog\Handler\PHPConsoleHandler;
 class PopupController extends Controller
 {
     //팝업- 프로세스 상세
-    public function processInfo(){
-        return view('/popup/processInfo');
+    public function processInfo(Request $request){
+        $P_Seq = $request->input('P_Seq');
+        $processDetail=DB::select('CALL Process_detail(?)',[$P_Seq]);
+        return view('popup.processInfo',compact('processDetail','P_Seq'));
     }
     //팝업- 잡 구성 (수정필요)
     public function jobGusung(Request $request){
