@@ -54,7 +54,8 @@
                     <h5 class="mr-auto mb-0 font-weight-bold text-primary">프로그램</h5>
                   <div class="input-group align-items-center">
                     {{-- 대분류 중분류 선택 --}}
-                    <div id="codeLargeView" class="list-code"></div>
+                    {{-- <div id="codeLargeView" class="list-code"></div> --}}
+                    @include("code.codeSelect")
                     <select class="form-control bg-light border-primary small">
                       <option>
                         프로그램 명
@@ -67,7 +68,11 @@
                     @if(!isset($searchWord))
                     <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
                     @elseif(isset($searchWord))
-                    <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                      @if($searchWord=="searchWordNot")
+                        <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
+                      @else
+                        <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                      @endif
                     @endif
                     <div class="input-group-append">
                       <div class="btn btn-primary cursor-pointer" onclick="popup.search('1')">
@@ -170,9 +175,23 @@
             });
         })
     </script>
-    @php
-      echo  '<script>code.workLargeCtg("all","all","'.$_SERVER["REQUEST_URI"].'");</script>';
-      //echo  var_dump($jobGusungContents);
-    @endphp
+    <script>
+      function workLargeChgSel(){
+       var WorkLarge =  $('#workLargeVal').val();
+            $.ajax({
+              url:"/code/workMediumCtg2",
+              method:"get",
+              data:{
+                "WorkLarge":$('#workLargeVal').val()
+              },
+              success:function(resp){
+                $("#workMediumVal").html(resp.returnHTML);
+              },
+              error:function(error){
+    
+              }
+            })
+      }
+      </script>
 </body>
 </html>

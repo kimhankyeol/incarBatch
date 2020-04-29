@@ -94,6 +94,8 @@ Route::prefix('code')->group(function(){
     Route::get('/workLargeCtg','CodeController@workLargeCtg');
     //업무 중분류
     Route::get('/workMediumCtg','CodeController@workMediumCtg');
+    //업무 중분류 등록 화면
+    Route::get('/workMediumCtg2','CodeController@workMediumCtg2');
     //대분류 중분류 전송
     Route::get('/workDataSelect','CodeController@workDataSelect');
 });

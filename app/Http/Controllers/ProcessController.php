@@ -24,7 +24,7 @@ class ProcessController extends Controller
             // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
             //$processContents = DB::select('CALL searchProcessList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
             $processContents = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-            $usedLarge = DB::select('CALL Process_searchUsedLargeCode()');
+            $usedLarge = DB::select('CALL Common_LargeCode()');
             $page=$request->input('page');
                 //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
             $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$processContents);
@@ -47,7 +47,7 @@ class ProcessController extends Controller
             }
             
             if($WorkLarge!="all"){
-                $usedMedium = DB::select('CALL Job_searchUsedMediumCode(?)',[$WorkLarge]);
+                $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
                 return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
             }else{
                 return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));

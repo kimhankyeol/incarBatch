@@ -28,10 +28,23 @@ class CodeController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        $workMediumCtgData=DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge', $WorkLarge)->where('Used','1')->get();
+        $workMediumCtgData=DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge', $WorkLarge)->get();
+        // $workMediumCtgData = DB::select('Call Job_searchUsedMediumCode(?)',[$WorkLarge]);
         $returnHTML=view('code.codeMedium',compact('workMediumCtgData','WorkMedium'))->render();
         return response()->json(array('workMediumCtgData'=>$workMediumCtgData,'returnHTML'=>$returnHTML),200);
     }
+    public function workMediumCtg2(Request $request){
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        if($WorkMedium==""){
+            $WorkMedium="all";
+        }
+        $workMediumCtgData=DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge', $WorkLarge)->where('Used',1)->get();
+        $returnHTML=view('code.codeMedium',compact('workMediumCtgData','WorkMedium'))->render();
+        return response()->json(array('workMediumCtgData'=>$workMediumCtgData,'returnHTML'=>$returnHTML),200);
+    }
+
+    
     //대분류, 중분류 전송해서 경로 설정
     public function workDataSelect(Request $request){
         $workLargeVal = $request->input('workLargeVal');

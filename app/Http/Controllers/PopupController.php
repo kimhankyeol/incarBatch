@@ -11,19 +11,36 @@ use Monolog\Handler\PHPConsoleHandler;
 class PopupController extends Controller
 {
     //팝업- 프로세스 상세
-    public function processInfo(Request $request){
-        $P_Seq = $request->input('P_Seq');
-        $processDetail=DB::select('CALL Process_detail(?)',[$P_Seq]);
-        return view('popup.processInfo',compact('processDetail','P_Seq'));
+    public function processInfo(){
+        return view('/popup/processInfo');
     }
     //팝업- 잡 구성 (수정필요)
     public function jobGusung(Request $request){
         $Job_Seq = $request->input('Job_Seq');
-        $jobGusungContents = DB::select('CALL getJobGusungList(?)',[$Job_Seq]);
+        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
         $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
         $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
         $jobName = $jobName[0]->Job_Name;
-        return view('/popup/jobGusung',compact('jobGusungContents','jobName','jobDetail'));
+
+        //////// 최초 및 검색 시 필요한 조건 
+        $searchWord = $request -> input('searchWord');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        if($searchWord==""){
+            $searchWord="searchWordNot";
+        }
+        if($WorkLarge==""){
+            $WorkLarge="all";
+        }
+        if($WorkMedium==""){
+            $WorkMedium="all";
+        }
+
+        $data = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $usedLarge = DB::select('CALL Common_LargeCode()');
+        $page=$request->input('page');
+          //////// 최초 및 검색 시 필요한 조건 
+        return view('/popup/jobGusung',compact('jobGusungContents','jobName','jobDetail','data','searchWord','WorkLarge','WorkMedium','usedLarge'));
     }
     //팝업- 잡 구성 수정/ 등록
     public function jobGusungModify(Request $request){
@@ -33,7 +50,7 @@ class PopupController extends Controller
 
         $gusungCount = DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq);
         $gusungCount = $gusungCount->count();
-
+        
         if($gusungCount!=0){
             DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq)->delete();
         }
@@ -41,7 +58,7 @@ class PopupController extends Controller
             DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobGusung_Order'=>$i+1,'JobGusung_ParamPos'=>$gusungData[$i]]);
         }
         //return response()->json(array('Job_Seq'=>$Job_Seq,'gusungData'=>$gusungData,'gusungProcess'=>count($gusungProcess),'gusungCount'=>$gusungCount,200)); 
-        return response()->json(array('count'=>count($gusungProcess),200));
+        return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount),200);
     }
     //팝업 프로세스 검색조회
     public function popupPsSearch(Request $request){

@@ -28,9 +28,9 @@ class JobController extends Controller
             $WorkMedium="all";
         }
 
-        //관리자 대분류 사용중인 것만 조회
+        // 사용중인 것만 조회
         $jobContents = DB::select('CALL Job_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-        $usedLarge = DB::select('CALL Job_searchUsedLargeCode()');
+        $usedLarge = DB::select('CALL Common_LargeCode()');
 
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
@@ -55,7 +55,7 @@ class JobController extends Controller
         }
 
         if($WorkLarge!="all"){
-            $usedMedium = DB::select('CALL Job_searchUsedMediumCode(?)',[$WorkLarge]);
+            $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
             return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
         }else{
             return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));

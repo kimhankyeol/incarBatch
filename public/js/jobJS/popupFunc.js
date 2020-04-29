@@ -259,15 +259,12 @@ const popup = {
           "gusungData": gusungData
         },
         success: function (data) {
+         console.table(data);
           return alert("등록 되었습니다."), window.close();
         }
       })
     } else {
       return false;
     }
-  },
-  // 구성 프로세스 상세정보
-  processInfo: function (P_Seq) {
-    window.open('/popup/processInfo?P_Seq=' + P_Seq, '프로세스 상세정보', 'top=10, left=10, width=1080, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   }
 }

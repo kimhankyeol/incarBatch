@@ -90,7 +90,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   function workLargeChgSel(){
    var WorkLarge =  $('#workLargeVal').val();
         $.ajax({
-          url:"/code/workMediumCtg",
+          url:"/code/workMediumCtg2",
           method:"get",
           data:{
             "WorkLarge":$('#workLargeVal').val()
