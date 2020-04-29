@@ -83,7 +83,7 @@ class JobController extends Controller
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
         //프로시저를 통한 잡 상세정보 검색
-        $jobDetail=DB::select('CALL jobDetail(?)',[$job_seq]);
+        $jobDetail=DB::select('CALL job_detail(?)',[$job_seq]);
         return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium'));
     }
     //잡 등록
