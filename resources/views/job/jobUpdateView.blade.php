@@ -47,7 +47,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">업무구분</div>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary" >대분류</div>
                     <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkLargeName}}"/>
+                    <input type="hidden" id="Job_WorkLargeCtg" value="{{$jobDetail[0]->Job_WorkLargeCtg}}"/>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">중분류</div>
+                    <input type="hidden" id="Job_WorkMediumCtg" value="{{$jobDetail[0]->Job_WorkMediumCtg}}"/>
                     <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkMediumName}}"/>
                   </div>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
@@ -56,46 +58,46 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
                 </div>
                 <hr>
-                {{-- <div class="row">
+                <div class="row">
                   <div class="col-md-6 text-center">
                     <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
-                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" value="{{intval($jobDetail[0]->Job_YesangTime/1440)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" value="{{empty($jobTotalTime[0]->Job_YesangTime) ? 0:intval($jobTotalTime[0]->Job_YesangTime/1440)}}" readonly numberOnly>
                     <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime2" value="{{intval($jobDetail[0]->Job_YesangTime%1440/60)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime2" value="{{empty($jobTotalTime[0]->Job_YesangTime) ? 0:intval($jobTotalTime[0]->Job_YesangTime%1440/60)}}" readonly numberOnly>
                     <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime3" value="{{intval($jobDetail[0]->Job_YesangTime%60)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime3" value="{{empty($jobTotalTime[0]->Job_YesangTime) ? 0:intval($jobTotalTime[0]->Job_YesangTime%60)}}" readonly numberOnly>
                     <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
                   <div class="col-md-6 text-center">
                     <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
-                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1" value="{{intval($jobDetail[0]->Job_YesangMaxTime/1440)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1" value="{{empty($jobTotalTime[0]->Job_YesangMaxTime) ? 0:intval($jobTotalTime[0]->Job_YesangMaxTime/1440)}}" readonly numberOnly>
                     <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
-                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" value="{{intval($jobDetail[0]->Job_YesangMaxTime%1440/60)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" value="{{empty($jobTotalTime[0]->Job_YesangMaxTime) ? 0:intval($jobTotalTime[0]->Job_YesangMaxTime%1440/60)}}" readonly numberOnly>
                     <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
-                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" value="{{intval($jobDetail[0]->Job_YesangMaxTime%60)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" value="{{empty($jobTotalTime[0]->Job_YesangMaxTime) ? 0:intval($jobTotalTime[0]->Job_YesangMaxTime%60)}}" readonly numberOnly>
                     <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
                 </div>
-                <hr> --}}
+                <hr>
                 <div class="row">
                   <div class="limit-time-text col-md-2">등록자</div>
                   <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$jobDetail[0]->Job_RegId}}" readonly>
                   <div class="limit-time-text col-md-2">수정자</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$jobDetail[0]->Job_UpdId}}" readonly>   
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($jobDetail[0]->Job_UpdId) ? $jobDetail[0]->Job_RegId:$jobDetail[0]->Job_UpdId}}" readonly>   
                 </div>
                 <br>
                 <div class="row">
                   <div class="limit-time-text col-md-2">등록자IP</div>
                   <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{long2ip($jobDetail[0]->Job_RegIP)}}" readonly>
                   <div class="limit-time-text col-md-2">수정자IP</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$jobDetail[0]->Job_UpdIP}}" readonly>       
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4"  value="{{empty($jobDetail[0]->Job_UpdIP) ?long2ip( $jobDetail[0]->Job_RegIP):long2ip($jobDetail[0]->Job_UpdIP)}}" readonly>       
                 </div>
                 <br>
                 <div class="row">
                   <div class="limit-time-text col-md-2">등록일</div>
                   <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$jobDetail[0]->Job_RegDate}}" readonly>    
                   <div class="limit-time-text col-md-2">수정일</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$jobDetail[0]->Job_UpdDate}}" readonly> 
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
                 </div>
                 <hr>
                 <div class="row">
@@ -138,7 +140,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
               <div class="row justify-content-end">
-                <div class="mt-3 mr-2 btn btn-primary" onclick="">수정 </div>
+                <div class="mt-3 mr-2 btn btn-primary" onclick="job.update('{{$jobDetail[0]->Job_Seq}}')">수정 </div>
                 <div class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</div>
               </div>
             </div>
