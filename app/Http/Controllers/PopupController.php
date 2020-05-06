@@ -47,15 +47,20 @@ class PopupController extends Controller
         $Job_Seq = $request->input('Job_Seq');
         $gusungProcess = $request->input('gusungProcess');
         $gusungData = $request->input('gusungData');
+        $JobSM_IP = $_SERVER["REMOTE_ADDR"];
 
         $gusungCount = DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq);
         $gusungCount = $gusungCount->count();
         
         if($gusungCount!=0){
             DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq)->delete();
+            DB::table('OnlineBatch_StatusMonitoring')->where('Job_Seq',$Job_Seq)->delete();
         }
         for($i = 0; $i<count($gusungProcess);$i++){
+            # 잡 구성
             DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobGusung_Order'=>$i+1,'JobGusung_ParamPos'=>$gusungData[$i]]);
+            //모니터링
+            DB::table('OnlineBatch_StatusMonitoring')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobSM_P_Status'=>'102','JobSM_IP'=>$JobSM_IP]);
         }
         //return response()->json(array('Job_Seq'=>$Job_Seq,'gusungData'=>$gusungData,'gusungProcess'=>count($gusungProcess),'gusungCount'=>$gusungCount,200)); 
         return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount),200);
@@ -105,7 +110,34 @@ class PopupController extends Controller
     }
     
     //팝업- 잡 실행
-    public function jobAction(){
-        return view('/popup/jobAction');
+    public function jobAction(Request $request){
+        $Job_Seq = $request->input('Job_Seq');
+        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
+        $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
+        $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
+        $jobName = $jobName[0]->Job_Name;
+
+        //////// 최초 및 검색 시 필요한 조건 
+        $searchWord = $request -> input('searchWord');
+        $WorkLarge = $request->input('WorkLarge');
+        $WorkMedium = $request->input('WorkMedium');
+        $WorkLargeDetail = $jobDetail[0]->Job_WorkLargeCtg;
+        $WorkMediumDetail = $jobDetail[0]->Job_WorkMediumCtg;
+        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$Job_Seq]);
+        if($searchWord==""){
+            $searchWord="searchWordNot";
+        }
+        if($WorkLarge==""){
+            $WorkLarge="all";
+        }
+        if($WorkMedium==""){
+            $WorkMedium="all";
+        }
+
+        $data = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $usedLarge = DB::select('CALL Common_LargeCode()');
+        $page=$request->input('page');
+          //////// 최초 및 검색 시 필요한 조건 
+        return view('popup.jobAction',compact('jobGusungContents','jobTotalTime','jobName','jobDetail','data','searchWord','WorkLarge','WorkMedium','WorkLargeDetail','WorkMediumDetail','usedLarge'));
     }
 }

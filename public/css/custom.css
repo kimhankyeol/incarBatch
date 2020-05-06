@@ -178,3 +178,58 @@ textarea {
   font-weight: 500;
 }
 
+/*jobAction popup*/
+.Action{
+  width: 410px;
+}
+.week{
+  display: none;
+}
+.Day{
+  display: none;
+  width: 60px;
+}
+.month{
+  display: none;
+  width: 10%;
+}
+.year{
+  display: none;
+  width: 10%;
+}
+
+/*잡 실행 테이블, 로그 고정*/
+.table-list{
+  min-height: calc((1vh) * 60);
+}
+
+.Job_log{
+  height:300px;
+}
+
+.Job_logarea {
+  width: 98%;
+  height: 270px;
+  margin-left: 1%;
+  margin-right: 1%;
+  background: #ebfbfd;
+  border-color: white;
+}
+
+/*잡-프로그램 구성 파라미터*/
+.jobParm{
+  width:100%;
+}
+
+.jobParmNum{
+  width:3%;
+}
+
+.jobParamSulArr{
+  width:17%;
+}
+
+.gusungPage{
+  margin-top: 10px;
+}
+

@@ -42,7 +42,7 @@ class AdminController extends Controller
         }
         
         $data=DB::select('Call Common_searchUsedList(?,?,?)',[$Used,$WorkLarge,$searchWord]);
-        $usedLarge=DB::select('Call Common_searchUsedLargeCode(?,?,?)',[$Used,$WorkLarge,$searchWord]);
+        $usedLarge=DB::select('Call Common_LargeCode2()');
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$data);

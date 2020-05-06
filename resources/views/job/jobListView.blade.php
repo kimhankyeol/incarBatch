@@ -62,7 +62,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               </div>
             </div>
             <div class="card-body py-3">
-              <div class="table-responsive">
+              <div class="table-list">
                 <table id="datatable" class="table table-bordered" cellspacing="0">
                   <colgroup>
                     <col width="190px" />
@@ -102,24 +102,22 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       </div>
       @include('common.footer')
     {{--content 끝--}}
-    </div>
-  <script>
-  function workLargeChgSel(){
-   var WorkLarge =  $('#workLargeVal').val();
-        $.ajax({
-          url:"/code/workMediumCtg",
-          method:"get",
-          data:{
-            "WorkLarge":WorkLarge
-          },
-          success:function(resp){
-            $("#workMediumVal").html(resp.returnHTML);
-          },
-          error:function(error){
-
-          }
-        })
-  }
-  </script>
-</body>
+    <script>
+      function workLargeChgSel(){
+        var WorkLarge =  $('#workLargeVal').val();
+            $.ajax({
+              url:"/code/workMediumCtg",
+              method:"get",
+              data:{
+                "WorkLarge":WorkLarge
+              },
+              success:function(resp){
+                $("#workMediumVal").html(resp.returnHTML);
+              },
+              error:function(error){
+              }
+            })
+      }
+    </script>
+ </body>
 </html>
