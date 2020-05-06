@@ -21,10 +21,12 @@
     <script type="text/javascript" src="/js/jobJS/proFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/codeFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/loginFunc.js"></script>
+    <script type="text/javascript" src="/js/jobJS/monitorFunc.js"></script>
 
     <script type="text/javascript" src="/js/colResizable-1.6.js"></script>
     {{-- 테이블 col 유동적 크기 조절 --}}
     <script>$(function(){$("#datatable").colResizable();});</script>
+    <script>$(function(){$("#datatable2").colResizable();});</script>
     <?php
     //index.blade 에서 선언한 ifViewRender 에서 가져온 title 변경 script 
     echo $titleInfo;

@@ -62,6 +62,9 @@ Route::prefix('process')->group(function(){
 Route::prefix('monitoring')->group(function(){
     //모니터링 뷰
     Route::get('/monitoringView','MonitoringController@monitoringView');
+    Route::get('/monitoringJobDetailList','MonitoringController@monitoringJobDetailList');
+    Route::get('/monitorJobDetailList','MonitoringController@monitorJobDetailList');
+    Route::get('/monitoringGusungList','MonitoringController@monitoringGusungList');
 });
 
 //작업 히스토리 prefix
