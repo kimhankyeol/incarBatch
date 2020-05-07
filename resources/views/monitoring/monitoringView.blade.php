@@ -135,13 +135,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       @include('common.footer')
     {{--content 끝--}}
     </div>
-    @php
-      $job_seq= explode('_','job_1000_100_1_20200506.log');
-      echo var_dump($job_seq);
-        //75.sh
-        $job_seq=explode('.',$job_seq[3])[0];
-       
-    @endphp
     <script>
       //더보기 클릭
       function tailAdd(){
