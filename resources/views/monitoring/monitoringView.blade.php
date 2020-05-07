@@ -135,8 +135,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       @include('common.footer')
     {{--content 끝--}}
     </div>
-<<<<<<< HEAD
-=======
     @php
       $job_seq= explode('_','job_1000_100_1_20200506.log');
       echo var_dump($job_seq);
@@ -352,6 +350,5 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
     }
   </script>
->>>>>>> dd752940f78a7f879fc4fe55dea2f6d3082da2e7
 </body>
 </html>

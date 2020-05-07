@@ -37,11 +37,8 @@ const monitor = {
         $('#gusungDatatable').html(resp.returnHTML)
       }
     })
-<<<<<<< HEAD
   },
   detailPopup: function (Job_Seq, Skd_Seq) {
     window.open('/popup/gusungDetail', '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
-=======
->>>>>>> dd752940f78a7f879fc4fe55dea2f6d3082da2e7
   }
 };
