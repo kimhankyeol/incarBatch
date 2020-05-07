@@ -2,7 +2,7 @@
 if (isset($GusungList)) {
     echo '<h5 class="my-4 font-weight-bold text-primary">'.'job_'.$GusungList[0]->Job_WorkLargeCtg.'_'.$GusungList[0]->Job_WorkMediumCtg.'_'.$GusungList[0]->Job_Seq.' - '.$GusungList[0]->Job_Name.'</h5>';
   } else {
-    echo '<h5 class="my-4 font-weight-bold text-primary">구성 프로세스</h5>';
+    echo '<h5 class="my-4 font-weight-bold text-primary">상세 잡 리스트</h5>';
 }
 @endphp
 <table id="datatable2" class="table table-bordered" cellspacing="0">
@@ -28,7 +28,7 @@ if (isset($GusungList)) {
       </thead>
       <tbody>
             {{--  조회된 값이 보여주는 위치 --}}
-            @if (isset($GusungList))
+            {{--  @if (isset($GusungList))
             @foreach($GusungList as $gusungSc )
               <tr onclick="">
                 <td>{{$gusungSc->JobGusung_Order}}</td>
@@ -40,6 +40,6 @@ if (isset($GusungList)) {
                 <td>{{intval($gusungSc->P_YesangMaxTime/1440)==0?"":intval($gusungSc->P_YesangMaxTime/1440)."일"}}{{intval($gusungSc->P_YesangMaxTime%1440/60)==0?"":intval($gusungSc->P_YesangMaxTime%1440/60)."시간"}}{{intval($gusungSc->P_YesangMaxTime%60)==0?"":intval($gusungSc->P_YesangMaxTime%60)."분"}}</td>
               </tr>
               @endforeach
-            @endIf
+            @endIf  --}}
       </tbody>
   </table>

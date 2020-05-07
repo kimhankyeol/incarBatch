@@ -64,5 +64,10 @@ const pageMove={
         detail:function(urlName){
             location.href="/admin/"+urlName;
         }
+    },
+    schedule:{
+        register:function(urlName){
+            location.href="/schedule/"+urlName;
+        }
     }
 }

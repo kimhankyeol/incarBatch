@@ -21,7 +21,7 @@ class ifViewRender {
         array('title' => '프로그램 조회', 'url' => '/process/processListView'),
         array('title' => '프로그램 등록', 'url' => '/process/processRegisterView'),
         array('title' => '프로그램 상세', 'url' => '/process/processDetailView'),
-        array('title' => '잡 실행', 'url' => '/job/jobExecuteView'),
+        array('title' => '스케줄 관리', 'url' => '/schedule/scheduleListView'),
         array('title' => '모니터링', 'url' => '/monitoring/monitoringView'),
         array('title' => '작업내역', 'url' => '/jobHistory/jobHistoryView')
     );
@@ -37,7 +37,7 @@ class ifViewRender {
         //pageMove.js 무관
         array('label' => '잡 등록', 'url' => '/job/jobListView','icon'=>'fas fa-fw fa-cog'),
         array('label' => '프로그램 등록', 'url' => '/process/processListView','icon'=>'fas fa-fw fa-cog'),
-        array('label' => '잡 실행', 'url' => '/job/jobExecuteView','icon'=>'fas fa-fw fa-wrench'),
+        array('label' => '스케줄 관리', 'url' => '/schedule/scheduleListView','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '모니터링', 'url' => '/monitoring/monitoringView','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '작업내역', 'url' => '/jobHistory/jobHistoryView','icon'=>'fas fa-fw fa-folder')
     );

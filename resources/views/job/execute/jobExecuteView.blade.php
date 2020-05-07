@@ -113,7 +113,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       <h6 class = "m-0 font-weight-bold text-primary" style="padding:0rem 1.25rem">로그</h6>
                     </div>
                     {{-- 로그가 보이는 영역 --}}
-                    <textarea class = "Job_logarea" readonly>
+                    <textarea id="Job_logarea" class = "Job_logarea" readonly>
                     </textarea>
                   </div>
                 </div>
@@ -125,7 +125,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     {{-- 이 부분은 로그 추가 눌렀을떄 job_seq, line개수 받아오기 위한 input    jobTailAddView tailAdd()함수에서 쓸 값임--}}
     <input type="hidden" id="jobSeq" >
 
-    <script>
+  <script>
       //더보기 클릭
       function tailAdd(){
         var jobSeq = $('#jobSeq').val();
@@ -133,12 +133,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         //100줄씩 추가 
         var lineMore = 100 ; 
         line = parseInt(line + lineMore);
+        
         if($("#setNum").is(":checked")){
             $("#setNum").val(1);
         }else{
             $("#setNum").val(0);
         }
+        
+        if($("#headTail").is(":checked")){
+            $("#headTail").val("tail");
+        }else{
+            $("#headTail").val("head");
+        }
+        
         var setNum = $("#setNum").val();
+        var headTail = $("#headTail").val();
+        var logSearchWord = $('#logSearchWord').val();
+        var $logarea = $('#Job_logarea');
         //라인수가 10000개 이상 30000개 미만일떄 분기처리 
         if(line>=10000&&line<30000){
           var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
@@ -149,19 +160,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 data:{
                     "line":line,
                     "Job_Seq":jobSeq,
-                    "setNum":setNum
+                    "setNum":setNum,
+                    "headTail":headTail,
+                    "logSearchWord":logSearchWord
                 },
                 success:function(data){
-                  if(data.lineTotal<line){
-                    parseInt($('#lineNum').val(parseInt(data.lineTotal)));
-                  }else if(data.lineTotal>=line){
-                    parseInt($('#lineNum').val(parseInt(line)));
-                  }
                   $('#jobSeq').val(jobSeq);
                   $('#jobTailLog').html(data.returnHTML);
-                  //로그 출력하는 부분에 스크롤 맨아래쪽향하게 
-                  var $logarea = $('.Job_logarea');
-                  $logarea.scrollTop($logarea[0].scrollHeight);
+                  //로그 출력하는 부분에 스크롤 
+                  $logarea[0].scrollTop($logarea[0].scrollHeight);
                 },
                 error:function(err){
                   
@@ -182,19 +189,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 data:{
                     "line":line,
                     "Job_Seq":jobSeq,
-                    "setNum":setNum
+                    "setNum":setNum,
+                    "headTail":headTail,
+                    "logSearchWord":logSearchWord
                 },
                 success:function(data){
-                  // //토탈라인수 초과할떄 안할떄 분기 처리
-                  // if(data.lineTotal<line){
-                  //   parseInt($('#lineNum').val(parseInt(data.lineTotal)));
-                  // }else if(data.lineTotal>=line){
-                  //   parseInt($('#lineNum').val(parseInt(line)));
-                  // }
                   $('#jobSeq').val(jobSeq);
                   $('#jobTailLog').html(data.returnHTML);
-                  //로그 출력하는 부분에 스크롤 맨아래쪽향하게 
-                  var $logarea = $('.Job_logarea');
+                  //스크롤
                   $logarea.scrollTop($logarea[0].scrollHeight);
                 },
                 error:function(err){
@@ -205,6 +207,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       }
       // 라인수 입력  jobTailAddview search
       function tailAddSearch(){
+        
           var jobSeq = $('#jobSeq').val();
           var line = $('#lineNum').val();
           if($("#setNum").is(":checked")){
@@ -212,7 +215,17 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           }else{
               $("#setNum").val(0);
           }
+
+          if($("#headTail").is(":checked")){
+            $("#headTail").val("tail");
+          }else{
+            $("#headTail").val("head");
+          }
+
           var setNum = $('#setNum').val();
+          var headTail = $("#headTail").val();
+          var logSearchWord = $('#logSearchWord').val();
+          var $logarea = $('#Job_logarea');
           //라인수가 10000개 이상 30000개 미만일떄 분기처리 
           if(line>=10000&&line<30000){
             var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
@@ -223,18 +236,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   data:{
                       "line":line,
                       "Job_Seq":jobSeq,
-                      "setNum":setNum
+                      "setNum":setNum,
+                      "headTail":headTail,
+                      "logSearchWord":logSearchWord
                   },
                   success:function(data){
-                    // if(data.lineTotal<line){
-                    //   parseInt($('#lineNum').val(parseInt(data.lineTotal)));
-                    // }else if(data.lineTotal>=line){
-                    //   parseInt($('#lineNum').val(parseInt(line)));
-                    // }
                     $('#jobSeq').val(jobSeq);
                     $('#jobTailLog').html(data.returnHTML);
-                    //로그 출력하는 부분에 스크롤 맨아래쪽향하게 
-                    var $logarea = $('.Job_logarea');
                     $logarea.scrollTop($logarea[0].scrollHeight);
                   },
                   error:function(err){
@@ -256,19 +264,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 data:{
                     "line":line,
                     "Job_Seq":jobSeq,
-                    "setNum":setNum
+                    "setNum":setNum,
+                    "headTail":headTail,
+                    "logSearchWord":logSearchWord
                 },
                 success:function(data){
-                  // //토탈라인수 초과할떄 안할떄 분기 처리
-                  // if(data.lineTotal<line){
-                  //   parseInt($('#lineNum').val(parseInt(data.lineTotal)));
-                  // }else if(data.lineTotal>=line){
-                  //   parseInt($('#lineNum').val(parseInt(line)));
-                  // }
                   $('#jobSeq').val(jobSeq);
                   $('#jobTailLog').html(data.returnHTML);
-                  //로그 출력하는 부분에 스크롤 맨아래쪽향하게 
-                  var $logarea = $('.Job_logarea');
                   $logarea.scrollTop($logarea[0].scrollHeight);
                 },
                 error:function(err){
@@ -309,25 +311,27 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 
     //처음 잡을 클릭해서 로그 조회하는것  
     function tailAddFirst(line,jobSeq){
+      var $logarea = $('#Job_logarea');
         $.ajax({
             url:"/job/jobTailAdd",
             method:"get",
             data:{
                 "line":line,
                 "Job_Seq":jobSeq,
-                "setNum":0
+                "setNum":1,
+                "headTail":"tail"
             },
             success:function(data){
-                
                 $('#jobSeq').val(jobSeq);
                 $('#lineNum').val(line);
                 $('#jobTailLog').html(data.returnHTML);
+                $logarea.scrollTop($logarea[0].scrollHeight);
             },
             error:function(err){
 
             }
         })
     }
-    </script>
+  </script>
 </body>
 </html>

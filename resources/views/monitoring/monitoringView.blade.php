@@ -59,6 +59,24 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <div class="form-inline navbar-search justify-content-end">
+                <div class="input-group align-items-center mb-2 w-100">
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_start" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label font-weight-bold text-primary" for="status_start">실행</label>
+                  </div>
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_reservation" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label font-weight-bold text-primary" for="status_reservation">예약</label>
+                  </div>
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_error" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label font-weight-bold text-primary" for="status_error">오류</label>
+                  </div>
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_end" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label font-weight-bold text-primary" for="status_end">완료</label>
+                  </div>
+                </div>
                 <div class="input-group align-items-center">
                    {{-- 업무 구분 대분류 중분류 선택 --}}
                   <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
@@ -93,20 +111,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </div>
                 </div>
               </div>
-
+​
             </div>
             <div class="card-body py-3">
-              <div id="monitorDatatable" class="table-responsive" style="min-height: calc((1vh) * 50);">
+              <div id="monitorDatatable" class="table-responsive" style="height: calc((1vh) * 50);">
                 @include('monitoring.monitorJobSearchList')
               </div>
-              <div id="gusungDatatable" class="table-responsive">
-                @include('monitoring.monitorGusungSearchList')
+              <div id="jobDetailList" class="table-responsive" style="height: calc((1vh) * 50);">
+                @include('monitoring.monitorJobDetailList')
               </div>
+              {{--  <div id="gusungDatatable" class="table-responsive">
+                @include('monitoring.monitorGusungSearchList')
+              </div>  --}}
             </div>
             <div class="card-body py-3">
               <h5 class="mb-4 font-weight-bold text-primary">작업 로그</h5>
               <div>
-                <textarea class="form-control" style="min-height: calc((1vh) * 50);" readonly></textarea>
+                <textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>
               </div>
             </div>
           </div>
@@ -115,5 +136,220 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       @include('common.footer')
     {{--content 끝--}}
     </div>
+    @php
+      $job_seq= explode('_','job_1000_100_1_20200506.log');
+      echo var_dump($job_seq);
+        //75.sh
+        $job_seq=explode('.',$job_seq[3])[0];
+       
+    @endphp
+    <script>
+      //더보기 클릭
+      function tailAdd(){
+        var jobSeq = $('#jobSeq').val();
+        var line = parseInt($('#lineNum').val());
+        //100줄씩 추가 
+        var lineMore = 100 ; 
+        line = parseInt(line + lineMore);
+        
+        if($("#setNum").is(":checked")){
+            $("#setNum").val(1);
+        }else{
+            $("#setNum").val(0);
+        }
+        
+        if($("#headTail").is(":checked")){
+            $("#headTail").val("tail");
+        }else{
+            $("#headTail").val("head");
+        }
+        
+        var setNum = $("#setNum").val();
+        var headTail = $("#headTail").val();
+        var logSearchWord = $('#logSearchWord').val();
+        var $logarea = $('#Job_logarea');
+        //라인수가 10000개 이상 30000개 미만일떄 분기처리 
+        if(line>=10000&&line<30000){
+          var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
+          if(result){
+            $.ajax({
+                url:"/job/jobTailAdd",
+                method:"get",
+                data:{
+                    "line":line,
+                    "Job_Seq":jobSeq,
+                    "setNum":setNum,
+                    "headTail":headTail,
+                    "logSearchWord":logSearchWord
+                },
+                success:function(data){
+                  $('#jobSeq').val(jobSeq);
+                  $('#jobTailLog').html(data.returnHTML);
+                  //로그 출력하는 부분에 스크롤 
+                  $logarea[0].scrollTop($logarea[0].scrollHeight);
+                },
+                error:function(err){
+                  
+                }
+            })
+          }else{
+            return false;
+          }
+        }else if(line>=30000){
+          //3만개 이상이면
+          alert("조회하는 라인수가 너무 많습니다.\n 로그를 다운로드 받아주세요 ")
+          return false;
+        }else if(line<10000){
+           //만개 미만
+           $.ajax({
+                url:"/job/jobTailAdd",
+                method:"get",
+                data:{
+                    "line":line,
+                    "Job_Seq":jobSeq,
+                    "setNum":setNum,
+                    "headTail":headTail,
+                    "logSearchWord":logSearchWord
+                },
+                success:function(data){
+                  $('#jobSeq').val(jobSeq);
+                  $('#jobTailLog').html(data.returnHTML);
+                  //스크롤
+                  $logarea.scrollTop($logarea[0].scrollHeight);
+                },
+                error:function(err){
+                  
+                }
+            })
+        }
+      }
+      // 라인수 입력  jobTailAddview search
+      function tailAddSearch(){
+        
+          var jobSeq = $('#jobSeq').val();
+          var line = $('#lineNum').val();
+          if($("#setNum").is(":checked")){
+              $("#setNum").val(1);
+          }else{
+              $("#setNum").val(0);
+          }
+
+          if($("#headTail").is(":checked")){
+            $("#headTail").val("tail");
+          }else{
+            $("#headTail").val("head");
+          }
+
+          var setNum = $('#setNum').val();
+          var headTail = $("#headTail").val();
+          var logSearchWord = $('#logSearchWord').val();
+          var $logarea = $('#Job_logarea');
+          //라인수가 10000개 이상 30000개 미만일떄 분기처리 
+          if(line>=10000&&line<30000){
+            var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
+            if(result){
+              $.ajax({
+                  url:"/job/jobTailAdd",
+                  method:"get",
+                  data:{
+                      "line":line,
+                      "Job_Seq":jobSeq,
+                      "setNum":setNum,
+                      "headTail":headTail,
+                      "logSearchWord":logSearchWord
+                  },
+                  success:function(data){
+                    $('#jobSeq').val(jobSeq);
+                    $('#jobTailLog').html(data.returnHTML);
+                    $logarea.scrollTop($logarea[0].scrollHeight);
+                  },
+                  error:function(err){
+                    
+                  }
+              })
+            }else{
+              return false;
+            }
+          }else if(line>=30000){
+            //3만개 이상이면
+            alert("조회하는 라인수가 너무 많습니다.\n 로그를 다운로드 받아주세요 ")
+            return false;
+          }else if(line<10000){
+            //만개 미만
+            $.ajax({
+                url:"/job/jobTailAdd",
+                method:"get",
+                data:{
+                    "line":line,
+                    "Job_Seq":jobSeq,
+                    "setNum":setNum,
+                    "headTail":headTail,
+                    "logSearchWord":logSearchWord
+                },
+                success:function(data){
+                  $('#jobSeq').val(jobSeq);
+                  $('#jobTailLog').html(data.returnHTML);
+                  $logarea.scrollTop($logarea[0].scrollHeight);
+                },
+                error:function(err){
+                  
+                }
+            })
+          }
+      }
+
+      $(document).ready(function(){
+        var dbclick=false;    
+        $(document).on('click','.jobExeOneDbClick',function(event){
+            var jobSeqIndex = $('.jobExeOneDbClick').index(this);
+            var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
+
+            //tr 색 바꾸기  활성된거
+            if($('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
+                $('.jobExeOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
+            }else {
+                $('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
+            }
+            setTimeout(function(){
+                if(dbclick ==false){
+                    console.log("1번클릭  jobseq: "+jobSeq);
+                    tailAddFirst(10,jobSeq);
+                }   
+            },400)    
+        }).on('dblclick','.jobExeOneDbClick',function(event){
+            dbclick = true
+            var jobSeqIndex = $('.jobExeOneDbClick').index(this);
+            var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
+            pageMove.jobpopup.jobAction('jobAction',jobSeq);
+            setTimeout(function(){   
+                dbclick = false
+            },500)
+        })
+    })
+
+    //처음 잡을 클릭해서 로그 조회하는것  
+    function tailAddFirst(line,jobSeq){
+      var $logarea = $('#Job_logarea');
+        $.ajax({
+            url:"/job/jobTailAdd",
+            method:"get",
+            data:{
+                "line":line,
+                "Job_Seq":jobSeq,
+                "setNum":1,
+                "headTail":"tail"
+            },
+            success:function(data){
+                $('#jobSeq').val(jobSeq);
+                $('#lineNum').val(line);
+                $('#jobTailLog').html(data.returnHTML);
+                $logarea.scrollTop($logarea[0].scrollHeight);
+            },
+            error:function(err){
+
+            }
+        })
+    }
+  </script>
 </body>
 </html>
