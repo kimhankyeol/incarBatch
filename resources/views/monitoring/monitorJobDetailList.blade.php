@@ -31,9 +31,9 @@ if (isset($GusungList)) {
       </tr>
       </thead>
       <tbody>
-        <tr ondblclick="monitor.detailPopup(1,4)">
-          <td class="text-center">4</td>
-          <td>job_1000_100_1</td>
+        <tr class="jobExeOneDbClick">
+          <td class="Sc_Seq" data-value="{{1}}">schedule1</td>
+          <td class="Job_Seq" data-value="{{1}}">job_1000_100_1_1</td>
           <td>잡1</td>
           <td class="text-center">2020-05-06 06:20</td>
           <td class="text-center"></td>
@@ -42,9 +42,9 @@ if (isset($GusungList)) {
           <td class="text-center">1시간30분</td>
           <td class="text-center">2시간</td>
         </tr>
-        <tr>
-          <td class="text-center">3</td>
-          <td>job_1000_100_1</td>
+        <tr class="jobExeOneDbClick">
+          <td class="Sc_Seq" data-value="{{2}}">schedule2</td>
+          <td class="Job_Seq" data-value="{{1}}">job_1000_100_1_1</td>
           <td>잡1</td>
           <td class="text-center">2020-05-06 01:00</td>
           <td class="text-center">2020-05-06 02:00</td>

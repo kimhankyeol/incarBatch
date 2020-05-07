@@ -111,7 +111,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </div>
                 </div>
               </div>
-​
             </div>
             <div class="card-body py-3">
               <div id="monitorDatatable" class="table-responsive" style="height: calc((1vh) * 50);">
@@ -126,7 +125,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
             <div class="card-body py-3">
               <h5 class="mb-4 font-weight-bold text-primary">작업 로그</h5>
-              <div>
+              <div id="jobTailLog">
                 <textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>
               </div>
             </div>
@@ -136,17 +135,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       @include('common.footer')
     {{--content 끝--}}
     </div>
-    @php
-      $job_seq= explode('_','job_1000_100_1_20200506.log');
-      echo var_dump($job_seq);
-        //75.sh
-        $job_seq=explode('.',$job_seq[3])[0];
-       
-    @endphp
+    {{-- 잡시퀀스 , 스케줄시퀀스 --}}
+    <input type="hidden" id="jobSeq">
+    <input type="hidden" id="scSeq">
     <script>
       //더보기 클릭
       function tailAdd(){
         var jobSeq = $('#jobSeq').val();
+        var scSeq = $('#scSeq').val();
         var line = parseInt($('#lineNum').val());
         //100줄씩 추가 
         var lineMore = 100 ; 
@@ -163,11 +159,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         }else{
             $("#headTail").val("head");
         }
-        
+
         var setNum = $("#setNum").val();
         var headTail = $("#headTail").val();
         var logSearchWord = $('#logSearchWord').val();
-        var $logarea = $('#Job_logarea');
         //라인수가 10000개 이상 30000개 미만일떄 분기처리 
         if(line>=10000&&line<30000){
           var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
@@ -180,13 +175,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     "Job_Seq":jobSeq,
                     "setNum":setNum,
                     "headTail":headTail,
-                    "logSearchWord":logSearchWord
+                    "logSearchWord":logSearchWord,
+                    "Sc_Seq":scSeq
                 },
                 success:function(data){
                   $('#jobSeq').val(jobSeq);
+                  $('#scSeq').val(scSeq);
                   $('#jobTailLog').html(data.returnHTML);
-                  //로그 출력하는 부분에 스크롤 
-                  $logarea[0].scrollTop($logarea[0].scrollHeight);
                 },
                 error:function(err){
                   
@@ -209,13 +204,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     "Job_Seq":jobSeq,
                     "setNum":setNum,
                     "headTail":headTail,
-                    "logSearchWord":logSearchWord
+                    "logSearchWord":logSearchWord,
+                    "Sc_Seq":scSeq
                 },
                 success:function(data){
                   $('#jobSeq').val(jobSeq);
+                  $('#scSeq').val(scSeq);
                   $('#jobTailLog').html(data.returnHTML);
-                  //스크롤
-                  $logarea.scrollTop($logarea[0].scrollHeight);
                 },
                 error:function(err){
                   
@@ -227,6 +222,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       function tailAddSearch(){
         
           var jobSeq = $('#jobSeq').val();
+          var scSeq = $('#scSeq').val();
           var line = $('#lineNum').val();
           if($("#setNum").is(":checked")){
               $("#setNum").val(1);
@@ -243,7 +239,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           var setNum = $('#setNum').val();
           var headTail = $("#headTail").val();
           var logSearchWord = $('#logSearchWord').val();
-          var $logarea = $('#Job_logarea');
           //라인수가 10000개 이상 30000개 미만일떄 분기처리 
           if(line>=10000&&line<30000){
             var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
@@ -256,12 +251,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       "Job_Seq":jobSeq,
                       "setNum":setNum,
                       "headTail":headTail,
-                      "logSearchWord":logSearchWord
+                      "logSearchWord":logSearchWord,
+                      "Sc_Seq":scSeq
                   },
                   success:function(data){
                     $('#jobSeq').val(jobSeq);
+                    $('#scSeq').val(scSeq);
                     $('#jobTailLog').html(data.returnHTML);
-                    $logarea.scrollTop($logarea[0].scrollHeight);
                   },
                   error:function(err){
                     
@@ -284,12 +280,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     "Job_Seq":jobSeq,
                     "setNum":setNum,
                     "headTail":headTail,
-                    "logSearchWord":logSearchWord
+                    "logSearchWord":logSearchWord,
+                    "Sc_Seq":scSeq
                 },
                 success:function(data){
                   $('#jobSeq').val(jobSeq);
+                  $('#scSeq').val(scSeq);
                   $('#jobTailLog').html(data.returnHTML);
-                  $logarea.scrollTop($logarea[0].scrollHeight);
                 },
                 error:function(err){
                   
@@ -303,6 +300,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         $(document).on('click','.jobExeOneDbClick',function(event){
             var jobSeqIndex = $('.jobExeOneDbClick').index(this);
             var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
+            var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
 
             //tr 색 바꾸기  활성된거
             if($('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
@@ -313,14 +311,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             setTimeout(function(){
                 if(dbclick ==false){
                     console.log("1번클릭  jobseq: "+jobSeq);
-                    tailAddFirst(10,jobSeq);
+                    tailAddFirst(10,jobSeq,scSeq);
                 }   
             },400)    
         }).on('dblclick','.jobExeOneDbClick',function(event){
             dbclick = true
             var jobSeqIndex = $('.jobExeOneDbClick').index(this);
             var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
-            pageMove.jobpopup.jobAction('jobAction',jobSeq);
+            var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
+            // pageMove.jobpopup.jobAction('jobAction',jobSeq);
             setTimeout(function(){   
                 dbclick = false
             },500)
@@ -328,8 +327,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     })
 
     //처음 잡을 클릭해서 로그 조회하는것  
-    function tailAddFirst(line,jobSeq){
-      var $logarea = $('#Job_logarea');
+    function tailAddFirst(line,jobSeq,scSeq){
         $.ajax({
             url:"/job/jobTailAdd",
             method:"get",
@@ -337,19 +335,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 "line":line,
                 "Job_Seq":jobSeq,
                 "setNum":1,
-                "headTail":"tail"
+                "headTail":"tail",
+                "Sc_Seq":scSeq
             },
             success:function(data){
                 $('#jobSeq').val(jobSeq);
+                $('#scSeq').val(scSeq);
                 $('#lineNum').val(line);
                 $('#jobTailLog').html(data.returnHTML);
-                $logarea.scrollTop($logarea[0].scrollHeight);
             },
             error:function(err){
 
             }
         })
     }
+   
   </script>
 </body>
 </html>
