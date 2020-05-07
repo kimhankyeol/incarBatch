@@ -32,8 +32,8 @@ Route::prefix('job')->group(function(){
     Route::get('/jobProcessRegisterView','JobController@jobProcessRegisterView');
     //잡 상세 뷰
     Route::get('/jobDetailView','JobController@jobDetailView');
-    //잡 실행 뷰
-    Route::get('/jobExecuteView','JobController@jobExecuteView');
+    //잡 로그 추가  tail -n 20  40
+    Route::get('/jobTailAdd','ExecuteController@jobTailAdd');
     //잡 수정 뷰
     Route::get('/jobUpdateView','JobController@jobUpdateView');
     //잡 등록 
@@ -56,6 +56,13 @@ Route::prefix('process')->group(function(){
     Route::get('/processEditView','ProcessController@processEditView');
     //프로세스 수정
     Route::post('/processEdit','ProcessController@processEdit');
+});
+//스케줄 prefix
+Route::prefix('schedule')->group(function(){
+    //스케줄 리스트 뷰
+    Route::get('/scheduleListView','ScheduleController@scheduleListView');
+    //스케줄 등록 뷰
+    Route::get('/scheduleRegisterView','ScheduleController@scheduleRegisterView');
 });
 
 //모니터링 prefix
@@ -87,6 +94,7 @@ Route::prefix('popup')->group(function(){
     // 잡 실행
     Route::get('/jobAction','PopupController@jobAction');
 });
+
 
 
 

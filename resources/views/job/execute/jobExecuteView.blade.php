@@ -13,138 +13,119 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
-<script>
-  function workLargeChgSel(){
-    var WorkLarge =  $('#workLargeVal').val();
-    $.ajax({
-      url:"/code/workMediumCtg",
-      method:"get",
-      data:{
-        "WorkLarge":WorkLarge
-      },
-      success:function(resp){
-        $("#workMediumVal").html(resp.returnHTML);
-      }
-    })
-  }
-  $(document).ready( function() {
-    var now = new Date();
-    var month = (now.getMonth() + 1);               
-    var day = now.getDate();
-    if (month < 10) 
-        month = "0" + month;
-    if (day < 10) 
-        day = "0" + day;
-    var today = now.getFullYear() + '-' + month + '-' + day;
-    $('#startDate').val(today);
-    $('#endDate').val(today);
-  });
-</script>
 <body id="page-top">
-  <div id="wrapper">
+    <div id="wrapper">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
     <div id="content-wrapper" class="d-flex flex-column">
-      <!-- Main Content -->
+        <!-- Main Content -->
       <div id="content">
         <!-- End of Topbar -->
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
-          <h3 class="my-4 font-weight-bold text-primary">모니터링</h3>
+         <h4 class="h3 my-4 font-weight-bold text-primary">잡 실행</h4>
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <div class="form-inline navbar-search justify-content-end">
-                <div class="input-group align-items-center mb-2 w-100">
-                  <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_start" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_start">실행</label>
-                  </div>
-                  <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_reservation" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_reservation">예약</label>
-                  </div>
-                  <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_error" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_error">오류</label>
-                  </div>
-                  <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_end" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_end">완료</label>
-                  </div>
-                </div>
+            <div class="d-flex justify-content-end card-header py-3">
+              <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group align-items-center">
                    {{-- 업무 구분 대분류 중분류 선택 --}}
                   <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
                   @include("code.codeSelect")
-                  <div class="input-group align-items-center">
-                    <div class="text-center align-self-center font-weight-bold text-primary mx-2">등록일</div>
-                     {{-- 검색 조건 --}}
-                     <input type="date" class="form-control form-control-sm" id="startDate">
-                     <span class="form-control-sm"> ~ </span>
-                     <input type="date" class="form-control form-control-sm" id="endDate">
-                  </div>
                    {{-- 검색 조건 --}}
-                  <select class="form-control form-control-sm bg-light border-primary">
+                  <select class="form-control bg-light border-primary small">
                     <option>
                       잡명
                     </option>
                   </select>
                   {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control form-control-sm bg-light border-primary" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
+                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
                   @elseif(isset($searchWord))
                     @if($searchWord=="searchWordNot")
-                      <input id="searchWord" type="text" value="" class="form-control form-control-sm bg-light border-primary" placeholder="조회" aria-label="Search" >
+                      <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
                     @else
-                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control form-control-sm bg-light border-primary small" aria-label="Search">
+                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
                     @endif
                   @endif
-                  <div class="input-group-append ">
-                    <button type="button" class="btn btn-sm btn-primary" onclick="monitor.search('1')">
+                  <div class="input-group-append">
+                    <div class="btn btn-primary" onclick="job.search('1')">
                       <i class="fas fa-search fa-sm"></i>
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="card-body py-3">
-              <div id="monitorDatatable" class="table-responsive" style="height: calc((1vh) * 50);">
-                @include('monitoring.monitorJobSearchList')
-              </div>
-              <div id="jobDetailList" class="table-responsive" style="height: calc((1vh) * 50);">
-                @include('monitoring.monitorJobDetailList')
-              </div>
-              {{--  <div id="gusungDatatable" class="table-responsive">
-                @include('monitoring.monitorGusungSearchList')
-              </div>  --}}
+              <div class="table-list">
+                <table id="datatable" class="table table-bordered" cellspacing="0">
+                  <colgroup>
+                    <col width="170px" />
+                    <col width="150px" />
+                    <col width="100px" />
+                    <col width="100px" />
+                    <col width="320px" />
+                    <col width="110px" />
+                    <col width="130px" />
+                  </colgroup>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>대분류</th>
+                        <th>중분류</th>
+                        <th>잡 명</th>
+                        <th>설명</th>
+                        <th>등록자</th>
+                        <th>등록일</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {{--  조회된 값이 보여주는 위치 --}}
+                        @if(isset($data))
+                        @include('job.execute.jobSearchExecuteView')
+                        @endIf
+                    </tbody>
+                </table>
+                {{-- 페이징 이동 경로 --}}
+                    @if(isset($paginator))
+                    {{$paginator->setPath('/job/jobListView')->appends(request()->except($searchParams))->links()}}
+                    @endIf
+                </div>
             </div>
-            <div class="card-body py-3">
-              <h5 class="mb-4 font-weight-bold text-primary">작업 로그</h5>
-              <div>
-                <textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>
-              </div>
+        <div class="container-fluid">
+            <div class = "card shadow mb-4">
+                <div class = "card-header py-3">
+                    <h6 class = "m-0 font-weight-bold text-primary">작업 진행율</h6>
+                </div>
+                <div class = "card-body">
+                    <div class= "progress mb-4">
+                        <div class = "progress-bar bg-info" role="progressbar" style = "width:80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax='100'></div>
+                    </div>
+                </div>
+                <div class = "Job_log">
+                  {{-- 이 부분 나중에 css 바꾸면됨 --}}
+                  <div class= "mb-4" id="jobTailLog">
+                    <div>
+                      <h6 class = "m-0 font-weight-bold text-primary" style="padding:0rem 1.25rem">로그</h6>
+                    </div>
+                    {{-- 로그가 보이는 영역 --}}
+                    <textarea id="Job_logarea" class = "Job_logarea" readonly>
+                    </textarea>
+                  </div>
+                </div>
             </div>
-          </div>
         </div>
       </div>
-      @include('common.footer')
-    {{--content 끝--}}
+       @include('common.footer')
     </div>
-<<<<<<< HEAD
-=======
-    @php
-      $job_seq= explode('_','job_1000_100_1_20200506.log');
-      echo var_dump($job_seq);
-        //75.sh
-        $job_seq=explode('.',$job_seq[3])[0];
-       
-    @endphp
-    <script>
+    {{-- 이 부분은 로그 추가 눌렀을떄 job_seq, line개수 받아오기 위한 input    jobTailAddView tailAdd()함수에서 쓸 값임--}}
+    <input type="hidden" id="jobSeq" >
+
+  <script>
       //더보기 클릭
       function tailAdd(){
         var jobSeq = $('#jobSeq').val();
@@ -352,6 +333,5 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
     }
   </script>
->>>>>>> dd752940f78a7f879fc4fe55dea2f6d3082da2e7
 </body>
 </html>

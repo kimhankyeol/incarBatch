@@ -39,5 +39,5 @@
         echo $resourceInfo;
     }
 
-    ?>
+  ?>
 </head>

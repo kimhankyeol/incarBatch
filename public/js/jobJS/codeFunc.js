@@ -41,9 +41,8 @@ const code = {
     search:function(page){
         var searchWord = $('#searchWord').val();
         var WorkLarge = $('#workLargeVal').val();
-        var WorkMedium = $('#workMediumVal').val();
         var Used = $('#Used').val();
-        location.href="/admin/commonCodeMediumManageView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&Used="+Used+"&page="+page;        
+        location.href="/admin/commonCodeMediumManageView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&Used="+Used+"&page="+page;        
     },
     //관리자 대분류 공통 코드 등록
     largeRegister:function(){
@@ -206,10 +205,13 @@ const code = {
             alert("코드 설명이 입력되지 않았습니다.");
             CodeSulmyung.focus();
             return false;
-        }else if(FilePath.val()==""){
-            alert("경로가 입력되지 않았습니다.");
-            FilePath.focus();
-            return false;
+        }
+        if(parseInt(WorkLarge.val())>=1000&&parseInt(WorkLarge.val()<2000)){
+            if(FilePath.val()==""){
+                alert("경로가 입력되지 않았습니다.");
+                FilePath.focus();
+                return false;
+            }
         }else{
             var result = confirm("중분류 코드를 수정 하시겠습니까?");
             if(result){
@@ -236,7 +238,6 @@ const code = {
                             alert('코드 수정에 실패했습니다.');
                              location.href="/admin/commonCodeMediumManageView";
                         }
-                       
                     },
                     error:function(error){
 
@@ -269,11 +270,11 @@ const code = {
             WorkLarge.val('all');
         }
         //업무구분 코드 1000~1999 까지는 업무구분 코드여서 경로가 필요하고 2000부터는 경로 필요없음
-        if(WorkLarge.val()>=2000){
+        if(WorkLarge.val()>=2000||WorkLarge.val()<1000){
             $('#FilePathDiv').hide();
             $('#FilePath').hide();
             $('#FilePath').val("");
-        }else if(WorkLarge.val()<2000){
+        }else if(WorkLarge.val()>=1000&&WorkLarge.val()<2000){
             $('#FilePathDiv').show();
             $('#FilePath').show();
             $('#FilePath').val("");

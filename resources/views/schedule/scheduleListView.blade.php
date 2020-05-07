@@ -28,7 +28,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
-          <h4 class="h3 my-4 font-weight-bold text-primary">잡</h4>
+         <h4 class="h3 my-4 font-weight-bold text-primary">스케줄링 관리</h4>
           <div class="card shadow mb-4">
             <div class="d-flex justify-content-end card-header py-3">
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
@@ -57,7 +57,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       <i class="fas fa-search fa-sm"></i>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-primary mx-2" onclick="pageMove.job.register('jobRegisterView')">등록</button>
+                  <button type="button" class="btn btn-primary mx-2" onclick="pageMove.schedule.register('scheduleRegisterView')">등록</button>
                 </div>
               </div>
             </div>
@@ -65,17 +65,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div class="table-list">
                 <table id="datatable" class="table table-bordered" cellspacing="0">
                   <colgroup>
-                    <col width="190px" />
-                    <col width="150px" />
-                    <col width="100px" />
-                    <col width="100px" />
-                    <col width="340px" />
-                    <col width="100px" />
-                    <col width="100px" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="20%" />
+                    <col width="10%" />
+                    <col width="10%" />
                   </colgroup>
                     <thead>
                       <tr>
-                        <th>ID</th>
+                        <th>Job ID</th>
+                        <th>스케줄 번호</th>
+                        <th>스케줄 명</th>
                         <th>대분류</th>
                         <th>중분류</th>
                         <th>잡 명</th>
@@ -87,7 +91,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <tbody>
                         {{--  조회된 값이 보여주는 위치 --}}
                         @if(isset($data))
-                        @include('job.jobSearchListView')
+                        @include('schedule.scheduleSearchView')
                         @endIf
                     </tbody>
                 </table>
@@ -95,29 +99,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     @if(isset($paginator))
                     {{$paginator->setPath('/job/jobListView')->appends(request()->except($searchParams))->links()}}
                     @endIf
-              </div>
+                </div>
             </div>
-          </div>
-        </div>
+
       </div>
-      @include('common.footer')
-    {{--content 끝--}}
-    <script>
-      function workLargeChgSel(){
-        var WorkLarge =  $('#workLargeVal').val();
-            $.ajax({
-              url:"/code/workMediumCtg",
-              method:"get",
-              data:{
-                "WorkLarge":WorkLarge
-              },
-              success:function(resp){
-                $("#workMediumVal").html(resp.returnHTML);
-              },
-              error:function(error){
-              }
-            })
-      }
-    </script>
- </body>
+       @include('common.footer')
+    </div>
+</body>
 </html>

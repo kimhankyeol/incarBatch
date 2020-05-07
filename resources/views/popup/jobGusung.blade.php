@@ -26,18 +26,18 @@
                 </div>
               </div>
               <div class="card-body pt-1 pb3-0">
-                <div id="jobParm" class="row mx-auto">
+                <div id="jobParm" class="row mx-auto jobParm">
                     @php
                     $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
                     $jobParamSulArr=explode("||",$jobDetail[0]->Job_ParamSulmyungs);
                     for ($i = 0; $i < count($jobParamArr); $i++) { 
-                        echo '<p class="my-auto pl-3 my-1 small jobParmNum">'.intVal($i+1).') </p>';
-                        echo '<input type="text" class="form-control form-control-sm col-md-2 my-1" readonly value="'.$jobParamSulArr[$i].'"/>';
+                        echo '<p class="my-auto pl-3 small jobParmNum">'.intVal($i+1).') </p>';
+                        echo '<input type="text" class="form-control form-control-sm col-md-2 my-1 jobParamSulArr" readonly value="'.$jobParamSulArr[$i].'"/>';
                     }
                     if(count($jobParamArr)<=10){
                         for ($i = count($jobParamArr); $i < 10; $i++) { 
-                            echo '<p class="my-auto pl-3 my-1 small jobParmNum">'.intVal($i+1).') </p>';
-                            echo '<input type="text" class="form-control form-control-sm col-md-2 my-1" readonly/>';
+                            echo '<p class="my-auto pl-3 small jobParmNum">'.intVal($i+1).') </p>';
+                            echo '<input type="text" class="form-control form-control-sm col-md-2 my-1 jobParamSulArr" readonly/>';
                         }
                     }
                     @endphp
