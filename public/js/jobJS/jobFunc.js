@@ -7,6 +7,13 @@ const job = {
       // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
       location.href="/job/jobListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
   },
+  scheduleSearch:function(page){
+    var searchWord = $('#searchWord').val();
+    var WorkLarge = $('#workLargeVal option:selected').val();
+    var WorkMedium = $('#workMediumVal option:selected').val();
+    // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
+    location.href="/schedule/scheduleListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
+  },
   //등록
   register:function(){
      //변수 선언

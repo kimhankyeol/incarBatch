@@ -20,13 +20,13 @@ const process = {
         }else{
             $("#retry").val(0);
         }
-        if($("#P_FileInputCheck").is(":checked")){
-            $("#P_FileInputCheck").val(1);
+        if($("#P_TextInputCheck").is(":checked")){
+            $("#P_TextInputCheck").val(1);
         }else{
-            $("#P_FileInputCheck").val(0);
+            $("#P_TextInputCheck").val(0);
         }
 
-        console.log($('#P_FileInputCheck').val());
+        console.log($('#P_TextInputCheck').val());
 
         var WorkLarge = $('#workLargeVal option:selected').val();
         var WorkMedium = $('#workMediumVal option:selected').val();
@@ -41,8 +41,8 @@ const process = {
 
         var P_RegId=$('#P_RegId').val();
         var P_DevId="16161616";
-        var P_FileInputCheck = $('#P_FileInputCheck').val();
-        var P_FileInput=$('#P_FileInput').val();
+        var P_TextInputCheck = $('#P_TextInputCheck').val();
+        var P_TextInput=$('#P_TextInput').val();
         
         //시간계산 분단위 ()
       if($('#Pro_YesangTime1').val()==""){
@@ -109,8 +109,8 @@ const process = {
                     proParamType: Arr1,
                     proParamSulmyungInput: Arr2,
                     
-                    P_FileInputCheck:P_FileInputCheck,
-                    P_FileInput:P_FileInput,
+                    P_TextInputCheck:P_TextInputCheck,
+                    P_TextInput:P_TextInput,
 
                     P_DevId:P_DevId,
                     P_RegId:P_RegId
@@ -137,11 +137,16 @@ const process = {
         }else{
             $("#retry").val(0);
         }
+
+         if($("#P_TextInputCheck").is(":checked")){
+            $("#P_TextInputCheck").val(1);
+        }else{
+            $("#P_TextInputCheck").val(0);
+        }
+
         //console.table($('#P_RegIp').val());
         //alert($('#proParamSulmyungInput').val());
         var p_seq = $('#P_Seq').val();
-        var processPath = $('#processPath').val();
-        var processFile = $('#processFile').val();
         var programName = $('#programName').val();
         var programExplain = $('#programExplain').val();
         var WorkLarge = $('#P_WorkLargeCtg').val();
@@ -150,8 +155,8 @@ const process = {
         var retry = $("#retry").val();
         var P_UpdIP= $('#P_UpdIP').val();
         var P_UpDate=$('#P_UpDate').val();
-        var P_FileInputCheck = $('#P_FileInputCheck').val();
-        var P_FileInput=$('#P_FileInput').val();
+        var P_TextInputCheck = $('#P_TextInputCheck').val();
+        var P_TextInput=$('#P_TextInput').val();
         //시간계산 분단위 ()
       if($('#Pro_YesangTime1').val()==""){
         $('#Pro_YesangTime1').val(0);
@@ -208,9 +213,7 @@ const process = {
                 url: "/process/processEdit",
                 method: "post",
                 data: {
-                    'p_seq' : p_seq,
-                    processPath : processPath,
-                    processFile : processFile,
+                    p_seq : p_seq,
                     P_UpdIP : P_UpdIP,
                     P_UpDate : P_UpDate,
                     programName: programName,
@@ -223,19 +226,17 @@ const process = {
                     proParamSulmyungInput: paramStr2,
                     Pro_YesangTime : Pro_YesangTime,
                     Pro_YesangMaxTime : Pro_YesangMaxTime,
-                    P_FileInputCheck:P_FileInputCheck,
-                    P_FileInput:P_FileInput
+                    P_TextInputCheck:P_TextInputCheck,
+                    P_TextInput:P_TextInput
                 },
                 success: function (data) {
                     console.table(data);
-                    if(data.fileResult1==true&&data.count==0){
+                    if(data.result==1){
                         alert("프로그램이 수정되었습니다.");
-                        console.log("수정 되었습니다.");
                         location.href = "/process/processDetailView?P_Seq="+data.P_Seq;
-                    }else if(data.count!=0){
-                        alert("해당 경로에 이미 같은 이름의 파일이 존재합니다.");
-                    }else if(data.fileResult1==false){
-                        alert("경로가 존재하지 않습니다.");
+                    }else{
+                        alert("프로그램 변경사항이 없습니다.");
+                        location.href = "/process/processDetailView?P_Seq="+data.P_Seq;
                     }
                 },
             });

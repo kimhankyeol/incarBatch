@@ -53,7 +53,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     @endif
                   @endif
                   <div class="input-group-append">
-                    <div class="btn btn-primary" onclick="job.search('1')">
+                    <div class="btn btn-primary" onclick="job.scheduleSearch('1')">
                       <i class="fas fa-search fa-sm"></i>
                     </div>
                   </div>
@@ -79,11 +79,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       <tr>
                         <th>Job ID</th>
                         <th>스케줄 번호</th>
-                        <th>스케줄 명</th>
+                        <th>스케줄 설명</th>
                         <th>대분류</th>
                         <th>중분류</th>
                         <th>잡 명</th>
-                        <th>설명</th>
+                        <th>실행 주기</th>
                         <th>등록자</th>
                         <th>등록일</th>
                       </tr>
@@ -97,13 +97,30 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </table>
                 {{-- 페이징 이동 경로 --}}
                     @if(isset($paginator))
-                    {{$paginator->setPath('/job/jobListView')->appends(request()->except($searchParams))->links()}}
+                    {{$paginator->setPath('/schedule/scheduleListView')->appends(request()->except($searchParams))->links()}}
                     @endIf
                 </div>
             </div>
-
       </div>
        @include('common.footer')
     </div>
+    <script>
+      function workLargeChgSel(){
+       var WorkLarge =  $('#workLargeVal').val();
+            $.ajax({
+              url:"/code/workMediumCtg",
+              method:"get",
+              data:{
+                "WorkLarge":WorkLarge
+              },
+              success:function(resp){
+                $("#workMediumVal").html(resp.returnHTML);
+              },
+              error:function(error){
+    
+              }
+            })
+      }
+      </script>
 </body>
 </html>

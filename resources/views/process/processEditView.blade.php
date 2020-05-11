@@ -44,7 +44,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             </div>
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
                             <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center"  value="{{$processDetail[0]->P_FileName}}" readonly>
-                            <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" >
+                            <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" readonly >
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <select id="UseDb" class="col-md-1 form-control form-control-sm">
                                     @foreach ($db_list as $list)
@@ -114,20 +114,26 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         </div>
                         <hr>
                         <div class="row align-items-center">
-                             {{-- 업무 구분 대분류 중분류 선택 --}}
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
-                            <input id="P_FileInput" type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" value="{{$processDetail[0]->P_FileInput}}" readonly>
-                               @if(($processDetail[0]->P_FileInputCheck)==1)
-                                  <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                      <input id="P_FileInputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_FileInputCheck }}">
-                                      <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
-                                  </div>
-                                  @else
-                                  <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                    <input id="P_FileInputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_FileInputCheck }}">
-                                    <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
-                                  </div>
-                                @endif
+                          {{-- 업무 구분 대분류 중분류 선택 --}}
+                         <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">텍스트 입력</div>
+                           @if(($processDetail[0]->P_TextInputCheck)==1)
+                             <div class="col-md-3 mx-2 custom-control custom-checkbox small">
+                                 <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_TextInputCheck }}">
+                                 <label class="custom-control-label font-weight-bold text-primary" for="P_TextInputCheck">텍스트 입력여부</label>
+                             </div>
+                             @else
+                             <div class="col-md-3 mx-2 custom-control custom-checkbox small">
+                               <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_TextInputCheck }}" readonly>
+                               <label class="custom-control-label font-weight-bold text-primary" for="P_TextInputCheck">텍스트 입력여부</label>
+                             </div>
+                             @endif
+                        </div>
+                        <div class="row">
+                        @if(($processDetail[0]->P_TextInputCheck)==1)
+                          <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: 300px" >{{$processDetail[0]->P_TextInput}}</textarea>
+                        @else
+                          <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: 300px"  readonly>{{$processDetail[0]->P_TextInput}}</textarea>
+                        @endif
                         </div>
                         <hr>
                         <div class="row">
@@ -186,30 +192,16 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   </body>
   </html>
 
- <script>
-    $(function(){
-        $('#P_FileInputCheck').click(function(){
-            var workLargeVal=$('#workLargeVal');
-            var workMediumVal=$('#workMediumVal');
-            var processFile=$('#processFile');
-            if(workLargeVal.val()!="all"&&workMediumVal.val()!="all"&&processFile.val()!=""){
-                var chk = $(this).is(":checked");
-                if(chk){
-                    var FileName = $('#processFile').val();
-                    var FileNameText = FileName.replace('php','txt');
-                    $('#P_FileInput').val($('#processPath').val()+"/"+FileNameText);
-                    processFile.prop('readonly', true);
-                    workLargeVal.attr("disabled","disabled");
-                    workMediumVal.attr("disabled","disabled");
-                }else{
-                    $('#P_FileInput').val("");
-                    processFile.prop('readonly', false);
-                    workLargeVal.removeAttr("disabled", "disabled");
-                    workMediumVal.removeAttr("disabled", "disabled");
-                }
-            }else{
-                return false;
-            }
-        })
-    })
-</script>
+  <script>
+      $('#P_TextInputCheck').click(function(){
+         var chk = $(this).is(":checked");
+         if(chk){
+          $('#P_TextInput').removeAttr("readonly", "");
+          $('#P_TextInput').removeAttr("readonly", "");
+         }else{
+          $('#P_TextInput').attr("readonly","readonly");
+          $('#P_TextInput').attr("readonly","readonly");
+             
+         }
+      });
+   </script>

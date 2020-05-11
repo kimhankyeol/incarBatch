@@ -43,3 +43,4 @@ if (isset($GusungList)) {
             @endIf  --}}
       </tbody>
   </table>
+

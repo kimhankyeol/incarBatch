@@ -82,15 +82,17 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <hr>
                         <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
-                            <input id="P_FileInput" type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" readonly>
-                            <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                <input id="P_FileInputCheck" type="checkbox" class="custom-control-input">
-                                <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일 입력 여부</label>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">텍스트 입력</div>
+                            <div class="col-md-2 mx-2 custom-control custom-checkbox small">
+                                <input id="P_TextInputCheck" type="checkbox" class="custom-control-input">
+                                <label class="custom-control-label font-weight-bold text-primary" for="P_TextInputCheck">텍스트 입력 여부</label>
                             </div>
                         </div>
+                        <div class="row">
+                            <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2"  style="height: 300px" disabled ></textarea>
+                        </div>
                         <hr>
-                        <h6 class="col-md-12 font-weight-bold text-primary">
+                        <h6 class="col-md-12 font-weight-bold text-primary ">
                             프로그램 파라미터 타입
                         </h6>
                         <hr>
@@ -117,37 +119,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     </div>
   </body>
   </html>
-<script>
-    $(function(){
-        $('#P_FileInputCheck').click(function(){
-
-            var workLargeVal=$('#workLargeVal');
-            var workMediumVal=$('#workMediumVal');
-            var processFile=$('#processFile');
-
-            if(workLargeVal.val()!="all"&&workMediumVal.val()!="all"&&processFile.val()!=""){
-                var chk = $(this).is(":checked");
-                if(chk){
-                    var FileName = $('#processFile').val();
-                    var FileNameText = FileName.replace('php','txt');
-                    $('#P_FileInput').val($('#processPath').val()+"/"+FileNameText);
-
-                    processFile.prop('readonly', true);
-                    workLargeVal.attr("disabled","disabled");
-                    workMediumVal.attr("disabled","disabled");
-
-                }else{
-                    $('#P_FileInput').val("");
-                    processFile.prop('readonly', false);
-                    workLargeVal.removeAttr("disabled", "disabled");
-                    workMediumVal.removeAttr("disabled", "disabled");
-                }
-            }else{
-                return false;
-            }
-        })
-    })
-</script>
+  <script>
+   $('#P_TextInputCheck').click(function(){
+        var chk = $(this).is(":checked");
+        if(chk){
+            $('#P_TextInput').removeAttr("disabled", "");
+            $('#P_TextInput').removeAttr("disabled", "");
+            $('#P_TextInput').val("#주석입니다. 변수1(열) 변수2(열) 변수3(열)");
+        }else{
+         
+            $('#P_TextInput').attr("disabled","disabled");
+            $('#P_TextInput').attr("disabled","disabled");
+            $('#P_TextInput').val("");
+        }
+   });
+  </script>
 <script>
     function workLargeChgSel(){
      var WorkLarge =  $('#workLargeVal').val();
