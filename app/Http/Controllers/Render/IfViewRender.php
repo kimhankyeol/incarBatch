@@ -35,9 +35,9 @@ class ifViewRender {
      //사이드바 링크 배열
     private $sidebarInfo = array(
         //pageMove.js 무관
-        array('label' => '잡 등록', 'url' => '/job/jobListView','icon'=>'fas fa-fw fa-cog'),
-        array('label' => '프로그램 등록', 'url' => '/process/processListView','icon'=>'fas fa-fw fa-cog'),
-        array('label' => '스케줄 관리', 'url' => '/schedule/scheduleListView','icon'=>'fas fa-fw fa-wrench'),
+        array('label' => '잡 등록', 'url' => '/job/jobListView?page=1','icon'=>'fas fa-fw fa-cog'),
+        array('label' => '프로그램 등록', 'url' => '/process/processListView?page=1','icon'=>'fas fa-fw fa-cog'),
+        array('label' => '스케줄 관리', 'url' => '/schedule/scheduleListView?page=1','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '모니터링', 'url' => '/monitoring/monitoringView','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '작업내역', 'url' => '/jobHistory/jobHistoryView','icon'=>'fas fa-fw fa-folder')
     );

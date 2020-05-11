@@ -109,20 +109,28 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <hr>
                         <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">파일 입력</div>
-                            <input id="P_FileInput" type="text" class="col-md-2 form-control form-control-sm align-self-center mt-2" value="{{$processDetail[0]->P_FileInput}}" readonly>
-                              @if(($processDetail[0]->P_FileInputCheck)==1)
-                                <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                    <input id="retry" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_FileInputCheck }}" onclick = "return false">
-                                    <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">텍스트 입력</div>
+                              @if(($processDetail[0]->P_TextInputCheck)==1)
+                                <div class="col-md-3 mx-2 custom-control custom-checkbox small">
+                                    <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->P_TextInputCheck }}" onclick = "return false">
+                                    <label class="custom-control-label font-weight-bold text-primary" for="P_TextInputCheck">텍스트 입력여부</label>
                                 </div>
                                 @else
-                                <div class="col-md-1 mx-2 custom-control custom-checkbox small">
-                                  <input id="retry" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_FileInputCheck }}" onclick = "return false">
-                                  <label class="custom-control-label font-weight-bold text-primary" for="P_FileInputCheck">파일입력여부</label>
+                                <div class="col-md-3 mx-2 custom-control custom-checkbox small">
+                                  <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->P_TextInputCheck }}" onclick = "return false">
+                                  <label class="custom-control-label font-weight-bold text-primary" for="P_TextInputCheck">텍스트 입력여부</label>
                                 </div>
-                                @endif
+                              @endif
                         </div>
+                        @if(($processDetail[0]->P_TextInputCheck)==1)
+                        <div class="row">
+                          <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: 300px" readonly>{{$processDetail[0]->P_TextInput}}</textarea>
+                        </div>
+                        @else
+                        <div class="row">
+                          <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: 300px"  readonly>{{$processDetail[0]->P_TextInput}}</textarea>
+                        </div>
+                        @endif
                         <hr>
                         <div class="row">
                         <h6 class="col-md-12 font-weight-bold text-primary">
@@ -170,3 +178,24 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     <input id="WorkMedium" hidden  value="{{$processDetail[0]->P_WorkMediumCtg}}" readonly>
   </body>
   </html>
+  @php
+    $tabDelimitedLines = explode("\n", $processDetail[0]->P_TextInput);
+    $myArray = Array();
+
+    foreach ($tabDelimitedLines as $lineIndex => $line) {
+        $fields = explode("\t", $line);
+        foreach ($fields as $fieldIndex => $field) {
+            if ($lineIndex == 0) {
+                // assuming first line is header info
+                $headers[] = $field;
+            } else {
+                // put the other lines into an array
+                // in whatever format you want
+                $myArray[$lineIndex - 1][$headers[$fieldIndex]] = $field;
+            }
+        }
+    }
+    $json = json_encode($myArray);
+    echo var_dump($tabDelimitedLines);
+    echo var_dump($myArray);
+  @endphp

@@ -61,20 +61,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div class="form-inline navbar-search justify-content-end">
                 <div class="input-group align-items-center mb-2 w-100">
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_start" type="checkbox" class="custom-control-input">
+                    <input id="status_start" type="checkbox" class="custom-control-input jobStatus" value="20" checked="true">
                     <label class="custom-control-label font-weight-bold text-primary" for="status_start">실행</label>
                   </div>
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_reservation" type="checkbox" class="custom-control-input">
+                    <input id="status_reservation" type="checkbox" class="custom-control-input jobStatus" value="30" checked="true">
                     <label class="custom-control-label font-weight-bold text-primary" for="status_reservation">예약</label>
                   </div>
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_error" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_error">오류</label>
+                    <input id="status_end" type="checkbox" class="custom-control-input jobStatus" value="90" checked="true">
+                    <label class="custom-control-label font-weight-bold text-primary" for="status_end">완료</label>
                   </div>
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_end" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_end">완료</label>
+                    <input id="status_error" type="checkbox" class="custom-control-input jobStatus" value="40" checked="true">
+                    <label class="custom-control-label font-weight-bold text-primary" for="status_error">오류</label>
                   </div>
                 </div>
                 <div class="input-group align-items-center">
@@ -116,7 +116,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div id="monitorDatatable" class="table-responsive" style="height: calc((1vh) * 50);">
                 @include('monitoring.monitorJobSearchList')
               </div>
-              <div id="jobDetailList" class="table-responsive" style="height: calc((1vh) * 50);">
+              <div id="jobDetailList" class="table-responsive">
                 @include('monitoring.monitorJobDetailList')
               </div>
               {{--  <div id="gusungDatatable" class="table-responsive">
@@ -353,3 +353,4 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   </script>
 </body>
 </html>
+

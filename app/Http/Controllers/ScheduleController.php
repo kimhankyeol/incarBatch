@@ -25,7 +25,7 @@ class scheduleController extends Controller
             $WorkMedium="all";
         }
         // 사용중인 것만 조회  //프로시저 다시만들어야함 스케줄에 맞는
-        $jobContents = DB::select('CALL Job_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $jobContents = DB::select('CALL Schedule_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         $usedLarge = DB::select('CALL Common_LargeCode()');
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)

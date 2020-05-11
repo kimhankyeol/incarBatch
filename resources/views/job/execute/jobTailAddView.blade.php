@@ -96,6 +96,7 @@
                 if($setNum==1){
                     if(!isset($logSearchWord)){
                         $exe= shell_exec("tail -n ".$line." ".$logfile." | nl");
+                        #$exe= shell_exec("ls -rt /".$logfile."| tail -n 1 | xargs sort -rn | tail -n ".$line." | cat -n");
                     }else{
                         $exe= shell_exec("grep ".$logSearchWord." ".$logfile." |  tail -n ".$line." | nl");
                         $exe= str_replace($logSearchWord,'<span style="color:red">'.$logSearchWord.'</span>',$exe);
