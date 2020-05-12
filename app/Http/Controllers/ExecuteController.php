@@ -80,8 +80,9 @@ class ExecuteController extends Controller
                 $WorkLarge =  $getJobInfo[0]->WorkLarge;
                 $WorkMedium =  $getJobInfo[0]->WorkMedium;
                 
+                //폴더명은 log 뒤부터 /업무 대분류/업무 중분류/잡시퀀스/스케줄시퀀스/파일명
                 $logfilename = "job_".$WorkLarge."_".$WorkMedium."_".$Job_Seq."_".$Sc_Seq."_".$JobExecuteDate.".log";
-                $logfile = "/home/script/log/".$JobExecuteDate."/".$logfilename;
+                $logfile = "/home/script/log/".$WorkLarge."_".$WorkMedium."_".$Job_Seq."/".$Sc_Seq."/".$logfilename;
                 $lineTotal = shell_exec("grep -o ".$logSearchWord." ".$logfile."|wc -w");
                 $lineTotal = explode(" ",$lineTotal)[0];
                

@@ -58,4 +58,87 @@ class scheduleController extends Controller
     public function scheduleRegisterView(Request $request){
         return view("schedule.scheduleRegisterView");
     }
+    //스케줄 등록
+    public function scheduleRegister(Request $request){
+        $Sc_Crontab = $request->input('Sc_Crontab');
+        $Job_Seq = $request->input('job_seq');
+        $Sc_Sulmyung = $request->input('Sc_Sulmyung');
+        $Sc_Param = $request->input('Sc_Param');
+        $Sc_Status=$request->input('Sc_Status');
+        $Sc_RegId=$request->input('Sc_RegId');
+        $Sc_RegIP = $_SERVER["REMOTE_ADDR"];
+        $Sc_DeleteYN=0;
+        $Sc_CronSulmyung=$request->input('Sc_CronSulmyung');
+        $P_order = $request->input('P_order');
+        $Pseq = array();
+        $Sc_CronTime = $request->input('Sc_CronTime');
+        $Sc_CronEndTime = $request->input('Sc_CronEndTime');
+        $P_Seq =  DB::table('OnlineBatch_JobGusung')->select('P_Seq')->where('Job_Seq',$Job_Seq)->get();
+        $count =  DB::table('OnlineBatch_JobGusung')->select('P_Seq')->where('Job_Seq',$Job_Seq)->count();
+
+        // for($i=0; $i<count($P_order); $i++){
+        //     $Pseq = DB::table('OnlineBatch_JobGusung')->select('P_Seq')->where('P_order',$P_order[$i])->get();
+        // }
+
+        if(count($P_Seq)!=0){
+            $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
+                [
+                    'Sc_Crontab'=>$Sc_Crontab,
+                    'Job_Seq'=>$Job_Seq,
+                    'Sc_Sulmyung'=>$Sc_Sulmyung,
+                    'Sc_Param'=>$Sc_Param,
+                    'Sc_Status'=>$Sc_Status,
+                    'Sc_RegId'=>$Sc_RegId,
+                    'Sc_RegIP'=>ip2long($Sc_RegIP),
+                    'Sc_RegDate'=>now(),
+                    'Sc_DeleteYN'=>$Sc_DeleteYN,
+                    'Sc_CronTime'=>$Sc_CronTime,
+                    'Sc_CronEndTime'=>$Sc_CronEndTime,
+                    'Sc_CronSulmyung'=>$Sc_CronSulmyung
+                ]
+            );
+    
+            for($i=0; $i<$count; $i++){
+                DB::table('OnlineBatch_ScheduleProcess')->insert(
+                    [
+                        'P_Seq'=>$P_Seq[$i]->P_Seq,
+                        'Sc_Seq'=>$last_sc_seq,
+                        'Job_Seq'=>$Job_Seq,
+                        'JobSM_P_Status'=>101
+                    ]
+                );
+            }
+            return response()->json(array('P_Seq'=>$P_Seq,'last_sc_seq'=>$last_sc_seq,'Job_Seq'=>$Job_Seq));
+        }
+        return response()->json(array('Sc_CronSulmyung'=>$Sc_CronSulmyung,'Sc_Crontab'=>$Sc_Crontab));       
+    }
+    
+    // 실행할 잡의 파라미터 불러오기
+    public function jobselect(Request $request){
+        //$tr_job_seq = $request->input('tr_job_seq');
+
+        $Job_Seq = $request->input('tr_job_seq');
+        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
+        $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
+        $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
+        $jobName = $jobName[0]->Job_Name;
+
+        $returnHTML=view('schedule.scheduleExecParam',compact('jobGusungContents','jobDetail','jobName'))->render();
+        return response()->json(array('returnHTML'=>$returnHTML),200);
+    }
+    //스케줄 상세
+    public function scheduleDetailView(Request $request){
+        $job_seq = $request->input('Job_Seq');
+        $sc_seq = $request->input('Sc_Seq');
+        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$job_seq]);
+        //프로시저를 통한 잡 상세정보 검색
+        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
+        //프로시저를 통한 스케줄러 상세정보 검색
+        $scheduleDetail=DB::select('CALL Schedule_detail(?,?)',[$sc_seq,$job_seq]);
+
+        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
+        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
+        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
+    }
 }

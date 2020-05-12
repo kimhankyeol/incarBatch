@@ -24,13 +24,16 @@ const pageMove={
     },
     jobpopup:{
         list:function(urlName){
-            location.href="/popup/"+urlName;
+            window.open("/popup/"+urlName, '잡 실행', 'top=10, left=10, width=1280, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
         },
         jobAction: function jobAction(urlName,param1) {
             window.open("/popup/"+urlName+"?Job_Seq="+param1, '잡 실행', 'top=10, left=10, width=1280, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
         },
         detail:function(urlName,param1){
             location.href="/popup/"+urlName+"?Job_Seq="+param1;
+        },
+        transfer:function(urlName,param1,param2){
+            window.open("/popup/"+urlName+"?jobSc_id="+param1+"&jobSc_name="+param2, '잡 실행', 'top=10, left=10, width=1280, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
         }
     },
     login:{
@@ -68,6 +71,9 @@ const pageMove={
     schedule:{
         register:function(urlName){
             location.href="/schedule/"+urlName;
+        },
+        detail:function(urlName,param1,param2){
+            location.href="/schedule/"+urlName+"?Sc_Seq="+param1+"&Job_Seq="+param2;
         }
     }
 }
