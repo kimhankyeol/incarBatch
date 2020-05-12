@@ -14,7 +14,7 @@ class PopupController extends Controller
     public function processInfo(){
         return view('/popup/processInfo');
     }
-    //팝업- 잡 구성 (수정필요)
+    //팝업- 잡 구성
     public function jobGusung(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
@@ -108,7 +108,6 @@ class PopupController extends Controller
         //return $data;
 
     }
-    
     //팝업- 잡 실행
     public function jobAction(Request $request){
         $Job_Seq = $request->input('Job_Seq');
@@ -139,5 +138,15 @@ class PopupController extends Controller
         $page=$request->input('page');
           //////// 최초 및 검색 시 필요한 조건 
         return view('popup.jobAction',compact('jobGusungContents','jobTotalTime','jobName','jobDetail','data','searchWord','WorkLarge','WorkMedium','WorkLargeDetail','WorkMediumDetail','usedLarge'));
+    }
+    // 모니터링- 잡 상세 팝업
+    public function jobDetailPopup(Request $request) {
+        $job_seq = $request->input('Job_Seq');
+        //프로시저를 통한 잡 상세정보 검색
+        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
+        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
+        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
+        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        return view('popup.jobDetailPopup',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
 }

@@ -18,7 +18,6 @@ const monitor = {
     if (searchWord == '' || searchWord == undefined) {
       searchWord = "searchWordNot";
     }
-    console.log(jobStatusStr.substr(0, jobStatusStr.length - 1));
     $.ajax({
       url: "/monitoring/monitorJobSearchList",
       method: "get",
@@ -37,20 +36,20 @@ const monitor = {
       }
     })
   },
-  detailList: function (Job_Seq) {
+  detailList: function (Job_Seq, page) {
     $.ajax({
       url: "/monitoring/monitorJobDetailList",
       method: "get",
       data: {
-        "Job_Seq": Job_Seq
+        "Job_Seq": Job_Seq,
+        "page": page
       },
       success: function (resp) {
-        console.table(resp);
         $('#jobDetailList').html(resp.returnHTML)
       }
     })
   },
-  detailPopup: function (Job_Seq, Skd_Seq) {
-    window.open('/popup/gusungDetail', '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+  jobPopup: function (Job_Seq) {
+    window.open('/popup/jobDetailPopup?Job_Seq=' + Job_Seq, '잡 정보 상세', 'top=10, left=10, width=1400, height=675, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   }
 };

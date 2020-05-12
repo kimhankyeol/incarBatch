@@ -94,11 +94,11 @@ Route::prefix('popup')->group(function(){
     Route::get('/popupPsSearch','PopupController@popupPsSearch');
     // 잡 실행
     Route::get('/jobAction','PopupController@jobAction');
+    // 모니터링 잡 상세
+    Route::get('/jobDetailPopup','PopupController@jobDetailPopup');
+    // 모니터링 잡 스케줄 상세
+    Route::get('/scheduleDetailPopup','PopupController@scheduleDetailPopup');
 });
-
-
-
-
 
 //////////////공통 코드 컨트롤러//////////////
 Route::prefix('code')->group(function(){

@@ -96,7 +96,7 @@ class MonitoringController extends Controller
          $usedLarge = DB::select('CALL Common_LargeCode()');
          $page=$request->input('page');
          //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
-         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$MonitorContents);
+         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$MonitorContents);
          //페이징 정보를 가져옴
          $paginator = $PaginationCustom->getPaging();
          //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
@@ -133,11 +133,18 @@ class MonitoringController extends Controller
     function monitorJobDetailList(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $JobDetailList = DB::select('CALL Monitor_detailList(?)',[$Job_Seq]);
-        $returnHTML = view('/monitoring/monitorJobDetailList',compact('JobDetailList'))->render();
+        $page = $request->input('page');
+        //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
+        $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$JobDetailList);
+        //페이징 정보를 가져옴
+        $paginator = $PaginationCustom->getPaging();
+        //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
+        $detailList =$PaginationCustom->getItemsForCurrentPage();
+        
+        $searchParams = array( 'Job_Seq' => $Job_Seq);
+
+        $returnHTML = view('/monitoring/monitorJobDetailList',compact('detailList','paginator','searchParams','page'))->render();
         
         return response()->json(array('returnHTML'=>$returnHTML,200));
-    }
-    function monitoringDetailList(Request $request){
-        return 0;
     }
 }
