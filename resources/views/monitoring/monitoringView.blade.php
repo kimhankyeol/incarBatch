@@ -294,63 +294,81 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             })
           }
       }
+    $(document).ready(function(){
+      var dbclick=false;    
+      $(document).on('click','.jobExeOneDbClick',function(event){
+        var jobSeqIndex = $('.jobExeOneDbClick').index(this);
+        var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
+        var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
 
-      $(document).ready(function(){
-        var dbclick=false;    
-        $(document).on('click','.jobExeOneDbClick',function(event){
-            var jobSeqIndex = $('.jobExeOneDbClick').index(this);
-            var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
-            var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
-
-            //tr 색 바꾸기  활성된거
-            if($('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
-                $('.jobExeOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
-            }else {
-                $('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
-            }
-            setTimeout(function(){
-                if(dbclick ==false){
-                    console.log("1번클릭  jobseq: "+jobSeq);
-                    tailAddFirst(10,jobSeq,scSeq);
-                }   
-            },400)    
-        }).on('dblclick','.jobExeOneDbClick',function(event){
-            dbclick = true
-            var jobSeqIndex = $('.jobExeOneDbClick').index(this);
-            var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
-            var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
-            // pageMove.jobpopup.jobAction('jobAction',jobSeq);
-            setTimeout(function(){   
-                dbclick = false
-            },500)
-        })
+        //tr 색 바꾸기  활성된거
+        if($('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
+            $('.jobExeOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
+        }else {
+            $('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
+        }
+        setTimeout(function(){
+            if(dbclick ==false){
+                tailAddFirst(10,jobSeq,scSeq);
+            }   
+        },400)    
+      }).on('dblclick','.jobExeOneDbClick',function(event){
+          dbclick = true
+          var jobSeqIndex = $('.jobExeOneDbClick').index(this);
+          var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
+          var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
+          // pageMove.jobpopup.jobAction('jobAction',jobSeq);
+          setTimeout(function(){   
+              dbclick = false
+              console.log("2번클릭  jobseq: "+jobSeq+"scSeq: "+scSeq);
+              //scheduleDetailPopup(jobSeq,scSeq);
+          },500)
+      })
+      $(document).on('click','.jobOneDbClick',function(event){
+          var jobSeqIndex = $('.jobOneDbClick').index(this);
+          //tr 색 바꾸기  활성된거
+          if($('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
+              $('.jobOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
+          }else {
+              $('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
+          }
+      }).on('dblclick','.jobOneDbClick',function(event){
+          var jobSeqIndex = $('.jobOneDbClick').index(this);
+          var Job_Seq = $('.jobOneDbClick').eq(jobSeqIndex)[0].children[0].firstElementChild.value;
+          monitor.jobPopup(Job_Seq);
+      })
+      $(document).on('click', '.pagination a', function (event) {
+        event.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        var Job_Seq = $('#monitorJob').attr("data-value");
+        monitor.detailList(Job_Seq, page);
+      });
     })
 
     //처음 잡을 클릭해서 로그 조회하는것  
     function tailAddFirst(line,jobSeq,scSeq){
-        $.ajax({
-            url:"/job/jobTailAdd",
-            method:"get",
-            data:{
-                "line":line,
-                "Job_Seq":jobSeq,
-                "setNum":1,
-                "headTail":"tail",
-                "Sc_Seq":scSeq
-            },
-            success:function(data){
-                $('#jobSeq').val(jobSeq);
-                $('#scSeq').val(scSeq);
-                $('#lineNum').val(line);
-                $('#jobTailLog').html(data.returnHTML);
-            },
-            error:function(err){
-
-            }
-        })
+      $.ajax({
+        url:"/job/jobTailAdd",
+        method:"get",
+        data:{
+            "line":line,
+            "Job_Seq":jobSeq,
+            "setNum":1,
+            "headTail":"tail",
+            "Sc_Seq":scSeq
+        },
+        success:function(data){
+            $('#jobSeq').val(jobSeq);
+            $('#scSeq').val(scSeq);
+            $('#lineNum').val(line);
+            $('#jobTailLog').html(data.returnHTML);
+        }
+      })
     }
-   
+    // 잡 스케줄의 상세 정보
+    function scheduleDetailPopup(Job_Seq,Skd_Seq){
+      window.open('/popup/scheduleDetailPopup?Job_Seq='+Job_Seq+'&Skd_Seq='+Skd_Seq, '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+    }
   </script>
 </body>
 </html>
-

@@ -197,6 +197,9 @@ textarea {
   display: none;
   width: 10%;
 }
+.end{
+  display: none;
+}
 
 /*잡 실행 테이블, 로그 고정*/
 .table-list{
@@ -232,4 +235,9 @@ textarea {
 .gusungPage{
   margin-top: 10px;
 }
+
+.hoverTable tr:hover{
+  background-color: rgb(149, 172, 247);
+}
+
 

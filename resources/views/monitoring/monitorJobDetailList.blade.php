@@ -1,6 +1,7 @@
 @php
-if (isset($JobDetailList)) {
-  echo '<h5 class="my-4 font-weight-bold text-primary">'.'job_'.$JobDetailList[0]->Job_WorkLargeCtg.'_'.$JobDetailList[0]->Job_WorkMediumCtg.'_'.$JobDetailList[0]->Job_Seq.' - '.$JobDetailList[0]->Job_Name.'</h5>';
+if (isset($detailList)) {
+  $arrNum = ($page -1) * 5;
+  echo '<h5 class="my-4 font-weight-bold text-primary" id="monitorJob" data-value="'.$detailList[$arrNum]->Job_Seq.'">'.'job_'.$detailList[$arrNum]->Job_WorkLargeCtg.'_'.$detailList[$arrNum]->Job_WorkMediumCtg.'_'.$detailList[$arrNum]->Job_Seq.' - '.$detailList[$arrNum]->Job_Name.'</h5>';
 } else {
   echo '<h5 class="my-4 font-weight-bold text-primary">상세 잡 리스트</h5>';
 }
@@ -31,56 +32,12 @@ if (isset($JobDetailList)) {
       </tr>
       </thead>
       <tbody>
-        {{-- <tr class="jobExeOneDbClick">
-          <td class="text-center Sc_Seq" data-value="{{1}}">4</td>
-          <td class="Job_Seq" data-value="{{1}}">job_1000_100_1_1</td>
-          <td>잡1</td>
-          <td class="text-center">2020-05-06 06:20</td>
-          <td class="text-center"></td>
-          <td class="text-center">1/1/2/0</td>
-          <td class="text-center">2020 || 05 || 01 || KB손해보험</td>
-          <td class="text-center">1시간30분</td>
-          <td class="text-center">2시간</td>
-        </tr>
-        <tr class="jobExeOneDbClick">
-          <td class="text-center Sc_Seq" data-value="{{2}}">3</td>
-          <td class="Job_Seq" data-value="{{1}}">job_1000_100_1_1</td>
-          <td>잡1</td>
-          <td class="text-center">2020-05-06 01:00</td>
-          <td class="text-center">2020-05-06 02:00</td>
-          <td class="text-center">4/0/0/0</td>
-          <td class="text-center">2020 || 04 || 01 || KB손해보험</td>
-          <td class="text-center">1시간30분</td>
-          <td class="text-center">2시간</td>
-        </tr>
-        <tr>
-          <td class="text-center">2</td>
-          <td>job_1000_100_1</td>
-          <td>잡1</td>
-          <td class="text-center">2020-05-05 16:30</td>
-          <td class="text-center">2020-05-05 17:30</td>
-          <td class="text-center">4/0/0/0</td>
-          <td class="text-center">2020 || 04 || 01 || KB손해보험</td>
-          <td class="text-center">1시간30분</td>
-          <td class="text-center">2시간</td>
-        </tr>
-        <tr>
-          <td class="text-center">1</td>
-          <td>job_1000_100_1</td>
-          <td>잡1</td>
-          <td class="text-center">2020-05-05 10:00</td>
-          <td class="text-center">2020-05-05 11:00</td>
-          <td class="text-center">4/0/0/0</td>
-          <td class="text-center">2020 || 03 || 01 || KB손해보험</td>
-          <td class="text-center">1시간30분</td>
-          <td class="text-center">2시간</td>
-        </tr> --}}
             {{--  조회된 값이 보여주는 위치 --}}
-          @if (isset($JobDetailList))
-            @foreach($JobDetailList as $detailSc )
+          @if (isset($detailList))
+            @foreach($detailList as $detailSc)
               <tr class="jobExeOneDbClick">
                 <td class="text-center Sc_Seq" data-value="{{$detailSc->Sc_Seq}}">{{$detailSc->Sc_Seq}}</td>
-                <td class="Job_Seq" data-value="{{$detailSc->Sc_Seq}}">{{'job_'.$detailSc->Job_WorkLargeCtg.'_'.$detailSc->Job_WorkMediumCtg.'_'.$detailSc->Job_Seq}}</td>
+                <td class="Job_Seq" data-value="{{$detailSc->Job_Seq}}">{{'job_'.$detailSc->Job_WorkLargeCtg.'_'.$detailSc->Job_WorkMediumCtg.'_'.$detailSc->Job_Seq}}</td>
                 <td>{{$detailSc->Sc_Sulmyung}}</td>
                 <td class="text-center">{{$detailSc->Sc_StartTime}}</td>
                 <td class="text-center">{{$detailSc->Sc_EndTime}}</td>
@@ -93,3 +50,7 @@ if (isset($JobDetailList)) {
             @endIf 
       </tbody>
   </table>
+  {{-- 페이징 ajax 해야함 !!!! --}}
+@if(isset($paginator))
+  {{$paginator->setPath('/monitoring/monitorJobDetailList')->appends(request()->except($searchParams))->links()}}
+@endIf

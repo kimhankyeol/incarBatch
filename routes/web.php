@@ -62,7 +62,13 @@ Route::prefix('schedule')->group(function(){
     //스케줄 리스트 뷰
     Route::get('/scheduleListView','ScheduleController@scheduleListView');
     //스케줄 등록 뷰
+    Route::post('/scheduleRegister','ScheduleController@scheduleRegister');
+    //스케줄 등록 
     Route::get('/scheduleRegisterView','ScheduleController@scheduleRegisterView');
+    //스케줄 상세 뷰
+    Route::get('/scheduleDetailView','ScheduleController@scheduleDetailView');
+    //잡 스케줄 선택
+    Route::get('/jobselect','ScheduleController@jobselect');
 });
 
 //모니터링 prefix
@@ -94,7 +100,15 @@ Route::prefix('popup')->group(function(){
     Route::get('/popupPsSearch','PopupController@popupPsSearch');
     // 잡 실행
     Route::get('/jobAction','PopupController@jobAction');
+    // 모니터링 잡 상세
+    Route::get('/jobDetailPopup','PopupController@jobDetailPopup');
+    // 모니터링 잡 스케줄 상세
+    Route::get('/scheduleDetailPopup','PopupController@scheduleDetailPopup');
+    //스케줄러 -> 잡검색
+    Route::get('/jobSearchView','PopupController@jobSearchView');
+
 });
+
 
 
 

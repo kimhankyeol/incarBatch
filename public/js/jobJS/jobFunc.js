@@ -7,13 +7,6 @@ const job = {
       // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
       location.href="/job/jobListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
   },
-  scheduleSearch:function(page){
-    var searchWord = $('#searchWord').val();
-    var WorkLarge = $('#workLargeVal option:selected').val();
-    var WorkMedium = $('#workMediumVal option:selected').val();
-    // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
-    location.href="/schedule/scheduleListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
-  },
   //등록
   register:function(){
      //변수 선언
@@ -335,5 +328,229 @@ const job = {
       var delIndex = $('.delParam').index(this);
       $('.delYN').eq(delIndex).remove();
     })
-  })
+  }),
+  //스케줄 검색
+  scheduleSearch:function(page){
+    var searchWord = $('#searchWord').val();
+    var WorkLarge = $('#workLargeVal option:selected').val();
+    var WorkMedium = $('#workMediumVal option:selected').val();
+    // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
+    location.href="/schedule/scheduleListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
+  },
+  //스케줄 잡선택
+  jobselect:function(){
+    var tr_job_id = $("#tr_job_id").val();
+    var tr_job_name = $("#tr_job_name").val();
+    var tr_job_seq = $('#tr_job_seq').val();
+
+    if(tr_job_id==""||tr_job_name==""){
+      alert("예약할 잡을 선택하세요");
+      return false;
+    }
+
+    opener.document.getElementById("jobSc_id").value = document.getElementById("tr_job_id").value;
+    opener.document.getElementById("jobSc_name").value = document.getElementById("tr_job_name").value;
+
+    $.ajax({
+      url:"/schedule/jobselect",
+      method:"get",
+      data:{
+          "tr_job_seq":tr_job_seq
+      },
+      success:function(data){
+        opener.document.getElementById('jobparams').innerHTML = data.returnHTML;
+        window.close();
+        console.log("성공");
+      },error:function(err){
+        console.log("error");
+      }
+    })
+  },
+
+  //잡 스케줄 등록 
+  scRegister:function(){
+    var checkYN = [];
+    var P_order = [];
+
+    $('input:checkbox[name="P_ExecuteYN"]').each(function() {
+      if(this.checked){//checked 처리된 항목의 값
+        this.value = 1;
+        checkYN.push(this.value);
+      }else{
+        this.value=0;
+        checkYN.push(this.value);
+      }
+    });
+    for(var i=0; i<checkYN.length; i++){
+      if(checkYN[i]==1){
+        P_order.push(i+1);
+      }
+    }
+
+    console.log(checkYN);
+    console.log(P_order);
+    var jobSc_id = $('#jobSc_id').val();//잡 id
+    var job_seq = jobSc_id.split('_')[3];//잡 seq
+    console.log(job_seq);
+    var jobSc_name = $('#jobSc_name').val();//잡 명
+    var Sc_Sulmyung = $('#Sc_Sulmyung').val();// 스케줄 설명
+    var Day = $('#Day').val();//매 n일
+    var yoilArr = new Array();
+    var Sc_Status = "301";
+    //each로 loop를 돌면서 checkbox의 check된 값을 가져와 담아준다.
+    $("input:checkbox[name=yoil]:checked").each(function(){
+      yoilArr.push($(this).val());
+    });//요일 arr
+    const yoil = yoilArr.join(",");
+    var Job_paramSulmyungs = document.getElementsByName("Sc_Param");
+    //var Job_paramSulmyungs= $('input[name=Sc_Param]').val();
+    var res = new Array();
+    for (var i = 0; i < Job_paramSulmyungs.length; i++) {
+      res.push(Job_paramSulmyungs[i].value);
+    }
+    const Sc_Param = res.join("||");
+    console.log(Sc_Param);
+
+    var startdate=$('#startdate').val();
+    var starttime=$('#starttime').val();
+
+    var Sc_CronTime = startdate+" "+starttime+":00";
+    
+    console.log(Sc_CronTime);
+    const date = startdate.split('-');
+    var year = date[0];
+    var month = date[1];
+    var day = date[2];
+
+    console.log(Sc_CronTime);
+    console.log(year);
+    console.log(month);
+    console.log(day);
+
+    const time = starttime.split(':');
+    var hour = time[0];
+    var min = time[1];
+
+    console.log(hour);
+    console.log(min);
+
+    var enddate=$('#enddate').val();
+    var endtime=$('#endtime').val();
+    var Sc_CronEndTime = enddate+" "+endtime+":00";
+    scValCheck=job.Scvalidation(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param);
+
+    if(scValCheck){
+      var result = confirm('잡을 등록하시겠습니까?');
+      if(result){
+        if($('input:radio[id="Oneday"]').is(':checked')){
+          var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
+          var Sc_CronSulmyung = hour+":"+min+"에 한번 실행";
+        }else if($('input:radio[id="Everyday"]').is(':checked')){
+          if($('#Day').val()==1){
+            var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
+            var Sc_CronSulmyung = hour+":"+min+"에 매일 실행";
+          }else{
+            var Sc_Crontab = min + " " + hour + " " + "*/"+$('#Day').val() + " " + "*" + " " + "*" + " ";
+            var Sc_CronSulmyung = hour+":"+min+"에 "+$('#Day').val()+"일 마다 실행";
+          }
+        }else if($('input:radio[id="Everyweek"]').is(':checked')){
+          var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + yoil + " ";
+          for(var i=0;i<yoilArr.length;i++){
+            if(yoilArr[i]==0||yoilArr[i]==1){
+              yoilArr[i]="일";
+            }else if(yoilArr[i]==1){
+              yoilArr[i]="월";
+            }else if(yoilArr[i]==2){
+              yoilArr[i]="화";
+            }else if(yoilArr[i]==3){
+              yoilArr[i]="수";
+            }else if(yoilArr[i]==4){
+              yoilArr[i]="목";
+            }else if(yoilArr[i]==5){
+              yoilArr[i]="금";
+            }else if(yoilArr[i]==6){
+              yoilArr[i]="토";
+            }
+          }
+          console.log(yoilArr);
+          const yoilArr1 = yoilArr.join(",");
+          var Sc_CronSulmyung = hour+":"+min+"에 "+"매주 "+yoilArr1+"요일 마다 실행";
+        }else if($('input:radio[id="Everymonth"]').is(':checked')){
+          var Sc_Crontab = min + " " + hour + " " + day + " " + "*" + " " + "*" + " ";
+          var Sc_CronSulmyung = "매달 "+day+"일"+hour+":"+min+" 마다 실행";
+        }else if($('input:radio[id="Everyyear"]').is(':checked')){
+          var Sc_Crontab = min + " " + hour + " " + day + " " + month + " " + "*" + " ";
+          var Sc_CronSulmyung = "매년 "+month+"월 "+day+"일 "+hour+":"+min+"마다 실행";
+        }
+    
+        $.ajax({
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          url:'/schedule/scheduleRegister',
+          method:"post",
+          data:{
+            'job_seq':job_seq,
+            'Sc_Sulmyung':Sc_Sulmyung,
+            'Sc_Crontab':Sc_Crontab,
+            'Sc_Param':Sc_Param,
+            'Sc_Status':Sc_Status,
+            'Sc_RegId':"이수연",
+            'Sc_CronTime':Sc_CronTime,
+            'Sc_CronEndTime':Sc_CronEndTime,
+            'Sc_CronSulmyung':Sc_CronSulmyung,
+            'P_order':P_order
+          },
+          success:function(data){
+            if(data.P_Seq!=0){
+              console.log(data.last_sc_seq);
+              console.log(data.Job_Seq);
+              alert("등록되었습니다.");
+              location.href = "/schedule/scheduleDetailView?Sc_Seq="+data.last_sc_seq+"&Job_Seq="+data.Job_Seq;
+            }else{
+              alert("구성된 프로그램이 없습니다.");
+            }
+          },error:function(error){
+            console.error(error);
+          }
+        })
+      }
+    }
+  },
+
+  //스케줄링 유효성 검사
+  Scvalidation:function(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param){
+
+    if(jobSc_id==""){
+      alert('잡 명이 입력되지 않았습니다.');
+      $('#Job_Name').focus();
+      return false;
+    }else if(jobSc_name==""){
+      alert('잡 설명이 입력되지 않았습니다.');
+      $('#Job_Sulmyung').focus();
+      return false;
+    }else if(Sc_Sulmyung==""){
+      alert('스케줄 설명이 입력되지 않았습니다.');
+      return false;
+    }else if($('input:radio[id="Everyday"]').is(':checked')){
+      if(Day==""){
+        alert('일을 입력해주세요');
+        return false;
+      }
+    }else if($('input:radio[id="Everyweek"]').is(':checked')){
+      if(yoilArr.length==""){
+        alert('요일을 체크해주세요');
+        return true;
+      }
+    }else{
+      //Arr2에 /를 기준으로 split하여 저장. split 사용하면 나누어진 문자열은 각각 배열로 들어감
+      var Sc_Param2 = Sc_Param.split("||");
+      console.log(Sc_Param2);
+      for (var i = 0; i < Sc_Param2.length; i++) {
+          if (Sc_Param2[i] == "") {
+              alert("잡 파라미터를 입력하세요");
+              return false;
+          }
+      }
+    }
+    return 1;
+  }
 };
