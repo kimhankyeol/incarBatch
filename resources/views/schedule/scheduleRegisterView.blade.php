@@ -33,14 +33,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 Id</div>
-                            <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="잡 Id" readonly>
+                            <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center" readonly>
                             <div class="input-group-append">
                                 <div class="btn btn-primary" onclick="pageMove.jobpopup.list('jobSearchView')">
                                 <i class="fas fa-search fa-sm"></i>
                                 </div>
                             </div>
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">잡 명</div>
-                            <input id = "jobSc_name" type="text" class="col-md-5 form-control form-control-sm mt-2" placeholder="잡 명" readonly>
+                            <input id = "jobSc_name" type="text" class="col-md-5 form-control form-control-sm mt-2" readonly>
                         </div>
                         <hr>
                         <div class="row">
@@ -195,8 +195,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 </div>
                                 <div class="d-inline-flex col-md-6  align-items-center form-control-sm end">
                                         <span class="font-weight-bold text-primary mx-auto end">종료시간 : </span>
-                                        <input id="enddate" type="date" class="form-control col-md-4 end" value="{{date("Y-m-d")}}">
-                                        <input id="endtime" type="time" class="form-control col-md-4 end" value="{{date("H:i")}}">
+                                        <input id="enddate" type="date" class="form-control col-md-4 end" value="2037-12-31">
+                                        <input id="endtime" type="time" class="form-control col-md-4 end" value="00:00">
                                 </div>
                                 <hr>
                                 <div class="card-body" id="jobparams1">
@@ -205,7 +205,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <hr>
                                 <div class="row justify-content-end">
                                     <input type="button" class="mt-3 mr-2 btn btn-primary" value="등록" onclick="job.scRegister()" />
-                                    {{-- <input type="button" class="mt-3 mr-2 btn btn-info" value="수정"/> --}}
                                     <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소"/>
                                 </div>
                             </fieldset>
@@ -217,9 +216,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
         </div>
         <script type="text/javascript">
-        function submit() {
-            window.close()
-        }
         function handler(){
         if(event.target.value==1){
             $('#StartTime').show();
@@ -258,37 +254,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('.end').show();
         }
     }
-
-    $(document).ready( function() {
-    
-    //숫자만
-    $("#Day").keyup(function(event){
-        var str;
-                        
-        if(event.keyCode != 8){
-            if (!(event.keyCode >=37 && event.keyCode<=40)) {
-                var inputVal = $(this).val();
-                
-                str = inputVal.replace(/[^-0-9]/gi,'');
-                
-                if(str.lastIndexOf("-")>0){ //중간에 -가 있다면 replace
-                    if(str.indexOf("-")==0){ //음수라면 replace 후 - 붙여준다.
-                        str = "-"+str.replace(/[-]/gi,'');
-                    }else{
-                        str = str.replace(/[-]/gi,'');
-                    }
-                
-                }
-                                        
-                $(this).val(str);
-                
-            }                    
-        }
-
-    });
-    
-});
     </script>
+    <script>
+        $("#Day").on("keyup", function() {
+            $(this).val($(this).val().replace(/[^0-9]/g,""));
+        });    
+        </script>
     </body>
     </html>
 

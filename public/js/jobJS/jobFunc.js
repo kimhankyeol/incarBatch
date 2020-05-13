@@ -369,32 +369,24 @@ const job = {
 
   //잡 스케줄 등록 
   scRegister:function(){
-    var checkYN = [];
-    var P_order = [];
+    var P_Seq = [];
 
-    $('input:checkbox[name="P_ExecuteYN"]').each(function() {
-      if(this.checked){//checked 처리된 항목의 값
-        this.value = 1;
-        checkYN.push(this.value);
-      }else{
-        this.value=0;
-        checkYN.push(this.value);
-      }
-    });
-    for(var i=0; i<checkYN.length; i++){
-      if(checkYN[i]==1){
-        P_order.push(i+1);
-      }
+    var gusungData = document.getElementsByClassName("gusungData");
+
+    for(var i=0; i<gusungData.length;i++){
+      if(gusungData[i].children[0].children[0].children[0].checked){
+        P_Seq.push(gusungData[i].children[0].children[0].children[0].value);
+      } 
     }
-
-    console.log(checkYN);
-    console.log(P_order);
     var jobSc_id = $('#jobSc_id').val();//잡 id
     var job_seq = jobSc_id.split('_')[3];//잡 seq
-    console.log(job_seq);
     var jobSc_name = $('#jobSc_name').val();//잡 명
     var Sc_Sulmyung = $('#Sc_Sulmyung').val();// 스케줄 설명
     var Day = $('#Day').val();//매 n일
+    var nowSys = new Date();
+     
+    var nowDateTime = nowSys.getFullYear()+"-"+(nowSys.getMonth()+1)+"-"+nowSys.getDate()+" "+nowSys.getHours()+":"+nowSys.getMinutes()+":00";
+            
     var yoilArr = new Array();
     var Sc_Status = "301";
     //each로 loop를 돌면서 checkbox의 check된 값을 가져와 담아준다.
@@ -403,47 +395,42 @@ const job = {
     });//요일 arr
     const yoil = yoilArr.join(",");
     var Job_paramSulmyungs = document.getElementsByName("Sc_Param");
-    //var Job_paramSulmyungs= $('input[name=Sc_Param]').val();
+    
     var res = new Array();
     for (var i = 0; i < Job_paramSulmyungs.length; i++) {
       res.push(Job_paramSulmyungs[i].value);
     }
     const Sc_Param = res.join("||");
-    console.log(Sc_Param);
 
     var startdate=$('#startdate').val();
     var starttime=$('#starttime').val();
 
     var Sc_CronTime = startdate+" "+starttime+":00";
     
-    console.log(Sc_CronTime);
     const date = startdate.split('-');
     var year = date[0];
     var month = date[1];
     var day = date[2];
 
-    console.log(Sc_CronTime);
-    console.log(year);
-    console.log(month);
-    console.log(day);
-
     const time = starttime.split(':');
     var hour = time[0];
     var min = time[1];
 
-    console.log(hour);
-    console.log(min);
-
     var enddate=$('#enddate').val();
     var endtime=$('#endtime').val();
+
     var Sc_CronEndTime = enddate+" "+endtime+":00";
-    scValCheck=job.Scvalidation(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param);
+
+    
+    console.log(Sc_CronEndTime);
+
+    scValCheck=job.Scvalidation(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime);
 
     if(scValCheck){
       var result = confirm('잡을 등록하시겠습니까?');
       if(result){
         if($('input:radio[id="Oneday"]').is(':checked')){
-          var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
+          var Sc_Crontab = " ";
           var Sc_CronSulmyung = hour+":"+min+"에 한번 실행";
         }else if($('input:radio[id="Everyday"]').is(':checked')){
           if($('#Day').val()==1){
@@ -497,17 +484,14 @@ const job = {
             'Sc_CronTime':Sc_CronTime,
             'Sc_CronEndTime':Sc_CronEndTime,
             'Sc_CronSulmyung':Sc_CronSulmyung,
-            'P_order':P_order
+            'P_Seq':P_Seq
           },
           success:function(data){
-            if(data.P_Seq!=0){
               console.log(data.last_sc_seq);
               console.log(data.Job_Seq);
               alert("등록되었습니다.");
               location.href = "/schedule/scheduleDetailView?Sc_Seq="+data.last_sc_seq+"&Job_Seq="+data.Job_Seq;
-            }else{
-              alert("구성된 프로그램이 없습니다.");
-            }
+            
           },error:function(error){
             console.error(error);
           }
@@ -517,29 +501,32 @@ const job = {
   },
 
   //스케줄링 유효성 검사
-  Scvalidation:function(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param){
-
+  Scvalidation:function(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime){
     if(jobSc_id==""){
       alert('잡 명이 입력되지 않았습니다.');
       $('#Job_Name').focus();
       return false;
-    }else if(jobSc_name==""){
-      alert('잡 설명이 입력되지 않았습니다.');
-      $('#Job_Sulmyung').focus();
-      return false;
     }else if(Sc_Sulmyung==""){
       alert('스케줄 설명이 입력되지 않았습니다.');
       return false;
-    }else if($('input:radio[id="Everyday"]').is(':checked')){
-      if(Day==""){
-        alert('일을 입력해주세요');
-        return false;
-      }
-    }else if($('input:radio[id="Everyweek"]').is(':checked')){
-      if(yoilArr.length==""){
+    }else if(nowDateTime > Sc_CronTime){
+      alert('현재시간 이전에 등록할 수 없습니다.');
+      return false;
+    }else if("2037-12-31" < startdate){
+      alert('2038-01-01 이후의 날짜는 등록할 수 없습니다.');
+      return false;
+    }else if($('input:radio[id="Everyday"]').is(':checked')&&Day==""){
+      alert('일을 입력해주세요');
+      return false;
+    }else if($('input:radio[id="Everyweek"]').is(':checked')&&yoilArr.length==""){
         alert('요일을 체크해주세요');
-        return true;
-      }
+        return false;
+    }else if("2037-12-31" < enddate){
+      alert('2038-01-01 이후의 날짜는 등록할 수 없습니다.');
+      return false;
+    }else if(Sc_CronTime > Sc_CronEndTime){
+      alert('종료 시간이 시작 시간보다 빠를 수 없습니다.');
+      return false;
     }else{
       //Arr2에 /를 기준으로 split하여 저장. split 사용하면 나누어진 문자열은 각각 배열로 들어감
       var Sc_Param2 = Sc_Param.split("||");
