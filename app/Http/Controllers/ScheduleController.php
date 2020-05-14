@@ -60,6 +60,8 @@ class scheduleController extends Controller
     }
     //스케줄 등록
     public function scheduleRegister(Request $request){
+        // $date = new DateTime($request->input('Sc_CronEndTime'));
+        // $Sc_CronEndTime = $date->format('YYYY-MM-DD H:i:s');
         $Sc_Crontab = $request->input('Sc_Crontab');
         $Job_Seq = $request->input('job_seq');
         $Sc_Sulmyung = $request->input('Sc_Sulmyung');
@@ -69,18 +71,10 @@ class scheduleController extends Controller
         $Sc_RegIP = $_SERVER["REMOTE_ADDR"];
         $Sc_DeleteYN=0;
         $Sc_CronSulmyung=$request->input('Sc_CronSulmyung');
-        $P_order = $request->input('P_order');
-        $Pseq = array();
+        $P_Seq = $request->input('P_Seq');//1,2
         $Sc_CronTime = $request->input('Sc_CronTime');
         $Sc_CronEndTime = $request->input('Sc_CronEndTime');
-        $P_Seq =  DB::table('OnlineBatch_JobGusung')->select('P_Seq')->where('Job_Seq',$Job_Seq)->get();
-        $count =  DB::table('OnlineBatch_JobGusung')->select('P_Seq')->where('Job_Seq',$Job_Seq)->count();
 
-        // for($i=0; $i<count($P_order); $i++){
-        //     $Pseq = DB::table('OnlineBatch_JobGusung')->select('P_Seq')->where('P_order',$P_order[$i])->get();
-        // }
-
-        if(count($P_Seq)!=0){
             $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
                 [
                     'Sc_Crontab'=>$Sc_Crontab,
@@ -98,25 +92,23 @@ class scheduleController extends Controller
                 ]
             );
     
-            for($i=0; $i<$count; $i++){
+            for($i=0; $i<count($P_Seq); $i++){
                 DB::table('OnlineBatch_ScheduleProcess')->insert(
                     [
-                        'P_Seq'=>$P_Seq[$i]->P_Seq,
+                        'P_Seq'=>$P_Seq[$i],
                         'Sc_Seq'=>$last_sc_seq,
                         'Job_Seq'=>$Job_Seq,
                         'JobSM_P_Status'=>101
                     ]
                 );
             }
+
             return response()->json(array('P_Seq'=>$P_Seq,'last_sc_seq'=>$last_sc_seq,'Job_Seq'=>$Job_Seq));
         }
-        return response()->json(array('Sc_CronSulmyung'=>$Sc_CronSulmyung,'Sc_Crontab'=>$Sc_Crontab));       
-    }
+
     
     // 실행할 잡의 파라미터 불러오기
     public function jobselect(Request $request){
-        //$tr_job_seq = $request->input('tr_job_seq');
-
         $Job_Seq = $request->input('tr_job_seq');
         $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
         $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
@@ -130,7 +122,8 @@ class scheduleController extends Controller
     public function scheduleDetailView(Request $request){
         $job_seq = $request->input('Job_Seq');
         $sc_seq = $request->input('Sc_Seq');
-        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$job_seq]);
+        $jobGusungContents = DB::select('CALL Execute_programList(?,?)',[$job_seq,$sc_seq]);
+        //$jobGusungContents = DB::table('OnlineBatch_ScheduleProcess')->where('Job_Seq',$job_seq)->where('Sc_Seq',$sc_seq);
         //프로시저를 통한 잡 상세정보 검색
         $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
         //프로시저를 통한 스케줄러 상세정보 검색

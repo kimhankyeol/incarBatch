@@ -80,9 +80,9 @@
                 </li>
                 <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
                   @if(($data->P_ReworkYN)==1)
-                      <label><input type="checkbox" checked="checked" onclick = "return false"></label>
+                    가능
                   @else
-                      <label><input type="checkbox"onclick = "return false"></label>
+                    불가
                   @endif
                 </li>
               </ul>

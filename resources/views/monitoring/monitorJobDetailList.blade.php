@@ -13,7 +13,10 @@ if (isset($detailList)) {
       <col width="140px" />
       <col width="150px" />
       <col width="150px" />
-      <col width="180px" />
+      <col width="60px" />
+      <col width="60px" />
+      <col width="60px" />
+      <col width="60px" />
       <col width="350px" />
       <col width="150px" />
       <col width="150px" />
@@ -25,7 +28,10 @@ if (isset($detailList)) {
           <th>설명</th>
           <th>실행시각</th>
           <th>완료시각</th>
-          <th>완료/실행/대기/오류</th>
+          <th>완료</th>
+          <th>실행</th>
+          <th>대기</th>
+          <th>오류</th>
           <th>파라미터</th>
           <th>예상시간</th>
           <th>최대예상시간</th>
@@ -41,7 +47,10 @@ if (isset($detailList)) {
                 <td>{{$detailSc->Sc_Sulmyung}}</td>
                 <td class="text-center">{{$detailSc->Sc_StartTime}}</td>
                 <td class="text-center">{{$detailSc->Sc_EndTime}}</td>
-                <td class="text-center">{{$detailSc->cnt}}</td>
+                <td class="text-center">{{$detailSc->Status90}}개</td>
+                <td class="text-center">{{$detailSc->Status20}}개</td>
+                <td class="text-center">{{$detailSc->Status10}}개</td>
+                <td class="text-center">{{$detailSc->Status40}}개</td>
                 <td class="text-center">{{$detailSc->Sc_Param}}</td>
                 <td class="text-center">{{$detailSc->P_YesangTimeHap}}</td>
                 <td class="text-center">{{$detailSc->P_YesangMaxTimeHap}}</td>
