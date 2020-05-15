@@ -66,25 +66,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
                 </div>
                 <hr>
-                <div class="row">
-                  <div class="limit-time-text col-md-2">등록자</div>
-                  <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$scheduleDetail[0]->Sc_RegId}}" readonly>
-                  <div class="limit-time-text col-md-2">수정자</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($jobDetail[0]->Job_UpdId) ? $jobDetail[0]->Job_RegId:$jobDetail[0]->Job_UpdId}}" readonly>   
-                </div>
-                <br>
-                <div class="row">
-                  <div class="limit-time-text col-md-2">등록자IP</div>
-                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{long2ip($scheduleDetail[0]->Sc_RegIP)}}" readonly>
-                  <div class="limit-time-text col-md-2">수정자IP</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4"  value="{{empty($jobDetail[0]->Job_UpdIP) ?long2ip( $jobDetail[0]->Job_RegIP):long2ip($jobDetail[0]->Job_UpdIP)}}" readonly>       
-                </div>
-                <br>
-                <div class="row">
-                  <div class="limit-time-text col-md-2">등록일</div>
-                  <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$scheduleDetail[0]->Sc_RegDate}}" readonly>    
-                  <div class="limit-time-text col-md-2">수정일</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
+                <div class="row justify-content-center">
+                  <div class="limit-time-text col-md-auto">등록자</div>
+                  <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$jobDetail[0]->Job_RegId}}" readonly>
+                  <div class="limit-time-text col-md-auto">등록자IP</div>
+                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{long2ip($jobDetail[0]->Job_RegIP)}}" readonly>
+                  <div class="limit-time-text col-md-auto">등록일</div>
+                  <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$jobDetail[0]->Job_RegDate}}" readonly>    
+                  <div class="limit-time-text col-md-auto">수정자</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($jobDetail[0]->Job_UpdId) ? $jobDetail[0]->Job_RegId:$jobDetail[0]->Job_UpdId}}" readonly>   
+                  <div class="limit-time-text col-md-auto">수정자IP</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($jobDetail[0]->Job_UpdIP) ?long2ip( $jobDetail[0]->Job_RegIP):long2ip($jobDetail[0]->Job_UpdIP)}}" readonly>       
+                  <div class="limit-time-text col-md-auto">수정일</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
                 </div>
                 <hr>
                 <div class="row">

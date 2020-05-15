@@ -22,6 +22,7 @@
     <script type="text/javascript" src="/js/jobJS/codeFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/loginFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/monitorFunc.js"></script>
+    <script type="text/javascript" src="/js/jobJS/historyFunc.js"></script>
 
     <script type="text/javascript" src="/js/colResizable-1.6.js"></script>
     {{-- 테이블 col 유동적 크기 조절 --}}

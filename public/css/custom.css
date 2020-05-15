@@ -253,3 +253,7 @@ textarea {
   text-transform: uppercase;
   white-space: nowrap;
 }
+
+.pagination {
+  justify-content: center;
+}
