@@ -48,15 +48,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
                     @include("code.codeSelect")
                   </div>
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
-                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
-                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>              
-                </div>
-                <hr>
-                <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 등록자</div>
                   <input type="text" id="Job_RegID" class="col-md-2 form-control form-control-sm align-self-center" placeholder="김한결" value="김한결" readonly>
+                  {{-- <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
+                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
+                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>               --}}
                 </div>
                 <hr>
                 <div class="col-md-12 font-weight-bold text-primary">

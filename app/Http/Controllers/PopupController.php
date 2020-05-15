@@ -39,8 +39,8 @@ class PopupController extends Controller
         $data = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         $usedLarge = DB::select('CALL Common_LargeCode()');
         $page=$request->input('page');
-          //////// 최초 및 검색 시 필요한 조건 
         return view('/popup/jobGusung',compact('jobGusungContents','jobName','jobDetail','data','searchWord','WorkLarge','WorkMedium','usedLarge'));
+        
     }
     //팝업- 잡 구성 수정/ 등록
     public function jobGusungModify(Request $request){
@@ -62,8 +62,20 @@ class PopupController extends Controller
             //모니터링
             // DB::table('OnlineBatch_StatusMonitoring')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobSM_P_Status'=>'102','JobSM_IP'=>$JobSM_IP]);
         }
-        //return response()->json(array('Job_Seq'=>$Job_Seq,'gusungData'=>$gusungData,'gusungProcess'=>count($gusungProcess),'gusungCount'=>$gusungCount,200)); 
-        return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount),200);
+
+        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$Job_Seq]);
+        //잡상태에 따른 분기 처리 팝업일떄
+        $exec=$jobStatusCheck[0]->v_exec;
+        $yeyak=$jobStatusCheck[0]->v_yeyak;
+        $error=$jobStatusCheck[0]->v_error;
+        $end=$jobStatusCheck[0]->v_end;
+
+        if($exec==0&&$yeyak==0&&$error==0&&$end==0){
+           return response()->json(array('msg'=>'success','count'=>count($gusungProcess),'gusung'=>$gusungCount),200);
+        } else {
+            $msg = "잡이 실행,예약,오류,종료 상태이면 잡 구성을 수정할 수 없습니다.";
+            return response()->json(array('msg'=>'notUpdate','msg2'=>$msg ),200);
+        }
     }
     //팝업 프로세스 검색조회
     public function popupPsSearch(Request $request){
@@ -163,11 +175,9 @@ class PopupController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-
         // 사용중인 것만 조회
         $jobContents = DB::select('CALL Job_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         $usedLarge = DB::select('CALL Common_LargeCode()');
-
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$jobContents);
@@ -176,7 +186,6 @@ class PopupController extends Controller
         //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
         $data =$PaginationCustom->getItemsForCurrentPage();
         $searchParams = array( 'searchWord' => $searchWord);
-               
         //대분류 , 중분류 전체일 조건  
         if($WorkLarge=="all"&&$WorkMedium=="all"){
             $searchParams = array( 'searchWord' => $searchWord);

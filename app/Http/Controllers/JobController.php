@@ -68,7 +68,8 @@ class JobController extends Controller
         $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
         $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
         $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
-        return view('job.jobDetailView',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium'));
+        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$job_seq]);
+        return view('job.jobDetailView',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium','jobStatusCheck'));
     }
     //잡 등록 뷰
     public function jobRegisterView(){
@@ -87,7 +88,21 @@ class JobController extends Controller
         //프로시저를 통한 잡 상세정보 검색
         $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
         $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
-        return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium','jobTotalTime'));
+        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$job_seq]);
+        
+        //잡상태에 따른 분기 처리
+        $exec=$jobStatusCheck[0]->v_exec;
+        $yeyak=$jobStatusCheck[0]->v_yeyak;
+        $error=$jobStatusCheck[0]->v_error;
+        $end=$jobStatusCheck[0]->v_end;
+
+        if($exec==0&&$yeyak==0&&$error==0&&$end==0){
+            return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium','jobTotalTime'));
+        } else {
+            $msg = "잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.";
+            $url = "/job/jobDetailView?Job_Seq=".$job_seq;
+            return view('common.redirect',compact('msg','url'));
+        }
     }
     //잡 등록
     public function jobRegister(Request $request){

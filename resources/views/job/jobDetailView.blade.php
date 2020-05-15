@@ -44,20 +44,31 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  <div id="codeLargeView" class="outher-code">
+                  <div id="codeLargeView" class="outher-code align-self-center">
                     <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">업무구분</div>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary" >대분류</div>
                     <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkLargeName}}"/>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">중분류</div>
                     <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkMediumName}}"/>
                   </div>
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
-                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
+                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
+                  <table class="table table-bordered m-0 w-auto text-center">
+                    <thead>
+                      <th class="p-1">실행</th>
+                      <th class="p-1">예약</th>
+                      <th class="p-1">오류</th>
+                      <th class="p-1">종료</th>
+                    </thead>
+                    <tbody>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_exec}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_yeyak}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_error}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_end}}</td>
+                    </tbody>
+                  </table>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
                   <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
                 </div>
-                <hr>
-               
                 <hr>
                 <div class="row">
                   <div class="col-md-6 text-center">
@@ -80,25 +91,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </div>
                 </div>
                 <hr>
-                <div class="row">
-                  <div class="limit-time-text col-md-2">등록자</div>
-                  <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$jobDetail[0]->Job_RegId}}" readonly>
-                  <div class="limit-time-text col-md-2">수정자</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($jobDetail[0]->Job_UpdId) ? $jobDetail[0]->Job_RegId:$jobDetail[0]->Job_UpdId}}" readonly>   
-                </div>
-                <br>
-                <div class="row">
-                  <div class="limit-time-text col-md-2">등록자IP</div>
-                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{long2ip($jobDetail[0]->Job_RegIP)}}" readonly>
-                  <div class="limit-time-text col-md-2">수정자IP</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4"  value="{{empty($jobDetail[0]->Job_UpdIP) ?long2ip( $jobDetail[0]->Job_RegIP):long2ip($jobDetail[0]->Job_UpdIP)}}" readonly>       
-                </div>
-                <br>
-                <div class="row">
-                  <div class="limit-time-text col-md-2">등록일</div>
-                  <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$jobDetail[0]->Job_RegDate}}" readonly>    
-                  <div class="limit-time-text col-md-2">수정일</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
+                <div class="row justify-content-center">
+                  <div class="limit-time-text col-md-auto">등록자</div>
+                  <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$jobDetail[0]->Job_RegId}}" readonly>
+                  <div class="limit-time-text col-md-auto">등록자IP</div>
+                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{long2ip($jobDetail[0]->Job_RegIP)}}" readonly>
+                  <div class="limit-time-text col-md-auto">등록일</div>
+                  <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$jobDetail[0]->Job_RegDate}}" readonly>    
+                  <div class="limit-time-text col-md-auto">수정자</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($jobDetail[0]->Job_UpdId) ? $jobDetail[0]->Job_RegId:$jobDetail[0]->Job_UpdId}}" readonly>   
+                  <div class="limit-time-text col-md-auto">수정자IP</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($jobDetail[0]->Job_UpdIP) ?long2ip( $jobDetail[0]->Job_RegIP):long2ip($jobDetail[0]->Job_UpdIP)}}" readonly>       
+                  <div class="limit-time-text col-md-auto">수정일</div>
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
                 </div>
                 <hr>
                 <div class="row">
@@ -115,13 +120,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           for ($i = 0; $i < count($jobParamArr); $i++) {
                           echo '<div class="d-inline-flex w-50 delYN mb-2">';
                           echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
-                          echo '<select name="Job_Params" class="col-md-2 form-control form-control-sm" readonly>';
                           if($jobParamArr[$i]=="paramDate"){
-                            echo '<option value="'.$jobParamArr[$i].'" selected>날짜</option></select>';
+                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="날짜" readonly/>';
                           }else if($jobParamArr[$i]=="paramNum"){
-                            echo '<option value="'.$jobParamArr[$i].'" selected>숫자</option></select>';
+                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
                           }else if($jobParamArr[$i]=="paramStr"){
-                            echo '<option value="'.$jobParamArr[$i].'" selected>문자</option></select>';
+                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';
                           }
                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly> </div>' ;
                           }
@@ -133,7 +137,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div class="row justify-content-end">
                 <div class="mt-3 mr-2 btn btn-danger" onclick="pageMove.job.list('jobListView')">취소</div>
                 <div class="mt-3 mr-2 btn btn-primary" onclick="pageMove.job.update('jobUpdateView','{{$jobDetail[0]->Job_Seq}}','{{$jobDetail[0]->Job_WorkLargeCtg}}','{{$jobDetail[0]->Job_WorkMediumCtg}}')">수정 </div>
-              <div class="mt-3 mr-2 btn btn-success" onclick="popup.jobGusung('{{$jobDetail[0]->Job_Seq}}')">구성</div>
+              <div class="mt-3 mr-2 btn btn-success" onclick="job.jobGusung('{{$jobDetail[0]->Job_Seq}}')">구성</div>
               </div>
             </div>
           </div>
@@ -145,11 +149,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       $("input:text[numberOnly]").on("keyup", function() {
         $(this).val($(this).val().replace(/[^0-9]/g,""));
       });    
-      const popup = {
-        jobGusung:function(Job_Seq){
-          window.open('/popup/jobGusung?Job_Seq='+Job_Seq, '잡 구성', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
-        }
-      }
     </script>
     </div>
   </div>

@@ -147,13 +147,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 for ($i = 0; $i < count($proParamArr); $i++) {
                                   echo '<div class="d-inline-flex w-50 delYN mb-2">';
                                   echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
-                                  echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" readonly>';
                                 if($proParamArr[$i]=="paramDate"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
+                                  echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="날짜" readonly/>';
                                 }else if($proParamArr[$i]=="paramNum"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
+                                  echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
                                 }else if($proParamArr[$i]=="paramStr"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
+                                  echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문지" readonly/>';
                                 }
                                 echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly></div>';
                                 }

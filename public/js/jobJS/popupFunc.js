@@ -210,6 +210,14 @@ const popup = {
       }
     }
   },
+  //팝업 스케줄 검색
+  schedulesearch: function(page){
+    var searchWord = $('#searchWord').val();
+    var WorkLarge = $('#workLargeVal option:selected').val();
+    var WorkMedium = $('#workMediumVal option:selected').val();
+    // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
+    location.href="/popup/jobSearchView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
+  },
   //검색 스크립트
   search: function (page) {
     var searchWord = $('#searchWord').val();
@@ -247,9 +255,7 @@ const popup = {
         }
         gusungData.push(gusungDataArr[i].join("||"));
       }
-      console.log(Job_Seq)
-      console.log(gusungProcess)
-      console.log(gusungData)
+  
       $.ajax({
         url: "/popup/jobGusungModify",
         method: "get",
@@ -259,8 +265,12 @@ const popup = {
           "gusungData": gusungData
         },
         success: function (data) {
-         console.table(data);
+          if(data.msg=="notUpdate"){
+            alert(data.msg2);
+            return false;
+           }else if(data.msg=="success"){
           return alert("등록 되었습니다."), window.close();
+         } 
         }
       })
     } else {

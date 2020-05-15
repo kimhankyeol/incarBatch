@@ -121,7 +121,6 @@ textarea {
   display: inline-block;
   text-align: center;
   align-self: center;
-  width: 12%;
   color: #4e73df!important;
   font-weight: 700!important;
   font-size: small;
@@ -129,15 +128,6 @@ textarea {
 .limit-time-input {
   display: inline-block;
   font-size: small;
-}
-.limit-time-input:nth-child(2) {
-  width: 17% !important;
-}
-.limit-time-input:nth-child(4) {
-  width: 18% !important;
-}
-.limit-time-input:nth-child(6) {
-  width: 20% !important;
 }
 
 [draggable] {

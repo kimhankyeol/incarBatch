@@ -60,8 +60,6 @@ class scheduleController extends Controller
     }
     //스케줄 등록
     public function scheduleRegister(Request $request){
-        // $date = new DateTime($request->input('Sc_CronEndTime'));
-        // $Sc_CronEndTime = $date->format('YYYY-MM-DD H:i:s');
         $Sc_Crontab = $request->input('Sc_Crontab');
         $Job_Seq = $request->input('job_seq');
         $Sc_Sulmyung = $request->input('Sc_Sulmyung');
@@ -109,7 +107,7 @@ class scheduleController extends Controller
     
     // 실행할 잡의 파라미터 불러오기
     public function jobselect(Request $request){
-        $Job_Seq = $request->input('tr_job_seq');
+        $Job_Seq = $request->input('job_seq');
         $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
         $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
         $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();

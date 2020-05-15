@@ -1,5 +1,5 @@
 @foreach($jobGusungContents as $data)
-<ul class="px-0 mb-0 w-100 d-inline-flex gusungData" draggable="true">
+<ul class="px-0 mb-0 w-100 d-inline-flex gusungData" draggable="true" onclick="popup.selectRow(this)">
   <ll class="d-none"><input class="gusungChk" type="checkbox" value="{{$data->P_Seq}}"></ll>
   <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">{{$data->JobGusung_Order}}</li>
   <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center">{{$data->P_FilePath}}</li>
