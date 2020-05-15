@@ -12,13 +12,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+  {{--  아직 최종상태 아님 !!!!!!!!!!!!!!  --}}
+  {{--  2020-05-14 13:45  --}}
+  {{--  아직 최종상태 아님 !!!!!!!!!!!!!!  --}}
 @include('common.head')
 <body id="page-top">
   <div id="wrapper">
-    {{-- 블레이드 주석 쓰는 법--}}
-    {{--사이드바 시작--}}
-    @include('common.sidebar')
-    {{--사이드바 끝--}}
     {{--content 시작--}}
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
@@ -36,14 +35,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <div class="card-body">
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 Id</div>
-                    <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center"  value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
+                    <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$jobDetail[0]->Job_Seq}}" readonly>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">잡 명</div>
                     <input id = "jobSc_name" type="text" class="col-md-5 form-control form-control-sm mt-2" value="{{$jobDetail[0]->Job_Name}}" readonly>
                   </div>
                   <hr>
                   <div class="row">
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 Id</div>
-                    <input id="Sc_Seq" type="text" class="col-md-3 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq.'_'.$scheduleDetail[0]->Sc_Seq.'.sh'}}" readonly>
+                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 id</div>
+                    <input id="Sc_Seq" type="text" class="col-md-3 form-control form-control-sm mt-2" value="{{$scheduleDetail[0]->Sc_Seq}}" readonly>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
                     <input id="Sc_Sulmyung" type="text" class="col-md-3 form-control form-control-sm mt-2" value="{{$scheduleDetail[0]->Sc_Sulmyung}}" readonly>
                   </div>
@@ -61,12 +60,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">스케줄 상태</div>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
                   <input type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_StatusName}}" readonly>
-                  @if(isset($jobGusungContents))
-                    <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
-                    <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{isset($jobGusungContents) ? count($jobGusungContents):0}}" readonly>
-                  @endIf 
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
+                  <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
                 </div>
                 <hr>
                 <div class="row">
@@ -95,6 +92,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     잡 파라미터
                   </div>
                   <hr>
+                 
                     <div class="col-md-12" id="jobParams">
                       @if(isset($jobDetail[0]->Job_Params))
                         @php
@@ -103,12 +101,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           for ($i = 0; $i < count($jobParamArr); $i++) {
                           echo '<div class="d-inline-flex w-50 delYN mb-2">';
                           echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
+                          echo '<select name="Job_Params" class="col-md-2 form-control form-control-sm" readonly>';
                           if($jobParamArr[$i]=="paramDate"){
-                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="날짜" readonly/>';
+                            echo '<option value="'.$jobParamArr[$i].'" selected>날짜</option></select>';
                           }else if($jobParamArr[$i]=="paramNum"){
-                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
+                            echo '<option value="'.$jobParamArr[$i].'" selected>숫자</option></select>';
                           }else if($jobParamArr[$i]=="paramStr"){
-                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';
+                            echo '<option value="'.$jobParamArr[$i].'" selected>문자</option></select>';
                           }
                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly> </div>' ;
                           }
@@ -116,8 +115,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       @endif
                   </div>
                 </div>
-                <hr>
-                <fieldset class="cistp-fieldset">
+                <fieldset class="cistp-fieldset mt-2">
                   <legend>구성 프로그램</legend>
                   <div class="card-body">
                   {{-- 타이틀 --}}
@@ -137,9 +135,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </div>
                   <div id="gusungList" class="row px-0 gusungList">
                       @if(isset($jobGusungContents))
-                        @foreach($jobGusungContents as $index=> $data)
+                        @foreach($jobGusungContents as $data)
                         <ul class="px-0 mb-0 w-100 d-inline-flex gusungData">
-                          <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">{{$index+1}}</li>
+                          <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">{{$data->P_Order}}</li>
                           <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 h-100 align-items-center">{{$data->P_FilePath}}</li>
                           <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center">{{$data->P_File}}</li>
                           <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 h-100 align-items-center">{{$data->P_Name}}</li>
@@ -148,18 +146,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                               @if(isset($data->P_Params))
                                   @php
                                   $proParamArr=explode("||",$data->P_Params);
-                                  $Job_ParamSulmyungs=explode("||",$data->Job_ParamSulmyungs);
-                                  $JobGusung_ParamPos=explode("||",$data->JobGusung_ParamPos);
+                                  $proParamSulArr=explode("||",$data->P_ParamSulmyungs);
                                   for ($i = 0; $i < count($proParamArr); $i++) {
                                       echo '<div class="d-inline-flex w-50 delYN mb-2">';
+                                      // echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
+                                      echo '<select name="pro_Params" class="col-md-3 form-control form-control-sm" readonly>';
                                       if($proParamArr[$i]=="paramDate"){
-                                          echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="날짜" readonly/>';
+                                          echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
                                           }else if($proParamArr[$i]=="paramNum"){
-                                            echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="숫자" readonly/>';
+                                          echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
                                           }else if($proParamArr[$i]=="paramStr"){
-                                            echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="문지" readonly/>';
+                                          echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
                                           }
-                                          echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$Job_ParamSulmyungs[$JobGusung_ParamPos[$i]].'" readonly></div>';
+                                          echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly></div>';
                                       }
                                       @endphp
                               @endif
@@ -167,9 +166,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           </li>
                           <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
                             @if(($data->P_ReworkYN)==1)
-                              <label class="m-0 font-weight-bold text-primary">가능</label>
+                                가능
                             @else
-                              <label class="m-0  font-weight-bold text-danger">불가능</label>
+                                불가능
                             @endif
                           </li>
                         </ul>
@@ -178,28 +177,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                   </div>
                 </fieldset>
-                <hr>
-              <div class="row justify-content-end">
-                <div class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-    @include('common.footer')
-    {{--content 끝--}}
-    <script>
-      $("input:text[numberOnly]").on("keyup", function() {
-        $(this).val($(this).val().replace(/[^0-9]/g,""));
-      });    
-      const popup = {
-        jobGusung:function(Job_Seq){
-          window.open('/popup/jobGusung?Job_Seq='+Job_Seq, '잡 구성', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
-        }
-      }
-    </script>
     </div>
   </div>
 </body>
 </html>
-

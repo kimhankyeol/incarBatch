@@ -149,7 +149,30 @@ class PopupController extends Controller
         $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
         return view('popup.jobDetailPopup',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
-    //팝업 - 잡 검색
+    // 모니터링- 잡 스케줄 상세 팝업
+    public function scheduleDetailPopup(Request $request) {
+        $job_seq = $request->input('Job_Seq');
+        $sc_seq = $request->input('Sc_Seq');
+        $jobGusungContents = DB::select('CALL Schedule_programList(?,?)',[$job_seq,$sc_seq]);
+        //$jobGusungContents = DB::table('OnlineBatch_ScheduleProcess')->where('Job_Seq',$job_seq)->where('Sc_Seq',$sc_seq);
+        //프로시저를 통한 잡 상세정보 검색
+        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
+        //프로시저를 통한 스케줄러 상세정보 검색
+        $scheduleDetail=DB::select('CALL Schedule_detail(?,?)',[$sc_seq,$job_seq]);
+
+        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
+        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
+        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        return view('popup.scheduleDetailPopup',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
+    }
+    // 모니터링 - 잡 스케줄 프로세ㅔ스 상세 팝업
+    public function processDetailPopup(Request $request) {
+        $p_seq = $request->input('P_Seq');
+        //프로시저를 통한 프로세스 상세정보 검색
+        $processDetail=DB::select('CALL Process_detail(?)',[$p_seq]);
+        return view('popup.processDetailPopup',compact('processDetail'));
+    }
+    // 팝업 - 잡 검색
     public function jobSearchView(Request $request){
         $searchWord = $request->input('searchWord');
         $WorkLarge = $request->input('WorkLarge');

@@ -28,7 +28,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
-         <h4 class="h3 my-4 font-weight-bold text-primary">스케줄링 관리</h4>
+         <h4 class="h3 my-4 font-weight-bold text-primary">스케줄 관리</h4>
           <div class="card shadow mb-4">
             <div class="d-flex justify-content-end card-header py-3">
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
@@ -65,14 +65,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div class="table-list">
                 <table id="datatable" class="table table-bordered" cellspacing="0">
                   <colgroup>
-                    <col width="10%" />
-                    <col width="10%" />
-                    <col width="10%" />
-                    <col width="10%" />
-                    <col width="10%" />
+                    <col width="9%" />
+                    <col width="7%" />
+                    <col width="26%" />
+                    <col width="7%" />
+                    <col width="7%" />
                     <col width="10%" />
                     <col width="20%" />
-                    <col width="10%" />
+                    <col width="6%" />
                     <col width="10%" />
                   </colgroup>
                     <thead>

@@ -74,8 +74,7 @@ class scheduleController extends Controller
         $P_Seq = $request->input('P_Seq');//1,2
         $Sc_CronTime = $request->input('Sc_CronTime');
         $Sc_CronEndTime = $request->input('Sc_CronEndTime');
-
-            $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
+        $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
                 [
                     'Sc_Crontab'=>$Sc_Crontab,
                     'Job_Seq'=>$Job_Seq,
@@ -88,10 +87,10 @@ class scheduleController extends Controller
                     'Sc_DeleteYN'=>$Sc_DeleteYN,
                     'Sc_CronTime'=>$Sc_CronTime,
                     'Sc_CronEndTime'=>$Sc_CronEndTime,
-                    'Sc_CronSulmyung'=>$Sc_CronSulmyung
+                    'Sc_CronSulmyung'=>$Sc_CronSulmyung,
+                    'Sc_Version'=>0
                 ]
             );
-    
             for($i=0; $i<count($P_Seq); $i++){
                 DB::table('OnlineBatch_ScheduleProcess')->insert(
                     [
@@ -101,15 +100,23 @@ class scheduleController extends Controller
                         'JobSM_P_Status'=>101
                     ]
                 );
+                DB::table('OnlineBatch_ScheduleProcessHis')->insert(
+                    [
+                        'P_Seq'=>$P_Seq[$i],
+                        'Sc_Seq'=>$last_sc_seq,
+                        'Job_Seq'=>$Job_Seq,
+                        'JobSM_P_Status'=>101,
+                        'Sc_Version'=>1
+                    ]
+                );
             }
-
             return response()->json(array('P_Seq'=>$P_Seq,'last_sc_seq'=>$last_sc_seq,'Job_Seq'=>$Job_Seq));
         }
 
     
     // 실행할 잡의 파라미터 불러오기
     public function jobselect(Request $request){
-        $Job_Seq = $request->input('tr_job_seq');
+        $Job_Seq = $request->input('job_seq');
         $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
         $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
         $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
@@ -122,7 +129,7 @@ class scheduleController extends Controller
     public function scheduleDetailView(Request $request){
         $job_seq = $request->input('Job_Seq');
         $sc_seq = $request->input('Sc_Seq');
-        $jobGusungContents = DB::select('CALL Execute_programList(?,?)',[$job_seq,$sc_seq]);
+        $jobGusungContents = DB::select('CALL Schedule_programList(?,?)',[$job_seq,$sc_seq]);
         //$jobGusungContents = DB::table('OnlineBatch_ScheduleProcess')->where('Job_Seq',$job_seq)->where('Sc_Seq',$sc_seq);
         //프로시저를 통한 잡 상세정보 검색
         $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);

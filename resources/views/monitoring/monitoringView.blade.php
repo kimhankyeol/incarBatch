@@ -40,6 +40,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     $('#endDate').val(today);
   });
 </script>
+<script>$(function(){$("#monitorDatatable").colResizable();});</script>
+<script>$(function(){$("#jobDetailList").colResizable();});</script>
+<script>$(function(){$("#scheduleProcessList").colResizable();});</script>
 <body id="page-top">
   <div id="wrapper">
     {{-- 블레이드 주석 쓰는 법--}}
@@ -113,11 +116,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               </div>
             </div>
             <div class="card-body py-3">
-              <div id="monitorDatatable" class="table-responsive" style="height: calc((1vh) * 50);">
+              <div id="monitorDatatable" class="table-responsive overflow-x-scroll" style="height: calc((1vh) * 50);">
                 @include('monitoring.monitorJobSearchList')
               </div>
-              <div id="jobDetailList" class="table-responsive">
+              <div id="jobDetailList" class="table-responsive overflow-x-scroll">
                 @include('monitoring.monitorJobDetailList')
+              </div>
+              <div id="scheduleProcessList" class="table-responsive overflow-x-scroll">
+                @include('monitoring.scheduleProcessList')
               </div>
               {{--  <div id="gusungDatatable" class="table-responsive">
                 @include('monitoring.monitorGusungSearchList')
@@ -135,14 +141,16 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       @include('common.footer')
     {{--content 끝--}}
     </div>
-    {{-- 잡시퀀스 , 스케줄시퀀스 --}}
+    {{-- 잡시퀀스 , 스케줄시퀀스,프로그램 시퀀스 --}}
     <input type="hidden" id="jobSeq">
     <input type="hidden" id="scSeq">
+    <input type="hidden" id="pSeq">
     <script>
       //더보기 클릭
       function tailAdd(){
         var jobSeq = $('#jobSeq').val();
         var scSeq = $('#scSeq').val();
+        var pSeq = $('#pSeq').val();
         var line = parseInt($('#lineNum').val());
         //100줄씩 추가 
         var lineMore = 100 ; 
@@ -173,6 +181,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 data:{
                     "line":line,
                     "Job_Seq":jobSeq,
+                    "P_Seq":pSeq,
                     "setNum":setNum,
                     "headTail":headTail,
                     "logSearchWord":logSearchWord,
@@ -181,6 +190,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 success:function(data){
                   $('#jobSeq').val(jobSeq);
                   $('#scSeq').val(scSeq);
+                  $('#pSeq').val(pSeq);
                   $('#jobTailLog').html(data.returnHTML);
                 },
                 error:function(err){
@@ -202,6 +212,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 data:{
                     "line":line,
                     "Job_Seq":jobSeq,
+                    "P_Seq":pSeq,
                     "setNum":setNum,
                     "headTail":headTail,
                     "logSearchWord":logSearchWord,
@@ -210,6 +221,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 success:function(data){
                   $('#jobSeq').val(jobSeq);
                   $('#scSeq').val(scSeq);
+                  $('#pSeq').val(pSeq);
                   $('#jobTailLog').html(data.returnHTML);
                 },
                 error:function(err){
@@ -223,6 +235,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         
           var jobSeq = $('#jobSeq').val();
           var scSeq = $('#scSeq').val();
+          var pSeq = $('#pSeq').val();
           var line = $('#lineNum').val();
           if($("#setNum").is(":checked")){
               $("#setNum").val(1);
@@ -249,6 +262,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   data:{
                       "line":line,
                       "Job_Seq":jobSeq,
+                      "P_Seq":pSeq,
                       "setNum":setNum,
                       "headTail":headTail,
                       "logSearchWord":logSearchWord,
@@ -257,6 +271,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   success:function(data){
                     $('#jobSeq').val(jobSeq);
                     $('#scSeq').val(scSeq);
+                    $('#pSeq').val(pSeq)
                     $('#jobTailLog').html(data.returnHTML);
                   },
                   error:function(err){
@@ -278,6 +293,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 data:{
                     "line":line,
                     "Job_Seq":jobSeq,
+                    "P_Seq":pSeq,
                     "setNum":setNum,
                     "headTail":headTail,
                     "logSearchWord":logSearchWord,
@@ -286,6 +302,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 success:function(data){
                   $('#jobSeq').val(jobSeq);
                   $('#scSeq').val(scSeq);
+                  $('#pSeq').val(pSeq);
                   $('#jobTailLog').html(data.returnHTML);
                 },
                 error:function(err){
@@ -295,7 +312,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           }
       }
     $(document).ready(function(){
-      var dbclick=false;    
+      var dbclick=false;
+      
+      // 상세 잡 리스트
       $(document).on('click','.jobExeOneDbClick',function(event){
         var jobSeqIndex = $('.jobExeOneDbClick').index(this);
         var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
@@ -309,21 +328,22 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         }
         setTimeout(function(){
             if(dbclick ==false){
-                tailAddFirst(10,jobSeq,scSeq);
+              scheduleProcessList(jobSeq,scSeq);
             }   
         },400)    
       }).on('dblclick','.jobExeOneDbClick',function(event){
           dbclick = true
           var jobSeqIndex = $('.jobExeOneDbClick').index(this);
-          var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
-          var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
+          var Job_Seq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
+          var Sc_Seq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
           // pageMove.jobpopup.jobAction('jobAction',jobSeq);
           setTimeout(function(){   
               dbclick = false
-              console.log("2번클릭  jobseq: "+jobSeq+"scSeq: "+scSeq);
-              //scheduleDetailPopup(jobSeq,scSeq);
+              console.log("2번클릭  jobseq: "+Job_Seq+" | scSeq: "+Sc_Seq);
+              scheduleDetailPopup(Job_Seq,Sc_Seq);
           },500)
       })
+      // 모니터 리스트
       $(document).on('click','.jobOneDbClick',function(event){
           var jobSeqIndex = $('.jobOneDbClick').index(this);
           //tr 색 바꾸기  활성된거
@@ -332,11 +352,34 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           }else {
               $('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
           }
-      }).on('dblclick','.jobOneDbClick',function(event){
-          var jobSeqIndex = $('.jobOneDbClick').index(this);
-          var Job_Seq = $('.jobOneDbClick').eq(jobSeqIndex)[0].children[0].firstElementChild.value;
-          monitor.jobPopup(Job_Seq);
       })
+
+      // 스케줄 프로그램
+      $(document).on('click','.processOneDbClick',function(event){
+        var processSeqIndex = $('.processOneDbClick').index(this);
+        var jobSeq = $('.processOneDbClick').eq(processSeqIndex).attr("data-Job_Seq");
+        var scSeq = $('.processOneDbClick').eq(processSeqIndex).attr("data-Sc_Seq");
+        var pSeq = $('.processOneDbClick').eq(processSeqIndex).attr("data-P_Seq");
+
+          //tr 색 바꾸기  활성된거
+          if($('.processOneDbClick').not(processSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
+              $('.processOneDbClick').eq(processSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
+          }else {
+              $('.processOneDbClick').not(processSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
+          }        
+          setTimeout(function(){
+            if(dbclick ==false){
+              tailAddFirst(10,jobSeq,scSeq,pSeq);
+            }   
+        },400)    
+      }).on('dblclick','.processOneDbClick',function(event){
+          var processSeqIndex = $('.processOneDbClick').index(this);
+          var pSeq = '';
+          
+      })
+
+
+
       $(document).on('click', '.pagination a', function (event) {
         event.preventDefault();
         var page = $(this).attr('href').split('page=')[1];
@@ -346,13 +389,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     })
 
     //처음 잡을 클릭해서 로그 조회하는것  
-    function tailAddFirst(line,jobSeq,scSeq){
+    function tailAddFirst(line,jobSeq,scSeq,pSeq){
       $.ajax({
         url:"/job/jobTailAdd",
         method:"get",
         data:{
             "line":line,
             "Job_Seq":jobSeq,
+            "P_Seq":pSeq,
             "setNum":1,
             "headTail":"tail",
             "Sc_Seq":scSeq
@@ -360,14 +404,29 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         success:function(data){
             $('#jobSeq').val(jobSeq);
             $('#scSeq').val(scSeq);
+            $('#pSeq').val(pSeq);
             $('#lineNum').val(line);
             $('#jobTailLog').html(data.returnHTML);
         }
       })
     }
+    // 스케줄링 프로세스 정보
+    function scheduleProcessList(Job_Seq,Sc_Seq){
+      $.ajax({
+      url: "/monitoring/scheduleProcessList",
+      method: "get",
+      data: {
+        "Job_Seq": Job_Seq,
+        "Sc_Seq": Sc_Seq
+      },
+      success: function (resp) {
+        $('#scheduleProcessList').html(resp.returnHTML)
+      }
+    })
+    }
     // 잡 스케줄의 상세 정보
-    function scheduleDetailPopup(Job_Seq,Skd_Seq){
-      window.open('/popup/scheduleDetailPopup?Job_Seq='+Job_Seq+'&Skd_Seq='+Skd_Seq, '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+    function scheduleDetailPopup(Job_Seq,Sc_Seq){
+      window.open('/popup/scheduleDetailPopup?Job_Seq='+Job_Seq+'&Sc_Seq='+Sc_Seq, '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
     }
   </script>
 </body>

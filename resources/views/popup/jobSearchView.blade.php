@@ -9,12 +9,29 @@
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow my-3">
       <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100" style="width: 100%;">
         <div class="input-group">
-          <input type="text" class="form-control bg-light border-0 small" placeholder="작업 검색..."
-            aria-label="Search" aria-describedby="basic-addon2" style="border: 1px solid #96a0c8 !important">
+          <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+            @include("code.codeSelect")
+            {{-- 검색 조건 --}}
+            <select class="form-control bg-light border-primary small">
+              <option>
+                잡명
+              </option>
+            </select>
+            {{-- 검색 단어가 있을떄 없을때 구분  --}}
+            {{-- 검색 단어가 있을떄 없을때 구분  --}}
+            @if(!isset($searchWord))
+            <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
+            @elseif(isset($searchWord))
+              @if($searchWord=="searchWordNot")
+                <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
+              @else
+                <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+              @endif
+            @endif
           <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
+            <div class="btn btn-primary" onclick="popup.schedulesearch('1')">
               <i class="fas fa-search fa-sm"></i>
-            </button>
+            </div>
           </div>
         </div>
       </form>
@@ -54,7 +71,10 @@
                     @endforeach
                   </tbody>
                 </table>
-                
+                {{-- 페이징 이동 경로 --}}
+                    @if(isset($paginator))
+                    {{$paginator->setPath('/popup/jobSearchView')->appends(request()->except($searchParams))->links()}}
+                    @endIf
               </div>
             </div>
           </div>
@@ -64,6 +84,22 @@
   </div>
 </body>
 <script>
+  function workLargeChgSel(){
+        var WorkLarge =  $('#workLargeVal').val();
+            $.ajax({
+              url:"/code/workMediumCtg",
+              method:"get",
+              data:{
+                "WorkLarge":WorkLarge
+              },
+              success:function(resp){
+                $("#workMediumVal").html(resp.returnHTML);
+              },
+              error:function(error){
+              }
+            })
+  }
+  
   $(".hoverTable tbody tr").dblclick(function(){
     var arr = new Array();
 
@@ -72,18 +108,9 @@
     
     var job_id = td.eq(0).text();//잡 아이디
     var job_name = td.eq(3).text();// 잡명
+    var job_seq = job_id.split('_')[3];//잡 시퀀스
 
-    var job_seq = job_id.split('_')[3];
-
-    console.log(job_id);
-    console.log(job_name);
-    console.log(job_seq);
-
-    var tr_job_id = $("#tr_job_id").val(job_id);
-    var tr_job_name = $("#tr_job_name").val(job_name);
-    var tr_job_seq = $('#tr_job_seq').val(job_seq);
-
-    job.jobselect();
+    job.jobselect(job_id,job_name,job_seq);
 })
 </script>
 </html>

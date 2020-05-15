@@ -24,7 +24,7 @@ const pageMove={
     },
     jobpopup:{
         list:function(urlName){
-            window.open("/popup/"+urlName, '잡 실행', 'top=10, left=10, width=1280, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+            window.open("/popup/"+urlName+'?page=1', '잡 실행', 'top=10, left=10, width=1280, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
         },
         jobAction: function jobAction(urlName,param1) {
             window.open("/popup/"+urlName+"?Job_Seq="+param1, '잡 실행', 'top=10, left=10, width=1280, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');

@@ -338,24 +338,14 @@ const job = {
     location.href="/schedule/scheduleListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
   },
   //스케줄 잡선택
-  jobselect:function(){
-    var tr_job_id = $("#tr_job_id").val();
-    var tr_job_name = $("#tr_job_name").val();
-    var tr_job_seq = $('#tr_job_seq').val();
-
-    if(tr_job_id==""||tr_job_name==""){
-      alert("예약할 잡을 선택하세요");
-      return false;
-    }
-
-    opener.document.getElementById("jobSc_id").value = document.getElementById("tr_job_id").value;
-    opener.document.getElementById("jobSc_name").value = document.getElementById("tr_job_name").value;
-
+  jobselect:function(job_id,job_name,job_seq){
+    opener.document.getElementById("jobSc_id").value = job_id;
+    opener.document.getElementById("jobSc_name").value = job_name;
     $.ajax({
       url:"/schedule/jobselect",
       method:"get",
       data:{
-          "tr_job_seq":tr_job_seq
+          'job_seq':job_seq
       },
       success:function(data){
         opener.document.getElementById('jobparams').innerHTML = data.returnHTML;
@@ -366,7 +356,6 @@ const job = {
       }
     })
   },
-
   //잡 스케줄 등록 
   scRegister:function(){
     var P_Seq = [];
@@ -509,7 +498,7 @@ const job = {
     }else if(Sc_Sulmyung==""){
       alert('스케줄 설명이 입력되지 않았습니다.');
       return false;
-    }else if(nowDateTime > Sc_CronTime){
+    }else if(nowDateTime < Sc_CronTime){
       alert('현재시간 이전에 등록할 수 없습니다.');
       return false;
     }else if("2037-12-31" < startdate){
@@ -539,5 +528,9 @@ const job = {
       }
     }
     return 1;
+  },
+  //잡구성 팝업 이동
+  jobGusung:function(Job_Seq){
+    window.open('/popup/jobGusung?Job_Seq='+Job_Seq, '잡 구성', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   }
 };

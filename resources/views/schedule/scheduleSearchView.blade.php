@@ -1,5 +1,5 @@
 @foreach($data as $jobSc)
-<tr onclick="pageMove.job.scdetail('scheduleDetailView','{{$jobSc->Sc_Seq}}','{{$jobSc->Job_Seq}}')">
+<tr onclick="pageMove.schedule.detail('scheduleDetailView','{{$jobSc->Sc_Seq}}','{{$jobSc->Job_Seq}}')">
     <td>{{'job_'.$jobSc->Job_WorkLargeCtg.'_'.$jobSc->Job_WorkMediumCtg.'_'.$jobSc->Job_Seq}}</td>
     <td>{{'Schedule'.$jobSc->Sc_Seq}}</td>
     <td>{{$jobSc->Sc_Sulmyung}}</td>

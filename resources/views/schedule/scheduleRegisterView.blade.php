@@ -205,7 +205,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <hr>
                                 <div class="row justify-content-end">
                                     <input type="button" class="mt-3 mr-2 btn btn-primary" value="등록" onclick="job.scRegister()" />
-                                    <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소"/>
+                                    <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
                                 </div>
                             </fieldset>
                         </div>
@@ -254,12 +254,37 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('.end').show();
         }
     }
+
+    $(document).ready( function() {
+    
+    //숫자만
+    $("#Day").keyup(function(event){
+        var str;
+                        
+        if(event.keyCode != 8){
+            if (!(event.keyCode >=37 && event.keyCode<=40)) {
+                var inputVal = $(this).val();
+                
+                str = inputVal.replace(/[^-0-9]/gi,'');
+                
+                if(str.lastIndexOf("-")>0){ //중간에 -가 있다면 replace
+                    if(str.indexOf("-")==0){ //음수라면 replace 후 - 붙여준다.
+                        str = "-"+str.replace(/[-]/gi,'');
+                    }else{
+                        str = str.replace(/[-]/gi,'');
+                    }
+                
+                }
+                                        
+                $(this).val(str);
+                
+            }                    
+        }
+
+    });
+    
+});
     </script>
-    <script>
-        $("#Day").on("keyup", function() {
-            $(this).val($(this).val().replace(/[^0-9]/g,""));
-        });    
-        </script>
     </body>
     </html>
 

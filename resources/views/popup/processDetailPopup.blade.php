@@ -15,11 +15,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 @include('common.head')
 <body id="page-top">
   <div id="wrapper">
-    {{-- 블레이드 주석 쓰는 법--}}
-    {{--사이드바 시작--}}
-    @include('common.sidebar')
-    {{--사이드바 끝--}}
-
     {{--content 시작--}}
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
@@ -147,12 +142,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 for ($i = 0; $i < count($proParamArr); $i++) {
                                   echo '<div class="d-inline-flex w-50 delYN mb-2">';
                                   echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
+                                  echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" readonly>';
                                 if($proParamArr[$i]=="paramDate"){
-                                  echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="날짜" readonly/>';
+                                  echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
                                 }else if($proParamArr[$i]=="paramNum"){
-                                  echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
+                                  echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
                                 }else if($proParamArr[$i]=="paramStr"){
-                                  echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문지" readonly/>';
+                                  echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
                                 }
                                 echo '<input type="text" name="pro_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly></div>';
                                 }
@@ -160,41 +156,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             @endif
                             </div>
                         </div>
-                        <hr>
-                        <div class="row justify-content-end">
-                            <input type="button" class="mt-3 mr-2 btn btn-info" value="수정" onclick="process.edit()"/>
-                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        @include('common.footer')
-        {{--content 끝--}}
       </div>
     </div>
-    <input id="WorkLarge" hidden  value="{{$processDetail[0]->P_WorkLargeCtg}}" readonly>
-    <input id="WorkMedium" hidden  value="{{$processDetail[0]->P_WorkMediumCtg}}" readonly>
   </body>
   </html>
-  @php
-    $tabDelimitedLines = explode("\n", $processDetail[0]->P_TextInput);
-    $myArray = Array();
-
-    foreach ($tabDelimitedLines as $lineIndex => $line) {
-        $fields = explode("\t", $line);
-        foreach ($fields as $fieldIndex => $field) {
-            if ($lineIndex == 0) {
-                // assuming first line is header info
-                $headers[] = $field;
-            } else {
-                // put the other lines into an array
-                // in whatever format you want
-                $myArray[$lineIndex - 1][$headers[$fieldIndex]] = $field;
-            }
-        }
-    }
-    $json = json_encode($myArray);
-    echo var_dump($tabDelimitedLines);
-    echo var_dump($myArray);
-  @endphp

@@ -51,5 +51,8 @@ const monitor = {
   },
   jobPopup: function (Job_Seq) {
     window.open('/popup/jobDetailPopup?Job_Seq=' + Job_Seq, '잡 정보 상세', 'top=10, left=10, width=1400, height=675, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+  },
+  processDetail: function (P_Seq) {
+    window.open('/popup/processDetailPopup?P_Seq=' + P_Seq, '프로그램 정보 상세', 'top=10, left=10, width=1400, height=875, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   }
-};
+}
