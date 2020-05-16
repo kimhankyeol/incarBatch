@@ -9,7 +9,7 @@ if (isset($detailList)) {
 <table id="datatable2" class="table table-bordered" cellspacing="0">
     <colgroup>
       <col width="80px" />
-      <col width="180px" />
+      <col width="200px" />
       <col width="140px" />
       <col width="150px" />
       <col width="150px" />
@@ -23,8 +23,8 @@ if (isset($detailList)) {
     </colgroup>
       <thead>
         <tr>
-          <th>순번</th>
-          <th>ID</th>
+          <th>순서</th>
+          <th>쉘</th>
           <th>설명</th>
           <th>실행시각</th>
           <th>완료시각</th>
@@ -40,10 +40,10 @@ if (isset($detailList)) {
       <tbody>
             {{--  조회된 값이 보여주는 위치 --}}
           @if (isset($detailList))
-            @foreach($detailList as $detailSc)
+            @foreach($detailList as $index=>$detailSc)
               <tr class="jobExeOneDbClick">
-                <td class="text-center Sc_Seq" data-value="{{$detailSc->Sc_Seq}}">{{$detailSc->Sc_Seq}}</td>
-                <td class="Job_Seq" data-value="{{$detailSc->Job_Seq}}">{{'job_'.$detailSc->Job_WorkLargeCtg.'_'.$detailSc->Job_WorkMediumCtg.'_'.$detailSc->Job_Seq}}</td>
+              <td class="text-center Sc_Seq" data-value="{{$detailSc->Sc_Seq}}">{{$index+1}}</td>
+                <td class="Job_Seq" data-value="{{$detailSc->Job_Seq}}">{{'job_'.$detailSc->Job_WorkLargeCtg.'_'.$detailSc->Job_WorkMediumCtg.'_'.$detailSc->Job_Seq.'_'.$detailSc->Sc_Seq.'.sh'}}</td>
                 <td>{{$detailSc->Sc_Sulmyung}}</td>
                 <td class="text-center">{{$detailSc->Sc_StartTime=="0000-00-00 00:00:00"?"":$detailSc->Sc_StartTime}}</td>
                 <td class="text-center">{{$detailSc->Sc_EndTime=="0000-00-00 00:00:00"?"":$detailSc->Sc_EndTime}}</td>

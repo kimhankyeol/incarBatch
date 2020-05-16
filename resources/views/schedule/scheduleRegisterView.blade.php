@@ -44,8 +44,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         </div>
                         <hr>
                         <div class="row">
-                            {{-- <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">스케줄 번호</div>
-                            <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="프로그램 명" readonly> --}}
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
                             <input id="Sc_Sulmyung" type="text" class="col-md-3 form-control form-control-sm mt-2" placeholder="스케줄 설명">
                         </div>
@@ -105,25 +103,25 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         {{-- 매주 --}}
                                         <div class="d-inline-flex w-100  align-items-center">
                                             <label class="mr-3 week">
-                                                <input name="yoil" type="checkbox" class="mr-1 week" value="0"> 일요일
+                                                <input name="yoil" checked="checked" type="checkbox" class="mr-1 week" value="0"> 일요일
                                             </label>
                                             <label class="mr-3 week">
-                                                <input name="yoil" type="checkbox" class="mr- week" value="1"> 월요일
+                                                <input name="yoil" checked="checked" type="checkbox" class="mr- week" value="1"> 월요일
                                             </label>
                                             <label class="mr-3 week">
-                                                <input name="yoil"  type="checkbox" class="mr- week" value="2"> 화요일
+                                                <input name="yoil" checked="checked" type="checkbox" class="mr- week" value="2"> 화요일
                                             </label>
                                             <label class="mr-3 week">
-                                                <input name="yoil"  type="checkbox" class="mr- week" value="3"> 수요일
+                                                <input name="yoil" checked="checked" type="checkbox" class="mr- week" value="3"> 수요일
                                             </label>
                                             <label class="mr-3 week">
-                                                <input name="yoil"  type="checkbox" class="mr- week" value="4"> 목요일
+                                                <input name="yoil" checked="checked" type="checkbox" class="mr- week" value="4"> 목요일
                                             </label>
                                             <label class="mr-3 week">
-                                                <input name="yoil"  type="checkbox" class="mr- week" value="5"> 금요일
+                                                <input name="yoil" checked="checked" type="checkbox" class="mr- week" value="5"> 금요일
                                             </label>
                                             <label class="mr-3 week">
-                                                <input name="yoil"  type="checkbox" class="mr-1 week" value="6"> 토요일
+                                                <input name="yoil" checked="checked" type="checkbox" class="mr-1 week" value="6"> 토요일
                                             </label>
                                         </div>
                                         {{-- 매월 --}}

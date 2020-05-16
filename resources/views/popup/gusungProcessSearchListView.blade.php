@@ -7,6 +7,7 @@
         <col width="100px" />
         <col width="370px" />
         <col width="80px" />
+        <col width="80px" />
       </colgroup>
       <thead>
         <tr>
@@ -14,6 +15,7 @@
           <th>프로그램</th>
           <th>프로그램 명</th>
           <th>파라미터</th>
+          <th>텍스트 유무</th>
           <th>등록자</th>
         </tr>
       </thead>
@@ -31,14 +33,17 @@
                     <label class="m-0">
                         @php
                         $proParamSulArr=explode("||",$proSc->P_ParamSulmyungs);
-                        for ($i = 0; $i < count($proParamSulArr); $i++) {
+                        if(isset($proSc->P_ParamSulmyungs)) {                   
+                          for ($i = 0; $i < count($proParamSulArr); $i++) {
                             echo '<input type="text" class="form-control form-control-sm w-auto d-inline-block" value="'.$proParamSulArr[$i].'"readonly>';
+                          }
                         }
                         @endphp
                     </label>
                 </li>
             </td>
-            <td>{{$proSc->P_RegId}}</td>
+            <td class="text-center">{{$proSc->P_TextInputCheck=="1"?"O":"X"}}</td>
+            <td class="text-center">{{$proSc->P_RegId}}</td>
         </tr>
         @endforeach
     </tbody>

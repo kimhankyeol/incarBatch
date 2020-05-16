@@ -68,7 +68,7 @@ const job = {
                   data:{
                       'Job_Name':Job_Name,
                       'Job_Sulmyung':Job_Sulmyung,
-                      'Job_RegId':111,
+                      'Job_RegId':1611698,
                       'Job_Params':Job_Params,
                       'Job_ParamSulmyungs':Job_ParamSulmyungs,
                       'Job_WorkLargeCtg':Job_WorkLargeCtg,
@@ -189,7 +189,7 @@ const job = {
                       'Job_Seq':Job_Seq,
                       'Job_Name':Job_Name,
                       'Job_Sulmyung':Job_Sulmyung,
-                      'Job_RegId':111,
+                      'Job_RegId':1611698,
                       'Job_Params':Job_Params,
                       'Job_ParamSulmyungs':Job_ParamSulmyungs,
                       'Job_WorkLargeCtg':Job_WorkLargeCtg,
@@ -306,7 +306,7 @@ const job = {
     var delBtn = document.createElement("button");
     //onchange 걸어야됨
     var jobParamInputText =
-        '<select name="Job_Params" class="col-md-2 form-control form-control-sm"> <option value="paramDate" selected>날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option></select>' +
+        '<select name="Job_Params" class="col-md-2 form-control form-control-sm"><option value="paramNum" selected>숫자</option><option value="paramStr">문자</option></select>' +
         '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" placeholder="설명">';
     jobParamDiv.className = "d-inline-flex w-50 delYN mb-2";
     jobParamDiv.style.cssFloat="left";
@@ -359,18 +359,21 @@ const job = {
   //잡 스케줄 등록 
   scRegister:function(){
     var P_Seq = [];
-
+    var Log_File = [];
     var gusungData = document.getElementsByClassName("gusungData");
 
     for(var i=0; i<gusungData.length;i++){
       if(gusungData[i].children[0].children[0].children[0].checked){
         P_Seq.push(gusungData[i].children[0].children[0].children[0].value);
+        // Log_File.push(gusungData[i].children[7].children[0].children[0].value);
       } 
     }
+  
     var jobSc_id = $('#jobSc_id').val();//잡 id
     var job_seq = jobSc_id.split('_')[3];//잡 seq
     var jobSc_name = $('#jobSc_name').val();//잡 명
     var Sc_Sulmyung = $('#Sc_Sulmyung').val();// 스케줄 설명
+
     var Day = $('#Day').val();//매 n일
     var nowSys = new Date();
      
@@ -416,21 +419,25 @@ const job = {
     scValCheck=job.Scvalidation(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime);
 
     if(scValCheck){
-      var result = confirm('잡을 등록하시겠습니까?');
+      var result = confirm('스케줄을 등록하시겠습니까?');
       if(result){
         if($('input:radio[id="Oneday"]').is(':checked')){
           var Sc_Crontab = " ";
           var Sc_CronSulmyung = hour+":"+min+"에 한번 실행";
+          var Sc_Status = "301"
         }else if($('input:radio[id="Everyday"]').is(':checked')){
           if($('#Day').val()==1){
             var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
             var Sc_CronSulmyung = hour+":"+min+"에 매일 실행";
+            var Sc_Status = "302"
           }else{
             var Sc_Crontab = min + " " + hour + " " + "*/"+$('#Day').val() + " " + "*" + " " + "*" + " ";
             var Sc_CronSulmyung = hour+":"+min+"에 "+$('#Day').val()+"일 마다 실행";
+            var Sc_Status = "302"
           }
         }else if($('input:radio[id="Everyweek"]').is(':checked')){
           var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + yoil + " ";
+          var Sc_Status = "303"
           for(var i=0;i<yoilArr.length;i++){
             if(yoilArr[i]==0||yoilArr[i]==1){
               yoilArr[i]="일";
@@ -448,47 +455,80 @@ const job = {
               yoilArr[i]="토";
             }
           }
-          console.log(yoilArr);
           const yoilArr1 = yoilArr.join(",");
           var Sc_CronSulmyung = hour+":"+min+"에 "+"매주 "+yoilArr1+"요일 마다 실행";
         }else if($('input:radio[id="Everymonth"]').is(':checked')){
           var Sc_Crontab = min + " " + hour + " " + day + " " + "*" + " " + "*" + " ";
           var Sc_CronSulmyung = "매달 "+day+"일"+hour+":"+min+" 마다 실행";
+          var Sc_Status = "304"
         }else if($('input:radio[id="Everyyear"]').is(':checked')){
           var Sc_Crontab = min + " " + hour + " " + day + " " + month + " " + "*" + " ";
           var Sc_CronSulmyung = "매년 "+month+"월 "+day+"일 "+hour+":"+min+"마다 실행";
+          var Sc_Status = "305"
         }
-    
-        $.ajax({
-          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-          url:'/schedule/scheduleRegister',
-          method:"post",
-          data:{
-            'job_seq':job_seq,
-            'Sc_Sulmyung':Sc_Sulmyung,
-            'Sc_Crontab':Sc_Crontab,
-            'Sc_Param':Sc_Param,
-            'Sc_Status':Sc_Status,
-            'Sc_RegId':"이수연",
-            'Sc_CronTime':Sc_CronTime,
-            'Sc_CronEndTime':Sc_CronEndTime,
-            'Sc_CronSulmyung':Sc_CronSulmyung,
-            'P_Seq':P_Seq
-          },
-          success:function(data){
-              console.log(data.last_sc_seq);
-              console.log(data.Job_Seq);
-              alert("등록되었습니다.");
-              location.href = "/schedule/scheduleDetailView?Sc_Seq="+data.last_sc_seq+"&Job_Seq="+data.Job_Seq;
-            
-          },error:function(error){
-            console.error(error);
-          }
-        })
+        if(P_Seq.length!=0){
+          $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url:'/schedule/scheduleRegister',
+            method:"post",
+            data:{
+              'job_seq':job_seq,
+              'Sc_Sulmyung':Sc_Sulmyung,
+              'Sc_Crontab':Sc_Crontab,
+              'Sc_Param':Sc_Param,
+              'Sc_Status':Sc_Status,
+              'Sc_RegId':1611698,
+              'Sc_CronTime':Sc_CronTime,
+              'Sc_CronEndTime':Sc_CronEndTime,
+              'Sc_CronSulmyung':Sc_CronSulmyung,
+              'P_Seq':P_Seq
+              // 'Log_File':Log_File
+            },
+            success:function(data){
+                console.log(data.last_sc_seq);
+                console.log(data.Job_Seq);
+                alert("등록되었습니다.");
+                location.href = "/schedule/scheduleDetailView?Sc_Seq="+data.last_sc_seq+"&Job_Seq="+data.Job_Seq;
+            },error:function(error){
+              console.error(error);
+            }
+          })
+        }else{
+          alert("실행할 프로그램을 선택해주세요");
+          return false;
+        }
       }
     }
   },
-
+ //잡 스케줄 삭제 
+ scheduleDump:function(){
+  var Sc_Seq=$('#Sc_Seq').val();
+  var Sc_Status=$('#Sc_Status').val();
+  var result = confirm('스케줄을 삭제하시겠습니까?');
+  if(result){
+    if(Sc_Status==901||Sc_Status==902){
+      $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url:'/schedule/scheduleDump',
+        method:"post",
+        data:{
+          'Sc_Seq':Sc_Seq,
+          'Sc_Status':Sc_Status
+        },
+        success:function(data){
+          alert("삭제되었습니다.");
+          console.log(data.Sc_Seq);
+          location.href = "/schedule/scheduleListView";
+        },error:function(error){
+          console.error(error);
+        }
+      })
+    }else{
+      alert("스케줄을 삭제할 수 있는 상태가 아닙니다.");
+      return false;
+    }
+  }
+ },
   //스케줄링 유효성 검사
   Scvalidation:function(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime){
     if(jobSc_id==""){

@@ -23,7 +23,7 @@ class ExecuteController extends Controller
             //로그파일은 job_업무대분류_업무중분류_잡시퀀스_스케줄시퀀스_잡실행날짜  job_1000_100_75_1_20200504.log
             $getJobInfo = DB::select('CALL Execute_jobGusungList(?,?)',[$Job_Seq,$Sc_Seq]);
             //잡의 첫번쨰 프로그램이 실행될떄가 잡이 실행되는 시점
-            if(!empty($getJobInfo)){
+            if(isset($getJobInfo[0]->Sc_StartTime)){
                 
                 //만약 상태모니터링 테이블에서 시작시간이 업데이트 된다하면 실행시간 다시 구해야됨
                 $JobExecuteDate =  $getJobInfo[0]->Sc_StartTime;
@@ -70,7 +70,7 @@ class ExecuteController extends Controller
             //로그파일은 job_업무대분류_업무중분류_잡시퀀스_스케줄시퀀스_잡실행날짜  job_1000_100_75_1_20200504.log
             $getJobInfo = DB::select('CALL Execute_jobGusungList(?,?)',[$Job_Seq,$Sc_Seq]);
             //잡의 첫번쨰 프로그램이 실행될떄가 잡이 실행되는 시점
-            if(!empty($getJobInfo)){
+            if(isset($getJobInfo)){
                 
                 //만약 상태모니터링 테이블에서 시작시간이 업데이트 된다하면 실행시간 다시 구해야됨
                 $JobExecuteDate =  $getJobInfo[0]->Sc_StartTime;

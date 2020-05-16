@@ -1,6 +1,6 @@
 @foreach($data as $hisSc)
 <tr ondblclick="history.detail({{$hisSc->Job_Seq}},{{$hisSc->Sc_Seq}})">
-    <td class="text-center">{{$hisSc->JobSM_P_StartTime}}</td>
+    <td class="text-center">{{isset($hisSc->JobSM_P_StartTime)?$hisSc->JobSM_P_StartTime:"-"}}</td>
     <td class="text-center">{{'job_'.$hisSc->Job_WorkLargeCtg.'_'.$hisSc->Job_WorkMediumCtg.'_'.$hisSc->Job_Seq.'_'.$hisSc->Sc_Seq}}</td>
     <td class="text-center">{{$hisSc->Sc_Version}}</td>
     <td class="text-center">{{$hisSc->JobSM_P_Status}}</td>

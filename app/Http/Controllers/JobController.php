@@ -54,10 +54,12 @@ class JobController extends Controller
             $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
         if($WorkLarge!="all"){
-            $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
-            return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium','handle'));
+             $usedMedium = DB::select('CALL Common_jobMediumCode(?)',[$WorkLarge]);
+            // $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
+            // $usedMedium =  DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge', $WorkLarge)->get();
+            return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
         }else{
-            return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','handle'));
+            return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));
         }
     }
     //잡 상세 뷰

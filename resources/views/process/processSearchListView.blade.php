@@ -6,7 +6,7 @@
     <td>{{$proSc->P_WorkLargeName}}</td>
     <td>{{$proSc->P_WorkMediumName}}</td>
     <td>{{$proSc->P_Sulmyung}}</td>
-    <td>{{$proSc->P_RegId}}</td>
+    <td>{{$proSc->P_RegName}}</td>
     <td>{{$proSc->P_RegDate}}</td>
 </tr>
 @endforeach

@@ -34,15 +34,16 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
             <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명(쉘 명) </div>
-                  <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="" readonly>
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
-                  <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="예)손해보험 수수료">
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
-                  <textarea type="text" id="Job_Sulmyung" class="col-md-4 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명</div>
+                  <input type="text" id="Job_Name"  class="col-md-8 form-control form-control-sm align-self-center" placeholder="예)손해보험 수수료">
                 </div>
                 <hr>
                 <div class="row">
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
+                  <textarea type="text" id="Job_Sulmyung" class="col-md-8 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
+                </div>
+                <hr>
+                <div class="row" style="justify-content: space-around">
                   <div class="outher-code">
                     {{-- 업무 구분 대분류 중분류 선택 --}}
                     <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>

@@ -5,7 +5,7 @@
     <td>{{$jobSc->Job_WorkMediumName}}</td>
     <td>{{$jobSc->Job_Name}}</td>
     <td>{{$jobSc->Job_Sulmyung}}</td>
-    <td>{{$jobSc->Job_RegId}}</td>
+    <td>{{$jobSc->Job_RegName}}</td>
     <td>{{$jobSc->Job_RegDate}}</td>
 </tr>
 @endforeach

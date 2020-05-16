@@ -69,6 +69,8 @@ Route::prefix('schedule')->group(function(){
     Route::get('/scheduleDetailView','ScheduleController@scheduleDetailView');
     //잡 스케줄 선택
     Route::get('/jobselect','ScheduleController@jobselect');
+    //스케줄 업데이트
+    Route::post('/scheduleDump','ScheduleController@scheduleDump');
 });
 
 //모니터링 prefix
@@ -90,6 +92,7 @@ Route::prefix('history')->group(function(){
     //작업 히스토리 검색리스트
     Route::get('/historySearchList','HistoryController@historySearchList');
 });
+
 
 
 ////////////팝업///////////////////////////////////////

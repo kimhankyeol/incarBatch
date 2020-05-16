@@ -9,7 +9,7 @@
                 <div class="custom-control custom-checkbox">
                     {{-- # 로그 set num 라인에 숫자 찍는거 setNum  @if($setNum==1) ? value="1" : value="0" @endIf--}}
                     <input id="headTail" type="checkbox" class="custom-control-input"  @if($headTail=="tail") ? value="tail" checked : value="head" @endIf >
-                    <label class="custom-control-label font-weight-bold text-primary" for="headTail">아래서부터 출력</label>
+                    <label class="custom-control-label font-weight-bold text-primary" for="headTail">최신순</label>
                 </div> 
                 <div class="custom-control custom-checkbox">
                     {{-- # 로그 set num 라인에 숫자 찍는거 setNum  @if($setNum==1) ? value="1" : value="0" @endIf--}}
@@ -35,24 +35,20 @@
            <div class="custom-control custom-checkbox">
                {{-- # 로그 set num 라인에 숫자 찍는거 setNum  @if($setNum==1) ? value="1" : value="0" @endIf--}}
                <input id="headTail" type="checkbox" class="custom-control-input"  @if($headTail=="tail") ? value="tail" checked : value="head" @endIf >
-               <label class="custom-control-label font-weight-bold text-primary" for="headTail">아래서부터 출력</label>
+               <label class="custom-control-label font-weight-bold text-primary" for="headTail">최신순</label>
            </div> 
            <div class="custom-control custom-checkbox">
                {{-- # 로그 set num 라인에 숫자 찍는거 setNum  @if($setNum==1) ? value="1" : value="0" @endIf--}}
                <input id="setNum" type="checkbox" class="custom-control-input"  @if($setNum==1) ? value="1" checked : value="0" @endIf >
                <label class="custom-control-label font-weight-bold text-primary" for="setNum">라인 숫자 출력</label>
            </div> 
-           <div class="custom-control">
-               로그 라인 수 <input id="lineNum" type="text" class=" bg-light border-primary" numberOnly value="{{$lineTotal}}"> / {{$lineTotal}} 
-           </div>
-           <div class="custom-control">
-               검색어 <input id="logSearchWord" type="text" class=" bg-light border-primary" @if(isset($logSearchWord)) ?  value={{$logSearchWord}} : value="" @endIf > 
-           </div>
-           <div class="custom-control">
-               <div class="btn btn-primary" onclick="tailAddSearch()">
-                   <i class="fas fa-search fa-sm"></i>
-               </div>
-           </div>
+           <div class="custom-control" style="sp">
+            로그 라인 수 <input id="lineNum" type="text" class=" bg-light border-primary" numberOnly value="{{$lineTotal}}"> / {{$lineTotal}} 
+            검색어 <input id="logSearchWord" type="text" class=" bg-light border-primary" @if(isset($logSearchWord)) ?  value={{$logSearchWord}} : value="" @endIf > 
+                <div class="btn btn-primary" onclick="tailAddSearch()">
+                    <i class="fas fa-search fa-sm"></i>
+                </div>
+            </div>
        </div>
     @elseif($msg=="notFound")
     <div class="custom-control" style="display: flex; justify-content: space-around;">
@@ -64,24 +60,20 @@
        <div class="custom-control custom-checkbox">
            {{-- # 로그 set num 라인에 숫자 찍는거 setNum  @if($setNum==1) ? value="1" : value="0" @endIf--}}
            <input id="headTail" type="checkbox" class="custom-control-input"  @if($headTail=="tail") ? value="tail" checked : value="head" @endIf >
-           <label class="custom-control-label font-weight-bold text-primary" for="headTail">아래서부터 출력</label>
+           <label class="custom-control-label font-weight-bold text-primary" for="headTail">최신순</label>
        </div> 
        <div class="custom-control custom-checkbox">
            {{-- # 로그 set num 라인에 숫자 찍는거 setNum  @if($setNum==1) ? value="1" : value="0" @endIf--}}
            <input id="setNum" type="checkbox" class="custom-control-input"  @if($setNum==1) ? value="1" checked : value="0" @endIf >
            <label class="custom-control-label font-weight-bold text-primary" for="setNum">라인 숫자 출력</label>
        </div> 
-       <div class="custom-control">
-           로그 라인 수 <input id="lineNum" type="text" class=" bg-light border-primary" numberOnly value="{{$lineTotal}}"> / {{$lineTotal}} 
-       </div>
-       <div class="custom-control">
-           검색어 <input id="logSearchWord" type="text" class=" bg-light border-primary" @if(isset($logSearchWord)) ?  value={{$logSearchWord}} : value="" @endIf > 
-       </div>
-       <div class="custom-control">
-           <div class="btn btn-primary" onclick="tailAddSearch()">
-               <i class="fas fa-search fa-sm"></i>
-           </div>
-       </div>
+       <div class="custom-control" style="sp">
+        로그 라인 수 <input id="lineNum" type="text" class=" bg-light border-primary" numberOnly value="{{$lineTotal}}"> / {{$lineTotal}} 
+        검색어 <input id="logSearchWord" type="text" class=" bg-light border-primary" @if(isset($logSearchWord)) ?  value={{$logSearchWord}} : value="" @endIf > 
+            <div class="btn btn-primary" onclick="tailAddSearch()">
+                <i class="fas fa-search fa-sm"></i>
+            </div>
+        </div>
    </div>
     @endIf
 </h6>

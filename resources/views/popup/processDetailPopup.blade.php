@@ -81,26 +81,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           </div>
                         </div>
                         <hr>
-                          <div class="row">
-                              <div class="limit-time-text col-md-2">등록자</div>
-                                <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$processDetail[0]->P_RegId}}" readonly>
-                              <div class="limit-time-text col-md-2">수정자</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($processDetail[0]->P_UpdId) ? $processDetail[0]->P_RegId:$processDetail[0]->P_UpdId}}" readonly>   
-                          </div>
-                          <br>
-                          <div class="row">
-                              <div class="limit-time-text col-md-2">등록자IP</div>
-                                <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{long2ip($processDetail[0]->P_RegIP)}}" readonly>
-                              <div class="limit-time-text col-md-2">수정자IP</div>
-                                <input type="text" class="form-control form-control-sm limit-time-input col-md-4"  value="{{empty($processDetail[0]->P_UpdIP) ?long2ip( $processDetail[0]->P_RegIP):long2ip($processDetail[0]->P_UpdIP)}}" readonly>       
-                          </div>
-                          <br>
-                          <div class="row">
-                            <div class="limit-time-text col-md-2">등록일</div>
-                              <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{$processDetail[0]->P_RegDate}}" readonly>    
-                            <div class="limit-time-text col-md-2">수정일</div>
-                              <input type="text" class="form-control form-control-sm limit-time-input col-md-4" value="{{empty($processDetail[0]->P_UpdDate) ? $processDetail[0]->Job_RegDate:$processDetail[0]->P_UpdDate}}" readonly> 
-                            </div>
+                        <div class="row justify-content-center">
+                          <div class="limit-time-text col-md-auto">등록자</div>
+                          <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$processDetail[0]->P_RegId}}" readonly>
+                          <div class="limit-time-text col-md-auto">등록자IP</div>
+                          <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{long2ip($processDetail[0]->P_RegIP)}}" readonly>
+                          <div class="limit-time-text col-md-auto">등록일</div>
+                          <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$processDetail[0]->P_RegDate}}" readonly>    
+                          <div class="limit-time-text col-md-auto">수정자</div>
+                          <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($processDetail[0]->P_UpdId) ? $processDetail[0]->P_RegId:$processDetail[0]->P_UpdId}}" readonly>   
+                          <div class="limit-time-text col-md-auto">수정자IP</div>
+                          <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($processDetail[0]->P_UpdIP) ?long2ip( $processDetail[0]->P_RegIP):long2ip($processDetail[0]->P_UpdIP)}}" readonly>       
+                          <div class="limit-time-text col-md-auto">수정일</div>
+                          <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($processDetail[0]->P_UpdDate) ? $processDetail[0]->P_RegDate:$processDetail[0]->P_UpdDate}}" readonly> 
+                        </div>
                         <hr>
                         <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
@@ -143,9 +137,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                   echo '<div class="d-inline-flex w-50 delYN mb-2">';
                                   echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
                                   echo '<select name="pro_Params" class="col-md-2 form-control form-control-sm" readonly>';
-                                if($proParamArr[$i]=="paramDate"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
-                                }else if($proParamArr[$i]=="paramNum"){
+                                if($proParamArr[$i]=="paramNum"){
                                   echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
                                 }else if($proParamArr[$i]=="paramStr"){
                                   echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';

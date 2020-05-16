@@ -10,8 +10,6 @@ const history = {
     var status = $('.status');
     var statusValue = 0;
 
-    console.table(status)
-
     for (var i = 0; i < status.length; i++) {
       if (status[i].checked) {
         statusValue++;
@@ -23,8 +21,8 @@ const history = {
     } else if (statusValue == 2) {
       tatusValue = "all";
     }
-    if (searchWord == '' || searchWord == undefined) {
-      searchWord = "searchWordNot";
+    if (tatusValue == '' || tatusValue == undefined) {
+      tatusValue = "searchWordNot";
     }
     $.ajax({
       url: "/history/historyListView",
@@ -40,7 +38,7 @@ const history = {
       },
       success: function (resp) {
         console.table(resp)
-        //$('#datatable').html(resp.returnHTML)
+        $('#datatable').html(resp.returnHTML)
       }
     })
   },

@@ -313,7 +313,21 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       }
     $(document).ready(function(){
       var dbclick=false;
-      
+       // 모니터 리스트
+       $(document).on('click','.jobOneDbClick',function(event){
+          var jobSeqIndex = $('.jobOneDbClick').index(this);
+          //tr 색 바꾸기  활성된거
+          if($('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
+              $('.jobOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
+          }else {
+              $('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
+          }
+          $('#jobSeq').val();
+          $('#scSeq').val();
+          $('#pSeq').val();
+          $('#scheduleProcessList').html('');
+          $('#jobTailLog').html('<textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>');
+      })
       // 상세 잡 리스트
       $(document).on('click','.jobExeOneDbClick',function(event){
         var jobSeqIndex = $('.jobExeOneDbClick').index(this);
@@ -329,6 +343,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         setTimeout(function(){
             if(dbclick ==false){
               scheduleProcessList(jobSeq,scSeq);
+              $('#jobTailLog').html('<textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>');
             }   
         },400)    
       }).on('dblclick','.jobExeOneDbClick',function(event){
@@ -339,21 +354,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           // pageMove.jobpopup.jobAction('jobAction',jobSeq);
           setTimeout(function(){   
               dbclick = false
-              console.log("2번클릭  jobseq: "+Job_Seq+" | scSeq: "+Sc_Seq);
               scheduleDetailPopup(Job_Seq,Sc_Seq);
+              $('#jobTailLog').html('<textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>');
           },500)
       })
-      // 모니터 리스트
-      $(document).on('click','.jobOneDbClick',function(event){
-          var jobSeqIndex = $('.jobOneDbClick').index(this);
-          //tr 색 바꾸기  활성된거
-          if($('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
-              $('.jobOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
-          }else {
-              $('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
-          }
-      })
-
       // 스케줄 프로그램
       $(document).on('click','.processOneDbClick',function(event){
         var processSeqIndex = $('.processOneDbClick').index(this);
@@ -420,7 +424,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         "Sc_Seq": Sc_Seq
       },
       success: function (resp) {
-        $('#scheduleProcessList').html(resp.returnHTML)
+        $('#scheduleProcessList').html(resp.returnHTML);
+        
       }
     })
     }

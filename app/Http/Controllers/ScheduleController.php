@@ -141,4 +141,12 @@ class scheduleController extends Controller
         $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
         return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
+    public function scheduleDump(Request $request){
+        $Sc_Seq = $request->input('Sc_Seq');
+        $Sc_Status = $request->input('Sc_Status');
+        DB::table('incar.OnlineBatch_Schedule')->where('Sc_Seq',$Sc_Seq)->update([
+            'Sc_DeleteYN'=>1
+        ]);
+        return response()->json(array('Sc_Seq'=>$Sc_Seq));
+    }
 }

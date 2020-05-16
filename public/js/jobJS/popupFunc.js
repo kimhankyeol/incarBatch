@@ -265,12 +265,7 @@ const popup = {
           "gusungData": gusungData
         },
         success: function (data) {
-          if(data.msg=="notUpdate"){
-            alert(data.msg2);
-            return false;
-           }else if(data.msg=="success"){
           return alert("등록 되었습니다."), window.close();
-         } 
         }
       })
     } else {
