@@ -79,10 +79,8 @@
                         $Job_ParamSulmyungs=explode("||",$data->Job_ParamSulmyungs);
                         $JobGusung_ParamPos=explode("||",$data->JobGusung_ParamPos);
                         for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
-                          echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                          if($proParamArr[$i]=="paramDate"){
-                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="날짜" readonly/>';
-                          }else if($proParamArr[$i]=="paramNum"){
+                          echo '<div class="d-inline-flex w-50 delYN mb-2">'.intVal($i+1).')';
+                          if($proParamArr[$i]=="paramNum"){
                             echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="숫자" readonly/>';
                           }else if($proParamArr[$i]=="paramStr"){
                             echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="문지" readonly/>';
@@ -101,10 +99,11 @@
                   @endif
                 </li>
                 <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
-                  <div>/home/script/log/<input name="Sc_LogFile" type="text"  value="2344"></div>
+                  <div>/home/script/log/<input name="Sc_LogFile" type="text"></div>
                 </li>
               </ul>
               @endforeach
+            <input type="hidden" id="scExecJob" value="{{$data->Job_Seq}}" />
             @endIf
         </div>
       </div>

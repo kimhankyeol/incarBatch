@@ -133,7 +133,6 @@ class JobController extends Controller
             'Job_Params'=>$Job_Params,
             'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
             'Job_DeleteYN'=>$Job_DeleteYN,
-            'Job_GusungVersion'=>$Job_GusungVersion,
             'Job_WorkLargeCtg'=>$Job_WorkLargeCtg,
             'Job_WorkMediumCtg'=>$Job_WorkMediumCtg
             ]

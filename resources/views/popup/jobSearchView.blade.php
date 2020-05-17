@@ -7,7 +7,7 @@
 <body class="bg-gradient-primary">
   <div class="mx-2">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow my-3">
-      <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100" style="width: 100%;">
+      <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100" style="width: 100%;">
         <div class="input-group">
           <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
             @include("code.codeSelect")
@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </nav>
     <div class="card shadow mb-4">
       <div class="card-body">
