@@ -38,6 +38,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     var today = now.getFullYear() + '-' + month + '-' + day;
     $('#startDate').val(today);
     $('#endDate').val(today);
+    var dbclick=false;
+    // 모니터 리스트
+    $(document).on('click','.OneDbClickCss',function(event){
+      var OneDbClickCss = $('.OneDbClickCss').index(this);
+      //tr 색 바꾸기  활성된거
+      if($('.OneDbClickCss').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'})){
+          $('.OneDbClickCss').eq(OneDbClickCss).css({'background-color':'rgb(218, 221, 235)'});
+      }else {
+          $('.OneDbClickCss').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'});
+      }
+    })
+    $(document).on('click', '.pagination a', function (event) {
+      event.preventDefault();
+      var page = $(this).attr('href').split('page=')[1];
+      var Job_Seq = $('#monitorJob').attr("data-value");
+      monitor.detailList(Job_Seq, page);
+    });
   });
 </script>
 <script>$(function(){$("#monitorDatatable").colResizable();});</script>
@@ -125,15 +142,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               <div id="scheduleProcessList" class="table-responsive overflow-x-scroll">
                 @include('monitoring.scheduleProcessList')
               </div>
-              {{--  <div id="gusungDatatable" class="table-responsive">
-                @include('monitoring.monitorGusungSearchList')
-              </div>  --}}
-            </div>
-            <div class="card-body py-3">
-              <h5 class="mb-4 font-weight-bold text-primary">작업 로그</h5>
-              <div id="jobTailLog">
-                <textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>
-              </div>
             </div>
           </div>
         </div>
@@ -145,294 +153,5 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     <input type="hidden" id="jobSeq">
     <input type="hidden" id="scSeq">
     <input type="hidden" id="pSeq">
-    <script>
-      //더보기 클릭
-      function tailAdd(){
-        var jobSeq = $('#jobSeq').val();
-        var scSeq = $('#scSeq').val();
-        var pSeq = $('#pSeq').val();
-        var line = parseInt($('#lineNum').val());
-        //100줄씩 추가 
-        var lineMore = 100 ; 
-        line = parseInt(line + lineMore);
-        
-        if($("#setNum").is(":checked")){
-            $("#setNum").val(1);
-        }else{
-            $("#setNum").val(0);
-        }
-        
-        if($("#headTail").is(":checked")){
-            $("#headTail").val("tail");
-        }else{
-            $("#headTail").val("head");
-        }
-
-        var setNum = $("#setNum").val();
-        var headTail = $("#headTail").val();
-        var logSearchWord = $('#logSearchWord').val();
-        //라인수가 10000개 이상 30000개 미만일떄 분기처리 
-        if(line>=10000&&line<30000){
-          var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
-          if(result){
-            $.ajax({
-                url:"/job/jobTailAdd",
-                method:"get",
-                data:{
-                    "line":line,
-                    "Job_Seq":jobSeq,
-                    "P_Seq":pSeq,
-                    "setNum":setNum,
-                    "headTail":headTail,
-                    "logSearchWord":logSearchWord,
-                    "Sc_Seq":scSeq
-                },
-                success:function(data){
-                  $('#jobSeq').val(jobSeq);
-                  $('#scSeq').val(scSeq);
-                  $('#pSeq').val(pSeq);
-                  $('#jobTailLog').html(data.returnHTML);
-                },
-                error:function(err){
-                  
-                }
-            })
-          }else{
-            return false;
-          }
-        }else if(line>=30000){
-          //3만개 이상이면
-          alert("조회하는 라인수가 너무 많습니다.\n 로그를 다운로드 받아주세요 ")
-          return false;
-        }else if(line<10000){
-           //만개 미만
-           $.ajax({
-                url:"/job/jobTailAdd",
-                method:"get",
-                data:{
-                    "line":line,
-                    "Job_Seq":jobSeq,
-                    "P_Seq":pSeq,
-                    "setNum":setNum,
-                    "headTail":headTail,
-                    "logSearchWord":logSearchWord,
-                    "Sc_Seq":scSeq
-                },
-                success:function(data){
-                  $('#jobSeq').val(jobSeq);
-                  $('#scSeq').val(scSeq);
-                  $('#pSeq').val(pSeq);
-                  $('#jobTailLog').html(data.returnHTML);
-                },
-                error:function(err){
-                  
-                }
-            })
-        }
-      }
-      // 라인수 입력  jobTailAddview search
-      function tailAddSearch(){
-        
-          var jobSeq = $('#jobSeq').val();
-          var scSeq = $('#scSeq').val();
-          var pSeq = $('#pSeq').val();
-          var line = $('#lineNum').val();
-          if($("#setNum").is(":checked")){
-              $("#setNum").val(1);
-          }else{
-              $("#setNum").val(0);
-          }
-
-          if($("#headTail").is(":checked")){
-            $("#headTail").val("tail");
-          }else{
-            $("#headTail").val("head");
-          }
-
-          var setNum = $('#setNum').val();
-          var headTail = $("#headTail").val();
-          var logSearchWord = $('#logSearchWord').val();
-          //라인수가 10000개 이상 30000개 미만일떄 분기처리 
-          if(line>=10000&&line<30000){
-            var result = confirm('로그 라인 수가 큽니다.\n 그래도 조회하시겠습니까?');
-            if(result){
-              $.ajax({
-                  url:"/job/jobTailAdd",
-                  method:"get",
-                  data:{
-                      "line":line,
-                      "Job_Seq":jobSeq,
-                      "P_Seq":pSeq,
-                      "setNum":setNum,
-                      "headTail":headTail,
-                      "logSearchWord":logSearchWord,
-                      "Sc_Seq":scSeq
-                  },
-                  success:function(data){
-                    $('#jobSeq').val(jobSeq);
-                    $('#scSeq').val(scSeq);
-                    $('#pSeq').val(pSeq)
-                    $('#jobTailLog').html(data.returnHTML);
-                  },
-                  error:function(err){
-                    
-                  }
-              })
-            }else{
-              return false;
-            }
-          }else if(line>=30000){
-            //3만개 이상이면
-            alert("조회하는 라인수가 너무 많습니다.\n 로그를 다운로드 받아주세요 ")
-            return false;
-          }else if(line<10000){
-            //만개 미만
-            $.ajax({
-                url:"/job/jobTailAdd",
-                method:"get",
-                data:{
-                    "line":line,
-                    "Job_Seq":jobSeq,
-                    "P_Seq":pSeq,
-                    "setNum":setNum,
-                    "headTail":headTail,
-                    "logSearchWord":logSearchWord,
-                    "Sc_Seq":scSeq
-                },
-                success:function(data){
-                  $('#jobSeq').val(jobSeq);
-                  $('#scSeq').val(scSeq);
-                  $('#pSeq').val(pSeq);
-                  $('#jobTailLog').html(data.returnHTML);
-                },
-                error:function(err){
-                  
-                }
-            })
-          }
-      }
-    $(document).ready(function(){
-      var dbclick=false;
-       // 모니터 리스트
-       $(document).on('click','.jobOneDbClick',function(event){
-          var jobSeqIndex = $('.jobOneDbClick').index(this);
-          //tr 색 바꾸기  활성된거
-          if($('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
-              $('.jobOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
-          }else {
-              $('.jobOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
-          }
-          $('#jobSeq').val();
-          $('#scSeq').val();
-          $('#pSeq').val();
-          $('#scheduleProcessList').html('');
-          $('#jobTailLog').html('<textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>');
-      })
-      // 상세 잡 리스트
-      $(document).on('click','.jobExeOneDbClick',function(event){
-        var jobSeqIndex = $('.jobExeOneDbClick').index(this);
-        var jobSeq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
-        var scSeq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
-
-        //tr 색 바꾸기  활성된거
-        if($('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
-            $('.jobExeOneDbClick').eq(jobSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
-        }else {
-            $('.jobExeOneDbClick').not(jobSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
-        }
-        setTimeout(function(){
-            if(dbclick ==false){
-              scheduleProcessList(jobSeq,scSeq);
-              $('#jobTailLog').html('<textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>');
-            }   
-        },400)    
-      }).on('dblclick','.jobExeOneDbClick',function(event){
-          dbclick = true
-          var jobSeqIndex = $('.jobExeOneDbClick').index(this);
-          var Job_Seq = $('.Job_Seq').eq(jobSeqIndex).attr("data-value");
-          var Sc_Seq = $('.Sc_Seq').eq(jobSeqIndex).attr("data-value");
-          // pageMove.jobpopup.jobAction('jobAction',jobSeq);
-          setTimeout(function(){   
-              dbclick = false
-              scheduleDetailPopup(Job_Seq,Sc_Seq);
-              $('#jobTailLog').html('<textarea class="form-control" style="height: calc((1vh) * 50);" readonly></textarea>');
-          },500)
-      })
-      // 스케줄 프로그램
-      $(document).on('click','.processOneDbClick',function(event){
-        var processSeqIndex = $('.processOneDbClick').index(this);
-        var jobSeq = $('.processOneDbClick').eq(processSeqIndex).attr("data-Job_Seq");
-        var scSeq = $('.processOneDbClick').eq(processSeqIndex).attr("data-Sc_Seq");
-        var pSeq = $('.processOneDbClick').eq(processSeqIndex).attr("data-P_Seq");
-
-          //tr 색 바꾸기  활성된거
-          if($('.processOneDbClick').not(processSeqIndex).css({'background-color':'rgb(255, 255, 255)'})){
-              $('.processOneDbClick').eq(processSeqIndex).css({'background-color':'rgb(218, 221, 235)'});
-          }else {
-              $('.processOneDbClick').not(processSeqIndex).css({'background-color':'rgb(255, 255, 255)'});
-          }        
-          setTimeout(function(){
-            if(dbclick ==false){
-              tailAddFirst(10,jobSeq,scSeq,pSeq);
-            }   
-        },400)    
-      }).on('dblclick','.processOneDbClick',function(event){
-          var processSeqIndex = $('.processOneDbClick').index(this);
-          var pSeq = '';
-          
-      })
-
-
-
-      $(document).on('click', '.pagination a', function (event) {
-        event.preventDefault();
-        var page = $(this).attr('href').split('page=')[1];
-        var Job_Seq = $('#monitorJob').attr("data-value");
-        monitor.detailList(Job_Seq, page);
-      });
-    })
-
-    //처음 잡을 클릭해서 로그 조회하는것  
-    function tailAddFirst(line,jobSeq,scSeq,pSeq){
-      $.ajax({
-        url:"/job/jobTailAdd",
-        method:"get",
-        data:{
-            "line":line,
-            "Job_Seq":jobSeq,
-            "P_Seq":pSeq,
-            "setNum":1,
-            "headTail":"tail",
-            "Sc_Seq":scSeq
-        },
-        success:function(data){
-            $('#jobSeq').val(jobSeq);
-            $('#scSeq').val(scSeq);
-            $('#pSeq').val(pSeq);
-            $('#lineNum').val(line);
-            $('#jobTailLog').html(data.returnHTML);
-        }
-      })
-    }
-    // 스케줄링 프로세스 정보
-    function scheduleProcessList(Job_Seq,Sc_Seq){
-      $.ajax({
-      url: "/monitoring/scheduleProcessList",
-      method: "get",
-      data: {
-        "Job_Seq": Job_Seq,
-        "Sc_Seq": Sc_Seq
-      },
-      success: function (resp) {
-        $('#scheduleProcessList').html(resp.returnHTML);
-        
-      }
-    })
-    }
-    // 잡 스케줄의 상세 정보
-    function scheduleDetailPopup(Job_Seq,Sc_Seq){
-      window.open('/popup/scheduleDetailPopup?Job_Seq='+Job_Seq+'&Sc_Seq='+Sc_Seq, '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
-    }
-  </script>
 </body>
 </html>

@@ -49,9 +49,30 @@ const monitor = {
       }
     })
   },
-  jobPopup: function (Job_Seq) {
-    window.open('/popup/jobDetailPopup?Job_Seq=' + Job_Seq, '잡 정보 상세', 'top=10, left=10, width=1400, height=675, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+  // 스케줄링 프로세스 정보
+  scheduleProcessList(Job_Seq, Sc_Seq) {
+    $.ajax({
+      url: "/monitoring/scheduleProcessList",
+      method: "get",
+      data: {
+        "Job_Seq": Job_Seq,
+        "Sc_Seq": Sc_Seq
+      },
+      success: function (resp) {
+        $('#scheduleProcessList').html(resp.returnHTML);
+
+      }
+    })
   },
+  // 잡 상세
+  jobPopup: function (Job_Seq) {
+    window.open('/popup/jobDetailPopup?Job_Seq=' + Job_Seq, '잡 정보 상세', 'top=10, left=10, width=1400, height=875, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+  },
+  // 잡 스케줄의 상세 정보
+  scheduleDetailPopup(Job_Seq, Sc_Seq) {
+    window.open('/popup/scheduleDetailPopup?Job_Seq=' + Job_Seq + '&Sc_Seq=' + Sc_Seq, '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+  },
+  // 프로그램 상세
   processDetail: function (P_Seq) {
     window.open('/popup/processDetailPopup?P_Seq=' + P_Seq, '프로그램 정보 상세', 'top=10, left=10, width=1400, height=875, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   }
