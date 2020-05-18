@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App;
 class MonitoringController extends Controller
 {
+    // 모니터링 화면 호출 컨트롤러
     function monitoringView(Request $request){
         $jobStatus = $request->input('jobStatus');
         $searchWord = $request->input('searchWord');
@@ -63,6 +64,7 @@ class MonitoringController extends Controller
              return view('/monitoring/monitoringView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','searchDate'));
          }
     }
+    // 잡을 조회하는 컨트롤러
     function monitorJobSearchList(Request $request){
         $jobStatus = $request->input('jobStatus');
         $searchWord = $request->input('searchWord');
@@ -130,6 +132,7 @@ class MonitoringController extends Controller
          }
          return response()->json(array('returnHTML'=>$returnHTML),200);
     }
+    // 잡 스케줄을 조회하는 컨트롤러
     function monitorJobDetailList(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $JobDetailList = DB::select('CALL Monitor_detailList(?)',[$Job_Seq]);
@@ -144,6 +147,17 @@ class MonitoringController extends Controller
         $searchParams = array( 'Job_Seq' => $Job_Seq);
 
         $returnHTML = view('/monitoring/monitorJobDetailList',compact('detailList','paginator','searchParams','page'))->render();
+        
+        return response()->json(array('returnHTML'=>$returnHTML,200));
+    }
+    // 잡 스케줄의 프로세스를 조회하는 컨트롤러
+    function scheduleProcessList(Request $request){
+        $Job_Seq = $request->input('Job_Seq');
+        $Sc_Seq = $request->input('Sc_Seq');
+        
+        $processList = DB::select('CALL Monitor_processList(?,?)',[$Job_Seq,$Sc_Seq]);
+
+        $returnHTML = view('/monitoring/scheduleProcessList',compact('processList'))->render();
         
         return response()->json(array('returnHTML'=>$returnHTML,200));
     }

@@ -498,7 +498,7 @@ const job = {
     }else if(Sc_Sulmyung==""){
       alert('스케줄 설명이 입력되지 않았습니다.');
       return false;
-    }else if(nowDateTime > Sc_CronTime){
+    }else if(nowDateTime < Sc_CronTime){
       alert('현재시간 이전에 등록할 수 없습니다.');
       return false;
     }else if("2037-12-31" < startdate){

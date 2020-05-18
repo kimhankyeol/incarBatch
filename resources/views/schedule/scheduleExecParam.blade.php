@@ -53,7 +53,7 @@
               <ul class="px-0 mb-0 w-100 d-inline-flex gusungData">
                 <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
                   <div class="custom-control custom-checkbox small">
-                    <input id="sc_p_{{$data->JobGusung_Order}}" name="P_ExecuteYN" type="checkbox" class="custom-control-input" checked>
+                    <input id="sc_p_{{$data->JobGusung_Order}}" name="P_ExecuteYN" type="checkbox" class="custom-control-input" value="{{$data->P_Seq}}" checked>
                     <label class="custom-control-label font-weight-bold text-primary" for="sc_p_{{$data->JobGusung_Order}}"></label>
                   </div>
                 </li>
@@ -77,7 +77,7 @@
                           }else if($proParamArr[$i]=="paramStr"){
                             echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="문지" readonly/>';
                           }
-                          echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$Job_ParamSulmyungs[$JobGusung_ParamPos[$i]].'" readonly></div>';
+                          echo '<input type="text" name="P_Param" class="col-md-6 form-control form-control-sm" value="'.$Job_ParamSulmyungs[$JobGusung_ParamPos[$i]].'" readonly></div>';
                         }
                         @endphp
                     @endif

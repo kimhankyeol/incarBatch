@@ -79,6 +79,8 @@ Route::prefix('monitoring')->group(function(){
     Route::get('/monitorJobSearchList','MonitoringController@monitorJobSearchList');
     // 모니터링 잡 스케줄 리스트
     Route::get('/monitorJobDetailList','MonitoringController@monitorJobDetailList');
+    // 모니터링 잡 스케줄 프로세스 리스트
+    Route::get('/scheduleProcessList','MonitoringController@scheduleProcessList');
 });
 
 //작업 히스토리 prefix
@@ -104,6 +106,8 @@ Route::prefix('popup')->group(function(){
     Route::get('/jobDetailPopup','PopupController@jobDetailPopup');
     // 모니터링 잡 스케줄 상세
     Route::get('/scheduleDetailPopup','PopupController@scheduleDetailPopup');
+    // 모니터링 잡 스케줄 프로세스 상세
+    Route::get('/processDetailPopup','PopupController@processDetailPopup');
     //스케줄러 -> 잡검색
     Route::get('/jobSearchView','PopupController@jobSearchView');
 

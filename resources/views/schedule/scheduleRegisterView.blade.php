@@ -216,9 +216,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
         </div>
         <script type="text/javascript">
-        function submit() {
-            window.close()
-        }
         function handler(){
         if(event.target.value==1){
             $('#StartTime').show();

@@ -29,7 +29,7 @@
         {{--  조회된 값이 보여주는 위치 --}}
         @if(isset($data))
             @foreach($data as $monitorSc)
-            <tr class="jobOneDbClick" onclick="monitor.detailList({{$monitorSc->Job_Seq}},1)" ondblclick="">
+            <tr class="jobOneDbClick" onclick="monitor.detailList({{$monitorSc->Job_Seq}},1)" ondblclick="monitor.jobPopup({{$monitorSc->Job_Seq}})">
                 <td class="text-center"><input type="checkbox" class="d-none" value="{{$monitorSc->Job_Seq}}" />{{'job_'.$monitorSc->Job_WorkLargeCtg.'_'.$monitorSc->Job_WorkMediumCtg.'_'.$monitorSc->Job_Seq}}</td>
                 <td>{{$monitorSc->Job_Name}}</td>
                 <td>{{$monitorSc->Job_Sulmyung}}</td>

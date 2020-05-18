@@ -11,6 +11,7 @@ class ExecuteController extends Controller
     public function jobTailAdd(Request $request){
         $line = $request->input('line');
         $Job_Seq = $request->input('Job_Seq');
+        $P_Seq = $request->input('P_Seq');
         $setNum = $request->input('setNum');
         $headTail = $request->input('headTail');
         $logSearchWord = $request->input('logSearchWord');
@@ -25,7 +26,7 @@ class ExecuteController extends Controller
             if(!empty($getJobInfo)){
                 
                 //만약 상태모니터링 테이블에서 시작시간이 업데이트 된다하면 실행시간 다시 구해야됨
-                $JobExecuteDate =  $getJobInfo[0]->JobSM_P_StartTime;
+                $JobExecuteDate =  $getJobInfo[0]->Sc_StartTime;
                 //2020-05-05 02:20:20 - > 20200505 로 변환해야됨
                 $JobExecuteDate = new DateTime($JobExecuteDate);
                 $JobExecuteDate = $JobExecuteDate->format('Ymd');
@@ -33,8 +34,8 @@ class ExecuteController extends Controller
                 $WorkLarge =  $getJobInfo[0]->WorkLarge;
                 $WorkMedium =  $getJobInfo[0]->WorkMedium;
                 
-                $logfilename = "job_".$WorkLarge."_".$WorkMedium."_".$Job_Seq."_".$Sc_Seq."_".$JobExecuteDate.".log";
-                $logfile = "/home/script/log/".$JobExecuteDate."/".$logfilename;
+                $logfilename = "program_".$WorkLarge."_".$WorkMedium."_".$Job_Seq."_".$Sc_Seq."_".$P_Seq."_".$JobExecuteDate.".log";
+                $logfile = "/home/script/log/".$WorkLarge."/".$WorkMedium."/".$Job_Seq."/".$Sc_Seq."/".$JobExecuteDate."/".$logfilename;
                 $lineTotal = shell_exec("wc -l ".$logfile); 
                 $lineTotal = explode(" ",$lineTotal)[0];
                 $fileSize = filesize($logfile);
@@ -72,7 +73,7 @@ class ExecuteController extends Controller
             if(!empty($getJobInfo)){
                 
                 //만약 상태모니터링 테이블에서 시작시간이 업데이트 된다하면 실행시간 다시 구해야됨
-                $JobExecuteDate =  $getJobInfo[0]->JobSM_P_StartTime;
+                $JobExecuteDate =  $getJobInfo[0]->Sc_StartTime;
                 //2020-05-05 02:20:20 - > 20200505 로 변환해야됨
                 $JobExecuteDate = new DateTime($JobExecuteDate);
                 $JobExecuteDate = $JobExecuteDate->format('Ymd');
@@ -81,8 +82,8 @@ class ExecuteController extends Controller
                 $WorkMedium =  $getJobInfo[0]->WorkMedium;
                 
                 //폴더명은 log 뒤부터 /업무 대분류/업무 중분류/잡시퀀스/스케줄시퀀스/파일명
-                $logfilename = "job_".$WorkLarge."_".$WorkMedium."_".$Job_Seq."_".$Sc_Seq."_".$JobExecuteDate.".log";
-                $logfile = "/home/script/log/".$WorkLarge."_".$WorkMedium."_".$Job_Seq."/".$Sc_Seq."/".$logfilename;
+                $logfilename = "program_".$WorkLarge."_".$WorkMedium."_".$Job_Seq."_".$Sc_Seq."_".$P_Seq."_".$JobExecuteDate.".log";
+                $logfile = "/home/script/log/".$WorkLarge."/".$WorkMedium."/".$Job_Seq."/".$Sc_Seq."/".$JobExecuteDate."/".$logfilename;
                 $lineTotal = shell_exec("grep -o ".$logSearchWord." ".$logfile."|wc -w");
                 $lineTotal = explode(" ",$lineTotal)[0];
                
