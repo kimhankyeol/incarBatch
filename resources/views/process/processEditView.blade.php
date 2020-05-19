@@ -152,12 +152,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                   echo '<div class="d-inline-flex w-50 delYN mb-2">';
                                   echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
                                   echo '<select name="proParamType" class="col-md-2 form-control form-control-sm">';
-                                if($proParamArr[$i]=="paramDate"){
-                                  echo '<option value="'.$proParamArr[$i].'" selected>날짜</option> <option value="paramStr">문자</option> <option value="paramNum">숫자</option> </select>';
-                                }else if($proParamArr[$i]=="paramNum"){
-                                  echo '<option value="paramDate">날짜</option> <option value="paramStr">문자</option> <option value="'.$proParamArr[$i].'" selected>숫자</option> </select>';
+                                if($proParamArr[$i]=="paramNum"){
+                                  echo '<option value="paramStr">문자</option> <option value="'.$proParamArr[$i].'" selected>숫자</option> </select>';
                                 }else if($proParamArr[$i]=="paramStr"){
-                                  echo '<option value="paramDate">날짜</option> <option value="'.$proParamArr[$i].'" selected>문자</option> <option value="paramNum">숫자</option> </select>';
+                                  echo '<option value="'.$proParamArr[$i].'" selected>문자</option> <option value="paramNum">숫자</option> </select>';
                                 }
                                 echo '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'">';
                                 echo '<div class="delParam btn-danger  form-control form-control-sm col-md-1 text-center" onclick="process.deleteDivParam()">삭제</div>';

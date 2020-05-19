@@ -32,20 +32,30 @@
         <div class="card-body">
         {{-- 타이틀 --}}
         <div class="row text-center">
-          <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">실행 여부
-          </div>
-          <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">순서
-          </div>
-          <div class="right-line col-md-2 p-2 bg-primary text-white font-weight-bold rounded-0">
-            경로</div>
           <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
-            프로그램</div>
-          <div class="right-line col-md-2 p-2 bg-primary text-white font-weight-bold rounded-0">
-            프로그램 명</div>
+            실행 여부
+          </div>
+          <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+            순서
+          </div>
+          <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+            경로
+          </div>
+          <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+            프로그램
+          </div>
+          <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+            프로그램명
+          </div>
           <div class="right-line col-md-4 p-2 bg-primary text-white font-weight-bold rounded-0">
-            파라미터</div>
-            <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
-            재작업</div>
+            파라미터
+          </div>
+          <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+            재작업
+          </div>
+          <div class="right-line col-md-2 p-2 bg-primary text-white font-weight-bold rounded-0">
+            로그파일
+          </div>
         </div>
         <div id="gusungList" class="row px-0 gusungList">
             @if(isset($jobGusungContents))
@@ -53,14 +63,14 @@
               <ul class="px-0 mb-0 w-100 d-inline-flex gusungData">
                 <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
                   <div class="custom-control custom-checkbox small">
-                    <input id="sc_p_{{$data->JobGusung_Order}}" name="P_ExecuteYN" type="checkbox" class="custom-control-input" value="{{$data->P_Seq}}" checked>
+                    <input id="sc_p_{{$data->JobGusung_Order}}" name="P_ExecuteYN" type="checkbox" class="custom-control-input" value="{{ $data->P_Seq }}" checked>
                     <label class="custom-control-label font-weight-bold text-primary" for="sc_p_{{$data->JobGusung_Order}}"></label>
                   </div>
                 </li>
                 <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">{{$data->JobGusung_Order}}</li>
-                <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 h-100 align-items-center">{{$data->P_FilePath}}</li>
+                <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center">{{$data->P_FilePath}}</li>
                 <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center">{{$data->P_File}}</li>
-                <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 h-100 align-items-center">{{$data->P_Name}}</li>
+                <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center">{{$data->P_Name}}</li>
                 <li class="list-group-item col-md-4 p-2 rounded-0">
                   <label class="m-0 w-100">
                     @if(isset($data->JobGusung_ParamPos))
@@ -71,11 +81,11 @@
                         for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
                           echo '<div class="d-inline-flex w-50 delYN mb-2">';
                           if($proParamArr[$i]=="paramDate"){
-                            echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="날짜" readonly/>';
+                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="날짜" readonly/>';
                           }else if($proParamArr[$i]=="paramNum"){
-                            echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="숫자" readonly/>';
+                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="숫자" readonly/>';
                           }else if($proParamArr[$i]=="paramStr"){
-                            echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="문지" readonly/>';
+                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="문지" readonly/>';
                           }
                           echo '<input type="text" name="P_Param" class="col-md-6 form-control form-control-sm" value="'.$Job_ParamSulmyungs[$JobGusung_ParamPos[$i]].'" readonly></div>';
                         }
@@ -87,8 +97,11 @@
                   @if(($data->P_ReworkYN)==1)
                       <label class="m-0 font-weight-bold text-primary">가능</label>
                   @else
-                  <label class="m-0  font-weight-bold text-danger">불가능</label>
+                    <label class="m-0  font-weight-bold text-danger">불가능</label>
                   @endif
+                </li>
+                <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
+                  <div>/home/script/log/<input name="Sc_LogFile" type="text"  value="2344"></div>
                 </li>
               </ul>
               @endforeach

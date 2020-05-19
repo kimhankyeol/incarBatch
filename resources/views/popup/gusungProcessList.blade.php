@@ -15,14 +15,15 @@
      //echo var_dump(($paramSulmyungs));
      //echo '<br>';
     // echo var_dump(($JobGusung_ParamPos));
-    
-     for ($i=0; $i < sizeof($paramSulmyungs); $i++) { 
+    if(isset($data->P_ParamSulmyungs)) {
+      for ($i=0; $i < sizeof($paramSulmyungs); $i++) { 
        echo '<input class="form-control form-control-sm w-auto d-inline-block border-0 bg-transparent shadow-none" type="text" value="'.$paramSulmyungs[$i].'" readonly>';
        echo '<select class="form-control form-control-sm w-25 d-inline-block parmSelect">';
          for($j=0; $j <sizeof($Job_ParamSulmyungs); $j++) {
              echo '<option value="'.$j.'"'.($j==$JobGusung_ParamPos[$i]?'selected=true':'').'>'.intval($j+1).') '.$Job_ParamSulmyungs[$j].'</option>';
         }
       echo '</select>';
+      }
     }
     @endphp
     </label>

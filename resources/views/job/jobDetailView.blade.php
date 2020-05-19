@@ -120,9 +120,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           for ($i = 0; $i < count($jobParamArr); $i++) {
                           echo '<div class="d-inline-flex w-50 delYN mb-2">';
                           echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
-                          if($jobParamArr[$i]=="paramDate"){
-                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="날짜" readonly/>';
-                          }else if($jobParamArr[$i]=="paramNum"){
+                          if($jobParamArr[$i]=="paramNum"){
                             echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
                           }else if($jobParamArr[$i]=="paramStr"){
                             echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';

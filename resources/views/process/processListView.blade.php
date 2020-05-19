@@ -67,7 +67,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <div class="card-body py-3">
               <div class="table-responsive">
                 <div class="table-responsive">
-                  <table id="datatable" class="table table-bordered" width="100%" cellspacing="0">
+                  <table id="datatable" class="table table-bordered" cellspacing="0">
                     <colgroup>
                       <col width="130px" />
                       <col width="110px" />

@@ -28,7 +28,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <div class="card-header py-3">
                         <h5 class="m-0 font-weight-bold text-primary">프로그램 정보 등록</h5>
                         <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
-                        <input id="P_RegId" type="hidden" value="이수연"/>
+                        <input id="P_RegId" type="hidden" value="1611698"/>
                     </div>
                     <div class="card-body">
                         <div class="row">

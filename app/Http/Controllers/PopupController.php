@@ -219,4 +219,8 @@ class PopupController extends Controller
             return view('popup.jobSearchView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','handle'));
         }
     }
+    // 작업내역 - 작업상세
+    public function historyProcessListPopup(Request $request){
+        return view('popup.historyProcessListPopup');
+    }
 }

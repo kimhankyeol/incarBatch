@@ -150,13 +150,12 @@ class MonitoringController extends Controller
         
         return response()->json(array('returnHTML'=>$returnHTML,200));
     }
+
     // 잡 스케줄의 프로세스를 조회하는 컨트롤러
     function scheduleProcessList(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $Sc_Seq = $request->input('Sc_Seq');
-        
         $processList = DB::select('CALL Monitor_processList(?,?)',[$Job_Seq,$Sc_Seq]);
-
         $returnHTML = view('/monitoring/scheduleProcessList',compact('processList'))->render();
         
         return response()->json(array('returnHTML'=>$returnHTML,200));

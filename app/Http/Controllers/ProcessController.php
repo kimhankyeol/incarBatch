@@ -47,7 +47,7 @@ class ProcessController extends Controller
             }
             
             if($WorkLarge!="all"){
-                $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
+                $usedMedium = DB::select('CALL Common_jobMediumCode(?)',[$WorkLarge]);
                 return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
             }else{
                 return view('process.processListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));
@@ -88,8 +88,6 @@ class ProcessController extends Controller
         $proParamSulmyungInput=$request->input('proParamSulmyungInput');
         $P_DevId=$request->input('P_DevId');
         $P_RegIp = $_SERVER["REMOTE_ADDR"];
-        $P_RegId = $request->input('P_RegId');
-
         $P_TextInputCheck=$request->input('P_TextInputCheck');
         $P_TextInput=$request->input('P_TextInput');
        
@@ -116,7 +114,7 @@ class ProcessController extends Controller
                      'P_TextInputCheck'=>$P_TextInputCheck,
                      'P_DevId'=>$P_DevId,
                      'P_RegIp'=>ip2long($P_RegIp),
-                     'P_RegId'=>$P_RegId,
+                     'P_RegId'=>1611699,
                      'P_RegDate'=>now()
                     ]
                 );

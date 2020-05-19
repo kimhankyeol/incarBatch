@@ -39,7 +39,6 @@ const process = {
         var programName = document.getElementById("programName").value;
         var programExplain = document.getElementById("programExplain").value;
 
-        var P_RegId=$('#P_RegId').val();
         var P_DevId="16161616";
         var P_TextInputCheck = $('#P_TextInputCheck').val();
         var P_TextInput=$('#P_TextInput').val();
@@ -324,7 +323,7 @@ const process = {
         var delBtnDiv = document.createElement("div");
         //onchange 걸어야됨
         var proParamInputText =
-            '<select name="proParamType" class="col-md-2 form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
+            '<select name="proParamType" class="col-md-2 form-control form-control-sm" ><option value="paramNum" selected>숫자</option><option value="paramStr">문자</option>' +
             '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" placeholder="설명">';
         proParamDiv.className = "d-inline-flex w-50 delYN mb-2";
         proParamDiv.style.cssFloat="left";

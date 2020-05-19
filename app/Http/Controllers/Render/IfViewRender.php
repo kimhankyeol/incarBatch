@@ -23,7 +23,7 @@ class ifViewRender {
         array('title' => '프로그램 상세', 'url' => '/process/processDetailView'),
         array('title' => '스케줄 관리', 'url' => '/schedule/scheduleListView'),
         array('title' => '모니터링', 'url' => '/monitoring/monitoringView'),
-        array('title' => '작업내역', 'url' => '/jobHistory/jobHistoryView')
+        array('title' => '작업내역', 'url' => '/history/historyListView')
     );
     //view 마다 추가/변경되는 리소스 관리 
     //url 에 따른 css /js 추가 
@@ -39,7 +39,7 @@ class ifViewRender {
         array('label' => '프로그램 등록', 'url' => '/process/processListView?page=1','icon'=>'fas fa-fw fa-cog'),
         array('label' => '스케줄 관리', 'url' => '/schedule/scheduleListView?page=1','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '모니터링', 'url' => '/monitoring/monitoringView','icon'=>'fas fa-fw fa-wrench'),
-        array('label' => '작업내역', 'url' => '/jobHistory/jobHistoryView','icon'=>'fas fa-fw fa-folder')
+        array('label' => '작업내역', 'url' => '/history/historyListView','icon'=>'fas fa-fw fa-folder')
     );
 
 

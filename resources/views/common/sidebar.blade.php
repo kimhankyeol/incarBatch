@@ -15,20 +15,24 @@
     };
     ?>
     <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>관리자</span>
-        </a>
-        <div id="collapsePages" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">관리자 목록:</h6>
-            <a class="collapse-item" href="/admin/commonCodeLargeManageView?page=1">대분류 설정</a>
-            <a class="collapse-item" href="/admin/commonCodeMediumManageView?page=1">중분류 설정</a>
-            {{-- <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a> --}}
-          </div>
+      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>관리자</span>
+      </a>
+      <div id="collapsePages" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">목록</h6>
+          <a class="collapse-item" href="/admin/commonCodeLargeManageView?page=1">대분류 설정</a>
+          <a class="collapse-item" href="/admin/commonCodeMediumManageView?page=1">중분류 설정</a>
+          {{-- <div class="collapse-divider"></div>
+          <h6 class="collapse-header">Other Pages:</h6>
+          <a class="collapse-item" href="404.html">404 Page</a>
+          <a class="collapse-item" href="blank.html">Blank Page</a> --}}
         </div>
-      </li>
+      </div>
+    </li>
+    <hr class="sidebar-divider d-none d-md-block">
+    <div class="text-center d-none d-md-inline">
+      <button class="rounded-circle border-0" type="button" id="sidebarToggle"></button>
+    </div>
 </ul>

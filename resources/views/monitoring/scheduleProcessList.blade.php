@@ -35,9 +35,9 @@ if (isset($processList)) {
         </thead>
         <tbody>
               {{--  조회된 값이 보여주는 위치 --}}
-              @foreach($processList as $gusungSc )
+              @foreach($processList as $index => $gusungSc )
                 <tr class="processOneDbClick" data-Job_Seq="{{$gusungSc->Job_Seq}}" data-Sc_Seq="{{$gusungSc->Sc_Seq}}" data-P_Seq="{{$gusungSc->P_Seq}}">
-                  <td class="text-center">{{$gusungSc->orderNum}}</td>
+                  <td class="text-center">{{$index+1}}</td>
                   <td>{{$gusungSc->P_File}}</td>
                   <td>{{$gusungSc->P_Name}}</td>
                   <td class="text-center">{{$gusungSc->JobSM_P_Status}}</td>
@@ -65,8 +65,8 @@ if (isset($processList)) {
                         }
                       } else {
                         echo '<div class="progress">';
-                        echo '<p class="p-0 progress-percent">0%</p>';
                         echo '</div>';
+                        echo '<p class="p-0 progress-percent text-success">0%</p>';
                       }
                     @endphp
                   </td>
