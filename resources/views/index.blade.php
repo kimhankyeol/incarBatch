@@ -14,36 +14,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 @include('common.head')
 <body id="page-top">
     <div id="wrapper">
-    {{-- 블레이드 주석 쓰는 법--}}
-    {{--사이드바 시작--}}
     @include('common.sidebar')
-    {{--사이드바 끝--}}
-    {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
-        index 입니다.
-
-        {{-- 팝업 임시 버튼 --}}
-        <div class="m-5 b-5 text-center">
-            <button type="button" class="btn btn-info" onclick="popup.processInfo()">프로세스상세</button>
-            <button type="button" class="btn btn-info" onclick="popup.jobGusung()">잡 구성</button>
-            <button type="button" class="btn btn-info" onclick="popup.jobAction()">잡 실행</button>
-        </div>
+    <div id="content-wrapper" class="d-flex flex-column text-center">
+        <h3 class="my-auto py-4 text-primary">Index 입니다.</h3>
         @include('common.footer')
-    {{--content 끝--}}
     </div>
-    {{-- 팝업 스크립트 --}}
-    <script>
-        const popup = {
-            processInfo: function processInfo() {
-                window.open('/popup/processInfo', '프로세스 상세정보', 'top=10, left=10, width=1080, height=547, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
-            },
-            jobGusung: function jobGusung() {
-                window.open('/popup/jobGusung', '잡 구성', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
-            },
-            jobAction: function jobAction() {
-                window.open('/popup/jobAction', '잡 실행', 'top=10, left=10, width=1280, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
-            }
-        }
-    </script>
 </body>
 </html>
