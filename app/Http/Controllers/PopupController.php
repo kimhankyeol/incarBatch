@@ -188,7 +188,7 @@ class PopupController extends Controller
         }
 
         // 사용중인 것만 조회
-        $jobContents = DB::select('CALL Job_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
+        $jobContents = DB::select('CALL Schedule_gusungJobList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
         $usedLarge = DB::select('CALL Common_LargeCode()');
 
         $page=$request->input('page');
