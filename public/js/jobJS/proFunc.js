@@ -33,6 +33,7 @@ const process = {
      
         var processPath = document.getElementById("processPath").value; 
         var processFile = document.getElementById("processFile").value;
+   
         var UseDb = document.getElementById("UseDb").value;
         var retry = $("#retry").val();
 
@@ -243,7 +244,9 @@ const process = {
     },
     //프로세스 유효성 검사
     validation:function(programName,programExplain,workMediumCtg,workLargeCtg,UseDb,processFile,Pro_YesangTime,Pro_YesangMaxTime,proParamType,Arr2){
+        alert(processFile);
         if(processFile == ""){
+          
             alert("파일명을 입력하세요");
             return false;
         } else if(programName == "") {
@@ -322,7 +325,7 @@ const process = {
         var delBtnDiv = document.createElement("div");
         //onchange 걸어야됨
         var proParamInputText =
-            '<select name="proParamType" class="col-md-2 form-control form-control-sm" ><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
+            '<select name="proParamType" class="col-md-2 form-control form-control-sm" > <option value="paramDate">날짜</option><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
             '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" placeholder="설명">';
         proParamDiv.className = "d-inline-flex w-50 delYN mb-2";
         proParamDiv.style.cssFloat="left";

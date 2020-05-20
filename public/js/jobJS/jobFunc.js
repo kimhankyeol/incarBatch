@@ -361,24 +361,22 @@ const job = {
     var P_Seq = [];
     var Log_File = [];
     var gusungData = document.getElementsByClassName("gusungData");
-
     for(var i=0; i<gusungData.length;i++){
       if(gusungData[i].children[0].children[0].children[0].checked){
         P_Seq.push(gusungData[i].children[0].children[0].children[0].value);
-        // Log_File.push(gusungData[i].children[7].children[0].children[0].value);
+        //Sc_LogFile value를 받아옴
+        Log_File.push(gusungData[i].children[7].children[0].children[0].value);
       } 
     }
-  
     var jobSc_id = $('#jobSc_id').val();//잡 id
-    var job_seq = jobSc_id.split('_')[3];//잡 seq
+    var job_seq = $('#scExecJob').val();//잡 seq
     var jobSc_name = $('#jobSc_name').val();//잡 명
     var Sc_Sulmyung = $('#Sc_Sulmyung').val();// 스케줄 설명
 
     var Day = $('#Day').val();//매 n일
-    var nowSys = new Date();
      
-    var nowDateTime = nowSys.getFullYear()+"-"+(nowSys.getMonth()+1)+"-"+nowSys.getDate()+" "+nowSys.getHours()+":"+nowSys.getMinutes()+":00";
-            
+    var nowDateTime = new Date().format("yyyy-MM-dd HH:mm:ss");
+
     var yoilArr = new Array();
     var Sc_Status = "301";
     //each로 loop를 돌면서 checkbox의 check된 값을 가져와 담아준다.
@@ -397,35 +395,30 @@ const job = {
     var startdate=$('#startdate').val();
     var starttime=$('#starttime').val();
 
-    var Sc_CronTime = startdate+" "+starttime+":00";
-    
-    const date = startdate.split('-');
-    var year = date[0];
-    var month = date[1];
-    var day = date[2];
+    var Sc_CronTime = new Date(startdate+" "+starttime).format("yyyy-MM-dd HH:mm:ss");
 
-    const time = starttime.split(':');
-    var hour = time[0];
-    var min = time[1];
-
+    var year = new Date(startdate+" "+starttime).format("yyyy");
+    var month = new Date(startdate+" "+starttime).format("MM");
+    var day = new Date(startdate+" "+starttime).format("dd");
+  
+    var hour = new Date(startdate+" "+starttime).format("HH");
+    var min = new Date(startdate+" "+starttime).format("mm");
     var enddate=$('#enddate').val();
     var endtime=$('#endtime').val();
+    var Sc_CronEndTime =  new Date(enddate+" "+endtime).format("yyyy-MM-dd HH:mm:ss");
 
-    var Sc_CronEndTime = enddate+" "+endtime+":00";
 
-    
-    console.log(Sc_CronEndTime);
 
-    scValCheck=job.Scvalidation(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime);
+    scValCheck=job.Scvalidation(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File);
 
     if(scValCheck){
       var result = confirm('스케줄을 등록하시겠습니까?');
       if(result){
-        if($('input:radio[id="Oneday"]').is(':checked')){
+        if($('#jugiChange option:selected').val()==1){
           var Sc_Crontab = " ";
-          var Sc_CronSulmyung = hour+":"+min+"에 한번 실행";
+          var Sc_CronSulmyung ="즉시 실행";
           var Sc_Status = "301"
-        }else if($('input:radio[id="Everyday"]').is(':checked')){
+        }else if($('#jugiChange option:selected').val()==2){
           if($('#Day').val()==1){
             var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
             var Sc_CronSulmyung = hour+":"+min+"에 매일 실행";
@@ -435,7 +428,7 @@ const job = {
             var Sc_CronSulmyung = hour+":"+min+"에 "+$('#Day').val()+"일 마다 실행";
             var Sc_Status = "302"
           }
-        }else if($('input:radio[id="Everyweek"]').is(':checked')){
+        }else if($('#jugiChange option:selected').val()==3){
           var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + yoil + " ";
           var Sc_Status = "303"
           for(var i=0;i<yoilArr.length;i++){
@@ -457,11 +450,11 @@ const job = {
           }
           const yoilArr1 = yoilArr.join(",");
           var Sc_CronSulmyung = hour+":"+min+"에 "+"매주 "+yoilArr1+"요일 마다 실행";
-        }else if($('input:radio[id="Everymonth"]').is(':checked')){
+        }else if($('#jugiChange option:selected').val()==4){
           var Sc_Crontab = min + " " + hour + " " + day + " " + "*" + " " + "*" + " ";
           var Sc_CronSulmyung = "매달 "+day+"일"+hour+":"+min+" 마다 실행";
           var Sc_Status = "304"
-        }else if($('input:radio[id="Everyyear"]').is(':checked')){
+        }else if($('#jugiChange option:selected').val()==5){
           var Sc_Crontab = min + " " + hour + " " + day + " " + month + " " + "*" + " ";
           var Sc_CronSulmyung = "매년 "+month+"월 "+day+"일 "+hour+":"+min+"마다 실행";
           var Sc_Status = "305"
@@ -481,8 +474,8 @@ const job = {
               'Sc_CronTime':Sc_CronTime,
               'Sc_CronEndTime':Sc_CronEndTime,
               'Sc_CronSulmyung':Sc_CronSulmyung,
-              'P_Seq':P_Seq
-              // 'Log_File':Log_File
+              'P_Seq':P_Seq,
+              'Log_File':Log_File
             },
             success:function(data){
                 console.log(data.last_sc_seq);
@@ -530,7 +523,7 @@ const job = {
   }
  },
   //스케줄링 유효성 검사
-  Scvalidation:function(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime){
+  Scvalidation:function(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File){
     if(jobSc_id==""){
       alert('잡 명이 입력되지 않았습니다.');
       $('#Job_Name').focus();
@@ -538,7 +531,7 @@ const job = {
     }else if(Sc_Sulmyung==""){
       alert('스케줄 설명이 입력되지 않았습니다.');
       return false;
-    }else if(nowDateTime < Sc_CronTime){
+    }else if(nowDateTime > Sc_CronTime){
       alert('현재시간 이전에 등록할 수 없습니다.');
       return false;
     }else if("2037-12-31" < startdate){
@@ -556,7 +549,7 @@ const job = {
     }else if(Sc_CronTime > Sc_CronEndTime){
       alert('종료 시간이 시작 시간보다 빠를 수 없습니다.');
       return false;
-    }else{
+    }else {
       //Arr2에 /를 기준으로 split하여 저장. split 사용하면 나누어진 문자열은 각각 배열로 들어감
       var Sc_Param2 = Sc_Param.split("||");
       console.log(Sc_Param2);
@@ -565,6 +558,12 @@ const job = {
               alert("잡 파라미터를 입력하세요");
               return false;
           }
+      }
+      for(var i = 0 ;i < Log_File.length; i++){
+        if(Log_File[i]==""){
+          alert('로그파일 경로를 입력하세요.');
+          return false;
+        }
       }
     }
     return 1;

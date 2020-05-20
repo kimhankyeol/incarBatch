@@ -43,7 +43,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
                             <select id="UseDb" class="col-md-1 form-control form-control-sm">
                                     @foreach ($db_list as $list)
-                                        <option value="{{$list->WorkMedium}}">{{ $list -> LongName}}</option>
+                                        <option value="{{$list->WorkMedium}}">{{ $list->LongName}}</option>
                                     @endforeach  
                             </select>  
                             <div class="col-md-1 mx-1 custom-control custom-checkbox small">

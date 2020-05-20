@@ -153,10 +153,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                           $JobGusung_ParamPos=explode("||",$data->JobGusung_ParamPos);
                                           for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
                                               echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                                              if($Job_Params[$i]=="paramDate"){
-                                                  echo ($i+1).")   ";
-                                                  echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="날짜" readonly/>';
-                                              }else if($Job_Params[$i]=="paramNum"){
+                                              if($Job_Params[$i]=="paramNum"){
                                                 echo ($i+1).")   ";
                                                 echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="숫자" readonly/>';
                                               }else if($Job_Params[$i]=="paramStr"){
@@ -176,7 +173,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         @endif
                                       </td>
                                       <td>
-                                        /home/script/log/
+                                        /home/script/log/{{$data->Sc_LogFile}}
                                       </td>
                                   </tr>
                                   @endforeach

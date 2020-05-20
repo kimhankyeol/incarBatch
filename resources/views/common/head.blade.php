@@ -16,6 +16,7 @@
     <script type="text/javascript" src="/vendor/jquery/jquery.js"></script>
     <script src="/vendor/bootstrap/js/popper.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/jobJS/dateFormat.js"></script>
     <script type="text/javascript" src="/js/pageMove/pageMove.js"></script>
     <script type="text/javascript" src="/js/jobJS/jobFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/proFunc.js"></script>
@@ -23,6 +24,7 @@
     <script type="text/javascript" src="/js/jobJS/loginFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/monitorFunc.js"></script>
     <script type="text/javascript" src="/js/jobJS/historyFunc.js"></script>
+
 
     <script type="text/javascript" src="/js/colResizable-1.6.js"></script>
     {{-- 테이블 col 유동적 크기 조절 --}}

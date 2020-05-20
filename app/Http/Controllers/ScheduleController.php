@@ -74,6 +74,7 @@ class scheduleController extends Controller
         $P_Seq = $request->input('P_Seq');//1,2
         $Sc_CronTime = $request->input('Sc_CronTime');
         $Sc_CronEndTime = $request->input('Sc_CronEndTime');
+        $Log_File = $request->input('Log_File');//log1,log2
         $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
                 [
                     'Sc_Crontab'=>$Sc_Crontab,
@@ -97,7 +98,8 @@ class scheduleController extends Controller
                         'P_Seq'=>$P_Seq[$i],
                         'Sc_Seq'=>$last_sc_seq,
                         'Job_Seq'=>$Job_Seq,
-                        'JobSM_P_Status'=>101
+                        'JobSM_P_Status'=>101,
+                        'Sc_LogFile'=>$Log_File[$i]
                     ]
                 );
                 DB::table('OnlineBatch_ScheduleProcessHis')->insert(
