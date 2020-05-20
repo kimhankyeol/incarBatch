@@ -111,8 +111,7 @@ const process = {
                     P_TextInputCheck:P_TextInputCheck,
                     P_TextInput:P_TextInput,
 
-                    P_DevId:P_DevId,
-                    P_RegId:P_RegId
+                    P_DevId:P_DevId
                 },
                 success: function (data) {
                     if(data.fileResult1==true&&data.count==0){
@@ -323,7 +322,7 @@ const process = {
         var delBtnDiv = document.createElement("div");
         //onchange 걸어야됨
         var proParamInputText =
-            '<select name="proParamType" class="col-md-2 form-control form-control-sm" ><option value="paramNum" selected>숫자</option><option value="paramStr">문자</option>' +
+            '<select name="proParamType" class="col-md-2 form-control form-control-sm" ><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
             '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" placeholder="설명">';
         proParamDiv.className = "d-inline-flex w-50 delYN mb-2";
         proParamDiv.style.cssFloat="left";
