@@ -160,7 +160,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                 echo ($i+1).")   ";
                                                 echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="문자" readonly/>';
                                               }
-                                                echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly></div>';
+                                                echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$JobGusung_ParamPos[$i]].'" readonly></div>';
                                               }
                                               @endphp
                                       @endif
