@@ -147,9 +147,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                     }
                                                     @endphp
                                                 </select>
+                                                <span>월</span>
                                                 <select id ="daysel" class="col-md-5 form-control form-control-sm ml-3">
                                                 </select>
-                                                <span>월</span>
+                                                <span>일</span>
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
