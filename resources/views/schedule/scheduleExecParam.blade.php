@@ -83,7 +83,7 @@
                           if($proParamArr[$i]=="paramNum"){
                             echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="숫자" readonly/>';
                           }else if($proParamArr[$i]=="paramStr"){
-                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="문지" readonly/>';
+                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="문자" readonly/>';
                           }
                           echo '<input type="text" name="P_Param" class="col-md-6 form-control form-control-sm" value="'.$Job_ParamSulmyungs[$JobGusung_ParamPos[$i]].'" readonly></div>';
                         }
@@ -99,7 +99,7 @@
                   @endif
                 </li>
                 <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
-                  <div>/home/script/log/<input name="Sc_LogFile" type="text"></div>
+                  <div>/home/script/log/<input name="Sc_LogFile" type="text" placeholder="ex) /car/geyak/geyak.log"></div>
                 </li>
               </ul>
               @endforeach
