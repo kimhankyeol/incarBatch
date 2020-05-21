@@ -11,10 +11,10 @@ $resourceInfo = $ifViewRender->getResource();
 $sidebarInfo = $ifViewRender->getSidebarArray();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-light ">
 @include('common.head')
 <body id="page-top">
-  <div id="wrapper">
+  <div id="wrapper" class="info-popup">
     {{--content 시작--}}
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->

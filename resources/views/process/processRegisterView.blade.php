@@ -31,23 +31,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <input id="P_RegId" type="hidden" value="1611698"/>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="outher-code">
-                                {{-- 업무 구분 대분류 중분류 선택 --}}
-                                <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
-                                @include("code.codeSelect")
-                              </div>
-                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
-                            <input id ="processPath" type="text" class="col-md-1 form-control form-control-sm align-self-center"readonly>
-                            <input id ="processFile" type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="파일명">
-                            <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">사용 DB</div>
-                            <select id="UseDb" class="col-md-1 form-control form-control-sm">
-                                    @foreach ($db_list as $list)
-                                        <option value="{{$list->WorkMedium}}">{{ $list->LongName}}</option>
-                                    @endforeach  
-                            </select>  
-                            <div class="col-md-1 mx-1 custom-control custom-checkbox small">
-                                <input id="retry" type="checkbox" class="custom-control-input" value="0">
+                        <div class="custom-row">
+                            {{-- 업무 구분 대분류 중분류 선택 --}}
+                            <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+                            @include("code.codeSelect")
+                            <div class="text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
+                            <input id ="processPath" type="text" class="form-control form-control-sm align-self-center"readonly>
+                            <input id ="processFile" type="text" class="form-control form-control-sm align-self-center" placeholder="파일명">
+                            <div class="mx-1 custom-control custom-checkbox small align-middle">
+                                <input id="retry" type="checkbox" class="custom-control-input" value="0" checked>
                                 <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
                             </div>
                         </div>

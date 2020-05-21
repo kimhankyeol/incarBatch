@@ -1,6 +1,7 @@
 /* table */
 .table {
   table-layout: fixed;
+  user-select: none;
 }
 
 .table tr th {
@@ -252,4 +253,35 @@ textarea {
   font-weight: bold;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.pagination {
+  justify-content: center;
+}
+
+/* 
+* 2020-05-20 이지흠
+*/
+
+.custom-row {
+  display:inline-block;
+  width:100%;
+}
+.custom-row:last-child {
+  margin-left:auto !important;
+}
+.custom-row > div, 
+.custom-row > select, 
+.custom-row> input[type="text"]  {
+  display:inline-block !important;
+  width: auto;
+}
+.custom-row> #workLargeVal {
+  min-width: calc((1vh) * 15);
+  margin: 0 !important;
+}
+.custom-row> #workMediumVal {
+  min-width: calc((1vh) * 25);
+  margin: 0 !important;
+  margin-right: 0.5rem !important;;
 }
