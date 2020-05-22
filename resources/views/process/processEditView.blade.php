@@ -119,24 +119,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           @php
                             $proParamArr=explode("||",$processDetail[0]->P_Params);
                             $proParamSulArr=explode("||",$processDetail[0]->P_ParamSulmyungs);
+                            echo '<div class="col-md-12" id="proParams">';
                             for ($i = 0; $i < count($proParamArr); $i++) {
                               echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                              echo '<div class="col-md-auto small align-self-center text-center">파라미터</div>';
+                              echo '<div class="col-md-3 small align-self-center text-center">파라미터</div>';
                               echo '<select name="proParamType" class="col-md-2 form-control form-control-sm">';
-                            if($proParamArr[$i]=="paramNum"){
-                              echo '<option value="paramStr">문자</option> <option value="'.$proParamArr[$i].'" selected>숫자</option> </select>';
-                            }else if($proParamArr[$i]=="paramStr"){
-                              echo '<option value="'.$proParamArr[$i].'" selected>문자</option> <option value="paramNum">숫자</option> </select>';
+                              if($proParamArr[$i]=="paramNum"){
+                                echo '<option value="paramStr">문자</option> <option value="'.$proParamArr[$i].'" selected>숫자</option> </select>';
+                              }else if($proParamArr[$i]=="paramStr"){
+                                echo '<option value="'.$proParamArr[$i].'" selected>문자</option> <option value="paramNum">숫자</option> </select>';
+                              }
+                              echo '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'">';
+                              echo '<button type="button" class="btn btn-sm col-md-auto delParam btn-danger form-control-sm text-center" onclick="process.deleteDivParam()">삭제</button>';
+                              echo '</div>';
                             }
-                            echo '<input type="text" name="proParamSulmyungInput" class="form-control form-control-sm" value="'.$proParamSulArr[$i].'">';
-                            echo '<button type="button" class="col-md-auto delParam btn-danger form-control-sm text-center" onclick="process.deleteDivParam()">삭제</button>';
                             echo '</div>';
-                            }
                           @endphp
                         @endif  
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12" id="proParams"></div>
                         {{-- 프로그램변수가 추가되는 함수  process.addDivParam()   삭제되는 함수는 process.delDivParam() //jobF unc.js 에 있음 --}}
                         <div class="col-md-12 text-center">
                             <input type="button" class="mt-3 btn btn-info" value="프로그램 변수 추가 +"  onclick="process.addDivParam()"/>
@@ -147,7 +146,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       <div class="row justify-content-end">
                           <input type="button" class="mt-3 mr-2 btn btn-primary" value="저장" onclick="process.update('upd')" />
                           {{--  <input type="button" class="mt-3 mr-2 btn btn-danger" value="삭제" onclick="process.update('del')" />  --}}
-                          <input type="button" class="mt-3 mr-2 btn btn-info" value="취소" onclick="window.history.back();"/>
+                          <input type="button" class="mt-3 mr-2 btn btn-info" value="취소" onclick="location.href = '/process/processListView'"/>
                       </div>
                     </div>
                 </div>

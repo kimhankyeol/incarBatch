@@ -327,23 +327,29 @@ const process = {
     delete: function () { },
     //파라미터 추가
     addDivParam: function () {
+        // if(document.getElementsByName('proParamType').length>9){
+        //     alert('프로그램 파라미터는 최대 10개 까지 등록가능 합니다.')
+        //     return false;
+        //   }
         var proParamDiv = document.createElement("div");
         var proParamDiv2 = document.createElement("div");
-        var delBtnDiv = document.createElement("div");
+        var delBtnButton = document.createElement("button");
         //onchange 걸어야됨
         var proParamInputText =
             '<select name="proParamType" class="col-md-2 form-control form-control-sm" ><option value="paramNum">숫자</option><option value="paramStr">문자</option>' +
             '<input type="text" name="proParamSulmyungInput" class="col-md-6 form-control form-control-sm" placeholder="설명">';
         proParamDiv.className = "d-inline-flex w-50 delYN mb-2";
-        proParamDiv.style.cssFloat = "left";
         proParamDiv2.className = "col-md-3 small align-self-center text-center";
         proParamDiv2.innerHTML = "파라미터";
-        delBtnDiv.className ="col-md-auto delParam btn-danger form-control-sm text-center";
-        delBtnDiv.innerText = "삭제";
+        delBtnButton.type = "button";
+        delBtnButton.className =
+            "btn btn-sm col-md-auto delParam btn-danger form-control-sm text-center";
+        delBtnButton.innerText = "삭제";
         proParamDiv.appendChild(proParamDiv2);
         proParamDiv.innerHTML += proParamInputText;
-        proParamDiv.appendChild(delBtnDiv);
+        proParamDiv.appendChild(delBtnButton);
         document.getElementById("proParams").appendChild(proParamDiv);
+        document.getElementById("proParams").app
         document.getElementById("proParams").scrollIntoView();
     }
 };

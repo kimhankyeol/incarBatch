@@ -60,7 +60,7 @@ if (isset($processList)) {
                     echo '<div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
                     echo '</div>';
                     echo '<p class="p-0 progress-percent text-primary">100%</p>';
-                  } else if ($maxRunningTime > $nowDateTime && !isset($gusungSc->JobSM_P_EndTime)) {
+                  } else if ($maxRunningTime < $nowDateTime && !isset($gusungSc->JobSM_P_EndTime)) {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
                     echo '</div>';

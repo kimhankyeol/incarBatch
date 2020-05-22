@@ -166,7 +166,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                       @endif
                                       </td>
                                       <td>
-                                        @if(($data->P_ReworkYN)==1)
+                                        @if(($data->Sc_ReworkYN)==1)
                                         <label class="m-0 font-weight-bold text-primary">가능</label>
                                         @else
                                           <label class="m-0  font-weight-bold text-danger">불가능</label>

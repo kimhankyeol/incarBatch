@@ -133,7 +133,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
               <div class="row justify-content-end">
                 <div class="mt-3 mr-2 btn btn-primary" onclick="job.update('{{$jobDetail[0]->Job_Seq}}')">수정 </div>
-                <div class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</div>
+                <div class="mt-3 mr-2 btn btn-danger" onclick="location.href = '/job/jobListView'">취소</div>
               </div>
             </div>
           </div>

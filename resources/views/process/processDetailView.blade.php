@@ -133,7 +133,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                       <hr>
                       <div class="row justify-content-end">
                         <input type="button" class="mt-3 mr-2 btn btn-info" value="수정" onclick="process.edit()"/>
-                        <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="window.history.back();"/>
+                        <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="location.href = '/process/processListView'"/>
                       </div>
                     </div>
                 </div>

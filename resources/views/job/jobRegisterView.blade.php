@@ -71,7 +71,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
               <div class="row justify-content-end">
                 <button type="button" class="mt-3 mr-2 btn btn-primary" onclick="job.register()">등록</button>
-                <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</b>
+                <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="location.href = '/job/jobListView'">취소</b>
               </div>
             </div>
           </div>

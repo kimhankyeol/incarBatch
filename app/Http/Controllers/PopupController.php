@@ -52,18 +52,34 @@ class PopupController extends Controller
         $gusungCount = DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq);
         $gusungCount = $gusungCount->count();
         
-        if($gusungCount!=0){
-            DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq)->delete();
-            // DB::table('OnlineBatch_StatusMonitoring')->where('Job_Seq',$Job_Seq)->delete();
-        }
-        for($i = 0; $i<count($gusungProcess);$i++){
-            # 잡 구성
-            DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobGusung_Order'=>$i+1,'JobGusung_ParamPos'=>$gusungData[$i]]);
-            //모니터링
-            // DB::table('OnlineBatch_StatusMonitoring')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobSM_P_Status'=>'102','JobSM_IP'=>$JobSM_IP]);
+
+        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$Job_Seq]);
+        
+        //잡상태에 따른 분기 처리
+        $exec=$jobStatusCheck[0]->v_exec;
+        $yeyak=$jobStatusCheck[0]->v_yeyak;
+        $error=$jobStatusCheck[0]->v_error;
+        $end=$jobStatusCheck[0]->v_end;
+
+        if($exec==0&&$yeyak==0&&$error==0&&$end==0){
+            if($gusungCount!=0){
+                DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq)->delete();
+                // DB::table('OnlineBatch_StatusMonitoring')->where('Job_Seq',$Job_Seq)->delete();
+            }
+            for($i = 0; $i<count($gusungProcess);$i++){
+                # 잡 구성
+                DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobGusung_Order'=>$i+1,'JobGusung_ParamPos'=>$gusungData[$i]]);
+                //모니터링
+                // DB::table('OnlineBatch_StatusMonitoring')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobSM_P_Status'=>'102','JobSM_IP'=>$JobSM_IP]);
+            }
+            return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount,"msg"=>'success',"msg2"=>'등록되었습니다.'),200);
+        
+        } else {
+            $msg2 = "잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.";
+            return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount,"msg"=>'failed','msg2'=>$msg2),200);
         }
         //return response()->json(array('Job_Seq'=>$Job_Seq,'gusungData'=>$gusungData,'gusungProcess'=>count($gusungProcess),'gusungCount'=>$gusungCount,200)); 
-        return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount),200);
+       // return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount),200);
     }
     //팝업 프로세스 검색조회
     public function popupPsSearch(Request $request){

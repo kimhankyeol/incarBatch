@@ -127,7 +127,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         </div>
                       <hr>
                       <div class="row justify-content-end">
-                          @if($processDetail[0]->P_ReworkYN==0)
+                          @if($processDetail[0]->Sc_ReworkYN==0)
                             <button type="button" class="mt-3 mr-2 btn btn-info" onclick="popup.reWorkModifi({{$processDetail[0]->Sc_P_Seq}})">재작업</button>
                           @endif
                         <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="window.close();">닫기</button>
