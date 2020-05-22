@@ -97,7 +97,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="input-group align-items-center mb-2 w-100">
                   <div class="mx-1 custom-control custom-checkbox small">
                     <input id="status_start" type="checkbox" class="custom-control-input jobStatus" value="20" checked="true">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_start">실행</label>
+                    <label class="custom-control-label font-weight-bold text-primary" for="status_start">실행중</label>
                   </div>
                   <div class="mx-1 custom-control custom-checkbox small">
                     <input id="status_reservation" type="checkbox" class="custom-control-input jobStatus" value="30" checked="true">

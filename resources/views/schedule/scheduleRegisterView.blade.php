@@ -143,9 +143,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                     }
                                                     @endphp
                                                 </select>
+                                                <span>월</span>
                                                 <select id ="daysel" class="col-md-5 form-control form-control-sm ml-3">
                                                 </select>
-                                                <span>월</span>
+                                                <span>일</span>
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
@@ -219,7 +220,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('#weekShow').show();
             $('#monthShow').hide();
             $('#yearShow').hide();
-            $('#endShow').show();
+            $('#endTime').show();
         }else if(jugi==4){
             dateChangeVal(jugi);
             $('#startTime').show();
@@ -228,7 +229,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('#weekShow').hide();
             $('#monthShow').show();
             $('#yearShow').hide();
-            $('#endShow').show();
+            $('#endTime').show();
         }else if(jugi==5){
             dateChangeVal(jugi);
             $('#startTime').show();
@@ -237,7 +238,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('#weekShow').hide();
             $('#monthShow').hide();
             $('#yearShow').show();
-            $('#endShow').show();
+            $('#endTime').show();
         }else if(jugi==6){
             dateChangeVal(jugi);
             $('#startTime').hide();
@@ -254,9 +255,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         //주기가 매년이면
         var month = $('#monthsel option:selected').val();
         var cont = "";
-        if(month%2==0){
-            if(month ==2 ){
+            if(month ==2  ){
                 for(var i = 1 ; i<=28;i++){
+                    cont+= '<option>'+i+'</option>';
+                }
+            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                for(var i = 1 ; i<=31;i++){
                     cont+= '<option>'+i+'</option>';
                 }
             }else{
@@ -264,11 +268,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     cont+= '<option>'+i+'</option>';
                 }
             }
-        }else if(month%2==1){
-            for(var i = 1 ; i<=31;i++){
-                cont+= '<option>'+i+'</option>';
-            }
-        }
+           
         $('#daysel').html(cont);
     }
   

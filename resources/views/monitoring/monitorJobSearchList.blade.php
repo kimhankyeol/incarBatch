@@ -16,7 +16,7 @@
         <th>ID</th>
         <th>명</th>
         <th>설명</th>
-        <th>실행</th>
+        <th>실행중</th>
         <th>예약</th>
         <th>완료</th>
         <th>오류</th>

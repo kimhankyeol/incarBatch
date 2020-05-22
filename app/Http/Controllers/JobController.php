@@ -99,7 +99,7 @@ class JobController extends Controller
         $end=$jobStatusCheck[0]->v_end;
 
         if($exec==0&&$yeyak==0&&$error==0&&$end==0){
-            return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium','jobTotalTime'));
+            return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium','jobTotalTime','jobStatusCheck'));
         } else {
             $msg = "잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.";
             $url = "/job/jobDetailView?Job_Seq=".$job_seq;
@@ -158,24 +158,36 @@ class JobController extends Controller
         //업무 대분류 중분류
         $Job_WorkLargeCtg=$request->input('Job_WorkLargeCtg');
         $Job_WorkMediumCtg=$request->input('Job_WorkMediumCtg');
-        $result = DB::table('incar.OnlineBatch_Job')->where('Job_Seq',$Job_Seq)->update([
-            'Job_Name'=>$Job_Name,
-            'Job_Sulmyung'=>$Job_Sulmyung,
-            'Job_UpdId'=>$Job_UpdId,
-            'Job_UpdIP'=>ip2long($Job_UpdIP),
-            'Job_Params'=>$Job_Params,
-            'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
-            'Job_WorkLargeCtg'=>$Job_WorkLargeCtg,
-            'Job_WorkMediumCtg'=>$Job_WorkMediumCtg
-        ]);
-        //변경사항이 있는지 없는지
-        if($result!=0){
-            $msg="success";
-            return response()->json(array('msg'=>$msg),200);
-        }else {
-            $msg="notChg";
-            return response()->json(array('msg'=>$msg),400);
-        }
+        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$Job_Seq]);
         
+        //잡상태에 따른 분기 처리
+        $exec=$jobStatusCheck[0]->v_exec;
+        $yeyak=$jobStatusCheck[0]->v_yeyak;
+        $error=$jobStatusCheck[0]->v_error;
+        $end=$jobStatusCheck[0]->v_end;
+
+        if($exec==0&&$yeyak==0&&$error==0&&$end==0){
+            $result = DB::table('incar.OnlineBatch_Job')->where('Job_Seq',$Job_Seq)->update([
+                'Job_Name'=>$Job_Name,
+                'Job_Sulmyung'=>$Job_Sulmyung,
+                'Job_UpdId'=>$Job_UpdId,
+                'Job_UpdIP'=>ip2long($Job_UpdIP),
+                'Job_Params'=>$Job_Params,
+                'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
+                'Job_WorkLargeCtg'=>$Job_WorkLargeCtg,
+                'Job_WorkMediumCtg'=>$Job_WorkMediumCtg
+            ]);
+             //변경사항이 있는지 없는지
+            if($result!=0){
+                $msg="success";
+                return response()->json(array('msg'=>$msg),200);
+            }else {
+                $msg="notChg";
+                return response()->json(array('msg'=>$msg),200);
+            }
+        }else {
+            $msg = "jobStatus";
+            return response()->json(array('msg'=>$msg),200);
+        }
     }
 }

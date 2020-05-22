@@ -53,7 +53,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkMediumName}}"/>
                   </div>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
-                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
+                  <table class="table table-bordered m-0 w-auto text-center">
+                    <thead>
+                      <th class="p-1">실행중</th>
+                      <th class="p-1">예약</th>
+                      <th class="p-1">오류</th>
+                      <th class="p-1">종료</th>
+                    </thead>
+                    <tbody>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_exec}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_yeyak}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_error}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_end}}</td>
+                    </tbody>
+                  </table>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
                   <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
                 </div>
