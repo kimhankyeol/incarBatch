@@ -83,6 +83,8 @@ Route::prefix('monitoring')->group(function(){
     Route::get('/monitorJobDetailList','MonitoringController@monitorJobDetailList');
     // 모니터링 잡 스케줄 프로세스 리스트
     Route::get('/scheduleProcessList','MonitoringController@scheduleProcessList');
+    // 모니터링 잡 스케줄 재시작
+    Route::get('/reWorkSchedule','MonitoringController@reWorkSchedule');
 });
 
 //히스토리
@@ -92,6 +94,7 @@ Route::prefix('history')->group(function(){
     //작업 히스토리 검색리스트
     Route::get('/historySearchList','HistoryController@historySearchList');
 });
+
 
 
 
@@ -113,10 +116,15 @@ Route::prefix('popup')->group(function(){
     Route::get('/scheduleDetailPopup','PopupController@scheduleDetailPopup');
     // 모니터링 잡 스케줄 프로세스 상세
     Route::get('/processDetailPopup','PopupController@processDetailPopup');
+    // 모니터링 잡 스케줄 프로세스 재작업
+    Route::get('/reWorkModifi','PopupController@reWorkModifi');
     //스케줄러 -> 잡검색
     Route::get('/jobSearchView','PopupController@jobSearchView');
+    //작업내역 -> 작업상세
+    Route::get('/historyProcessListPopup','PopupController@historyProcessListPopup');
 
 });
+
 
 
 
