@@ -360,16 +360,17 @@ const job = {
   scRegister:function(){
     var P_Seq = [];
     var Log_File = [];
-    var SC_P_ReworkYN=[];
+    var SC_ReworkYN=[];
     var gusungData = document.getElementsByClassName("gusungData");
     for(var i=0; i<gusungData.length;i++){
       if(gusungData[i].children[0].children[0].children[0].checked){
         P_Seq.push(gusungData[i].children[0].children[0].children[0].value);
-        // SC_P_ReworkYN.push(gusungData[i].children[6].children[0].dataset['value']);
+        SC_ReworkYN.push(gusungData[i].children[6].children[1].value);
         //Sc_LogFile value를 받아옴
-        Log_File.push(gusungData[i].children[7].children[0].children[0].value);
+        Log_File.push(gusungData[i].children[7].children[0].children[1].value);
       } 
     }
+ 
     // console.table(gusungData[0].children[6].children[0].getAttribute);
     // return false;
     var jobSc_id = $('#jobSc_id').val();//잡 id
@@ -504,7 +505,8 @@ const job = {
               'Sc_CronEndTime':Sc_CronEndTime,
               'Sc_CronSulmyung':Sc_CronSulmyung,
               'P_Seq':P_Seq,
-              'Log_File':Log_File
+              'Log_File':Log_File,
+              'SC_ReworkYN':SC_ReworkYN
             },
             success:function(data){
                 alert("등록되었습니다.");
