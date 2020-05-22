@@ -47,5 +47,5 @@
 </table>
 {{-- 페이징 이동 경로 --}}
 @if(isset($paginator))
-{{$paginator->setPath('/monitoring/monitorJobSearchList')->appends(request()->except($searchParams))->links()}}
+    {{$paginator->setPath('/monitoring/monitorJobSearchList')->appends(request()->except($searchParams))->links()}}
 @endIf

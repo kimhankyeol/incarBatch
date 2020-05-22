@@ -1,6 +1,6 @@
 @php
 if (isset($detailList)) {
-  $arrNum = ($page -1) * 5;
+  $arrNum = ($page1 -1) * 5;
   echo '<h5 class="my-4 font-weight-bold text-primary" id="monitorJob" data-value="'.$detailList[$arrNum]->Job_Seq.'">'.'job_'.$detailList[$arrNum]->Job_WorkLargeCtg.'_'.$detailList[$arrNum]->Job_WorkMediumCtg.'_'.$detailList[$arrNum]->Job_Seq.' - '.$detailList[$arrNum]->Job_Name.'</h5>';
 } else {
   echo '<h5 class="my-4 font-weight-bold text-primary">상세 잡 리스트</h5>';
@@ -59,13 +59,12 @@ if (isset($detailList)) {
                     }
                   @endphp
                 </td>
-                <td class="text-center"><button type="button" class="btn btn-danger btn-sm">재작업</button></td>
+                <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="monitor.reWorkSchedule({{$detailSc->Sc_Seq}})">재작업</button></td>
               </tr>
               @endforeach
             @endIf 
       </tbody>
   </table>
-  {{-- 페이징 ajax 해야함 !!!! --}}
-@if(isset($paginator))
-  {{$paginator->setPath('/monitoring/monitorJobDetailList')->appends(request()->except($searchParams))->links()}}
+@if(isset($paginator1))
+  {{$paginator1->setPath('/monitoring/monitorJobDetailList')->appends(request()->except($searchParams))->links()}}
 @endIf

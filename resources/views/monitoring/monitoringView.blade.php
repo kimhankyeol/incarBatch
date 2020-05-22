@@ -49,32 +49,47 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           $('.OneDbClickCss').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'});
       }
     })
-    $(document).on('click', '.pagination a', function (event) {
+    // 페이징
+    $(document).on('click', '.pagination .page-link', function (event) {
       event.preventDefault();
-      var page = $(this).attr('href').split('page=')[1];
-      var Job_Seq = $('#monitorJob').attr("data-value");
-      monitor.detailList(Job_Seq, page);
+      var href = $(this).attr('href').split('?')[0];
+      var href_param = $(this).attr('href').split('?')[1];
+
+      if(href=="/monitoring/monitorJobSearchList") {
+        var searchPage = href_param.split('page=')[1];
+        var noneTable = document.getElementById("datatable2");
+        var noneTable2 = document.getElementById("scheduleProcessList");
+        noneTable.children[2].style.display ="none";
+        if(noneTable.nextElementSibling != null || noneTable.nextElementSibling != undefined) {
+          noneTable.nextElementSibling.style.display = "none";
+        }
+        noneTable2.style.display = "none";
+        $.ajax({
+          url: href,
+          method: "get",
+          data: {
+            "page": searchPage
+          },
+          success: function (resp) {
+            $('#monitorDatatable').html(resp.returnHTML)
+          }
+        })
+      } else if(href=="/monitoring/monitorJobDetailList") {
+        var Job_Seq = $('#monitorJob').attr("data-value");
+        var page = href_param.split('page=')[1];
+        var noneTable = document.getElementById("datatable3");
+        noneTable.style.display ="none"
+        monitor.detailList(Job_Seq, page);
+      }
     });
   });
 </script>
-<script>$(function(){$("#monitorDatatable").colResizable();});</script>
-<script>$(function(){$("#jobDetailList").colResizable();});</script>
-<script>$(function(){$("#scheduleProcessList").colResizable();});</script>
 <body id="page-top">
   <div id="wrapper">
-    {{-- 블레이드 주석 쓰는 법--}}
-    {{--사이드바 시작--}}
     @include('common.sidebar')
-    {{--사이드바 끝--}}
-    {{--content 시작--}}
     <div id="content-wrapper" class="d-flex flex-column">
-      <!-- Main Content -->
       <div id="content">
-        <!-- End of Topbar -->
-        <!-- Begin Page Content -->
         <div class="container-fluid">
-          <!-- Page Heading -->
-          <!-- DataTales Example -->
           <h3 class="my-4 font-weight-bold text-primary">모니터링</h3>
           <div class="card shadow mb-4">
             <div class="card-header py-3">

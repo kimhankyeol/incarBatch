@@ -115,7 +115,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             echo '<option value="paramNum" >숫자</option><option value="'.$jobParamArr[$i].'" selected>문자</option></select>';
                           }
                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'">' ;
-                          echo '<button type="button" class="delParam btn-danger form-control form-control-sm col-md-1">삭제</button>';
+                          echo '<button type="button" class="col-md-auto delParam btn-danger form-control-sm text-center">삭제</button>';
                           echo '</div>';
                           }
                         @endphp

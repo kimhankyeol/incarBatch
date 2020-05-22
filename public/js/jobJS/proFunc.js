@@ -338,8 +338,7 @@ const process = {
         proParamDiv.style.cssFloat = "left";
         proParamDiv2.className = "col-md-3 small align-self-center text-center";
         proParamDiv2.innerHTML = "파라미터";
-        delBtnDiv.className =
-            "col-md-auto delParam btn-danger form-control-sm text-center";
+        delBtnDiv.className ="col-md-auto delParam btn-danger form-control-sm text-center";
         delBtnDiv.innerText = "삭제";
         proParamDiv.appendChild(proParamDiv2);
         proParamDiv.innerHTML += proParamInputText;

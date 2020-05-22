@@ -165,12 +165,21 @@ class PopupController extends Controller
         $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
         return view('popup.scheduleDetailPopup',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
-    // 모니터링 - 잡 스케줄 프로세ㅔ스 상세 팝업
+    // 모니터링 - 잡 스케줄 프로세스 상세 팝업
     public function processDetailPopup(Request $request) {
+        $Sc_Seq = $request->input('Sc_Seq');
         $p_seq = $request->input('P_Seq');
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL Process_detail(?)',[$p_seq]);
+        $processDetail=DB::select('CALL Monitor_processDetail(?,?)',[$Sc_Seq,$p_seq]);
         return view('popup.processDetailPopup',compact('processDetail'));
+    }
+    // 모니터링 - 잡 스케줄 프로세스 재작업 변경
+    public function reWorkModifi(Request $request) {
+        $Sc_P_Seq = $request->input('Sc_P_Seq');
+        $result = DB::table('incar.OnlineBatch_ScheduleProcess')->where('Sc_P_Seq',$Sc_P_Seq)->update([
+            'Sc_ReworkYN'=>1
+        ]);
+        return response()->json(array('result'=>$result));
     }
     // 팝업 - 잡 검색
     public function jobSearchView(Request $request){

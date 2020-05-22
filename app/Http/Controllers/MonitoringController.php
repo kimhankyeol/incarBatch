@@ -30,6 +30,9 @@ class MonitoringController extends Controller
          $MonitorContents = DB::select('CALL Monitor_searchList(?,?,?,?,?,?)',[$jobStatus,$searchWord,$WorkLarge,$WorkMedium,$startDate,$endDate]);
          $usedLarge = DB::select('CALL Common_LargeCode()');
          $page=$request->input('page');
+         if($page==""){
+            $page="1";
+        }
          //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
          $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$MonitorContents);
          //페이징 정보를 가져옴
@@ -97,6 +100,9 @@ class MonitoringController extends Controller
          $MonitorContents = DB::select('CALL Monitor_searchList(?, ?, ?, ?, ? ,?)',[$jobStatus,$searchWord,$WorkLarge,$WorkMedium,$startDate,$endDate]);
          $usedLarge = DB::select('CALL Common_LargeCode()');
          $page=$request->input('page');
+         if($page==""){
+            $page="1";
+        }
          //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
          $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$MonitorContents);
          //페이징 정보를 가져옴
@@ -136,17 +142,17 @@ class MonitoringController extends Controller
     function monitorJobDetailList(Request $request){
         $Job_Seq = $request->input('Job_Seq');
         $JobDetailList = DB::select('CALL Monitor_detailList(?)',[$Job_Seq]);
-        $page = $request->input('page');
+        $page1 = $request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
-        $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$JobDetailList);
+        $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page1,5,$JobDetailList);
         //페이징 정보를 가져옴
-        $paginator = $PaginationCustom->getPaging();
+        $paginator1 = $PaginationCustom->getPaging();
         //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
         $detailList =$PaginationCustom->getItemsForCurrentPage();
         
         $searchParams = array( 'Job_Seq' => $Job_Seq);
 
-        $returnHTML = view('/monitoring/monitorJobDetailList',compact('detailList','paginator','searchParams','page'))->render();
+        $returnHTML = view('/monitoring/monitorJobDetailList',compact('detailList','paginator1','searchParams','page1'))->render();
         
         return response()->json(array('returnHTML'=>$returnHTML,200));
     }
@@ -159,5 +165,25 @@ class MonitoringController extends Controller
         $returnHTML = view('/monitoring/scheduleProcessList',compact('processList'))->render();
         
         return response()->json(array('returnHTML'=>$returnHTML,200));
+    }
+    // 잡 스케줄 재작업
+    function reWorkSchedule(Request $request){
+        $Sc_Seq = $request->input('Sc_Seq');
+
+        $succesCount = DB::table('OnlineBatch_Schedule')
+        ->join('OnlineBatch_ScheduleProcess', 'OnlineBatch_Schedule.Sc_Seq', '=', 'OnlineBatch_ScheduleProcess.Sc_Seq')
+        ->join('OnlineBatch_Process', 'OnlineBatch_ScheduleProcess.P_Seq', '=', 'OnlineBatch_Process.P_Seq')
+        ->where('OnlineBatch_Schedule.Sc_Seq', '=', $Sc_Seq)
+        ->where(DB::raw('LEFT(OnlineBatch_ScheduleProcess.JobSM_P_Status,2)'), '!=', '90')
+        ->count('OnlineBatch_ScheduleProcess.JobSM_P_Status');
+        
+        $reWorkCount = DB::table('OnlineBatch_Schedule')
+        ->join('OnlineBatch_ScheduleProcess', 'OnlineBatch_Schedule.Sc_Seq', '=', 'OnlineBatch_ScheduleProcess.Sc_Seq')
+        ->join('OnlineBatch_Process', 'OnlineBatch_ScheduleProcess.P_Seq', '=', 'OnlineBatch_Process.P_Seq')
+        ->where('OnlineBatch_Schedule.Sc_Seq', '=', $Sc_Seq)
+        ->where('OnlineBatch_ScheduleProcess.Sc_ReworkYN', '=', '0')
+        ->count('OnlineBatch_ScheduleProcess.Sc_ReworkYN');
+        
+        return response()->json(array('succesCount'=>$succesCount,'reWorkCount'=>$reWorkCount,200));
     }
 }

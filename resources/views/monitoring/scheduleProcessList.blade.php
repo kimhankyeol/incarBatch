@@ -4,7 +4,7 @@ if (isset($processList)) {
   }
 @endphp
 @if (isset($processList))
-  <table id="datatable2" class="table table-bordered" cellspacing="0">
+  <table id="datatable3" class="table table-bordered" cellspacing="0">
       <colgroup>
         <col width="60px" />
         <col width="180px" />
@@ -38,12 +38,12 @@ if (isset($processList)) {
         <tbody>
         {{--  조회된 값이 보여주는 위치 --}}
         @foreach($processList as $index => $gusungSc )
-          <tr class="OneDbClickCss" data-Job_Seq="{{$gusungSc->Job_Seq}}" data-Sc_Seq="{{$gusungSc->Sc_Seq}}" data-P_Seq="{{$gusungSc->P_Seq}}" ondblclick="monitor.processDetail({{$gusungSc->P_Seq}})">
+          <tr class="OneDbClickCss" data-Job_Seq="{{$gusungSc->Job_Seq}}" data-Sc_Seq="{{$gusungSc->Sc_Seq}}" data-P_Seq="{{$gusungSc->P_Seq}}" ondblclick="monitor.processDetail({{$gusungSc->Sc_Seq}},{{$gusungSc->P_Seq}})">
             <td class="text-center">{{$index+1}}</td>
             <td>{{$gusungSc->P_File}}</td>
             <td>{{$gusungSc->P_Name}}</td>
             <td class="text-center">{{$gusungSc->JobSM_P_Status}}</td>
-            <td class="text-center">{{$gusungSc->P_ReworkYN}}</td>
+            <td class="text-center">{{$gusungSc->Sc_ReworkYN}}</td>
             <td class="text-center">{{isset($gusungSc->JobSM_P_StartTime)?$gusungSc->JobSM_P_StartTime:""}}</td>
             <td class="text-center">{{isset($gusungSc->JobSM_P_EndTime)?$gusungSc->JobSM_P_EndTime:""}}</td>
             <td>
@@ -84,8 +84,8 @@ if (isset($processList)) {
                 for ($i=0; $i < $paramLength; $i++) { 
                   # code...
                   echo '<label class="mx-0 mb-1 row">';
-                  echo '<p class="form-control form-control-sm d-inline-block w-auto border-0 my-0" type="text">파라미터 '.intVal($i+1).' '.explode('||',$gusungSc->Job_ParamSulmyungs)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
-                  echo '<p type="text" class="form-control form-control-sm d-inline-block w-auto readonly mx-2 my-0 readonly">'.explode('||',$gusungSc->Sc_Param)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
+                  echo '<p class="form-control form-control-sm d-inline-block col-md-6 overflow-auto border-0 my-0" type="text" style="height:calc(1.5em + .5rem + 12px);">파라미터 '.intVal($i+1).' '.explode('||',$gusungSc->Job_ParamSulmyungs)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
+                  echo '<p type="text" class="form-control form-control-sm d-inline-block col-md-6 overflow-auto readonly my-0 readonly">'.explode('||',$gusungSc->Sc_Param)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
                   echo '</label>';
                 }
               @endphp
