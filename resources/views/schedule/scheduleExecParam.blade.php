@@ -90,17 +90,18 @@
                 </li>
                 <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
                   @if(($data->P_ReworkYN)==1)
-                <label class="m-0 font-weight-bold text-primary" date-value="{{$data->P_ReworkYN}}">가능</label>
+                    <label class="m-0 font-weight-bold text-primary" date-value="{{$data->P_ReworkYN}}">가능</label>
                   @else
                     <label class="m-0  font-weight-bold text-danger" date-value="{{$data->P_ReworkYN}}">불가능</label>
                   @endif
+                  <input hidden value="{{$data->P_ReworkYN}}"/>
                 </li>
+                @php
+                $nowDate=new DateTime();
+                $nowDate=$nowDate->format('Ymd');
+                $pfilesplit=explode('.php',$data->P_File);
+                @endphp
                 <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
-                  @php
-                    $nowDate=new DateTime();
-                    $nowDate=$nowDate->format('Ymd');
-                    $pfilesplit=explode('.php',$data->P_File);
-                  @endphp
                 <div><div class="logFileNameChg">/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" type="text" value="{{"/".$pfilesplit[0]."_".$data->Job_Seq."_".$data->JobGusung_Order.".log"}}"></div>
                 </li>
               </ul>

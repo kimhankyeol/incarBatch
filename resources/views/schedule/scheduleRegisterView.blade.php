@@ -120,11 +120,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                 <span class="font-weight-bold text-primary mx-auto">매월: </span>
                                                 <select id="daysel2" class="col-md-5 form-control form-control-sm ml-3">
-                                                    @php
-                                                        for($i=1;$i<=31;$i++){
-                                                            echo '<option>'.$i.'</option>';
-                                                        }
-                                                    @endphp
                                                 </select>
                                                 <span>일</span>
                                             </div>
@@ -228,7 +223,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('#endShow').show();
         }else if(jugi==4){
             dateChangeVal(jugi);
-            dayChange()
             $('#startTime').show();
             $('#starttm').show();
             $('#dayShow').hide();
@@ -258,48 +252,25 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     }
     //주기가  월을 클릭하면 말일 변경30,31,28 
     function dayChange(){
-        var jugi = $('#jugiChange option:selected').val();
-        //주기 매월
-        if(jugi==4){
-            var month = new Date($('#startdate').val()).format('MM');
-            var cont = "";
-            if(month%2==0){
-                if(month ==2 ){
-                    for(var i = 1 ; i<=28;i++){
-                        cont+= '<option>'+i+'</option>';
-                    }
-                }else{
-                    for(var i = 1 ; i<=30;i++){
-                        cont+= '<option>'+i+'</option>';
-                    }
+        //주기가 매년이면
+        var month = $('#monthsel option:selected').val();
+        var cont = "";
+        if(month%2==0){
+            if(month ==2 ){
+                for(var i = 1 ; i<=28;i++){
+                    cont+= '<option>'+i+'</option>';
                 }
-            }else if(month%2==1){
-                for(var i = 1 ; i<=31;i++){
+            }else{
+                for(var i = 1 ; i<=30;i++){
                     cont+= '<option>'+i+'</option>';
                 }
             }
-            $('#daysel2').html(cont);
-        }else if(jugi==6){
-            //주기가 매년이면
-            var month = $('#monthsel option:selected').val();
-            var cont = "";
-            if(month%2==0){
-                if(month ==2 ){
-                    for(var i = 1 ; i<=28;i++){
-                        cont+= '<option>'+i+'</option>';
-                    }
-                }else{
-                    for(var i = 1 ; i<=30;i++){
-                        cont+= '<option>'+i+'</option>';
-                    }
-                }
-            }else if(month%2==1){
-                for(var i = 1 ; i<=31;i++){
-                    cont+= '<option>'+i+'</option>';
-                }
+        }else if(month%2==1){
+            for(var i = 1 ; i<=31;i++){
+                cont+= '<option>'+i+'</option>';
             }
-            $('#daysel').html(cont);
         }
+        $('#daysel').html(cont);
     }
   
     //시작일시 바뀌면 폴더경로 바뀜
@@ -316,7 +287,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         
     }
     handler();
-    dayChange('now');
+    dayChange();
     $(document).ready(function(){
      $("input:text[numberOnly]").on("keyup", function() {
        $(this).val($(this).val().replace(/[^0-9]/g,""));
