@@ -63,15 +63,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
             <div class="card-body py-3">
               <div class="table-list overflow-auto">
-                <table id="datatable" class="table table-bordered" cellspacing="0">
+                <table id="datatable" class="table table-bordered hoverTable" cellspacing="0">
                   <colgroup>
-                    <col width="250px" />
-                    <col width="200px" />
-                    <col width="200px" />
-                    <col width="300px" />
-                    <col width="400px" />
-                    <col width="200px" />
-                    <col width="200px" />
+                    <col width="15%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="17%" />
+                    <col width="23%" />
+                    <col width="10%" />
+                    <col width="15%" />
                   </colgroup>
                     <thead>
                       <tr>

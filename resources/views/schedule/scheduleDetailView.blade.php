@@ -160,20 +160,20 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                 echo ($i+1).")   ";
                                                 echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="문자" readonly/>';
                                               }
-                                                echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly></div>';
+                                                echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$JobGusung_ParamPos[$i]].'" readonly></div>';
                                               }
                                               @endphp
                                       @endif
                                       </td>
                                       <td>
-                                        @if(($data->P_ReworkYN)==1)
+                                        @if(($data->Sc_ReworkYN)==1)
                                         <label class="m-0 font-weight-bold text-primary">가능</label>
                                         @else
                                           <label class="m-0  font-weight-bold text-danger">불가능</label>
                                         @endif
                                       </td>
                                       <td>
-                                        /home/script/log/{{$data->Sc_LogFile}}
+                                        /home/script/log{{$data->Sc_LogFile}}
                                       </td>
                                   </tr>
                                   @endforeach

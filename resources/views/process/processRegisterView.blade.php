@@ -84,12 +84,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2"  style="height: 300px" disabled ></textarea>
                         </div>
                         <hr>
-                        <h6 class="col-md-12 font-weight-bold text-primary ">
-                            프로그램 파라미터 타입
-                        </h6>
-                        <hr>
-                        <div class="row">
+                        <div class="row w-100 mx-auto">
                         {{-- program 변수가 추가되는 부분 --}}
+                            <h6 class="col-md-12 font-weight-bold text-primary">프로그램 파라미터 타입</h6>
                             <div class="col-md-12" id="proParams"></div>
                             <div class="col-md-12 text-center">
                                 <input type="button" class="mt-3 btn btn-info" value="프로그램 변수 추가 +"  onclick="process.addDivParam()"/>
@@ -99,7 +96,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <div class="row justify-content-end">
                             <input type="button" class="mt-3 mr-2 btn btn-primary" value="등록" onclick="process.register()" />
                             {{-- <input type="button" class="mt-3 mr-2 btn btn-info" value="수정"/> --}}
-                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소"/>
+                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="location.href = '/process/processListView'"/>
                         </div>
                     </div>
                 </div>

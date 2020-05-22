@@ -12,7 +12,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 ?>
 <!DOCTYPE html>
 <html lang="en" class="bg-light">
-@include('common.head')
+@include('popup.popupCommon.head')
+@include('popup.popupCommon.popupJs')
 <body id="page-top">
   <div id="wrapper">
     <div id="content-wrapper" class="d-flex flex-column">
@@ -21,7 +22,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <div class="container-fluid">
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">프로그램 상세 정보</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">스케줄 프로그램 상세 정보</h5>
                     </div>
                     <div class="card-body">
                       <div class="custom-row">
@@ -34,7 +35,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           <input id ="processPath" type="text" class="form-control form-control-sm align-self-center"  value="{{$processDetail[0]->FilePath}}" readonly>
                           <input id ="processFile" type="text" class="form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" readonly>
                           <div class="mx-2 custom-control custom-checkbox small align-middle">
-                            <input id="retry" type="checkbox" class="custom-control-input" {{$processDetail[0]->P_ReworkYN==1?"checked":""}} value="{{ $processDetail[0]->P_ReworkYN }}" onclick = "return false">
+                            <input id="retry" type="checkbox" class="custom-control-input" {{$processDetail[0]->Sc_ReworkYN==1?"checked":""}} value="{{ $processDetail[0]->Sc_ReworkYN }}" onclick = "return false">
                             <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
                           </div>
                       </div>
@@ -45,7 +46,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">설명</div>
                           <input id = "programExplain" type="text" class="col-md-5 form-control form-control-sm" value="{{$processDetail[0]->P_Sulmyung}}" readonly>
                           <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
-                          <input type="text" class="col-md-1 form-control form-control-sm align-self-center" value="{{$processDetail[0]->status}}" readonly>
+                          <input id= "programStatus" type="text" class="col-md-1 form-control form-control-sm align-self-center text-center" value="{{$processDetail[0]->JobSM_P_Status}}" readonly>
                       </div>
                       <hr>
                       <div class="row w-100 mx-auto">
@@ -126,8 +127,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         </div>
                       <hr>
                       <div class="row justify-content-end">
-                        <input type="button" class="mt-3 mr-2 btn btn-info" value="수정" onclick="process.edit()"/>
-                        <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
+                          @if($processDetail[0]->Sc_ReworkYN==0)
+                            <button type="button" class="mt-3 mr-2 btn btn-info" onclick="popup.reWorkModifi({{$processDetail[0]->Sc_P_Seq}})">재작업</button>
+                          @endif
+                        <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="window.close();">닫기</button>
                       </div>
                     </div>
                 </div>

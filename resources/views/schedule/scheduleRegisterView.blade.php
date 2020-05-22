@@ -53,6 +53,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 <legend>실행주기</legend>
                                 <div class="d-inline-table  col-md-2 right-line">
                                     <select id="jugiChange" class="form-control form-control-sm w-100" onchange="handler()">
+                                        <option value="6" selected>즉시</option>
                                         <option value="1">한번</option>
                                         <option value="2">매일</option>
                                         <option value="3">매주</option>
@@ -63,9 +64,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                     <div class="d-inline-table col-md-8">
                                     <div id="startTime">
                                         <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                            <span class="font-weight-bold text-primary mx-auto ">시작시간 : </span>
-                                            <input id="startdate" type="date" class="form-control col-md-4" value="{{date("Y-m-d")}}">
-                                            <input id="starttime" type="time" class="form-control col-md-4" value="{{date("H:i")}}">
+                                            <span class="font-weight-bold text-primary mx-auto ">시작일시 : </span>
+                                            <input id="startdate" type="date" class="form-control col-md-4" onchange = "dateChangeVal()" value="{{date("Y-m-d")}}">
+                                            <input id="starttm" type="time" class="form-control col-md-4" value="{{date("H:i")}}">
                                         </div>
                                     </div>
                                     <div class="d-inline-flex w-100  align-items-center">
@@ -118,12 +119,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div class="d-inline-flex w-100  align-items-center" id="monthShow">
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                 <span class="font-weight-bold text-primary mx-auto">매월: </span>
-                                                <select class="col-md-5 form-control form-control-sm ml-3">
-                                                    @php
-                                                        for($i=1;$i<=31;$i++){
-                                                            echo '<option>'.$i.'</option>';
-                                                        }
-                                                    @endphp
+                                                <select id="daysel2" class="col-md-5 form-control form-control-sm ml-3">
                                                 </select>
                                                 <span>일</span>
                                             </div>
@@ -147,9 +143,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                     }
                                                     @endphp
                                                 </select>
+                                                <span>월</span>
                                                 <select id ="daysel" class="col-md-5 form-control form-control-sm ml-3">
                                                 </select>
-                                                <span>월</span>
+                                                <span>일</span>
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
@@ -157,9 +154,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                     </div>
                                     <div id="endTime">
                                         <div class="d-inline-flex w-100  align-items-center form-control-sm" >
-                                            <span class="font-weight-bold text-primary mx-auto">종료시간 : </span>
-                                            <input id="enddate" type="date" class="form-control col-md-4" value="2037-12-31">
-                                            <input id="endtime" type="time" class="form-control col-md-4" value="00:00">
+                                            <span class="font-weight-bold text-primary mx-auto">종료일시 : </span>
+                                            <input id="enddate" type="date" class="form-control col-md-4" value="2020-12-31">
+                                            <input id="endtm" type="time" class="form-control col-md-4" value="00:00">
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
                                         </div>
@@ -185,51 +182,77 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         </div>
         <script type="text/javascript">
     function handler(){
-        $('#startTime').show();
+        $('#startTime').hide();
+        $('#starttm').hide();
         $('#dayShow').hide();
         $('#weekShow').hide();
         $('#monthShow').hide();
         $('#yearShow').hide();
         $('#endTime').hide();
+        var newDt = new Date().format('yyyy-MM-dd');
+        var newTm = new Date().format('HH:mm');
+        $('#startdate').val(newDt);
+        $('#starttm').val(newTm);
        var jugi = $('#jugiChange option:selected').val();
         if(jugi==1){
+            dateChangeVal(jugi);
             $('#startTime').show();
+            $('#starttm').show();
             $('#dayShow').hide();
             $('#weekShow').hide();
             $('#monthShow').hide();
             $('#yearShow').hide();
             $('#endTime').hide();
         }else if(jugi==2){
+            dateChangeVal(jugi);
             $('#startTime').show();
+            $('#starttm').show();
             $('#dayShow').show();
             $('#weekShow').hide();
             $('#monthShow').hide();
             $('#yearShow').hide();
             $('#endTime').show();
         }else if(jugi==3){
+            dateChangeVal(jugi);
             $('#startTime').show();
+            $('#starttm').show();
             $('#dayShow').hide();
             $('#weekShow').show();
             $('#monthShow').hide();
             $('#yearShow').hide();
             $('#endShow').show();
         }else if(jugi==4){
+            dateChangeVal(jugi);
             $('#startTime').show();
+            $('#starttm').show();
             $('#dayShow').hide();
             $('#weekShow').hide();
             $('#monthShow').show();
             $('#yearShow').hide();
             $('#endShow').show();
         }else if(jugi==5){
+            dateChangeVal(jugi);
             $('#startTime').show();
+            $('#starttm').show();
             $('#dayShow').hide();
             $('#weekShow').hide();
             $('#monthShow').hide();
             $('#yearShow').show();
             $('#endShow').show();
+        }else if(jugi==6){
+            dateChangeVal(jugi);
+            $('#startTime').hide();
+            $('#starttm').hide();
+            $('#dayShow').hide();
+            $('#weekShow').hide();
+            $('#monthShow').hide();
+            $('#yearShow').hide();
+            $('#endShow').show();
         }
     }
+    //주기가  월을 클릭하면 말일 변경30,31,28 
     function dayChange(){
+        //주기가 매년이면
         var month = $('#monthsel option:selected').val();
         var cont = "";
         if(month%2==0){
@@ -249,11 +272,31 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         }
         $('#daysel').html(cont);
     }
+  
+    //시작일시 바뀌면 폴더경로 바뀜
+    function dateChangeVal(jugi){
+        if(jugi==6){
+            var newDate = new Date().format('yyyyMMdd');
+            var cont = '/home/script/log/'+newDate;
+            $(".logFileNameChg").html(cont);
+        }else{
+            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+            var cont = '/home/script/log/'+chgDate;
+            $(".logFileNameChg").html(cont);
+        }
+        
+    }
     handler();
     dayChange();
-    $("input:text[numberOnly]").on("keyup", function() {
-    $(this).val($(this).val().replace(/[^0-9]/g,""));
-    });   
+    $(document).ready(function(){
+     $("input:text[numberOnly]").on("keyup", function() {
+       $(this).val($(this).val().replace(/[^0-9]/g,""));
+     }); 
+    })
+   
     </script>
+    <script>
+        
+      </script>
     </body>
-    </html>
+</html>

@@ -9,16 +9,13 @@
                   for ($i = 0; $i < count($jobParamArr); $i++) {
                   echo '<div class="d-inline-flex w-50 delYN mb-2">';
                   echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
-                  // echo '<select name="Job_Params" class="col-md-2 form-control form-control-sm" readonly>';
-                  if($jobParamArr[$i]=="paramDate"){
-                    echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="날짜" readonly/>';
-                    //echo '<option value="'.$jobParamArr[$i].'" selected>날짜</option></input>';
-                  }else if($jobParamArr[$i]=="paramNum"){
+                  if($jobParamArr[$i]=="paramNum"){
                     echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
+                    echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'" numberOnly> </div>' ;
                   }else if($jobParamArr[$i]=="paramStr"){
                     echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';
+                    echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'"> </div>' ;
                   }
-                  echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'"> </div>' ;
                   }
                 @endphp
               @endif
@@ -83,7 +80,7 @@
                           if($proParamArr[$i]=="paramNum"){
                             echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="숫자" readonly/>';
                           }else if($proParamArr[$i]=="paramStr"){
-                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="문지" readonly/>';
+                            echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="문자" readonly/>';
                           }
                           echo '<input type="text" name="P_Param" class="col-md-6 form-control form-control-sm" value="'.$Job_ParamSulmyungs[$JobGusung_ParamPos[$i]].'" readonly></div>';
                         }
@@ -93,13 +90,19 @@
                 </li>
                 <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
                   @if(($data->P_ReworkYN)==1)
-                      <label class="m-0 font-weight-bold text-primary">가능</label>
+                    <label class="m-0 font-weight-bold text-primary" date-value="{{$data->P_ReworkYN}}">가능</label>
                   @else
-                    <label class="m-0  font-weight-bold text-danger">불가능</label>
+                    <label class="m-0  font-weight-bold text-danger" date-value="{{$data->P_ReworkYN}}">불가능</label>
                   @endif
+                  <input hidden value="{{$data->P_ReworkYN}}"/>
                 </li>
+                @php
+                $nowDate=new DateTime();
+                $nowDate=$nowDate->format('Ymd');
+                $pfilesplit=explode('.php',$data->P_File);
+                @endphp
                 <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
-                  <div>/home/script/log/<input name="Sc_LogFile" type="text"></div>
+                <div><div class="logFileNameChg">/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" type="text" value="{{"/".$pfilesplit[0]."_".$data->Job_Seq."_".$data->JobGusung_Order.".log"}}"></div>
                 </li>
               </ul>
               @endforeach
@@ -109,3 +112,8 @@
       </div>
     </fieldset>
 </div>
+
+
+
+ 
+ 

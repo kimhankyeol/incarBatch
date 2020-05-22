@@ -115,7 +115,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             echo '<option value="paramNum" >숫자</option><option value="'.$jobParamArr[$i].'" selected>문자</option></select>';
                           }
                           echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'">' ;
-                          echo '<button type="button" class="delParam btn-danger form-control form-control-sm col-md-1">삭제</button>';
+                          echo '<button type="button" class="col-md-auto delParam btn-danger form-control-sm text-center">삭제</button>';
                           echo '</div>';
                           }
                         @endphp
@@ -133,7 +133,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
               <div class="row justify-content-end">
                 <div class="mt-3 mr-2 btn btn-primary" onclick="job.update('{{$jobDetail[0]->Job_Seq}}')">수정 </div>
-                <div class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</div>
+                <div class="mt-3 mr-2 btn btn-danger" onclick="location.href = '/job/jobListView'">취소</div>
               </div>
             </div>
           </div>

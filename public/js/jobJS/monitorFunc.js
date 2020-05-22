@@ -31,12 +31,13 @@ const monitor = {
         'page': page
       },
       success: function (resp) {
-        console.table(resp)
         $('#monitorDatatable').html(resp.returnHTML)
       }
     })
   },
   detailList: function (Job_Seq, page) {
+    var noneTable = document.getElementById("scheduleProcessList");
+    noneTable.style.display = "none"
     $.ajax({
       url: "/monitoring/monitorJobDetailList",
       method: "get",
@@ -51,6 +52,8 @@ const monitor = {
   },
   // 스케줄링 프로세스 정보
   scheduleProcessList(Job_Seq, Sc_Seq) {
+    var noneTable = document.getElementById("scheduleProcessList");
+    noneTable.style.display = "block"
     $.ajax({
       url: "/monitoring/scheduleProcessList",
       method: "get",
@@ -73,7 +76,30 @@ const monitor = {
     window.open('/popup/scheduleDetailPopup?Job_Seq=' + Job_Seq + '&Sc_Seq=' + Sc_Seq, '구성 디테일', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   },
   // 프로그램 상세
-  processDetail: function (P_Seq) {
-    window.open('/popup/processDetailPopup?P_Seq=' + P_Seq, '프로그램 정보 상세', 'top=10, left=10, width=1400, height=875, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+  processDetail: function (Sc_Seq, P_Seq) {
+    window.open('/popup/processDetailPopup?Sc_Seq=' + Sc_Seq + '&P_Seq=' + P_Seq, '프로그램 정보 상세', 'top=10, left=10, width=1400, height=875, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
+  },
+  // 스케줄 재작업
+  reWorkSchedule: function (Sc_Seq) {
+    $.ajax({
+      url: "/monitoring/reWorkSchedule",
+      method: "get",
+      data: {
+        "Sc_Seq": Sc_Seq
+      },
+      success: function (resp) {
+        if (resp.succesCount == 0) {
+          alert("이미 완료된 스케줄 입니다.");
+        } else if (resp.reWorkCount > 0) {
+          alert("재작업 불가능한 스케줄 입니다.");
+        } else {
+          const result = confirm("재작업 하시겠습니까?");
+          if (result) {
+
+          }
+        }
+        //$('#scheduleProcessList').html(resp.returnHTML);
+      }
+    })
   }
 }

@@ -1,4 +1,4 @@
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
     <img class="incar" src="/img/logo.png" alt="" style = "height: 50px; width: auto;">
     </a>
@@ -19,7 +19,7 @@
         <i class="fas fa-fw fa-folder"></i>
         <span>관리자</span>
       </a>
-      <div id="collapsePages" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+      <div id="collapsePages" class="collapse hide " aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">목록</h6>
           <a class="collapse-item" href="/admin/commonCodeLargeManageView?page=1">대분류 설정</a>

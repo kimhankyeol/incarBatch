@@ -12,12 +12,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
-<body id="page-top">
+<body id="page-top" class="sidebar-toggled">
     <div id="wrapper">
     @include('common.sidebar')
-    <div id="content-wrapper" class="d-flex flex-column text-center">
-        <h3 class="my-auto py-4 text-primary">Index 입니다.</h3>
-        @include('common.footer')
+    <div id="content-wrapper" class="d-flex flex-column text-center" style="background-image:url('/img/bg.jpg'); background-size: cover">
     </div>
 </body>
+<script>
+    $("#sidebarToggle").on('click', function(e) {
+        $("body").toggleClass("sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        };
+    });
+</script>
 </html>

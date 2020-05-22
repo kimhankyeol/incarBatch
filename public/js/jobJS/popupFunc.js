@@ -211,12 +211,12 @@ const popup = {
     }
   },
   //팝업 스케줄 검색
-  schedulesearch: function(page){
+  schedulesearch: function (page) {
     var searchWord = $('#searchWord').val();
     var WorkLarge = $('#workLargeVal option:selected').val();
     var WorkMedium = $('#workMediumVal option:selected').val();
     // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
-    location.href="/popup/jobSearchView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
+    location.href = "/popup/jobSearchView?searchWord=" + searchWord + "&WorkLarge=" + WorkLarge + "&WorkMedium=" + WorkMedium + "&page=" + page;
   },
   //검색 스크립트
   search: function (page) {
@@ -255,7 +255,7 @@ const popup = {
         }
         gusungData.push(gusungDataArr[i].join("||"));
       }
-  
+
       $.ajax({
         url: "/popup/jobGusungModify",
         method: "get",
@@ -265,11 +265,35 @@ const popup = {
           "gusungData": gusungData
         },
         success: function (data) {
-          return alert("등록 되었습니다."), window.close();
+          if(data.msg=="success"){
+            return alert(data.msg2), window.close();
+          }else if(data.msg="failed"){
+            return alert(data.msg2);
+          }
         }
       })
     } else {
       return false;
+    }
+  },
+  // 재작업 변경 스크립트
+  reWorkModifi: function (Sc_P_Seq) {
+    const result = confirm("재작업이 가능하도록 만드시겠습니까?");
+    if (result) {
+      $.ajax({
+        url: "/popup/reWorkModifi",
+        method: "get",
+        data: {
+          "Sc_P_Seq": Sc_P_Seq
+        },
+        success: function (data) {
+          if (data.result == 1) {
+            return alert("수정 되었습니다."), window.close();
+          } else {
+            return alert("실패 하였습니다.");
+          }
+        }
+      })
     }
   }
 }
