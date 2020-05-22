@@ -173,7 +173,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         @endif
                                       </td>
                                       <td>
-                                        /home/script/log/{{$data->Sc_LogFile}}
+                                        /home/script/log{{$data->Sc_LogFile}}
                                       </td>
                                   </tr>
                                   @endforeach
