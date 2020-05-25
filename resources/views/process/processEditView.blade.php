@@ -38,7 +38,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <input id="workLargeVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkLargeName}}" style="cursor:not-allowed" readonly>
                         <div class="text-center align-self-center font-weight-bold text-primary mx-2">중분류</div>
                         <input id="workMediumVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkMediumName}}" readonly>
-                        <div class="text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
+                        <div class="text-center align-self-center font-weight-bold text-primary">프로그램 경로</div>
                         <input id ="processPath" type="text" class="form-control form-control-sm align-self-center"  value="{{$processDetail[0]->FilePath}}" readonly>
                         <input id ="processFile" type="text" class="form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_File}}" readonly>
                           <div class="mx-2 custom-control custom-checkbox small align-middle">
@@ -51,28 +51,24 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
                           <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->P_Name}}" readonly>
                           <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">설명</div>
-                          <input id = "programExplain" type="text" class="col-md-5 form-control form-control-sm" value="{{$processDetail[0]->P_Sulmyung}}" readonly>
+                          <textarea id = "programExplain" type="text" class="col-md-5 form-control form-control-sm">{{$processDetail[0]->P_Sulmyung}}</textarea>
                           <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
                           <input type="text" class="col-md-1 form-control form-control-sm align-self-center text-center font-weight-bold" value="{{$processDetail[0]->status}}" readonly>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-md-6 text-center">
-                          <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
-                          <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                          <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 평균 소요시간</div>
+                          <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime1" value="{{intval($processDetail[0]->P_YesangTime/1440)}}" numberOnly>
-                          <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime2" value="{{intval($processDetail[0]->P_YesangTime%1440/60)}}" numberOnly>
-                          <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime3" value="{{intval($processDetail[0]->P_YesangTime%60)}}">
                         </div>
                         <div class="col-md-6 text-center">
-                            <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
-                            <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                          <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 최대 소요시간</div>
+                          <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
                             <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime1" value="{{intval($processDetail[0]->P_YesangMaxTime/1440)}}"numberOnly>
-                            <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
                             <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime2" value="{{intval($processDetail[0]->P_YesangMaxTime%1440/60)}}" numberOnly>
-                            <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                             <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="{{intval($processDetail[0]->P_YesangMaxTime%60)}}" numberOnly>
                         </div>
                       </div>
