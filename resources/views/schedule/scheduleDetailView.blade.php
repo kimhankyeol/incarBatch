@@ -76,13 +76,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="limit-time-text col-md-auto">등록자</div>
                   <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$scheduleDetail[0]->Sc_RegId}}" readonly>
                   <div class="limit-time-text col-md-auto">등록자IP</div>
-                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{long2ip($scheduleDetail[0]->Sc_RegIP)}}" readonly>
+                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$scheduleDetail[0]->Sc_RegIP}}" readonly>
                   <div class="limit-time-text col-md-auto">등록일</div>
                   <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$scheduleDetail[0]->Sc_RegDate}}" readonly>    
                   <div class="limit-time-text col-md-auto">수정자</div>
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($scheduleDetail[0]->Sc_UpdId) ? $scheduleDetail[0]->Sc_RegId:$scheduleDetail[0]->Sc_UpdId}}" readonly>   
                   <div class="limit-time-text col-md-auto">수정자IP</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($scheduleDetail[0]->Sc_UpdIP) ?long2ip( $scheduleDetail[0]->Sc_RegIP):long2ip($scheduleDetail[0]->Sc_UpdIP)}}" readonly>       
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($scheduleDetail[0]->Sc_UpdIP) ? $scheduleDetail[0]->Sc_RegIP:$scheduleDetail[0]->Sc_UpdIP}}" readonly>       
                   <div class="limit-time-text col-md-auto">수정일</div>
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($scheduleDetail[0]->Sc_UpdDate) ? $scheduleDetail[0]->Sc_RegDate:$scheduleDetail[0]->Sc_UpdDate}}" readonly> 
                 </div>

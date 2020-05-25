@@ -69,7 +69,7 @@ class scheduleController extends Controller
         $Sc_Status=$request->input('Sc_Status');
         $Sc_RegId=$request->input('Sc_RegId');
         $Sc_RegIP = $_SERVER["REMOTE_ADDR"];
-        $Sc_DeleteYN=0;
+        $Sc_DeleteYN=1;
         $Sc_CronSulmyung=$request->input('Sc_CronSulmyung');
         $P_Seq = $request->input('P_Seq');//1,2
         $Sc_CronTime = $request->input('Sc_CronTime');
@@ -84,7 +84,7 @@ class scheduleController extends Controller
                     'Sc_Param'=>$Sc_Param,
                     'Sc_Status'=>$Sc_Status,
                     'Sc_RegId'=>$Sc_RegId,
-                    'Sc_RegIP'=>ip2long($Sc_RegIP),
+                    'Sc_RegIP'=>$Sc_RegIP,
                     'Sc_RegDate'=>now(),
                     'Sc_DeleteYN'=>$Sc_DeleteYN,
                     'Sc_CronTime'=>$Sc_CronTime,
@@ -146,10 +146,12 @@ class scheduleController extends Controller
         return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
     public function scheduleDump(Request $request){
+        $Sc_UpdIP = $_SERVER["REMOTE_ADDR"];
         $Sc_Seq = $request->input('Sc_Seq');
-        $Sc_Status = $request->input('Sc_Status');
         DB::table('incar.OnlineBatch_Schedule')->where('Sc_Seq',$Sc_Seq)->update([
-            'Sc_DeleteYN'=>1
+            'Sc_UpdId'=>'1611698',
+            'Sc_UpdIP'=>$Sc_UpdIP,
+            'Sc_DeleteYN'=>0
         ]);
         return response()->json(array('Sc_Seq'=>$Sc_Seq));
     }

@@ -113,7 +113,7 @@ class ProcessController extends Controller
                      'P_TextInput'=>$P_TextInput,
                      'P_TextInputCheck'=>$P_TextInputCheck,
                      'P_DevId'=>$P_DevId,
-                     'P_RegIp'=>ip2long($P_RegIp),
+                     'P_RegIp'=>$P_RegIp,
                      'P_RegId'=>1611700,
                      'P_UpdId'=>1611700,
                      'P_RegDate'=>now(),
@@ -160,7 +160,7 @@ class ProcessController extends Controller
                 'P_YesangMaxTime'=>$P_YesangMaxTime,
                 'P_Params'=>$P_Params,
                 'P_ParamSulmyungs'=>$P_ParamSulmyungs,
-                'P_UpdIP'=>ip2long($P_UpdIP),
+                'P_UpdIP'=>$P_UpdIP,
                 'P_TextInput'=>$P_TextInput,
                 'P_TextInputCheck'=>$P_TextInputCheck
             ]);
@@ -176,7 +176,7 @@ class ProcessController extends Controller
                 'P_YesangMaxTime'=>$P_YesangMaxTime,
                 'P_Params'=>$P_Params,
                 'P_ParamSulmyungs'=>$P_ParamSulmyungs,
-                'P_UpdIP'=>ip2long($P_UpdIP),
+                'P_UpdIP'=>$P_UpdIP,
                 'P_TextInputCheck'=>$P_TextInputCheck
             ]);
         }
