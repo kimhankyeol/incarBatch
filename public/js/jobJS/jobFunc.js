@@ -206,8 +206,15 @@ const job = {
                       }else{
                         return false;
                       }
-                    }
-                    else{
+                    }else if(resp.msg=="jobStatus"){
+                      alert("잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.");
+                      var result = confirm("잡 상세화면으로 이동하시겠습니까?");
+                      if(result){
+                        location.href="/job/jobDetailView?Job_Seq="+Job_Seq;
+                      }else{
+                        return false;
+                      }
+                    }else{
                       alert("잡 수정 실패");
                       location.href="/job/jobListView";
                     }

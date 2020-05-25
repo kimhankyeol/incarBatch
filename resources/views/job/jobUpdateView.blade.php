@@ -34,12 +34,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
             <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">ID</div>
-                  <input type="text" id="Job_UniqueName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡 명</div>
-                <input type="text" id="Job_Name"  class="col-md-2 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" >
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명</div>
-                <textarea type="text" id="Job_Sulmyung" class="col-md-4 form-control form-control-sm" >{{$jobDetail[0]->Job_Sulmyung}}</textarea>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">ID</div>
+                  <input type="text" id="Job_UniqueName"  class="col-md-3 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 명</div>
+                  <input type="text" id="Job_Name"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" >
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">설명</div>
+                  <textarea type="text" id="Job_Sulmyung" class="col-md-9 form-control form-control-sm" >{{$jobDetail[0]->Job_Sulmyung}}</textarea>
                 </div>
                 <hr>
                 <div class="row">
@@ -53,29 +56,38 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkMediumName}}"/>
                   </div>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
-                  <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="-" readonly>
+                  <table class="table table-bordered m-0 w-auto text-center">
+                    <thead>
+                      <th class="p-1">실행중</th>
+                      <th class="p-1">예약</th>
+                      <th class="p-1">오류</th>
+                      <th class="p-1">종료</th>
+                    </thead>
+                    <tbody>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_exec}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_yeyak}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_error}}</td>
+                      <td class="p-1">{{$jobStatusCheck[0]->v_end}}</td>
+                    </tbody>
+                  </table>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
                   <input type="text" class="col-md-1 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
                 </div>
                 <hr>
                 <div class="row">
                   <div class="col-md-6 text-center">
-                    <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
+                    <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 평균 소요시간</div>
+                    <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime1" value="{{empty($jobTotalTime[0]->Job_YesangTime) ? 0:intval($jobTotalTime[0]->Job_YesangTime/1440)}}" readonly numberOnly>
-                    <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime2" value="{{empty($jobTotalTime[0]->Job_YesangTime) ? 0:intval($jobTotalTime[0]->Job_YesangTime%1440/60)}}" readonly numberOnly>
-                    <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangTime3" value="{{empty($jobTotalTime[0]->Job_YesangTime) ? 0:intval($jobTotalTime[0]->Job_YesangTime%60)}}" readonly numberOnly>
-                    <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
                   <div class="col-md-6 text-center">
-                    <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
+                    <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 최대 소요시간</div>
+                    <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime1" value="{{empty($jobTotalTime[0]->Job_YesangMaxTime) ? 0:intval($jobTotalTime[0]->Job_YesangMaxTime/1440)}}" readonly numberOnly>
-                    <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime2" value="{{empty($jobTotalTime[0]->Job_YesangMaxTime) ? 0:intval($jobTotalTime[0]->Job_YesangMaxTime%1440/60)}}" readonly numberOnly>
-                    <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
                     <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Job_YesangMaxTime3" value="{{empty($jobTotalTime[0]->Job_YesangMaxTime) ? 0:intval($jobTotalTime[0]->Job_YesangMaxTime%60)}}" readonly numberOnly>
-                    <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                   </div>
                 </div>
                 <hr>

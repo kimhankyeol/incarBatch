@@ -28,7 +28,7 @@ if (isset($detailList)) {
           <th>실행시각</th>
           <th>완료시각</th>
           <th>완료</th>
-          <th>실행</th>
+          <th>실행중</th>
           <th>대기</th>
           <th>오류</th>
           <th>파라미터</th>

@@ -42,7 +42,7 @@
                     </label>
                 </li>
             </td>
-            <td class="text-center">{{$proSc->P_TextInputCheck=="1"?"O":"X"}}</td>
+            <td class="text-center">{{$proSc->P_TextInputCheck=="1"?"Y":"N"}}</td>
             <td class="text-center">{{$proSc->P_RegId}}</td>
         </tr>
         @endforeach

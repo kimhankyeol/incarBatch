@@ -35,7 +35,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             {{-- 업무 구분 대분류 중분류 선택 --}}
                             <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
                             @include("code.codeSelect")
-                            <div class="text-center align-self-center font-weight-bold text-primary">프로그램 ID</div>
+                            {{-- <div class="text-center align-self-center font-weight-bold text-primary mx-2">프로그램 ID</div> --}}
+                            <div class="text-center align-self-center font-weight-bold text-primary">프로그램 경로</div>
                             <input id ="processPath" type="text" class="form-control form-control-sm align-self-center"readonly>
                             <input id ="processFile" type="text" class="form-control form-control-sm align-self-center" placeholder="파일명">
                             <div class="mx-1 custom-control custom-checkbox small align-middle">
@@ -53,21 +54,17 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <hr>
                         <div class="row">
                             <div class="col-md-6 text-center">
-                                <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">예상시간</div>
-                                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                                <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 평균 소요시간</div>
+                                <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime1" value="0" numberOnly>
-                                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime2" value="0" numberOnly>
-                                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime3" value="0" numberOnly>
                             </div>
                             <div class="col-md-6 text-center">
-                                <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">최대 예상시간</div>
-                                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">일</div>
+                                <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 최대 소요시간</div>
+                                <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime1" value="0" numberOnly>
-                                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">시</div>
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime2" value="0" numberOnly>
-                                <div class="d-inline-block col-md-1 text-center align-self-center font-weight-bold text-primary">분</div>
                                 <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="0" numberOnly>
                             </div>
                         </div>
