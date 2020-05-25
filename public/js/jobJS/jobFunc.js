@@ -368,17 +368,27 @@ const job = {
     var P_Seq = [];
     var Log_File = [];
     var SC_ReworkYN=[];
-    var gusungData = document.getElementsByClassName("gusungData");
-    for(var i=0; i<gusungData.length;i++){
-      if(gusungData[i].children[0].children[0].children[0].checked){
-        P_Seq.push(gusungData[i].children[0].children[0].children[0].value);
-        SC_ReworkYN.push(gusungData[i].children[6].children[1].value);
-        //Sc_LogFile value를 받아옴
-        Log_File.push(gusungData[i].children[7].children[0].children[1].value);
-      } 
+    // var gusungData = document.getElementsByClassName("gusungData");
+    // for(var i=0; i<gusungData.length;i++){
+    //   if(gusungData[i].children[0].children[0].children[0].checked){
+    //     P_Seq.push(gusungData[i].children[0].children[0].children[0].value);
+    //     SC_ReworkYN.push(gusungData[i].children[6].children[1].value);
+    //     //Sc_LogFile value를 받아옴
+    //     Log_File.push(gusungData[i].children[7].children[0].children[1].value);
+    //   } 
+    // }
+    var P_ExecuteYN = document.getElementsByName("P_ExecuteYN");
+    var scRework = document.getElementsByName("SC_ReworkYN");
+    var logFile = document.getElementsByName("Sc_LogFile");
+
+
+    for (var i = 0; i < P_ExecuteYN.length; i++) {
+      if(P_ExecuteYN[i].checked){
+        P_Seq.push(P_ExecuteYN[i].value);
+        SC_ReworkYN.push(scRework[i].value);
+        Log_File.push(logFile[i].value);
+      }
     }
- 
-    // console.table(gusungData[0].children[6].children[0].getAttribute);
     // return false;
     var jobSc_id = $('#jobSc_id').val();//잡 id
     var job_seq = $('#scExecJob').val();//잡 seq

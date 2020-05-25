@@ -119,9 +119,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div class="d-inline-flex w-100  align-items-center" id="monthShow">
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                 <span class="font-weight-bold text-primary mx-auto">매월: </span>
-                                                <select id="daysel2" class="col-md-5 form-control form-control-sm ml-3">
+                                                <select id="daysel2" class="form-control col-md-4">
                                                 </select>
-                                                <span>일</span>
+                                                <span class="col-md-4">일</span>
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
@@ -132,7 +132,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div class="d-inline-flex w-100  align-items-center" >
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                 <span class="font-weight-bold text-primary mx-auto">매년: </span>
-                                                <select  id="monthsel" class="col-md-5 form-control form-control-sm ml-3" onchange="dayChange()">
+                                                <select  id="monthsel" class="form-control col-md-4" onchange="dayChange()">
                                                     @php
                                                     for($i=1;$i<=12;$i++){
                                                         if($i==1){
@@ -144,7 +144,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                     @endphp
                                                 </select>
                                                 <span>월</span>
-                                                <select id ="daysel" class="col-md-5 form-control form-control-sm ml-3">
+                                                <select id ="daysel" class="col-md-4 form-control">
                                                 </select>
                                                 <span>일</span>
                                             </div>
@@ -164,7 +164,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="card-body" id="jobparams1">
+                                <div class="card-body" id="jobparams">
                                     @include('schedule.scheduleExecParam')
                                 </div>
                                 <hr>
@@ -274,14 +274,37 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
   
     //시작일시 바뀌면 폴더경로 바뀜
     function dateChangeVal(jugi){
+        var jugi2 = $('#jugiChange option:selected').val();
         if(jugi==6){
             var newDate = new Date().format('yyyyMMdd');
             var cont = '/home/script/log/'+newDate;
             $(".logFileNameChg").html(cont);
         }else{
-            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-            var cont = '/home/script/log/'+chgDate;
-            $(".logFileNameChg").html(cont);
+            if(jugi2==4){
+                var month = new Date($('#startdate').val()).format('MM');
+                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                var cont = '/home/script/log/'+chgDate;
+                var cont2 = "";
+                if(month ==2  ){
+                    for(var i = 1 ; i<=28;i++){
+                        cont2+= '<option>'+i+'</option>';
+                    }
+                }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                    for(var i = 1 ; i<=31;i++){
+                        cont2+= '<option>'+i+'</option>';
+                    }
+                }else{
+                    for(var i = 1 ; i<=30;i++){
+                        cont2+= '<option>'+i+'</option>';
+                    }
+                }
+                $(".logFileNameChg").html(cont);
+                $('#daysel2').html(cont2);
+            }else{
+                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                var cont = '/home/script/log/'+chgDate;
+                $(".logFileNameChg").html(cont);
+            }
         }
         
     }

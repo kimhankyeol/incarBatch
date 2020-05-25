@@ -67,13 +67,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="limit-time-text col-md-auto">등록자</div>
                   <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$jobDetail[0]->Job_RegId}}" readonly>
                   <div class="limit-time-text col-md-auto">등록자IP</div>
-                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{long2ip($jobDetail[0]->Job_RegIP)}}" readonly>
+                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$jobDetail[0]->Job_RegIP}}" readonly>
                   <div class="limit-time-text col-md-auto">등록일</div>
                   <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$jobDetail[0]->Job_RegDate}}" readonly>    
                   <div class="limit-time-text col-md-auto">수정자</div>
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($jobDetail[0]->Job_UpdId) ? $jobDetail[0]->Job_RegId:$jobDetail[0]->Job_UpdId}}" readonly>   
                   <div class="limit-time-text col-md-auto">수정자IP</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($jobDetail[0]->Job_UpdIP) ?long2ip( $jobDetail[0]->Job_RegIP):long2ip($jobDetail[0]->Job_UpdIP)}}" readonly>       
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($jobDetail[0]->Job_UpdIP) ?$jobDetail[0]->Job_RegIP:$jobDetail[0]->Job_UpdIP}}" readonly>       
                   <div class="limit-time-text col-md-auto">수정일</div>
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
                 </div>
