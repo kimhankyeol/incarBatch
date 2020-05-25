@@ -77,13 +77,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <div class="limit-time-text col-md-auto">등록자</div>
                         <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$processDetail[0]->P_RegId}}" readonly>
                         <div class="limit-time-text col-md-auto">등록자IP</div>
-                        <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{long2ip($processDetail[0]->P_RegIP)}}" readonly>
+                        <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$processDetail[0]->P_RegIP}}" readonly>
                         <div class="limit-time-text col-md-auto">등록일</div>
                         <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$processDetail[0]->P_RegDate}}" readonly>    
                         <div class="limit-time-text col-md-auto">수정자</div>
                         <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($processDetail[0]->P_UpdId) ? $processDetail[0]->P_RegId:$processDetail[0]->P_UpdId}}" readonly>   
                         <div class="limit-time-text col-md-auto">수정자IP</div>
-                        <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($processDetail[0]->P_UpdIP) ?long2ip( $processDetail[0]->P_RegIP):long2ip($processDetail[0]->P_UpdIP)}}" readonly>       
+                        <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($processDetail[0]->P_UpdIP) ? $processDetail[0]->P_RegIP:$processDetail[0]->P_UpdIP}}" readonly>       
                         <div class="limit-time-text col-md-auto">수정일</div>
                         <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($processDetail[0]->P_UpdDate) ? $processDetail[0]->P_RegDate:$processDetail[0]->P_UpdDate}}" readonly> 
                       </div>
