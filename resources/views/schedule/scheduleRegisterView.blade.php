@@ -45,7 +45,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <hr>
                         <div class="row">
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
-                            <input id="Sc_Sulmyung" type="text" class="col-md-8 form-control form-control-sm mt-2" placeholder="스케줄 설명">
+                            <textarea id="Sc_Sulmyung"  class="col-md-8 form-control form-control-sm mt-2" placeholder="스케줄 설명"></textarea>
                         </div>
                         <hr>
                         <div class="row mb-3">
