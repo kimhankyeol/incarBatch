@@ -96,8 +96,9 @@ class ProcessController extends Controller
         //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
         $fileResult1 = file_exists($P_FilePath); 
         $count = DB::table('OnlineBatch_Process')->where('P_WorkLargeCtg',$WorkLarge)->where('P_WorkMediumCtg',$WorkMedium)->where('P_File',$processFile)->count();
-        // if($fileResult1){// 경로+파일이 존재하는가?
-            // if($count==0){
+        $count2 = DB::table('OnlineBatch_Process')->where('P_File',$processFile)->count();
+        if($fileResult1){// 경로+파일이 존재하는가?
+            if($count==0){
                 $last_p_seq = DB::table('OnlineBatch_Process')->insertGetId(
                     ['P_WorkLargeCtg'=>$WorkLarge,
                      'P_WorkMediumCtg'=>$WorkMedium,
@@ -121,13 +122,13 @@ class ProcessController extends Controller
                      'P_DeleteYN'=>'1'
                     ]
                 );
-                return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
-            // }else{
-            //     return response()->json(array('count'=>$count));
-        //     }
-        // }else{
-        //     return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1));
-        // }
+                return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count, 'count2'=>$count2));//성공
+            }else{
+                return response()->json(array('count'=>$count));
+            }
+        }else{
+            return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1));
+        }
     }
     //프로세스 수정
     public function processEdit(Request $request){
@@ -150,11 +151,6 @@ class ProcessController extends Controller
     
         if(intVal($P_TextInputCheck)==1){
             $result = DB::table('incar.OnlineBatch_Process')->where('P_Seq',$p_seq)->update([
-                // 'P_Name'=>$P_Name,
-                // 'P_Sulmyung'=>$P_Sulmyung,
-                // 'P_WorkLargeCtg'=>$WorkLarge,
-                // 'P_WorkMediumCtg'=>$WorkMedium,
-                // 'P_UseDB'=>$P_UseDB,
                 'P_ReworkYN'=>$P_ReworkYN,
                 'P_YesangTime'=>$P_YesangTime,
                 'P_YesangMaxTime'=>$P_YesangMaxTime,
@@ -166,11 +162,6 @@ class ProcessController extends Controller
             ]);
         }else if(intVal($P_TextInputCheck)==0){
             $result = DB::table('incar.OnlineBatch_Process')->where('P_Seq',$p_seq)->update([
-                // 'P_Name'=>$P_Name,
-                // 'P_Sulmyung'=>$P_Sulmyung,
-                // 'P_WorkLargeCtg'=>$WorkLarge,
-                // 'P_WorkMediumCtg'=>$WorkMedium,
-                // 'P_UseDB'=>$P_UseDB,
                 'P_ReworkYN'=>$P_ReworkYN,
                 'P_YesangTime'=>$P_YesangTime,
                 'P_YesangMaxTime'=>$P_YesangMaxTime,

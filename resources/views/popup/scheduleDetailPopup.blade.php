@@ -30,39 +30,22 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
               <input type="hidden" id="Job_RegID" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$jobDetail[0]->Job_RegId}}" readonly>
             <div class="card-body">
-                <div class="row">
+                <div class="row mb-2">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 ID</div>
                     <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center"  value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">잡 명</div>
-                    <input id = "jobSc_name" type="text" class="col-md-6 form-control form-control-sm mt-2" value="{{$jobDetail[0]->Job_Name}}" readonly>
+                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명</div>
+                    <input id = "jobSc_name" type="text" class="col-md-6 form-control form-control-sm" value="{{$jobDetail[0]->Job_Name}}" readonly>
                   </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 ID</div>
-                    <input id="Sc_Seq" type="text" class="col-md-2 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq.'_'.$scheduleDetail[0]->Sc_Seq}}" readonly>
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
-                    <input id="Sc_Sulmyung" type="text" class="col-md-6 form-control form-control-sm mt-2" value="{{$scheduleDetail[0]->Sc_Sulmyung}}" readonly>
+                  <div class="row mb-2">
+                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">스케줄 번호</div>
+                    <input id="Sc_Seq" type="text" class="col-md-2 form-control form-control-sm" value="{{$scheduleDetail[0]->Sc_Version}}" readonly>
+                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">스케줄 설명</div>
+                    <input id="Sc_Sulmyung" type="text" class="col-md-6 form-control form-control-sm" value="{{$scheduleDetail[0]->Sc_Sulmyung}}" readonly>
                   </div>
-                <hr>
-                <div class="row">
+                <div class="row mb-2">
                   <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">실행 주기 설명</div>
                   <input type="text" class="col-md-9 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronSulmyung}}" readonly> 
                 </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">시작 시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronTime}}" readonly>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">종료 시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronEndTime}}" readonly>  
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_StatusName}}" readonly>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
-                </div>
-                <hr>
                 <div class="row justify-content-center">
                   <div class="limit-time-text col-md-auto">등록자</div>
                   <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$jobDetail[0]->Job_RegId}}" readonly>
@@ -76,6 +59,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($jobDetail[0]->Job_UpdIP) ?$jobDetail[0]->Job_RegIP:$jobDetail[0]->Job_UpdIP}}" readonly>       
                   <div class="limit-time-text col-md-auto">수정일</div>
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
+                </div>
+                <hr>
+                <div class="row mb-2">
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">시작 시간</div>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronTime}}" readonly>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">종료 시간</div>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronEndTime}}" readonly>  
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_StatusName}}" readonly>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" placeholder="{{$jobDetail[0]->gusungCount}}" readonly> 
                 </div>
                 <hr>
                 <div class="row">
@@ -106,57 +102,65 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <fieldset class="cistp-fieldset mt-2">
                   <legend>구성 프로그램</legend>
                   {{-- 타이틀 --}}
-                  <div class="card-body">
-                    <div class="row text-center">
-                      <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">순서</div>
-                      <div class="right-line col-md-2 p-2 bg-primary text-white font-weight-bold rounded-0">경로</div>
-                      <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">프로그램</div>
-                      <div class="right-line col-md-2 p-2 bg-primary text-white font-weight-bold rounded-0">프로그램 명</div>
-                      <div class="right-line col-md-5 p-2 bg-primary text-white font-weight-bold rounded-0">파라미터</div>
-                      <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">재작업</div>
-                    </div>
-                    <div id="gusungList" class="row px-0 gusungList">
+                  <div class="overflow-auto">
+                    <table id="datatable" class="table table-bordered" cellspacing="0">
+                      <colgroup>
+                        <col width="80px" />
+                        <col width="200px" />
+                        <col width="200px" />
+                        <col width="200px" />
+                        <col width="400px" />
+                        <col width="200px" />
+                        <col width="100px" />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th>순서</th>
+                          <th>경로</th>
+                          <th>프로그램</th>
+                          <th>프로그램 명</th>
+                          <th>파라미터</th>
+                          <th>로그파일</th>
+                          <th>재작업</th>
+                        </tr>
+                      </thead>
+                      <tbody>
                       @if(isset($jobGusungContents))
-                        @foreach($jobGusungContents as $index => $data)
-                        <ul class="px-0 mb-0 w-100 d-inline-flex gusungData">
-                          <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">{{$index+1}}</li>
-                          <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 h-100 align-items-center">{{$data->P_FilePath}}</li>
-                          <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 h-100 align-items-center">{{$data->P_File}}</li>
-                          <li class="list-group-item d-inline-flex col-md-2 p-2 rounded-0 h-100 align-items-center">{{$data->P_Name}}</li>
-                          <li class="list-group-item col-md-5 p-2 rounded-0">
-                            <label class="m-0 w-100">
-                              @if(isset($data->P_Params))
-                                  @php
-                                  $proParamArr=explode("||",$data->P_Params);
-                                  $proParamSulArr=explode("||",$data->P_ParamSulmyungs);
-                                  for ($i = 0; $i < count($proParamArr); $i++) {
-                                      echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                                      // echo '<div class="col-md-3 small align-self-center text-center">프로그램 파라미터</div>';
-                                      echo '<select name="pro_Params" class="col-md-3 form-control form-control-sm" readonly>';
-                                      if($proParamArr[$i]=="paramDate"){
-                                          echo '<option value="'.$proParamArr[$i].'" selected>날짜</option></select>';
-                                          }else if($proParamArr[$i]=="paramNum"){
-                                          echo '<option value="'.$proParamArr[$i].'" selected>숫자</option></select>';
-                                          }else if($proParamArr[$i]=="paramStr"){
-                                          echo '<option value="'.$proParamArr[$i].'" selected>문자</option></select>';
-                                          }
-                                          echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$proParamSulArr[$i].'" readonly></div>';
-                                      }
-                                      @endphp
-                              @endif
-                            </label>
-                          </li>
-                          <li class="list-group-item d-inline-flex col-md-1 p-2 rounded-0 text-center h-100 align-items-center justify-content-center">
-                            @if(($data->P_ReworkYN)==1)
-                                가능
-                            @else
-                                불가능
+                        @foreach($jobGusungContents as $index=> $data)
+                          <tr>
+                            <td class="text-center">{{$index+1}}</td>
+                            <td>{{$data->P_FilePath}}</td>
+                            <td>{{$data->P_File}}</td>
+                            <td class="text-center">{{$data->P_Name}}</td>
+                            <td>
+                            @if(isset($data->P_Params))
+                              @php
+                                $jobParamSulArr=explode("||",$scheduleDetail[0]->Sc_Param);
+                                $Job_Params=explode("||",$data->Job_Params);
+                                $JobGusung_ParamPos=explode("||",$data->JobGusung_ParamPos);
+                                echo '<label class="mx-0 mb-1 row">';
+                                for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
+                                  echo '<p type="text" class="form-control form-control-sm d-inline-block col-md-3 overflow-auto readonly my-0 readonly">'.$jobParamSulArr[$JobGusung_ParamPos[$i]].'</p>';
+                                }
+                                echo '</label>';
+                              @endphp
                             @endif
-                          </li>
-                        </ul>
+                            </td>
+                            <td>
+                              /home/script/log{{$data->Sc_LogFile}}
+                            </td>
+                            <td class="text-center">
+                              @if(($data->Sc_ReworkYN)==1)
+                              <label class="m-0 font-weight-bold text-primary">가능</label>
+                              @else
+                                <label class="m-0  font-weight-bold text-danger">불가능</label>
+                              @endif
+                            </td>
+                          </tr>
                         @endforeach
                       @endIf
-                    </div>
+                      </tbody>
+                    </table>
                   </div>
                 </fieldset>
             </div>

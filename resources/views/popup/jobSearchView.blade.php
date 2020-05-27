@@ -111,6 +111,7 @@
     var job_seq = job_id.split('_')[3];//잡 시퀀스
 
     job.jobselect(job_id,job_name,job_seq);
+
 })
 </script>
 </html>

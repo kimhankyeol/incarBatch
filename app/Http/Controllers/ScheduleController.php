@@ -62,7 +62,7 @@ class scheduleController extends Controller
     public function scheduleRegister(Request $request){
         // $date = new DateTime($request->input('Sc_CronEndTime'));
         // $Sc_CronEndTime = $date->format('YYYY-MM-DD H:i:s');
-        $Sc_Crontab = $request->input('Sc_Crontab');
+        $Sc_Crontab = $request->input('Sc_Crontab'); //주기 번호 
         $Job_Seq = $request->input('job_seq');
         $Sc_Sulmyung = $request->input('Sc_Sulmyung');
         $Sc_Param = $request->input('Sc_Param');
@@ -73,48 +73,72 @@ class scheduleController extends Controller
         $Sc_CronSulmyung=$request->input('Sc_CronSulmyung');
         $P_Seq = $request->input('P_Seq');//1,2
         $Sc_CronTime = $request->input('Sc_CronTime');
+        $Sc_CronTimeYmd = new DateTime($request->input('Sc_CronTime'));
+        $Sc_CronTimeYmd = $Sc_CronTimeYmd->format('Ymd');
         $Sc_CronEndTime = $request->input('Sc_CronEndTime');
         $Log_File = $request->input('Log_File');//log1,log2
-        $SC_ReworkYN = $request->input('SC_ReworkYN');
-        $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
-                [
-                    'Sc_Crontab'=>$Sc_Crontab,
-                    'Job_Seq'=>$Job_Seq,
-                    'Sc_Sulmyung'=>$Sc_Sulmyung,
-                    'Sc_Param'=>$Sc_Param,
-                    'Sc_Status'=>$Sc_Status,
-                    'Sc_RegId'=>$Sc_RegId,
-                    'Sc_RegIP'=>$Sc_RegIP,
-                    'Sc_RegDate'=>now(),
-                    'Sc_DeleteYN'=>$Sc_DeleteYN,
-                    'Sc_CronTime'=>$Sc_CronTime,
-                    'Sc_CronEndTime'=>$Sc_CronEndTime,
-                    'Sc_CronSulmyung'=>$Sc_CronSulmyung,
-                    'Sc_Version'=>0
-                ]
-            );
-            for($i=0; $i<count($P_Seq); $i++){
-                DB::table('OnlineBatch_ScheduleProcess')->insert(
-                    [
-                        'P_Seq'=>$P_Seq[$i],
-                        'Sc_Seq'=>$last_sc_seq,
-                        'Job_Seq'=>$Job_Seq,
-                        'JobSM_P_Status'=>101,
-                        'SC_ReworkYN'=>$SC_ReworkYN[$i],
-                        'Sc_LogFile'=>$Log_File[$i]
-                    ]
-                );
-                DB::table('OnlineBatch_ScheduleProcessHis')->insert(
-                    [
-                        'P_Seq'=>$P_Seq[$i],
-                        'Sc_Seq'=>$last_sc_seq,
-                        'Job_Seq'=>$Job_Seq,
-                        'JobSM_P_Status'=>101,
-                        'Sc_Version'=>1
-                    ]
-                );
-            }
-            return response()->json(array('P_Seq'=>$P_Seq,'last_sc_seq'=>$last_sc_seq,'Job_Seq'=>$Job_Seq));
+        $Sc_ReworkYN = $request->input('Sc_ReworkYN');
+        $Sc_Bungi1 =$request->input('Sc_Bungi1'); //주기번호에 따른 파라미터(분기 처리 할거)
+        $Sc_Bungi2 =$request->input('Sc_Bungi2');//주기번호에 따른 파라미터(분기 처리 할거)
+        $Sc_Bungi3 =$request->input('Sc_Bungi3');//주기번호에 따른 파라미터(분기 처리 할거)
+        if($Sc_Bungi1==""){
+            $Sc_Bungi1=null;
+        }
+        if($Sc_Bungi2==""){
+            $Sc_Bungi2=null;
+        }
+        if($Sc_Bungi3==""){
+            $Sc_Bungi3=null;
+        }
+        $Sc_UpdId=null;
+        $Sc_UpdIP=null;
+        $Sc_Note=null;
+
+        //주기 , 요일 , 몇일마다 정보를 받아야됨
+
+        // 이거 프로시저로 만들어야될듯
+        // Sc_UpdId, Sc_UpdIP, Sc_Note
+        DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$Sc_Crontab,$Job_Seq,$Sc_Sulmyung,$Sc_RegId,$Sc_RegIP,$Sc_CronTime,$Sc_CronEndTime,$Sc_CronSulmyung,$Sc_Status,$Sc_Param,$Sc_Bungi1,$Sc_Bungi2,$Sc_Bungi3,$Sc_UpdId,$Sc_UpdIP,$Sc_Note]);
+        // $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
+        //         [
+        //             'Sc_Crontab'=>$Sc_Crontab,
+        //             'Job_Seq'=>$Job_Seq,
+        //             'Sc_Sulmyung'=>$Sc_Sulmyung,
+        //             'Sc_Param'=>$Sc_Param,
+        //             'Sc_Status'=>$Sc_Status,
+        //             'Sc_RegId'=>$Sc_RegId,
+        //             'Sc_RegIP'=>$Sc_RegIP,
+        //             'Sc_RegDate'=>now(),
+        //             'Sc_DeleteYN'=>$Sc_DeleteYN,
+        //             'Sc_CronTime'=>$Sc_CronTime,
+        //             'Sc_CronEndTime'=>$Sc_CronEndTime,
+        //             'Sc_CronSulmyung'=>$Sc_CronSulmyung,
+        //             'Sc_Version'=>0
+        //         ]
+        //     );
+        //     for($i=0; $i<count($P_Seq); $i++){
+        //         DB::table('OnlineBatch_ScheduleProcess')->insert(
+        //             [
+        //                 'P_Seq'=>$P_Seq[$i],
+        //                 'Sc_Seq'=>$last_sc_seq,
+        //                 'Job_Seq'=>$Job_Seq,
+        //                 'JobSM_P_Status'=>101,
+        //                 'Sc_ReworkYN'=>$Sc_ReworkYN[$i],
+        //                 'Sc_LogFile'=>'/home/script/log/'.$Sc_CronTimeYmd.$Log_File[$i]
+        //             ]
+        //         );
+        //         DB::table('OnlineBatch_ScheduleProcessHis')->insert(
+        //             [
+        //                 'P_Seq'=>$P_Seq[$i],
+        //                 'Sc_Seq'=>$last_sc_seq,
+        //                 'Job_Seq'=>$Job_Seq,
+        //                 'JobSM_P_Status'=>101,
+        //                 'Sc_Version'=>1
+        //             ]
+        //         );
+        //     }
+            // return response()->json(array('P_Seq'=>$P_Seq,'last_sc_seq'=>$last_sc_seq,'Job_Seq'=>$Job_Seq));
+            return response()->json(array('msg'=>'success'));
         }
 
     

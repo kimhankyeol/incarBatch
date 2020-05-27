@@ -26,7 +26,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     </div>
                     <div class="card-body">
                       <div class="custom-row">
+                          <input id="Job_Seq" type="hidden" value="{{$processDetail[0]->Job_Seq}}"/>
                           <input id="P_Seq" type="hidden" value="{{$processDetail[0]->P_Seq}}"/>
+                          <input id="Sc_Seq" type="hidden" value="{{$processDetail[0]->Sc_Seq}}"/>
                           <div class="text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
                           <input id="workLargeVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->P_WorkLargeName}}" style="cursor:not-allowed" readonly>
                           <div class="text-center align-self-center font-weight-bold text-primary mx-2">중분류</div>
@@ -100,7 +102,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                           </div>
                         @endif
                         @if(($processDetail[0]->P_TextInputCheck)==1)
-                          <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: 300px" readonly>{{$processDetail[0]->P_TextInput}}</textarea>
+                          <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: auto" readonly>{{$processDetail[0]->P_TextInput}}</textarea>
                         @else
                         @endif
                       </div>

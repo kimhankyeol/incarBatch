@@ -34,7 +34,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         <div class="row">
                             <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 Id</div>
                             <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center" readonly>
-                            <div class="input-group-append">
+                            <div id ="jobSearchLenz" class="input-group-append">
                                 <div class="btn btn-primary" onclick="pageMove.jobpopup.list('jobSearchView')">
                                 <i class="fas fa-search fa-sm"></i>
                                 </div>
@@ -90,7 +90,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                 <span class="font-weight-bold text-primary mx-auto">주마다 다음 요일에: </span>
                                                 <label class="mr-3">
-                                                    <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="0"> 일요일
+                                                    <input name="yoil"  type="checkbox" class="mr-1" value="0"> 일요일
                                                 </label>
                                                 <label class="mr-3">
                                                     <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="1"> 월요일
@@ -108,7 +108,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                     <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="5"> 금요일
                                                 </label>
                                                 <label class="mr-3">
-                                                    <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="6"> 토요일
+                                                    <input name="yoil"  type="checkbox" class="mr-1" value="6"> 토요일
                                                 </label>
                                             </div>
                                           
@@ -121,7 +121,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                 <span class="font-weight-bold text-primary mx-auto">매월: </span>
                                                 <select id="daysel2" class="form-control col-md-4">
                                                 </select>
-                                                <span class="col-md-4">일</span>
+                                                <span class="col-md-2">일</span>
+                                                <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
+                                                    <input id="lastDay" type="checkbox" class="custom-control-input" value="0">
+                                                    <label class="custom-control-label font-weight-bold text-primary" for="lastDay">말일</label>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
@@ -132,7 +137,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div class="d-inline-flex w-100  align-items-center" >
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                 <span class="font-weight-bold text-primary mx-auto">매년: </span>
-                                                <select  id="monthsel" class="form-control col-md-4" onchange="dayChange()">
+                                                <select  id="monthsel" class="form-control col-md-2" onchange="dayChange()">
                                                     @php
                                                     for($i=1;$i<=12;$i++){
                                                         if($i==1){
@@ -143,10 +148,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                     }
                                                     @endphp
                                                 </select>
-                                                <span>월</span>
-                                                <select id ="daysel" class="col-md-4 form-control">
+                                                <span class="col-md-1">월</span>
+                                                <select id ="daysel" class="col-md-2 form-control">
                                                 </select>
-                                                <span>일</span>
+                                                <span class="col-md-1">일</span>
+                                                <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
+                                                    <input id="lastDay2" type="checkbox" class="custom-control-input" value="0">
+                                                    <label class="custom-control-label font-weight-bold text-primary" for="lastDay2">말일</label>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
@@ -169,7 +179,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                 </div>
                                 <hr>
                                 <div class="row justify-content-end">
-                                    <input type="button" class="mt-3 mr-2 btn btn-primary" value="등록" onclick="job.scRegister()" />
+                                    <input type="button" id="scChkBtnHideShow" class="mt-3 mr-2 btn btn-success" value="파라미터 체크" onclick="scheduleParamCheck()" />
+                                    <input type="button" id="scReBtnHideShow" class="mt-3 mr-2 btn btn-success" style="display:none"  value="되돌리기" onclick="reScheduleParamCheck()" />
+                                    <input type="button" id="scRegBtnHideShow" class="mt-3 mr-2 btn btn-primary" style="display:none"  value="등록" onclick="job.scRegister()" />
                                     <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
                                 </div>
                             </fieldset>
@@ -268,7 +280,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     cont+= '<option>'+i+'</option>';
                 }
             }
-           
         $('#daysel').html(cont);
     }
   
@@ -285,7 +296,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
                 var cont = '/home/script/log/'+chgDate;
                 var cont2 = "";
-                if(month ==2  ){
+                if(month ==2 ){
                     for(var i = 1 ; i<=28;i++){
                         cont2+= '<option>'+i+'</option>';
                     }
@@ -311,14 +322,116 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     handler();
     dayChange();
     $(document).ready(function(){
-     $("input:text[numberOnly]").on("keyup", function() {
-       $(this).val($(this).val().replace(/[^0-9]/g,""));
-     }); 
+        $(document).on('keyup','input[numberonly]',function(event){
+            $(this).val($(this).val().replace(/[^0-9]/g,""));
+        })
+    })
+    //스케줄 파라미터 체크
+    function scheduleParamCheck(){
+        var scheduleParamIndex=0;
+        if($('input[name=Sc_Param]').length==0){
+           alert('잡이 선택되지 않아 파라미터 체크를 할 수 없습니다.');
+        }else{
+            $('input[name=Sc_Param]').each(function(){
+                if (!$.trim($(this).val()).length) {
+                scheduleParamIndex++;
+                }
+            });
+            if(scheduleParamIndex==0){
+                var cont ="";
+                var strType ="";
+                var errorNumCheck=0;
+                var errorStrCheck=0;
+                for(var i = 0 ; i<$('input[name=Job_Params').length;i++){
+                    if($('input[name=Job_Params').eq(i).val()=="paramNum"){
+                        strType="숫자";
+                        //숫자 타입 입력 안되면 오류 체크
+                        if(!$.isNumeric($('input[name=Sc_Param]').eq(i).val())){
+                            errorNumCheck++;
+                        }
+                    }else{
+                        strType="문자";
+                        if($.isNumeric($('input[name=Sc_Param]').eq(i).val())){
+                            //문자에서는 숫자도 입력가능하니  confirm 으로 한번더 물어봐야됨
+                            errorStrCheck++;
+                        }
+                    }
+                    cont+="파라미터 "+parseInt(i+1)+"번 : 설명 -"+$('input[name=jobParamSulArr]').eq(i).val()+" , 타입 - "+strType+" , 입력 값 - "+$('input[name=Sc_Param]').eq(i).val()+"\n";
+                }
+                //타입 에러 없이 입력이 잘되었으면
+                if(errorNumCheck==0&&errorStrCheck==0){
+                    var res = confirm("입력한 정보가 맞습니까 ? \n"+cont+"\n")
+                    if(res == true) {
+                        $('#scChkBtnHideShow').hide();
+                        $('#jobSearchLenz').hide();
+                        $('#scReBtnHideShow').show();
+                        $('#scRegBtnHideShow').show();
+                        $('input[name=Sc_Param]').attr("readonly",true);
+                    }else{
+                        return false;
+                    } 
+                }else if (errorNumCheck!=0&&errorStrCheck==0){
+                    alert('숫자 타입의 변수가 제대로 입력되지 않았습니다.')
+                    return false;
+                }else if (errorNumCheck==0&&errorStrCheck!=0){
+                    var res2 = confirm('문자 타입의 변수에 숫자로 입력되었습니다. 그래도 진행하시겠습니까?');
+                    if(res2){
+                        var res = confirm("입력한 정보가 맞습니까 ? \n"+cont+"\n")
+                        if(res == true){
+                            $('#scChkBtnHideShow').hide();
+                            $('#jobSearchLenz').hide();
+                            $('#scReBtnHideShow').show();
+                            $('#scRegBtnHideShow').show();
+                            $('input[name=Sc_Param]').attr("readonly",true);
+                        }else{
+                            return false;
+                        }
+                    }else{
+                        return false;
+                    }
+                }else if (errorNumCheck!=0&&errorStrCheck!=0){
+                    alert('숫자 / 문자 타입의 변수가 제대로 입력되지 않았습니다.')
+                    return false;
+                }
+
+               
+            }else{
+                alert('파라미터가 입력되지 않아 파라미터 체크를 할 수 없습니다.') ;
+                return false;
+            }
+          
+        }
+    }
+    //되돌리기 
+    function reScheduleParamCheck(){
+        var res = confirm("다시 되돌리시겠습니까? ");
+        if(res){
+            $('#scChkBtnHideShow').show();
+            $('#jobSearchLenz').show();
+            $('#scReBtnHideShow').hide();
+            $('#scRegBtnHideShow').hide();
+            $('input[name=Sc_Param]').attr("readonly",false);
+            $('input[name=Sc_Param]').val("");
+        }else{
+            return false;
+        }
+    }
+    //체크 값변경
+    $('#lastDay').change(function(){
+        if ($("#lastDay").is(":checked")) {
+            $("#lastDay").val(1);
+        } else {
+            $("#lastDay").val(0);
+        }
+    })
+    $('#lastDay2').change(function(){
+        if ($("#lastDay2").is(":checked")) {
+            $("#lastDay2").val(1);
+        } else {
+            $("#lastDay2").val(0);
+        }
     })
    
     </script>
-    <script>
-        
-      </script>
     </body>
 </html>

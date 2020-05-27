@@ -4,7 +4,7 @@ if (isset($processList)) {
   }
 @endphp
 @if (isset($processList))
-  <table id="datatable3" class="table table-bordered" cellspacing="0">
+  <table id="scheduleProcessList" class="table table-bordered" cellspacing="0">
       <colgroup>
         <col width="60px" />
         <col width="180px" />
@@ -25,7 +25,7 @@ if (isset($processList)) {
             <th>프로그램 명</th>
             <th>설명</th>
             <th>상태</th>
-            <th>재작업유무</th>
+            <th>재작업</th>
             <th>시작시간</th>
             <th>종료시간</th>
             <th>진행률</th>
@@ -43,7 +43,13 @@ if (isset($processList)) {
             <td>{{$gusungSc->P_File}}</td>
             <td>{{$gusungSc->P_Name}}</td>
             <td class="text-center">{{$gusungSc->JobSM_P_Status}}</td>
-            <td class="text-center">{{$gusungSc->Sc_ReworkYN}}</td>
+            <td class="text-center">
+              @if(($gusungSc->Sc_ReworkYN)=='Y')
+                <label class="m-0 font-weight-bold text-primary">가능</label>
+              @else
+                <label class="m-0  font-weight-bold text-danger">불가능</label>
+              @endif
+            </td>
             <td class="text-center">{{isset($gusungSc->JobSM_P_StartTime)?$gusungSc->JobSM_P_StartTime:""}}</td>
             <td class="text-center">{{isset($gusungSc->JobSM_P_EndTime)?$gusungSc->JobSM_P_EndTime:""}}</td>
             <td>
@@ -81,16 +87,16 @@ if (isset($processList)) {
             <td class="overflow-auto">
               @php
                 $paramLength = count(explode('||',$gusungSc->JobGusung_ParamPos));
+                echo '<label class="mx-0 mb-1 row justify-content-center">';
                 for ($i=0; $i < $paramLength; $i++) { 
                   # code...
-                  echo '<label class="mx-0 mb-1 row">';
-                  echo '<p class="form-control form-control-sm d-inline-block col-md-6 overflow-auto border-0 my-0" type="text" style="height:calc(1.5em + .5rem + 12px);">파라미터 '.intVal($i+1).' '.explode('||',$gusungSc->Job_ParamSulmyungs)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
-                  echo '<p type="text" class="form-control form-control-sm d-inline-block col-md-6 overflow-auto readonly my-0 readonly">'.explode('||',$gusungSc->Sc_Param)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
-                  echo '</label>';
+                  #echo '<p class="form-control form-control-sm d-inline-block col-md-6 overflow-auto border-0 my-0" type="text">파라미터 '.intVal($i+1).' '.explode('||',$gusungSc->Job_ParamSulmyungs)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
+                  echo '<p type="text" class="form-control form-control-sm d-inline-block col-md-8 overflow-auto readonly my-0 readonly">'.explode('||',$gusungSc->Sc_Param)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
                 }
+                echo '</label>';
               @endphp
             </td>
-            <td class="text-center">{{empty($gusungSc->P_TextInput)==1?"X":"O"}}</td>
+            <td class="text-center">{{empty($gusungSc->P_TextInput)==1?"N":"Y"}}</td>
             <td class="text-center">{{intval($gusungSc->P_YesangTime/1440)==0?"":intval($gusungSc->P_YesangTime/1440)."일"}}{{intval($gusungSc->P_YesangTime%1440/60)==0?"":intval($gusungSc->P_YesangTime%1440/60)."시간"}}{{intval($gusungSc->P_YesangTime%60)==0?"":intval($gusungSc->P_YesangTime%60)."분"}}</td>
             <td class="text-center">{{intval($gusungSc->P_YesangMaxTime/1440)==0?"":intval($gusungSc->P_YesangMaxTime/1440)."일"}}{{intval($gusungSc->P_YesangMaxTime%1440/60)==0?"":intval($gusungSc->P_YesangMaxTime%1440/60)."시간"}}{{intval($gusungSc->P_YesangMaxTime%60)==0?"":intval($gusungSc->P_YesangMaxTime%60)."분"}}</td>
           </tr>
@@ -98,4 +104,3 @@ if (isset($processList)) {
       </tbody>
     </table>
   @endIf
-

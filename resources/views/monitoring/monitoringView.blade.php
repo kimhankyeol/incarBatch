@@ -13,6 +13,27 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
+<script>$(function(){$("#scheduleList").colResizable({onDrag:null,liveDrag:true});});</script>
+<script>
+	var colResiz = function(){
+    const scTable = document.getElementById("scheduleListTable");
+    const scpTable = document.getElementById("scheduleProcessListTable");
+    if(!scTable.children[0]) {
+      $("#scheduleList").colResizable({
+        liveDrag:true, 
+        partialRefresh:true,
+        onDrag:null
+      });
+    }
+    if(!scpTable.children[2]) {
+      $("#scheduleProcessList").colResizable({
+        liveDrag:true, 
+        partialRefresh:true,
+        onDrag:null
+      });
+    }
+	}
+</script>
 <script>
   function workLargeChgSel(){
     var WorkLarge =  $('#workLargeVal').val();
@@ -54,33 +75,24 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       event.preventDefault();
       var href = $(this).attr('href').split('?')[0];
       var href_param = $(this).attr('href').split('?')[1];
-
-      if(href=="/monitoring/monitorJobSearchList") {
-        var searchPage = href_param.split('page=')[1];
-        var noneTable = document.getElementById("datatable2");
-        var noneTable2 = document.getElementById("scheduleProcessList");
-        noneTable.children[2].style.display ="none";
-        if(noneTable.nextElementSibling != null || noneTable.nextElementSibling != undefined) {
-          noneTable.nextElementSibling.style.display = "none";
+      var searchPage = href_param.split('page=')[1];
+      
+      var scheduleProcessList = document.getElementById("scheduleProcessListTable");
+      scheduleProcessList.style.display = "none";
+      $.ajax({
+        url: href,
+        method: "get",
+        data: {
+          "page": searchPage
+        },
+        success: function (resp) {
+          console.log(resp.returnHTML);
+          $('#scheduleListTable').html(resp.returnHTML)
         }
-        noneTable2.style.display = "none";
-        $.ajax({
-          url: href,
-          method: "get",
-          data: {
-            "page": searchPage
-          },
-          success: function (resp) {
-            $('#monitorDatatable').html(resp.returnHTML)
-          }
-        })
-      } else if(href=="/monitoring/monitorJobDetailList") {
-        var Job_Seq = $('#monitorJob').attr("data-value");
-        var page = href_param.split('page=')[1];
-        var noneTable = document.getElementById("datatable3");
-        noneTable.style.display ="none"
-        monitor.detailList(Job_Seq, page);
-      }
+      })
+    });
+    $( document ).ajaxComplete(function( event, request, settings ) {
+      colResiz();
     });
   });
 </script>
@@ -148,25 +160,52 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               </div>
             </div>
             <div class="card-body py-3">
-              <div id="monitorDatatable" class="table-responsive overflow-x-scroll" style="height: calc((1vh) * 50);">
-                @include('monitoring.monitorJobSearchList')
+              <div id="scheduleListTable" class="table-responsive overflow-x-scroll" style="height: calc((1vh) * 50);">
+                @include('monitoring.scheduleList')
               </div>
-              <div id="jobDetailList" class="table-responsive overflow-x-scroll">
-                @include('monitoring.monitorJobDetailList')
-              </div>
-              <div id="scheduleProcessList" class="table-responsive overflow-x-scroll">
+              <div id="scheduleProcessListTable" class="table-responsive overflow-x-scroll">
                 @include('monitoring.scheduleProcessList')
               </div>
             </div>
           </div>
         </div>
       </div>
-      @include('common.footer')
-    {{--content 끝--}}
     </div>
     {{-- 잡시퀀스 , 스케줄시퀀스,프로그램 시퀀스 --}}
     <input type="hidden" id="jobSeq">
     <input type="hidden" id="scSeq">
     <input type="hidden" id="pSeq">
+    <input type="hidden" id="regDate">
+    {{--  Modal 모달  --}}
+    <div class="modal fade" id="reworkModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold modal-title text-danger">재작업</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <textarea id="Sc_Note" class="form-control" maxlength="2000" placeholder="재작업 사유" onkeyup="check_text(this);" onkeypress="check_text(this);"> </textarea>
+            <span id="text_cnt" class="d-block text-right text-gray-500">text_cnt</span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" onclick="monitor.reWorkSchedule()">재작업</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $("#Sc_Note").val('');
+      $("#text_cnt").html('0 / 2000 Byte');
+      function check_text(obj){
+        var text_cnt = $(obj).val().length;
+        if(text_cnt >= 2000) {
+          event.preventDefault();
+          alert("2000 Byte 이상 작성할 수 없습니다.");
+        }
+        $("#text_cnt").html(text_cnt+' / 2000 Byte');
+      }
+    </script> 
 </body>
 </html>

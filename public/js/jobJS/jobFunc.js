@@ -367,31 +367,24 @@ const job = {
   scRegister:function(){
     var P_Seq = [];
     var Log_File = [];
-    var SC_ReworkYN=[];
-    // var gusungData = document.getElementsByClassName("gusungData");
-    // for(var i=0; i<gusungData.length;i++){
-    //   if(gusungData[i].children[0].children[0].children[0].checked){
-    //     P_Seq.push(gusungData[i].children[0].children[0].children[0].value);
-    //     SC_ReworkYN.push(gusungData[i].children[6].children[1].value);
-    //     //Sc_LogFile value를 받아옴
-    //     Log_File.push(gusungData[i].children[7].children[0].children[1].value);
-    //   } 
-    // }
-    var P_ExecuteYN = document.getElementsByName("P_ExecuteYN");
-    var scRework = document.getElementsByName("SC_ReworkYN");
-    var logFile = document.getElementsByName("Sc_LogFile");
+    var Sc_ReworkYN=[];
 
+    var P_ExecuteYN = document.getElementsByName("P_ExecuteYN");
+    var scRework = document.getElementsByName("Sc_ReworkYN");
+    var logFile = document.getElementsByName("Sc_LogFile");
 
     for (var i = 0; i < P_ExecuteYN.length; i++) {
       if(P_ExecuteYN[i].checked){
         P_Seq.push(P_ExecuteYN[i].value);
-        SC_ReworkYN.push(scRework[i].value);
+        Sc_ReworkYN.push(scRework[i].value);
         Log_File.push(logFile[i].value);
       }
     }
+
+
     // return false;
     var jobSc_id = $('#jobSc_id').val();//잡 id
-    var job_seq = $('#scExecJob').val();//잡 seq
+    var job_seq = $('.scExecJob').eq(0).val();//잡 seq
     var jobSc_name = $('#jobSc_name').val();//잡 명
     var Sc_Sulmyung = $('#Sc_Sulmyung').val();// 스케줄 설명
 
@@ -430,35 +423,50 @@ const job = {
     var Sc_CronEndTime =  new Date(enddate+" "+endtime).format("yyyy-MM-dd HH:mm:ss");
     var jugiNum=$('#jugiChange option:selected').val();
 
-    scValCheck=job.Scvalidation(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File,jugiNum);
+    scValCheck=job.Scvalidation(jobSc_id,Sc_Sulmyung,Day,yoilArr,Sc_Param,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File,jugiNum);
 
+    //Bungi1, Bungi2, Bungi3 은 실행주기에 따라 유동적으로변함
+    //주기2 매일  : 매  * 일 마다   Bungi1
+    //주기3 매주 : 일 -월 체크된거  Bungi1
+    //주기4 매월 : 매월 몇*일에 실행 , 말일 버튼 체크 Bungi1 Bungi2
+    //주기5 매년 : 매년 몇*월 몇*일, 말일 버튼 체크 Bungi1 Bungi2 Bungi3
+    var Sc_Bungi1="";
+    var Sc_Bungi2="";
+    var Sc_Bungi3="";
     if(scValCheck){
       var result = confirm('스케줄을 등록하시겠습니까?');
       if(result){
         if(jugiNum==1){
-          var Sc_Crontab = " ";
+          // var Sc_Crontab = " ";
           var Sc_CronSulmyung ="한번 실행";
           var Sc_Status = "301"
         }else if(jugiNum==2){
+          Sc_Bungi1=$('#Day').val();
+          
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
           if(month=="11"||month=="12"){
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
           if($('#Day').val()==1){
-            var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
+            // var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
             var Sc_CronSulmyung = hour+":"+min+"에 매일 실행";
             var Sc_Status = "302"
           }else{
-            var Sc_Crontab = min + " " + hour + " " + "*/"+$('#Day').val() + " " + "*" + " " + "*" + " ";
+            // var Sc_Crontab = min + " " + hour + " " + "*/"+$('#Day').val() + " " + "*" + " " + "*" + " ";
             var Sc_CronSulmyung = hour+":"+min+"에 "+$('#Day').val()+"일 마다 실행";
             var Sc_Status = "302"
           }
         }else if(jugiNum==3){
+          var yoilParam="";
+          yoilParam =$('input:checkbox[name=yoil]:checked').map(function(){
+            return $(this).val();
+          }).get().join('\|\|');
+          Sc_Bungi1=yoilParam;
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
           if(month=="11"||month=="12"){
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
-          var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + yoil + " ";
+          // var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + yoil + " ";
           var Sc_Status = "303"
           for(var i=0;i<yoilArr.length;i++){
             if(yoilArr[i]==0||yoilArr[i]==1){
@@ -480,23 +488,36 @@ const job = {
           const yoilArr1 = yoilArr.join(",");
           var Sc_CronSulmyung = hour+":"+min+"에 "+"매주 "+yoilArr1+"요일 마다 실행";
         }else if(jugiNum==4){
+          Sc_Bungi2=$('input:checkbox[id=lastDay]').val();
+          if(Sc_Bungi2==1){
+            Sc_Bungi1="";
+          }else{
+            Sc_Bungi1=$('#daysel2 option:selected').val();
+          }
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
           if(month=="11"||month=="12"){
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
-          var Sc_Crontab = min + " " + hour + " " + day + " " + "*" + " " + "*" + " ";
+          // var Sc_Crontab = min + " " + hour + " " + day + " " + "*" + " " + "*" + " ";
           var Sc_CronSulmyung = "매달 "+day+"일"+hour+":"+min+" 마다 실행";
           var Sc_Status = "304"
         }else if(jugiNum==5){
+          Sc_Bungi1 = $('#monthsel option:selected').val();
+          Sc_Bungi3=$('input:checkbox[id=lastDay2]').val();
+          if(Sc_Bungi3==1){
+            Sc_Bungi2="";
+          }else{
+            Sc_Bungi2 = $('#daysel option:selected').val();
+          }
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
           if(month=="11"||month=="12"){
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
-          var Sc_Crontab = min + " " + hour + " " + day + " " + month + " " + "*" + " ";
+          // var Sc_Crontab = min + " " + hour + " " + day + " " + month + " " + "*" + " ";
           var Sc_CronSulmyung = "매년 "+month+"월 "+day+"일 "+hour+":"+min+"마다 실행";
           var Sc_Status = "305"
         }else if(jugiNum==6){
-          var Sc_Crontab = " ";
+          // var Sc_Crontab = " ";
           var Sc_CronSulmyung ="즉시 실행";
           var Sc_Status = "306"
           var Sc_CronTime=new Date();
@@ -506,6 +527,7 @@ const job = {
           Sc_CronTime = Sc_CronTime.format('yyyy-MM-dd HH:mm:ss');
           Sc_CronEndTime = Sc_CronTime;
         }
+     
         if(P_Seq.length!=0){
           $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -514,7 +536,7 @@ const job = {
             data:{
               'job_seq':job_seq,
               'Sc_Sulmyung':Sc_Sulmyung,
-              'Sc_Crontab':Sc_Crontab,
+              'Sc_Crontab':jugiNum,
               'Sc_Param':Sc_Param,
               'Sc_Status':Sc_Status,
               'Sc_RegId':1611698,
@@ -523,11 +545,14 @@ const job = {
               'Sc_CronSulmyung':Sc_CronSulmyung,
               'P_Seq':P_Seq,
               'Log_File':Log_File,
-              'SC_ReworkYN':SC_ReworkYN
+              'Sc_ReworkYN':Sc_ReworkYN,
+              'Sc_Bungi1':Sc_Bungi1,
+              'Sc_Bungi2':Sc_Bungi2,
+              'Sc_Bungi3':Sc_Bungi3
             },
             success:function(data){
                 alert("등록되었습니다.");
-                location.href = "/schedule/scheduleDetailView?Sc_Seq="+data.last_sc_seq+"&Job_Seq="+data.Job_Seq;
+                location.href = "/schedule/scheduleListView?page=1";
             },error:function(error){
               console.error(error);
             }
@@ -569,7 +594,7 @@ const job = {
   }
  },
   //스케줄링 유효성 검사
-  Scvalidation:function(jobSc_id,jobSc_name,Sc_Sulmyung,Day,yoilArr,Sc_Param,startdate,enddate,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File,jugiNum){
+  Scvalidation:function(jobSc_id,Sc_Sulmyung,Day,yoilArr,Sc_Param,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File,jugiNum){
     if(jobSc_id==""){
       alert('잡 명이 입력되지 않았습니다.');
       $('#Job_Name').focus();
@@ -582,10 +607,14 @@ const job = {
         alert('현재시간 이전에 등록할 수 없습니다.');
         return false;
       }
-    }else if($('input:radio[id="Everyday"]').is(':checked')&&Day==""){
-      alert('일을 입력해주세요');
-      return false;
-    }else if($('input:radio[id="Everyweek"]').is(':checked')&&yoilArr.length==""){
+    }else if(Day==""){
+      if(jugiNum==1||jugiNum==6){
+        return true;
+      }else{
+        alert('일을 입력해주세요');
+        return false;
+      }
+    }else if(yoilArr.length==""){
         alert('요일을 체크해주세요');
         return false;
     }else if(Sc_CronTime > Sc_CronEndTime){

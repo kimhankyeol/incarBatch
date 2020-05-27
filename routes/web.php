@@ -78,13 +78,13 @@ Route::prefix('monitoring')->group(function(){
     //모니터링 뷰
     Route::get('/monitoringView','MonitoringController@monitoringView');
     //모니터링 잡 리스트
-    Route::get('/monitorJobSearchList','MonitoringController@monitorJobSearchList');
-    // 모니터링 잡 스케줄 리스트
-    Route::get('/monitorJobDetailList','MonitoringController@monitorJobDetailList');
+    Route::get('/scheduleList','MonitoringController@scheduleList');
     // 모니터링 잡 스케줄 프로세스 리스트
     Route::get('/scheduleProcessList','MonitoringController@scheduleProcessList');
-    // 모니터링 잡 스케줄 재시작
-    Route::get('/reWorkSchedule','MonitoringController@reWorkSchedule');
+    // 모니터링 잡 스케줄 재작업 체크
+    Route::get('/reWorkScheduleChk','MonitoringController@reWorkScheduleChk');
+    // 모니터링 잡 스케줄 재작업
+    Route::post('/reWorkSchedule','MonitoringController@reWorkSchedule');
 });
 
 //히스토리

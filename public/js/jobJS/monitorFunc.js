@@ -19,7 +19,7 @@ const monitor = {
       searchWord = "searchWordNot";
     }
     $.ajax({
-      url: "/monitoring/monitorJobSearchList",
+      url: "/monitoring/scheduleList",
       method: "get",
       data: {
         'jobStatus': jobStatusStr.substr(0, jobStatusStr.length - 1),
@@ -31,7 +31,7 @@ const monitor = {
         'page': page
       },
       success: function (resp) {
-        $('#monitorDatatable').html(resp.returnHTML)
+        $('#scheduleList').html(resp.returnHTML)
       }
     })
   },
@@ -52,8 +52,8 @@ const monitor = {
   },
   // 스케줄링 프로세스 정보
   scheduleProcessList(Job_Seq, Sc_Seq) {
-    var noneTable = document.getElementById("scheduleProcessList");
-    noneTable.style.display = "block"
+    var scheduleProcessList = document.getElementById("scheduleProcessListTable");
+    scheduleProcessList.style.display = "";
     $.ajax({
       url: "/monitoring/scheduleProcessList",
       method: "get",
@@ -62,10 +62,10 @@ const monitor = {
         "Sc_Seq": Sc_Seq
       },
       success: function (resp) {
-        $('#scheduleProcessList').html(resp.returnHTML);
-
+        $('#scheduleProcessListTable').html(resp.returnHTML);
       }
     })
+    colResiz();
   },
   // 잡 상세
   jobPopup: function (Job_Seq) {
@@ -79,26 +79,57 @@ const monitor = {
   processDetail: function (Sc_Seq, P_Seq) {
     window.open('/popup/processDetailPopup?Sc_Seq=' + Sc_Seq + '&P_Seq=' + P_Seq, '프로그램 정보 상세', 'top=10, left=10, width=1400, height=875, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   },
-  // 스케줄 재작업
-  reWorkSchedule: function (Sc_Seq) {
+  // 스케줄 재작업 확인
+  reWorkScheduleChk: function (Sc_Seq) {
+    const Job_Seq = event.target.parentElement.parentElement.getAttribute("data-job_seq");
+    const RegDate = event.target.parentElement.parentElement.getAttribute("data-regdate");
     $.ajax({
-      url: "/monitoring/reWorkSchedule",
+      url: "/monitoring/reWorkScheduleChk",
       method: "get",
       data: {
         "Sc_Seq": Sc_Seq
       },
       success: function (resp) {
-        if (resp.succesCount == 0) {
-          alert("이미 완료된 스케줄 입니다.");
-        } else if (resp.reWorkCount > 0) {
-          alert("재작업 불가능한 스케줄 입니다.");
-        } else {
+        if (resp.succesCount != 0) {
           const result = confirm("재작업 하시겠습니까?");
           if (result) {
-
+            $('#reworkModal').modal('show');
           }
         }
-        //$('#scheduleProcessList').html(resp.returnHTML);
+        if (resp.succesCount == 0) {
+          const result = confirm("이미 완료된 스케줄 입니다. 재작업 하시겠습니까?");
+          if (result) {
+            if (resp.reWorkCount > 0) {
+              alert("재작업 불가능한 스케줄 입니다.");
+              return false;
+            }
+            $('#reworkModal').modal('show');
+            document.getElementById("jobSeq").value = Job_Seq;
+            document.getElementById("scSeq").value = Sc_Seq;
+            document.getElementById("regDate").value = RegDate;
+          }
+        }
+      }
+    })
+  },
+  // 스케줄 재작업
+  reWorkSchedule: function () {
+    const jobSeq = document.getElementById("jobSeq").value;
+    const scSeq = document.getElementById("scSeq").value;
+    const regDate = document.getElementById("regDate").value;
+    const Sc_Note = document.getElementById("Sc_Note").value;
+    $.ajax({
+      headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+      url: "/monitoring/reWorkSchedule",
+      method: "post",
+      data: {
+        "Job_Seq": jobSeq,
+        "Sc_Seq": scSeq,
+        "RegDate": regDate,
+        "Sc_Note": Sc_Note
+      },
+      success: function (resp) {
+        console.log(resp);
       }
     })
   }

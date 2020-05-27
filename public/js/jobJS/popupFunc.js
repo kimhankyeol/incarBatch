@@ -265,9 +265,9 @@ const popup = {
           "gusungData": gusungData
         },
         success: function (data) {
-          if(data.msg=="success"){
+          if (data.msg == "success") {
             return alert(data.msg2), window.close();
-          }else if(data.msg="failed"){
+          } else if (data.msg = "failed") {
             return alert(data.msg2);
           }
         }
@@ -278,6 +278,10 @@ const popup = {
   },
   // 재작업 변경 스크립트
   reWorkModifi: function (Sc_P_Seq) {
+    const Job_Seq = document.getElementById("Job_Seq").value;
+    const Sc_Seq = document.getElementById("Sc_Seq").value;
+    console.log(Job_Seq)
+    console.log(Sc_Seq)
     const result = confirm("재작업이 가능하도록 만드시겠습니까?");
     if (result) {
       $.ajax({
@@ -288,7 +292,8 @@ const popup = {
         },
         success: function (data) {
           if (data.result == 1) {
-            return alert("수정 되었습니다."), window.close();
+            window.close();
+            return alert("수정 되었습니다.");
           } else {
             return alert("실패 하였습니다.");
           }
