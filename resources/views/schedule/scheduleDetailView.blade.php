@@ -47,7 +47,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 Id</div>
                     <input id="Sc_Seq" type="text" class="col-md-2 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq.'_'.$scheduleDetail[0]->Sc_Seq.'.sh'}}" readonly>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
-                    <textarea id="Sc_Sulmyung"  class="col-md-6 form-control form-control-sm mt-2" placeholder="스케줄 설명" readonly>{{$scheduleDetail[0]->Sc_Sulmyung}}</textarea>
+                    <textarea id="Sc_Sulmyung"  class="col-md-6 form-control form-control-sm mt-2"  maxlength="2000" placeholder="스케줄 설명" readonly>{{$scheduleDetail[0]->Sc_Sulmyung}}</textarea>
                     {{-- <input id="Sc_Sulmyung" type="text" class="col-md-3 form-control form-control-sm mt-2" value="{{$scheduleDetail[0]->Sc_Sulmyung}}" readonly> --}}
                   </div>
                 <hr>
