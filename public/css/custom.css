@@ -47,9 +47,6 @@
 }
 
 /* textarea */
-textarea {
-  resize: none !important;
-}
 .text_cnt{
   position: absolute;
   right: 0rem;

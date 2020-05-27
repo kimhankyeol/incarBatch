@@ -9,11 +9,15 @@
             echo '<div class="d-inline-flex w-50 delYN mb-2">';
             echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
             if($jobParamArr[$i]=="paramNum"){
-              echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
-              echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'" numberOnly> </div>' ;
+              echo '<input type="text" class="col-md-2  form-control form-control-sm" placeholder="숫자" readonly/>';
+              echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'" numberonly> </div>' ;
+              echo '<input type="hidden" name="Job_Params"  value="'.$jobParamArr[$i].'"/>';
+              echo '<input type="hidden" name="jobParamSulArr" value="'.$jobParamSulArr[$i].'"/>';
             }else if($jobParamArr[$i]=="paramStr"){
-              echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';
+              echo '<input type="text" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';
               echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'"> </div>' ;
+              echo '<input type="hidden" name="Job_Params"  value="'.$jobParamArr[$i].'"/>';
+              echo '<input type="hidden" name="jobParamSulArr" value="'.$jobParamSulArr[$i].'"/>';
             }
             }
           @endphp
@@ -48,7 +52,7 @@
       </tr>
     </thead>
     <tbody>
-      <div id="gusungList" class="row px-0 gusungList">
+      {{-- <div id="gusungList" class="row px-0 gusungList"> --}}
         @if(isset($jobGusungContents))
           @foreach($jobGusungContents as $data)
             <tr class="gusungData">
@@ -61,14 +65,14 @@
               <td>{{$data->P_FilePath}}</td>
               <td>{{$data->P_File}}</td>
               <td>{{$data->P_Name}}</td>
-              <td>
+              <td style="overflow-x:scroll">
                 @if(isset($data->JobGusung_ParamPos))
                   @php
                     $proParamArr=explode("||",$data->P_Params);
                     $Job_ParamSulmyungs=explode("||",$data->Job_ParamSulmyungs);
                     $JobGusung_ParamPos=explode("||",$data->JobGusung_ParamPos);
                     for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
-                      echo '<div class="d-inline-flex w-50 delYN mb-2">'.intVal($i+1).')';
+                      echo '<div class="d-inline-flex w-100 delYN mb-2">'.intVal($i+1).')';
                     if($proParamArr[$i]=="paramNum"){
                       echo '<input type="text" name="pro_Params" class="col-md-5 form-control form-control-sm" placeholder="숫자" readonly/>';
                     }else if($proParamArr[$i]=="paramStr"){
@@ -96,14 +100,15 @@
                 <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" type="text" value="{{"/".$pfilesplit[0]."_".$data->Job_Seq."_".$data->JobGusung_Order.".log"}}"></div>
               </td>
             </tr>
+            <input hidden class="scExecJob" value='{{$data->Job_Seq}}'>
           @endforeach
         @endIf
-      </div>
+      {{-- </div> --}}
     </tbody>
   </table>
 </div>
 </fieldset>
-
-
-
+<script>
+//스케줄 파라미터 체크버튼으로 다시 바꿔줘야함
+</script>
 

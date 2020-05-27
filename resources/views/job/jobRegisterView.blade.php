@@ -105,19 +105,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
   }
   </script>
-  <script>
-        $("#Job_Sulmyung").val('');
-        $("#text_cnt").html('0 / 2000 Byte');
-        function check_text(obj){
-            var text_cnt = $(obj).val().length;
-            if(text_cnt > 2000) {
-              event.preventDefault();
-              alert("2000 Byte 이상 작성할 수 없습니다.");
-            } else {
-              $("#text_cnt").html(text_cnt+' / 2000 Byte');
-            }
-        }
-    </script> 
+    <script>
+      $("#Job_Sulmyung").val('');
+      $("#text_cnt").html('0 / 2000 Byte');
+      function check_text(obj){
+          var text_cnt = $(obj).val().length;
+          if(text_cnt > 2000) {
+            event.preventDefault();
+            alert("2000 Byte 이상 작성할 수 없습니다.");
+          } else {
+            $("#text_cnt").html(text_cnt+' / 2000 Byte');
+          }
+      }
+  </script> 
     </div>
   </div>
 </body>
