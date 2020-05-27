@@ -97,47 +97,7 @@ class scheduleController extends Controller
         //주기 , 요일 , 몇일마다 정보를 받아야됨
 
         // 이거 프로시저로 만들어야될듯
-        // Sc_UpdId, Sc_UpdIP, Sc_Note
-        DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$Sc_Crontab,$Job_Seq,$Sc_Sulmyung,$Sc_RegId,$Sc_RegIP,$Sc_CronTime,$Sc_CronEndTime,$Sc_CronSulmyung,$Sc_Status,$Sc_Param,$Sc_Bungi1,$Sc_Bungi2,$Sc_Bungi3,$Sc_UpdId,$Sc_UpdIP,$Sc_Note]);
-        // $last_sc_seq = DB::table('OnlineBatch_Schedule')->insertGetId(
-        //         [
-        //             'Sc_Crontab'=>$Sc_Crontab,
-        //             'Job_Seq'=>$Job_Seq,
-        //             'Sc_Sulmyung'=>$Sc_Sulmyung,
-        //             'Sc_Param'=>$Sc_Param,
-        //             'Sc_Status'=>$Sc_Status,
-        //             'Sc_RegId'=>$Sc_RegId,
-        //             'Sc_RegIP'=>$Sc_RegIP,
-        //             'Sc_RegDate'=>now(),
-        //             'Sc_DeleteYN'=>$Sc_DeleteYN,
-        //             'Sc_CronTime'=>$Sc_CronTime,
-        //             'Sc_CronEndTime'=>$Sc_CronEndTime,
-        //             'Sc_CronSulmyung'=>$Sc_CronSulmyung,
-        //             'Sc_Version'=>0
-        //         ]
-        //     );
-        //     for($i=0; $i<count($P_Seq); $i++){
-        //         DB::table('OnlineBatch_ScheduleProcess')->insert(
-        //             [
-        //                 'P_Seq'=>$P_Seq[$i],
-        //                 'Sc_Seq'=>$last_sc_seq,
-        //                 'Job_Seq'=>$Job_Seq,
-        //                 'JobSM_P_Status'=>101,
-        //                 'Sc_ReworkYN'=>$Sc_ReworkYN[$i],
-        //                 'Sc_LogFile'=>'/home/script/log/'.$Sc_CronTimeYmd.$Log_File[$i]
-        //             ]
-        //         );
-        //         DB::table('OnlineBatch_ScheduleProcessHis')->insert(
-        //             [
-        //                 'P_Seq'=>$P_Seq[$i],
-        //                 'Sc_Seq'=>$last_sc_seq,
-        //                 'Job_Seq'=>$Job_Seq,
-        //                 'JobSM_P_Status'=>101,
-        //                 'Sc_Version'=>1
-        //             ]
-        //         );
-        //     }
-            // return response()->json(array('P_Seq'=>$P_Seq,'last_sc_seq'=>$last_sc_seq,'Job_Seq'=>$Job_Seq));
+        DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$Sc_Crontab,$Job_Seq,$Sc_Sulmyung,$Sc_RegId,$Sc_RegIP,$Sc_CronTime,$Sc_CronEndTime,$Sc_CronSulmyung,$Sc_Status,$Sc_Param,$Sc_Bungi1,$Sc_Bungi2,$Sc_Bungi3,$Sc_UpdId,$Sc_UpdIP,$Sc_Note,$P_Seq,$Log_File,$Sc_ReworkYN]);
             return response()->json(array('msg'=>'success'));
         }
 

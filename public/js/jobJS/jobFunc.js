@@ -380,8 +380,9 @@ const job = {
         Log_File.push(logFile[i].value);
       }
     }
-
-
+    P_Seq =P_Seq.join('\|\|');
+    Log_File =Log_File.join('\|\|');
+    Sc_ReworkYN =Sc_ReworkYN.join('\|\|');
     // return false;
     var jobSc_id = $('#jobSc_id').val();//잡 id
     var job_seq = $('.scExecJob').eq(0).val();//잡 seq
@@ -422,6 +423,7 @@ const job = {
     var endtime=$('#endtm').val();
     var Sc_CronEndTime =  new Date(enddate+" "+endtime).format("yyyy-MM-dd HH:mm:ss");
     var jugiNum=$('#jugiChange option:selected').val();
+    
 
     scValCheck=job.Scvalidation(jobSc_id,Sc_Sulmyung,Day,yoilArr,Sc_Param,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File,jugiNum);
 
@@ -433,11 +435,11 @@ const job = {
     var Sc_Bungi1="";
     var Sc_Bungi2="";
     var Sc_Bungi3="";
+    
     if(scValCheck){
       var result = confirm('스케줄을 등록하시겠습니까?');
       if(result){
         if(jugiNum==1){
-          // var Sc_Crontab = " ";
           var Sc_CronSulmyung ="한번 실행";
           var Sc_Status = "301"
         }else if(jugiNum==2){
@@ -448,11 +450,9 @@ const job = {
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
           if($('#Day').val()==1){
-            // var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + "*" + " ";
             var Sc_CronSulmyung = hour+":"+min+"에 매일 실행";
             var Sc_Status = "302"
           }else{
-            // var Sc_Crontab = min + " " + hour + " " + "*/"+$('#Day').val() + " " + "*" + " " + "*" + " ";
             var Sc_CronSulmyung = hour+":"+min+"에 "+$('#Day').val()+"일 마다 실행";
             var Sc_Status = "302"
           }
@@ -466,7 +466,6 @@ const job = {
           if(month=="11"||month=="12"){
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
-          // var Sc_Crontab = min + " " + hour + " " + "*" + " " + "*" + " " + yoil + " ";
           var Sc_Status = "303"
           for(var i=0;i<yoilArr.length;i++){
             if(yoilArr[i]==0||yoilArr[i]==1){
@@ -489,32 +488,49 @@ const job = {
           var Sc_CronSulmyung = hour+":"+min+"에 "+"매주 "+yoilArr1+"요일 마다 실행";
         }else if(jugiNum==4){
           Sc_Bungi2=$('input:checkbox[id=lastDay]').val();
+          var Sc_CronSulmyung="";
+         
           if(Sc_Bungi2==1){
             Sc_Bungi1="";
+            Sc_CronSulmyung = "매달 말일"+hour+":"+min+" 마다 실행";
           }else{
+            //시작일시 일자가  입력일자보다 작아야함 2020-05-27   26 이러면 등록 안되게 등록 되려면 2020-06-25이하   해야함
             Sc_Bungi1=$('#daysel2 option:selected').val();
+            if(parseInt(day)>parseInt(Sc_Bungi1)){
+              alert('시작일시의 일자가 매월의 입력일자보다 작거나 같아야 합니다');
+              return false;
+            }
+            Sc_CronSulmyung = "매달"+Sc_Bungi1+"일"+hour+":"+min+" 마다 실행";
           }
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
           if(month=="11"||month=="12"){
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
-          // var Sc_Crontab = min + " " + hour + " " + day + " " + "*" + " " + "*" + " ";
-          var Sc_CronSulmyung = "매달 "+day+"일"+hour+":"+min+" 마다 실행";
+          
           var Sc_Status = "304"
         }else if(jugiNum==5){
           Sc_Bungi1 = $('#monthsel option:selected').val();
           Sc_Bungi3=$('input:checkbox[id=lastDay2]').val();
+          var Sc_CronSulmyung="";
           if(Sc_Bungi3==1){
             Sc_Bungi2="";
+            Sc_CronSulmyung="매년 "+Sc_Bungi1+"월 말일"+hour+":"+min+"마다 실행";
           }else{
             Sc_Bungi2 = $('#daysel option:selected').val();
+            if(parseInt(month)>parseInt(Sc_Bungi1)){
+              alert('시작일시의 월이 매년의 입력 월보다 작거나 같아야 합니다');
+              return false;
+            }
+            if(parseInt(month)>parseInt(Sc_Bungi1)&&parseInt(day)>parseInt(Sc_Bungi2)){
+              alert('시작일시의 일자가 매월의 입력일자보다 작거나 같아야 합니다');
+              return false;
+            }
+            Sc_CronSulmyung = "매년 "+Sc_Bungi1+"월 "+Sc_Bungi2+"일 "+hour+":"+min+"마다 실행";
           }
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
           if(month=="11"||month=="12"){
             Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
           }
-          // var Sc_Crontab = min + " " + hour + " " + day + " " + month + " " + "*" + " ";
-          var Sc_CronSulmyung = "매년 "+month+"월 "+day+"일 "+hour+":"+min+"마다 실행";
           var Sc_Status = "305"
         }else if(jugiNum==6){
           // var Sc_Crontab = " ";
@@ -604,8 +620,14 @@ const job = {
       return false;
     }else if(jugiNum!=6){ //즉시실행 아니면
       if(nowDateTime > Sc_CronTime){
-        alert('현재시간 이전에 등록할 수 없습니다.');
-        return false;
+        if($("#lastDay").is(":checked")){
+          return true;
+        }else if($("#lastDay2").is(":checked")){
+          return true;
+        }else{
+          alert('현재시간 이전에 등록할 수 없습니다.');
+          return false;
+        }
       }
     }else if(Day==""){
       if(jugiNum==1||jugiNum==6){
@@ -618,12 +640,11 @@ const job = {
         alert('요일을 체크해주세요');
         return false;
     }else if(Sc_CronTime > Sc_CronEndTime){
-      alert('종료 시간이 시작 시간보다 빠를 수 없습니다.');
-      return false;
+        alert('종료 시간이 시작 시간보다 빠를 수 없습니다.');
+        return false;
     }else {
       //Arr2에 /를 기준으로 split하여 저장. split 사용하면 나누어진 문자열은 각각 배열로 들어감
       var Sc_Param2 = Sc_Param.split("||");
-      console.log(Sc_Param2);
       for (var i = 0; i < Sc_Param2.length; i++) {
           if (Sc_Param2[i] == "") {
               alert("잡 파라미터를 입력하세요");

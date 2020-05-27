@@ -205,6 +205,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         var newTm = new Date().format('HH:mm');
         $('#startdate').val(newDt);
         $('#starttm').val(newTm);
+ 
        var jugi = $('#jugiChange option:selected').val();
         if(jugi==1){
             dateChangeVal(jugi);
