@@ -40,7 +40,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
-                  <textarea type="text" id="Job_Sulmyung" class="col-md-8 form-control form-control-sm" placeholder="설명" style="resize: none;"></textarea>
+                  <div class="col-md-8">
+                    <textarea type="text" id="Job_Sulmyung" class="form-control form-control-sm" placeholder="설명" style="resize: none;" onkeyup="check_text(this);" onkeypress="check_text(this);"></textarea>
+                    <span id="text_cnt" class="text_cnt text-gray-500">text_cnt</span>
+                  </div>
                 </div>
                 <hr>
                 <div class="row" style="justify-content: space-around">
@@ -102,6 +105,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
   }
   </script>
+  <script>
+        $("#Job_Sulmyung").val('');
+        $("#text_cnt").html('0 / 2000 Byte');
+        function check_text(obj){
+            var text_cnt = $(obj).val().length;
+            if(text_cnt > 2000) {
+              event.preventDefault();
+              alert("2000 Byte 이상 작성할 수 없습니다.");
+            } else {
+              $("#text_cnt").html(text_cnt+' / 2000 Byte');
+            }
+        }
+    </script> 
     </div>
   </div>
 </body>

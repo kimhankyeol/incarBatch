@@ -116,10 +116,17 @@ const process = {
                         if (data.fileResult1 == true && data.count == 0) {
                             alert("프로그램이 등록되었습니다.");
                             location.href = "/process/processDetailView?P_Seq=" + data.last_p_seq;
-                        } else if (data.count != 0) {
-                            alert("해당 경로에 이미 같은 이름의 파일이 존재합니다.");
-                            // } else if (data.fileResult1 == false) {
-                            //     alert("경로가 존재하지 않습니다.");
+                        } else if (data.fileResult1 == false) {
+                            alert("경로가 존재하지 않습니다.");
+                        } else if (data.count2 != 0) {
+                            const result = confirm("이미 같은 이름의 파일이 존재합니다. 그래도 등록하시겠습니까?");
+                            if (result) {
+                                if (data.count != 0) {
+                                    alert("해당 경로에 이미 같은 이름의 파일이 존재합니다.");
+                                    return false;
+                                }
+                                alert("프로그램이 등록되었습니다.");
+                            }
                         }
                     },
                 });

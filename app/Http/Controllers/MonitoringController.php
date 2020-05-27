@@ -68,7 +68,7 @@ class MonitoringController extends Controller
          }
     }
     // 잡을 조회하는 컨트롤러
-    function monitorJobSearchList(Request $request){
+    function scheduleList(Request $request){
         $jobStatus = $request->input('jobStatus');
         $searchWord = $request->input('searchWord');
         $WorkLarge = $request->input('WorkLarge');
@@ -132,31 +132,12 @@ class MonitoringController extends Controller
          }
          if($WorkLarge!="all"){
              $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
-             $returnHTML = view('/monitoring/monitorJobSearchList',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium','searchDate','jobStatus'))->render();
+             $returnHTML = view('/monitoring/scheduleList',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium','searchDate','jobStatus'))->render();
          }else{
-             $returnHTML = view('/monitoring/monitorJobSearchList',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','searchDate','jobStatus'))->render();
+             $returnHTML = view('/monitoring/scheduleList',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','searchDate','jobStatus'))->render();
          }
          return response()->json(array('returnHTML'=>$returnHTML),200);
     }
-    // 잡 스케줄을 조회하는 컨트롤러
-    function monitorJobDetailList(Request $request){
-        $Job_Seq = $request->input('Job_Seq');
-        $JobDetailList = DB::select('CALL Monitor_detailList(?)',[$Job_Seq]);
-        $page1 = $request->input('page');
-        //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
-        $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page1,5,$JobDetailList);
-        //페이징 정보를 가져옴
-        $paginator1 = $PaginationCustom->getPaging();
-        //현재 페이지에서 보여주는 조회 정보 리스트를 가져옴
-        $detailList =$PaginationCustom->getItemsForCurrentPage();
-        
-        $searchParams = array( 'Job_Seq' => $Job_Seq);
-
-        $returnHTML = view('/monitoring/monitorJobDetailList',compact('detailList','paginator1','searchParams','page1'))->render();
-        
-        return response()->json(array('returnHTML'=>$returnHTML,200));
-    }
-
     // 잡 스케줄의 프로세스를 조회하는 컨트롤러
     function scheduleProcessList(Request $request){
         $Job_Seq = $request->input('Job_Seq');
@@ -166,8 +147,8 @@ class MonitoringController extends Controller
         
         return response()->json(array('returnHTML'=>$returnHTML,200));
     }
-    // 잡 스케줄 재작업
-    function reWorkSchedule(Request $request){
+    // 잡 스케줄 재작업 체크
+    function reWorkScheduleChk(Request $request){
         $Sc_Seq = $request->input('Sc_Seq');
 
         $succesCount = DB::table('OnlineBatch_Schedule')
@@ -185,5 +166,38 @@ class MonitoringController extends Controller
         ->count('OnlineBatch_ScheduleProcess.Sc_ReworkYN');
         
         return response()->json(array('succesCount'=>$succesCount,'reWorkCount'=>$reWorkCount,200));
+    }
+    // 잡 스케줄 재작업
+    function reWorkSchedule(Request $request){
+        $Job_Seq = $request->input('Job_Seq');
+        $Sc_Seq = $request->input('Sc_Seq');
+        $RegDate = $request->input('RegDate');
+        $Sc_Note = $request->input('Sc_Note');
+        // 수정자 id
+        // 수정자 ip
+        
+        $delResult = DB::select('CALL Monitor_reWork(?, ?, ?, ?)',[$Job_Seq,$Sc_Seq,$RegDate,$Sc_Note]);
+        $insResult = DB::insert('CALL Schedule_insert(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[
+            $delResult[0]->Sc_Crontab, 
+            $delResult[0]->Job_Seq, 
+            $delResult[0]->Sc_Sulmyung, 
+            $delResult[0]->Sc_RegId, 
+            $delResult[0]->Sc_RegIP, 
+            $delResult[0]->Sc_CronTime, 
+            $delResult[0]->Sc_CronEndTime, 
+            $delResult[0]->Sc_CronSulmyung, 
+            $delResult[0]->Sc_Status, 
+            $delResult[0]->Sc_Param, 
+            $delResult[0]->Sc_Bungi1, 
+            $delResult[0]->Sc_Bungi2, 
+            $delResult[0]->Sc_Bungi3
+            # 추가 사항 [수정자 ID, 수정자 IP, 재작업 사유]
+            ,
+            $delResult[0]->Sc_UpdId,
+            $delResult[0]->Sc_UpdIP,
+            $delResult[0]->Sc_Note
+        ]);
+
+        return $delResult;
     }
 }
