@@ -37,7 +37,7 @@ const monitor = {
   },
   detailList: function (Job_Seq, page) {
     var noneTable = document.getElementById("scheduleProcessList");
-    noneTable.style.display = "none"
+    // noneTable.style.display = "none"
     $.ajax({
       url: "/monitoring/monitorJobDetailList",
       method: "get",
@@ -53,7 +53,11 @@ const monitor = {
   // 스케줄링 프로세스 정보
   scheduleProcessList(Job_Seq, Sc_Seq) {
     var scheduleProcessList = document.getElementById("scheduleProcessListTable");
+    var reloadBtn = document.getElementById("reloadBtn");
     scheduleProcessList.style.display = "";
+    reloadBtn.style.display = "";
+    document.getElementById("jobSeq").value = Job_Seq;
+    document.getElementById("scSeq").value = Sc_Seq;
     $.ajax({
       url: "/monitoring/scheduleProcessList",
       method: "get",
@@ -83,6 +87,7 @@ const monitor = {
   reWorkScheduleChk: function (Sc_Seq) {
     const Job_Seq = event.target.parentElement.parentElement.getAttribute("data-job_seq");
     const RegDate = event.target.parentElement.parentElement.getAttribute("data-regdate");
+    document.getElementById("Sc_Note").value = "";
     $.ajax({
       url: "/monitoring/reWorkScheduleChk",
       method: "get",
@@ -90,14 +95,21 @@ const monitor = {
         "Sc_Seq": Sc_Seq
       },
       success: function (resp) {
-        if (resp.succesCount != 0) {
-          const result = confirm("재작업 하시겠습니까?");
-          if (result) {
-            $('#reworkModal').modal('show');
-          }
-        }
         if (resp.succesCount == 0) {
           const result = confirm("이미 완료된 스케줄 입니다. 재작업 하시겠습니까?");
+          if (result) {
+            if (resp.reWorkCount > 0) {
+              alert("재작업 불가능한 스케줄 입니다.");
+              return false;
+            }
+            $('#reworkModal').modal('show');
+            document.getElementById("jobSeq").value = Job_Seq;
+            document.getElementById("scSeq").value = Sc_Seq;
+            document.getElementById("regDate").value = RegDate;
+          }
+        }
+        if (resp.succesCount != 0) {
+          const result = confirm("재작업 하시겠습니까?");
           if (result) {
             if (resp.reWorkCount > 0) {
               alert("재작업 불가능한 스케줄 입니다.");
@@ -130,7 +142,9 @@ const monitor = {
       },
       success: function (resp) {
         console.log(resp);
+        // location.href = "/monitoring/monitoringView";
       }
     })
   }
 }
+

@@ -173,31 +173,54 @@ class MonitoringController extends Controller
         $Sc_Seq = $request->input('Sc_Seq');
         $RegDate = $request->input('RegDate');
         $Sc_Note = $request->input('Sc_Note');
-        // 수정자 id
-        // 수정자 ip
-        
-        $delResult = DB::select('CALL Monitor_reWork(?, ?, ?, ?)',[$Job_Seq,$Sc_Seq,$RegDate,$Sc_Note]);
-        $insResult = DB::insert('CALL Schedule_insert(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[
+        // 수정자 id $Sc_UpdId
+        // 수정자 ip $Sc_UpdIP
+
+        // pSeqArr 
+        // scLogFileArr
+        // scReworkArr
+        // jobSmPStatus
+        $pSeqArr = "";
+        $scLogFileArr = "";
+        $scReworkArr = "";
+        $count = 0;
+        $delResult = DB::select('CALL Monitor_reWork(?, ?, ?)',[$Job_Seq,$Sc_Seq,$RegDate]);
+        foreach ($delResult as $index => $result) {
+            if(isset($result->P_Seq)){
+                $pSeqArr .= $result->P_Seq.'||';
+            }
+            if(isset($result->Sc_LogFile)){
+                $scLogFileArr .= preg_replace("!/home/script/log/(.*?)!is","",$result->Sc_LogFile).'||';
+            }
+            if(isset($result->P_ReworkYN)){
+                $scReworkArr .= $result->P_ReworkYN.'||';
+            }
+        }
+        $pSeqArr = substr($pSeqArr,0,-2);
+        $scLogFileArr = substr($scLogFileArr,0,-2);
+        $scReworkArr = substr($scReworkArr,0,-2);
+        $insResult = DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[
             $delResult[0]->Sc_Crontab, 
             $delResult[0]->Job_Seq, 
             $delResult[0]->Sc_Sulmyung, 
             $delResult[0]->Sc_RegId, 
             $delResult[0]->Sc_RegIP, 
-            $delResult[0]->Sc_CronTime, 
+            date("Y-m-d h:m:s"),
             $delResult[0]->Sc_CronEndTime, 
             $delResult[0]->Sc_CronSulmyung, 
-            $delResult[0]->Sc_Status, 
+            ('30'.$delResult[0]->Sc_Crontab),
             $delResult[0]->Sc_Param, 
             $delResult[0]->Sc_Bungi1, 
             $delResult[0]->Sc_Bungi2, 
-            $delResult[0]->Sc_Bungi3
-            # 추가 사항 [수정자 ID, 수정자 IP, 재작업 사유]
-            ,
-            $delResult[0]->Sc_UpdId,
-            $delResult[0]->Sc_UpdIP,
-            $delResult[0]->Sc_Note
+            $delResult[0]->Sc_Bungi3,
+            '이지흠', // Update ID
+            '111.111.111.111', // Update IP
+            $Sc_Note,
+            $pSeqArr,
+            $scLogFileArr,
+            $scReworkArr,
+            $delResult[0]->Sc_RegDate
         ]);
-
-        return $delResult;
+        return response()->json(array('pSeqArr'=>$pSeqArr,'scLogFileArr'=>$scLogFileArr,'scReworkArr'=>$scReworkArr,'count'=>$count,'$delResult'=>$delResult,200));
     }
 }

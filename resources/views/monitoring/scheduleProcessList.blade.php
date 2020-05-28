@@ -1,9 +1,5 @@
-@php
-if (isset($processList)) {
-    echo '<h5 class="my-4 font-weight-bold text-primary">스케줄 프로그램</h5>';
-  }
-@endphp
 @if (isset($processList))
+  <h5 class="font-weight-bold text-primary mt-0 mb-4">스케줄 프로그램</h5>
   <table id="scheduleProcessList" class="table table-bordered" cellspacing="0">
       <colgroup>
         <col width="60px" />
@@ -38,7 +34,7 @@ if (isset($processList)) {
         <tbody>
         {{--  조회된 값이 보여주는 위치 --}}
         @foreach($processList as $index => $gusungSc )
-          <tr class="OneDbClickCss" data-Job_Seq="{{$gusungSc->Job_Seq}}" data-Sc_Seq="{{$gusungSc->Sc_Seq}}" data-P_Seq="{{$gusungSc->P_Seq}}" ondblclick="monitor.processDetail({{$gusungSc->Sc_Seq}},{{$gusungSc->P_Seq}})">
+          <tr class="OneDbClickCss2" data-Job_Seq="{{$gusungSc->Job_Seq}}" data-Sc_Seq="{{$gusungSc->Sc_Seq}}" data-P_Seq="{{$gusungSc->P_Seq}}" ondblclick="monitor.processDetail({{$gusungSc->Sc_Seq}},{{$gusungSc->P_Seq}})">
             <td class="text-center">{{$index+1}}</td>
             <td>{{$gusungSc->P_File}}</td>
             <td>{{$gusungSc->P_Name}}</td>
@@ -55,25 +51,29 @@ if (isset($processList)) {
             <td>
               @php
                 if(!empty($gusungSc->JobSM_P_StartTime)) {
-                  $maxRunningTime = date("Y-m-d H:i:s", strtotime($gusungSc->JobSM_P_StartTime)+ intval($gusungSc->P_YesangTime*60));
+                  $maxRunningTime = date("Y-m-d H:i:s", strtotime($gusungSc->JobSM_P_StartTime)+ intval($gusungSc->P_YesangMaxTime*60));
                   $nowDateTime = date("Y-m-d H:i:s", time());
 
                   $r1 = (strtotime($maxRunningTime)-strtotime($gusungSc->JobSM_P_StartTime))/60;
                   $r2 = (strtotime($nowDateTime)-strtotime($gusungSc->JobSM_P_StartTime))/60;
-
-                  if (round( $r2 /$r1 *100) > 100 || isset($gusungSc->JobSM_P_EndTime)) {
+                  if($gusungSc->JobSM_P_Status=='오류') {
+                    echo '<div class="progress">';
+                    echo '<div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ERROR</div>';
+                    echo '</div>';
+                    echo '<p class="p-0 progress-percent text-danger">오류</p>';
+                  } else if (round( $r2 /$r1 *100) > 100 || isset($gusungSc->JobSM_P_EndTime)) {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
                     echo '</div>';
                     echo '<p class="p-0 progress-percent text-primary">100%</p>';
-                  } else if ($maxRunningTime < $nowDateTime && !isset($gusungSc->JobSM_P_EndTime)) {
+                  } else if (($maxRunningTime < $nowDateTime && !isset($gusungSc->JobSM_P_EndTime))) {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
                     echo '</div>';
                     echo '<p class="p-0 progress-percent text-danger">지연</p>';
                   } else {
                     echo '<div class="progress">';
-                    echo '<div class="progress-bar" role="progressbar" style="width: '.round( $r2 /$r1 *100).'%;" aria-valuenow="'.round( $r2 /$r1 *100).'" aria-valuemin="0" aria-valuemax="'.round( $r2 /$r1 *100).'"></div>';
+                    echo '<div class="progress-bar bg-success" role="progressbar" style="width: '.round( $r2 /$r1 *100).'%;" aria-valuenow="'.round( $r2 /$r1 *100).'" aria-valuemin="0" aria-valuemax="'.round( $r2 /$r1 *100).'"></div>';
                     echo '</div>';
                     echo '<p class="p-0 progress-percent text-success">'.round( $r2 /$r1 *100).'%</p>';
                   }

@@ -42,7 +42,7 @@
         {{--  조회된 값이 보여주는 위치 --}}
         @if(isset($data))
             @foreach($data as $monitorSc)
-            <tr class="OneDbClickCss" data-Job_Seq="{{$monitorSc->Job_Seq}}" data-Sc_Seq="{{$monitorSc->Sc_Seq}}" data-RegDate="{{$monitorSc->Sc_RegDate}}" onclick="monitor.scheduleProcessList({{$monitorSc->Job_Seq}},{{$monitorSc->Sc_Seq}})" ondblclick="monitor.scheduleDetailPopup({{$monitorSc->Job_Seq}},{{$monitorSc->Sc_Seq}})">
+            <tr class="OneDbClickCss1" data-Job_Seq="{{$monitorSc->Job_Seq}}" data-Sc_Seq="{{$monitorSc->Sc_Seq}}" data-RegDate="{{$monitorSc->Sc_RegDate}}" onclick="monitor.scheduleProcessList({{$monitorSc->Job_Seq}},{{$monitorSc->Sc_Seq}})" ondblclick="monitor.scheduleDetailPopup({{$monitorSc->Job_Seq}},{{$monitorSc->Sc_Seq}})">
                 <td class="text-center">{{$monitorSc->rnum}}</td>
                 <td class="text-center">{{'job_'.$monitorSc->Job_WorkLargeCtg.'_'.$monitorSc->Job_WorkMediumCtg.'_'.$monitorSc->Job_Seq.'_'.$monitorSc->Sc_Seq.'.sh'}}</td>
                 <td>{{$monitorSc->Job_Name}}</td>
@@ -70,6 +70,8 @@
                         } else {
                             echo '<td class="text-center">-</td>';
                         }
+                    } else {
+                        echo '<td class="text-center">-</td>';
                     }
                 @endphp
             </tr>
@@ -81,3 +83,4 @@
 @if(isset($paginator))
     {{$paginator->setPath('/monitoring/scheduleList')->appends(request()->except($searchParams))->links()}}
 @endIf
+
