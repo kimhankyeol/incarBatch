@@ -108,7 +108,4 @@
   </table>
 </div>
 </fieldset>
-<script>
-//스케줄 파라미터 체크버튼으로 다시 바꿔줘야함
-</script>
 

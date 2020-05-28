@@ -205,7 +205,7 @@ class MonitoringController extends Controller
             $delResult[0]->Sc_Sulmyung, 
             $delResult[0]->Sc_RegId, 
             $delResult[0]->Sc_RegIP, 
-            date("Y-m-d h:m:s"),
+            date("Y-m-d H:i:s"),
             $delResult[0]->Sc_CronEndTime, 
             $delResult[0]->Sc_CronSulmyung, 
             ('30'.$delResult[0]->Sc_Crontab),
