@@ -61,13 +61,22 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     $('#endDate').val(today);
     var dbclick=false;
     // 모니터 리스트
-    $(document).on('click','.OneDbClickCss',function(event){
-      var OneDbClickCss = $('.OneDbClickCss').index(this);
+    $(document).on('click','.OneDbClickCss1',function(event){
+      var OneDbClickCss = $('.OneDbClickCss1').index(this);
       //tr 색 바꾸기  활성된거
-      if($('.OneDbClickCss').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'})){
-          $('.OneDbClickCss').eq(OneDbClickCss).css({'background-color':'rgb(218, 221, 235)'});
+      if($('.OneDbClickCss1').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'})){
+          $('.OneDbClickCss1').eq(OneDbClickCss).css({'background-color':'rgb(218, 221, 235)'});
       }else {
-          $('.OneDbClickCss').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'});
+          $('.OneDbClickCss1').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'});
+      }
+    })
+    $(document).on('click','.OneDbClickCss2',function(event){
+      var OneDbClickCss = $('.OneDbClickCss2').index(this);
+      //tr 색 바꾸기  활성된거
+      if($('.OneDbClickCss2').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'})){
+          $('.OneDbClickCss2').eq(OneDbClickCss).css({'background-color':'rgb(218, 221, 235)'});
+      }else {
+          $('.OneDbClickCss2').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'});
       }
     })
     // 페이징
@@ -86,7 +95,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           "page": searchPage
         },
         success: function (resp) {
-          console.log(resp.returnHTML);
           $('#scheduleListTable').html(resp.returnHTML)
         }
       })
@@ -94,6 +102,31 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     $( document ).ajaxComplete(function( event, request, settings ) {
       colResiz();
     });
+    $(document).on('click', '#customCheck', function (event) {
+      const customCheck = document.getElementById("customCheck").checked;
+      if(customCheck) {
+        refreshScheduleProcessList = setInterval(function() {
+          const Job_Seq = document.getElementById("jobSeq").value;
+          const Sc_Seq = document.getElementById("scSeq").value;
+          if (customCheck &&Job_Seq.length != 0 && Sc_Seq.length != 0) {
+            $.ajax({
+              url: "/monitoring/scheduleProcessList",
+              method: "get",
+              data: {
+                "Job_Seq": Job_Seq,
+                "Sc_Seq": Sc_Seq
+              },
+              success: function (resp) {
+                $('#scheduleProcessListTable').html(resp.returnHTML);
+              }
+            })
+            colResiz();
+          }
+        }, 30000);
+      } else {
+        clearInterval(refreshScheduleProcessList);
+      }
+    })
   });
 </script>
 <body id="page-top">
@@ -136,19 +169,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                      <input type="date" class="form-control form-control-sm" id="endDate">
                   </div>
                    {{-- 검색 조건 --}}
-                  <select class="form-control form-control-sm bg-light border-primary">
+                  <select class="form-control form-control-sm">
                     <option>
                       잡명
                     </option>
                   </select>
                   {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control form-control-sm bg-light border-primary" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
+                    <input id="searchWord" type="text" class="form-control form-control-sm" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
                   @elseif(isset($searchWord))
                     @if($searchWord=="searchWordNot")
-                      <input id="searchWord" type="text" value="" class="form-control form-control-sm bg-light border-primary" placeholder="조회" aria-label="Search" >
+                      <input id="searchWord" type="text" value="" class="form-control form-control-sm" placeholder="조회" aria-label="Search" >
                     @else
-                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control form-control-sm bg-light border-primary small" aria-label="Search">
+                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control form-control-sm" aria-label="Search">
                     @endif
                   @endif
                   <div class="input-group-append ">
@@ -162,6 +195,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <div class="card-body py-3">
               <div id="scheduleListTable" class="table-responsive overflow-x-scroll" style="height: calc((1vh) * 50);">
                 @include('monitoring.scheduleList')
+              </div>
+              <div id="reloadBtn" class="custom-control custom-checkbox mt-4 mb-2" style="display:none;" >
+                <input type="checkbox" class="custom-control-input" id="customCheck">
+                <label class="custom-control-label font-weight-bold text-primary" for="customCheck">30초 마다 자동 새로고침</label>
               </div>
               <div id="scheduleProcessListTable" class="table-responsive overflow-x-scroll">
                 @include('monitoring.scheduleProcessList')
