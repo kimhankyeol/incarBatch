@@ -423,7 +423,6 @@ const job = {
     var endtime=$('#endtm').val();
     var Sc_CronEndTime =  new Date(enddate+" "+endtime).format("yyyy-MM-dd HH:mm:ss");
     var jugiNum=$('#jugiChange option:selected').val();
-    
 
     scValCheck=job.Scvalidation(jobSc_id,Sc_Sulmyung,Day,yoilArr,Sc_Param,nowDateTime,Sc_CronTime,Sc_CronEndTime,Log_File,jugiNum);
 
@@ -495,9 +494,9 @@ const job = {
             Sc_CronSulmyung = "매달 말일"+hour+":"+min+" 마다 실행";
           }else{
             //시작일시 일자가  입력일자보다 작아야함 2020-05-27   26 이러면 등록 안되게 등록 되려면 2020-06-25이하   해야함
-            Sc_Bungi1=$('#daysel2 option:selected').val();
+            Sc_Bungi1=$('#daysel2  option:selected').val();
             if(parseInt(day)>parseInt(Sc_Bungi1)){
-              alert('시작일시의 일자가 매월의 입력일자보다 작거나 같아야 합니다');
+              alert('시작일시의 일자가 매월의 입력일자보다 작거나 같아야 합니다\n예)현재날짜 2020-05-28 시작일자 2020-05-28 매월 27일 이면 등록안됨');
               return false;
             }
             Sc_CronSulmyung = "매달"+Sc_Bungi1+"일"+hour+":"+min+" 마다 실행";
@@ -509,20 +508,22 @@ const job = {
           
           var Sc_Status = "304"
         }else if(jugiNum==5){
-          Sc_Bungi1 = $('#monthsel option:selected').val();
+          Sc_Bungi1 = $('#monthsel').val();
           Sc_Bungi3=$('input:checkbox[id=lastDay2]').val();
           var Sc_CronSulmyung="";
           if(Sc_Bungi3==1){
             Sc_Bungi2="";
+            var Sc_CronEndTimeYear = new Date(Sc_CronEndTime).format('yyyy');
+             if(year>=Sc_CronEndTimeYear){
+               alert('시작일시의 연도가 종료일시의 연도보다 작아야 합니다');
+               return false;
+             }
             Sc_CronSulmyung="매년 "+Sc_Bungi1+"월 말일"+hour+":"+min+"마다 실행";
           }else{
-            Sc_Bungi2 = $('#daysel option:selected').val();
-            if(parseInt(month)>parseInt(Sc_Bungi1)){
-              alert('시작일시의 월이 매년의 입력 월보다 작거나 같아야 합니다');
-              return false;
-            }
-            if(parseInt(month)>parseInt(Sc_Bungi1)&&parseInt(day)>parseInt(Sc_Bungi2)){
-              alert('시작일시의 일자가 매월의 입력일자보다 작거나 같아야 합니다');
+            Sc_Bungi2 = $('#daysel').val();
+           var Sc_CronEndTimeYear = new Date(Sc_CronEndTime).format('yyyy');
+            if(year>=Sc_CronEndTimeYear){
+              alert('시작일시의 연도가 종료일시의 연도보다 작아야 합니다');
               return false;
             }
             Sc_CronSulmyung = "매년 "+Sc_Bungi1+"월 "+Sc_Bungi2+"일 "+hour+":"+min+"마다 실행";
@@ -543,7 +544,6 @@ const job = {
           Sc_CronTime = Sc_CronTime.format('yyyy-MM-dd HH:mm:ss');
           Sc_CronEndTime = Sc_CronTime;
         }
-     
         if(P_Seq.length!=0){
           $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -618,7 +618,8 @@ const job = {
     }else if(Sc_Sulmyung==""){
       alert('스케줄 설명이 입력되지 않았습니다.');
       return false;
-    }else if(jugiNum!=6){ //즉시실행 아니면
+    }
+    if(jugiNum!=6){ //즉시실행 아니면
       if(nowDateTime > Sc_CronTime){
         if($("#lastDay").is(":checked")){
           return true;
@@ -629,17 +630,20 @@ const job = {
           return false;
         }
       }
-    }else if(Day==""){
-      if(jugiNum==1||jugiNum==6){
-        return true;
-      }else{
+    }
+    if(jugiNum==2){
+      if(Day==""){
         alert('일을 입력해주세요');
         return false;
       }
-    }else if(yoilArr.length==""){
+    }
+    if(jugiNum==3){
+      if(yoilArr.length==""){
         alert('요일을 체크해주세요');
         return false;
-    }else if(Sc_CronTime > Sc_CronEndTime){
+      }
+    }
+    if(Sc_CronTime > Sc_CronEndTime){
         alert('종료 시간이 시작 시간보다 빠를 수 없습니다.');
         return false;
     }else {

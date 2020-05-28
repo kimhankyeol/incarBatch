@@ -61,12 +61,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <option value="5">매년</option>
                                     </select>
                                 </div>
-                                    <div class="d-inline-table col-md-8">
+                                <div class="d-inline-table col-md-8">
+                                    {{-- 년월시  --}}
                                     <div id="startTime">
                                         <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                             <span class="font-weight-bold text-primary mx-auto ">시작일시 : </span>
-                                            <input id="startdate" type="date" class="form-control col-md-4" onchange = "dateChangeVal()" value="{{date("Y-m-d")}}">
-                                            <input id="starttm" type="time" class="form-control col-md-4" value="{{date("H:i")}}">
+                                            <input id="startdate" type="date" class="form-control col-md-4" onchange = "dateChangeVal()">
+                                            <input id="starttm" type="time" class="form-control col-md-4" >
                                         </div>
                                     </div>
                                     <div class="d-inline-flex w-100  align-items-center">
@@ -125,8 +126,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                 <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
                                                     <input id="lastDay" type="checkbox" class="custom-control-input" value="0">
                                                     <label class="custom-control-label font-weight-bold text-primary" for="lastDay">말일</label>
+                                                    <input id="lastDayHidden" type="hidden" class="custom-control-input">
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
@@ -137,20 +138,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div class="d-inline-flex w-100  align-items-center" >
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                 <span class="font-weight-bold text-primary mx-auto">매년: </span>
-                                                <select  id="monthsel" class="form-control col-md-2" onchange="dayChange()">
-                                                    @php
-                                                    for($i=1;$i<=12;$i++){
-                                                        if($i==1){
-                                                            echo '<option selected>'.$i.'</option>';
-                                                        }else{
-                                                            echo '<option>'.$i.'</option>';
-                                                        }
-                                                    }
-                                                    @endphp
+                                                <div id ="monthselDiv" class="col-md-2 form-control" readonly></div>
+                                                <input type="hidden" id="monthsel">
                                                 </select>
                                                 <span class="col-md-1">월</span>
-                                                <select id ="daysel" class="col-md-2 form-control">
-                                                </select>
+                                                <div id ="dayselDiv" class="col-md-2 form-control" readonly></div>
+                                                <input type="hidden" id ="daysel" class="col-md-2 form-control"/>
                                                 <span class="col-md-1">일</span>
                                                 <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
                                                     <input id="lastDay2" type="checkbox" class="custom-control-input" value="0">
@@ -192,7 +185,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 {{--content 끝--}}
             </div>
         </div>
-        <script type="text/javascript">
+<script type="text/javascript">
     function handler(){
         $('#startTime').hide();
         $('#starttm').hide();
@@ -205,7 +198,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         var newTm = new Date().format('HH:mm');
         $('#startdate').val(newDt);
         $('#starttm').val(newTm);
- 
+        $('#daysel2').removeAttr('readonly','');
+        $("#lastDay").val(0);
+        $("#lastDay").prop("checked",false);
        var jugi = $('#jugiChange option:selected').val();
         if(jugi==1){
             dateChangeVal(jugi);
@@ -265,25 +260,15 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     }
     //주기가  월을 클릭하면 말일 변경30,31,28 
     function dayChange(){
-        //주기가 매년이면
-        var month = $('#monthsel option:selected').val();
-        var cont = "";
-            if(month ==2  ){
-                for(var i = 1 ; i<=28;i++){
-                    cont+= '<option>'+i+'</option>';
-                }
-            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                for(var i = 1 ; i<=31;i++){
-                    cont+= '<option>'+i+'</option>';
-                }
-            }else{
-                for(var i = 1 ; i<=30;i++){
-                    cont+= '<option>'+i+'</option>';
-                }
+        var monthCont="";
+        var mm = new Date($('#startdate').val()).format('MM');
+        for(var j=1 ; j<=12;j++){
+            if(mm==j){
+                $('#monthsel').val(j);
+                $('#monthselDiv').html(j);
             }
-        $('#daysel').html(cont);
+           }
     }
-  
     //시작일시 바뀌면 폴더경로 바뀜
     function dateChangeVal(jugi){
         var jugi2 = $('#jugiChange option:selected').val();
@@ -293,25 +278,115 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $(".logFileNameChg").html(cont);
         }else{
             if(jugi2==4){
-                var month = new Date($('#startdate').val()).format('MM');
-                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                var cont = '/home/script/log/'+chgDate;
-                var cont2 = "";
-                if(month ==2 ){
-                    for(var i = 1 ; i<=28;i++){
-                        cont2+= '<option>'+i+'</option>';
+                if($("#lastDay").val()=="1"){
+                    var year =new Date($('#startdate').val()).format('yyyy');
+                    var month = new Date($('#startdate').val()).format('MM');
+                    var lastDay = (new Date( year, month, 0) ).getDate();
+                    var cont = '/home/script/log/'+chgDate;
+                    var cont2 = "";
+                    if(month ==2 ){
+                        cont2+= '<option selected>28</option>';
+                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                        cont2+= '<option selected>31</option>';
+                    }else{
+                        cont2+= '<option selected>30</option>';
                     }
-                }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                    for(var i = 1 ; i<=31;i++){
-                        cont2+= '<option>'+i+'</option>';
-                    }
+                    $('#daysel2').attr('readonly','readonly');
+                    $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
                 }else{
-                    for(var i = 1 ; i<=30;i++){
-                        cont2+= '<option>'+i+'</option>';
+                    var year =new Date($('#startdate').val()).format('yyyy');
+                    var month = new Date($('#startdate').val()).format('MM');
+                    var day = new Date($('#startdate').val()).format('dd');
+                    var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                    var cont = '/home/script/log/'+chgDate;
+                    var cont2 = "";
+                    if(month ==2 ){
+                        for(var i = 1 ; i<=28;i++){
+                            if(day==i){
+                                cont2+= '<option selected>'+i+'</option>';
+                            }else{
+                                cont2+= '<option>'+i+'</option>';
+                            }
+                        }
+                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                        for(var i = 1 ; i<=31;i++){
+                            if(day==i){
+                                cont2+= '<option selected>'+i+'</option>';
+                            }else{
+                                cont2+= '<option>'+i+'</option>';
+                            }
+                        }
+                    }else{
+                        for(var i = 1 ; i<=30;i++){
+                            if(day==i){
+                            cont2+= '<option selected>'+i+'</option>';
+                            }else{
+                                cont2+= '<option>'+i+'</option>';
+                            }
+                        }
                     }
                 }
+                // $('#daysel2').removeAttr('readonly','');
                 $(".logFileNameChg").html(cont);
                 $('#daysel2').html(cont2);
+            }else if(jugi2==5){
+                if($("#lastDay2").val()=="1"){
+                    var year =new Date($('#startdate').val()).format('yyyy');
+                    var month = new Date($('#startdate').val()).format('MM');
+                    var lastDay = (new Date( year, month, 0) ).getDate();
+                    var cont = '/home/script/log/'+chgDate;
+                    var cont2 = "";
+                    if(month ==2 ){
+                        $('#daysel').val(28);
+                        $('#dayselDiv').html(28);
+                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                        $('#daysel').val(31);
+                        $('#dayselDiv').html(31);
+                    }else{
+                        $('#daysel').val(30);
+                        $('#dayselDiv').html(30);
+                    }
+                    $('#daysel').attr('readonly','readonly');
+                    $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
+                }else{
+                    var year =new Date($('#startdate').val()).format('yyyy');
+                    var month = new Date($('#startdate').val()).format('MM');
+                    var day = new Date($('#startdate').val()).format('dd');
+                    var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                    var cont = '/home/script/log/'+chgDate;
+                    if(month ==2 ){
+                        for(var i = 1 ; i<=28;i++){
+                            if(day==i){
+                                $('#daysel').val(i);
+                                $('#dayselDiv').html(i);
+                            }
+                        }
+                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                        for(var i = 1 ; i<=31;i++){
+                            if(day==i){
+                                $('#daysel').val(i);
+                                $('#dayselDiv').html(i);
+                            }
+                        }
+                    }else{
+                        for(var i = 1 ; i<=30;i++){
+                            if(day==i){
+                                $('#daysel').val(i);
+                                $('#dayselDiv').html(i);
+                            }
+                        }
+                    }
+                }
+                var monthCont="";
+                for(var j=1 ; j<=12;j++){
+                    if(month==j){
+                        $('#monthsel').val(j);
+                        $('#monthselDiv').html(j);
+                    }
+                }
+                
+                // $('#daysel2').removeAttr('readonly','');
+                $(".logFileNameChg").html(cont);
             }else{
                 var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
                 var cont = '/home/script/log/'+chgDate;
@@ -421,18 +496,121 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     $('#lastDay').change(function(){
         if ($("#lastDay").is(":checked")) {
             $("#lastDay").val(1);
+            var year =new Date($('#startdate').val()).format('yyyy');
+            var month = new Date($('#startdate').val()).format('MM');
+            var lastDay = ( new Date( year, month, 0) ).getDate();
+
+            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+            var cont = '/home/script/log/'+chgDate;
+            var cont2 = "";
+            if(month ==2 ){
+                cont2+= '<option selected>28</option>';
+            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                cont2+= '<option selected>31</option>';
+            }else{
+                cont2+= '<option selected>30</option>';
+            }
+            $('#daysel2').attr('readonly','readonly');
+            $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
+            $(".logFileNameChg").html(cont);
+            $('#daysel2').html(cont2);
         } else {
             $("#lastDay").val(0);
+            var year =new Date($('#startdate').val()).format('yyyy');
+            var month = new Date($('#startdate').val()).format('MM');
+            var day = new Date($('#startdate').val()).format('dd');
+            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+            var cont = '/home/script/log/'+chgDate;
+            var cont2 = "";
+            if(month ==2 ){
+                for(var i = 1 ; i<=28;i++){
+                    if(day==i){
+                        cont2+= '<option selected>'+i+'</option>';
+                    }else{
+                        cont2+= '<option>'+i+'</option>';
+                    }
+                }
+            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                for(var i = 1 ; i<=31;i++){
+                    if(day==i){
+                        cont2+= '<option selected>'+i+'</option>';
+                    }else{
+                        cont2+= '<option>'+i+'</option>';
+                    }
+                }
+            }else{
+                for(var i = 1 ; i<=30;i++){
+                    if(day==i){
+                        cont2+= '<option selected>'+i+'</option>';
+                    }else{
+                        cont2+= '<option>'+i+'</option>';
+                    }
+                }
+            }
+            $('#daysel2').removeAttr('readonly','');
+            $(".logFileNameChg").html(cont);
+            $('#daysel2').html(cont2);
         }
     })
     $('#lastDay2').change(function(){
         if ($("#lastDay2").is(":checked")) {
             $("#lastDay2").val(1);
+            var year =new Date($('#startdate').val()).format('yyyy');
+            var month = new Date($('#startdate').val()).format('MM');
+            var lastDay = ( new Date( year, month, 0) ).getDate();
+            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+            var cont = '/home/script/log/'+chgDate;
+            var cont2 = "";
+            if(month ==2 ){
+                $('#daysel').val(28);
+                $('#dayselDiv').html(28);
+            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                $('#daysel').val(31);
+                $('#dayselDiv').html(31);
+            }else{
+                $('#daysel').val(30);
+                $('#dayselDiv').html(30);
+            }
+            $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
+            $(".logFileNameChg").html(cont);
         } else {
             $("#lastDay2").val(0);
+            var month = new Date($('#startdate').val()).format('MM');
+            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+            var day = new Date($('#startdate').val()).format('dd');
+
+            var cont = '/home/script/log/'+chgDate;
+            if(month ==2 ){
+                for(var i = 1 ; i<=28;i++){
+                    if(day==i){
+                        $('#daysel').val(i);
+                        $('#dayselDiv').html(i);
+                    }
+                }
+            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                for(var i = 1 ; i<=31;i++){
+                    if(day==i){
+                        $('#daysel').val(i);
+                        $('#dayselDiv').html(i);
+                    }
+                }
+            }else{
+                for(var i = 1 ; i<=30;i++){
+                    if(day==i){
+                        $('#daysel').val(i);
+                        $('#dayselDiv').html(i);
+                    }
+                }
+            }
+            $('#daysel').removeAttr('readonly','');
+            $(".logFileNameChg").html(cont);
         }
     })
-   
-    </script>
+    $('#daysel2').change(function(){
+        var year =new Date($('#startdate').val()).format('yyyy');
+        var month = new Date($('#startdate').val()).format('MM');
+        $('#startdate').val(new Date(year+"-"+month+"-"+$('#daysel2 option:selected').val()).format('yyyy-MM-dd'));
+    })
+</script>
     </body>
 </html>

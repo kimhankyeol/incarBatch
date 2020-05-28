@@ -93,15 +93,15 @@ class scheduleController extends Controller
         $Sc_UpdId=null;
         $Sc_UpdIP=null;
         $Sc_Note=null;
+        $Sc_Regdate=null;
 
         //주기 , 요일 , 몇일마다 정보를 받아야됨
 
         // 이거 프로시저로 만들어야될듯
-        DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$Sc_Crontab,$Job_Seq,$Sc_Sulmyung,$Sc_RegId,$Sc_RegIP,$Sc_CronTime,$Sc_CronEndTime,$Sc_CronSulmyung,$Sc_Status,$Sc_Param,$Sc_Bungi1,$Sc_Bungi2,$Sc_Bungi3,$Sc_UpdId,$Sc_UpdIP,$Sc_Note,$P_Seq,$Log_File,$Sc_ReworkYN]);
+        DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$Sc_Crontab,$Job_Seq,$Sc_Sulmyung,$Sc_RegId,$Sc_RegIP,$Sc_CronTime,$Sc_CronEndTime,$Sc_CronSulmyung,$Sc_Status,$Sc_Param,$Sc_Bungi1,$Sc_Bungi2,$Sc_Bungi3,$Sc_UpdId,$Sc_UpdIP,$Sc_Note,$P_Seq,$Log_File,$Sc_ReworkYN,$Sc_Regdate]);
             return response()->json(array('msg'=>'success'));
         }
-
-    
+        
     // 실행할 잡의 파라미터 불러오기
     public function jobselect(Request $request){
         $Job_Seq = $request->input('job_seq');
