@@ -83,3 +83,4 @@
 @if(isset($paginator))
     {{$paginator->setPath('/monitoring/scheduleList')->appends(request()->except($searchParams))->links()}}
 @endIf
+
