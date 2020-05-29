@@ -39,14 +39,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="row mb-2">
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">스케줄 번호</div>
                     <input id="Sc_Seq" type="text" class="col-md-2 form-control form-control-sm" value="{{$scheduleDetail[0]->Sc_Version}}" readonly>
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">스케줄 설명</div>
-                    <input id="Sc_Sulmyung" type="text" class="col-md-6 form-control form-control-sm" value="{{$scheduleDetail[0]->Sc_Sulmyung}}" readonly>
+                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">실행 주기 설명</div>
+                    <input type="text" class="col-md-6 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronSulmyung}}" readonly>   
                   </div>
                 <div class="row mb-2">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">실행 주기 설명</div>
-                  <input type="text" class="col-md-9 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronSulmyung}}" readonly> 
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">스케줄 설명</div>
+                  <textarea id="Sc_Sulmyung" type="text" class="col-md-10 form-control form-control-sm" readonly>{{$scheduleDetail[0]->Sc_Sulmyung}}</textarea>
                 </div>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mb-2">
                   <div class="limit-time-text col-md-auto">등록자</div>
                   <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$jobDetail[0]->Job_RegId}}" readonly>
                   <div class="limit-time-text col-md-auto">등록자IP</div>
@@ -59,6 +59,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($jobDetail[0]->Job_UpdIP) ?$jobDetail[0]->Job_RegIP:$jobDetail[0]->Job_UpdIP}}" readonly>       
                   <div class="limit-time-text col-md-auto">수정일</div>
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($jobDetail[0]->Job_UpdDate) ? $jobDetail[0]->Job_RegDate:$jobDetail[0]->Job_UpdDate}}" readonly> 
+                </div>
+                <div class="row justify-content-center">
+                  <div class="limit-time-text col-md-2">비고</div>
+                  <textarea id="Sc_Note" class="form-control col-md-10" maxlength="2000" readonly> </textarea>
                 </div>
                 <hr>
                 <div class="row mb-2">

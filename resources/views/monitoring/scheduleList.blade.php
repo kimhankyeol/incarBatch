@@ -5,8 +5,9 @@
         <col width="200px" />
         <col width="250px" />
         <col width="120px" />
-        <col width="120px" />
-        <col width="120px" />
+        <col width="180px" />
+        <col width="180px" />
+        <col width="180px" />
         <col width="80px" />
         <col width="80px" />
         <col width="80px" />
@@ -15,6 +16,7 @@
         {{--  <col width="150px" />
         <col width="150px" />  --}}
         <col width="150px" />
+        <col width="300px" />
         <col width="100px" />
     </colgroup>
     <thead>
@@ -24,11 +26,13 @@
         <th rowspan="2">명</th>
         <th rowspan="2">설명</th>
         <th rowspan="2">상태</th>
+        <th rowspan="2">시작일</th>
         <th rowspan="2">실행시각</th>
         <th rowspan="2">완료시각</th>
         <th colspan="4">프로그램 상태</th>
         <th rowspan="2">파라미터</th>
         <th rowspan="2">등록일</th>
+        <th rowspan="2">비고</th>
         <th rowspan="2">재작업</th>
     </tr>
     <tr>
@@ -48,6 +52,7 @@
                 <td>{{$monitorSc->Job_Name}}</td>
                 <td>{{$monitorSc->Sc_Sulmyung}}</td>
                 <td class="text-center">{{$monitorSc->Sc_Status}}</td>
+                <td class="text-center">{{$monitorSc->Sc_CronTime}}</td>
                 <td class="text-center">{{$monitorSc->Sc_StartTime}}</td>
                 <td class="text-center">{{$monitorSc->Sc_EndTime}}</td>
                 <td class="text-center">{{$monitorSc->Status90}}개</td>
@@ -63,6 +68,7 @@
                   @endphp
                 </td>
                 <td class="text-center">{{explode(" ",$monitorSc->Sc_RegDate)[0]}}</td>
+                <td>{{explode(" ",$monitorSc->Sc_Note)[0]}}</td>
                 @php
                     if(intVal($monitorSc->Status20<=0)) {
                         if((int)$monitorSc->Status90+(int)$monitorSc->Status40 !=0){

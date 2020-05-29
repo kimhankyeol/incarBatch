@@ -162,7 +162,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
                   @include("code.codeSelect")
                   <div class="input-group align-items-center">
-                    <div class="text-center align-self-center font-weight-bold text-primary mx-2">등록일</div>
+                    <div class="text-center align-self-center font-weight-bold text-primary mx-2">시작일</div>
                      {{-- 검색 조건 --}}
                      <input type="date" class="form-control form-control-sm" id="startDate">
                      <span class="form-control-sm"> ~ </span>

@@ -9,5 +9,6 @@
  <script type="text/javascript" src="/js/jobJS/jobFunc.js"></script>
  <script type="text/javascript" src="/js/jobJS/proFunc.js"></script>
  <script type="text/javascript" src="/js/jobJS/codeFunc.js"></script>
+ <script type="text/javascript" src="/js/jobJS/monitorFunc.js"></script>
  <script type="text/javascript" src="/js/jobJS/popupFunc.js"></script>
  <script type="text/javascript" src="/js/jobJS/loginFunc.js"></script>

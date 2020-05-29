@@ -1,4 +1,7 @@
 const monitor = {
+  test: function () {
+    console.log("test");
+  },
   //조회
   search: function (page) {
     var jobStatus = $('.jobStatus');
@@ -54,8 +57,12 @@ const monitor = {
   scheduleProcessList(Job_Seq, Sc_Seq) {
     var scheduleProcessList = document.getElementById("scheduleProcessListTable");
     var reloadBtn = document.getElementById("reloadBtn");
-    scheduleProcessList.style.display = "";
-    reloadBtn.style.display = "";
+    if (scheduleProcessList != null) {
+      scheduleProcessList.style.display = "";
+    }
+    if (reloadBtn != null) {
+      reloadBtn.style.display = "";
+    }
     document.getElementById("jobSeq").value = Job_Seq;
     document.getElementById("scSeq").value = Sc_Seq;
     $.ajax({
@@ -141,8 +148,7 @@ const monitor = {
         "Sc_Note": Sc_Note
       },
       success: function (resp) {
-        console.log(resp);
-        // location.href = "/monitoring/monitoringView";
+        location.href = "/monitoring/monitoringView";
       }
     })
   }

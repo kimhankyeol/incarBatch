@@ -489,7 +489,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('#jobSearchLenz').show();
             $('#scReBtnHideShow').hide();
             $('#scRegBtnHideShow').hide();
-            $('#jugiChange').hide();
             $('input[name=Sc_Param]').attr("readonly",false);
             $('input[name=Sc_Param]').val("");
         }else{

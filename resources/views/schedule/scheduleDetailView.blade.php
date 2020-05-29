@@ -46,14 +46,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="row">
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 Id</div>
                     <input id="Sc_Seq" type="text" class="col-md-2 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq.'_'.$scheduleDetail[0]->Sc_Seq.'.sh'}}" readonly>
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
-                    <textarea id="Sc_Sulmyung"  class="col-md-6 form-control form-control-sm mt-2"  maxlength="2000" placeholder="스케줄 설명" readonly>{{$scheduleDetail[0]->Sc_Sulmyung}}</textarea>
-                    {{-- <input id="Sc_Sulmyung" type="text" class="col-md-3 form-control form-control-sm mt-2" value="{{$scheduleDetail[0]->Sc_Sulmyung}}" readonly> --}}
+                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">실행 주기 설명</div>
+                    <input type="text" class="col-md-5 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronSulmyung}}" readonly> 
                   </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">실행 주기 설명</div>
-                  <input type="text" class="col-md-4 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronSulmyung}}" readonly> 
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
+                  <textarea id="Sc_Sulmyung"  class="col-md-10 form-control form-control-sm mt-2"  maxlength="2000" placeholder="스케줄 설명" readonly>{{$scheduleDetail[0]->Sc_Sulmyung}}</textarea>
                 </div>
                 <hr>
                 <div class="row">
@@ -85,6 +84,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($scheduleDetail[0]->Sc_UpdIP) ? $scheduleDetail[0]->Sc_RegIP:$scheduleDetail[0]->Sc_UpdIP}}" readonly>       
                   <div class="limit-time-text col-md-auto">수정일</div>
                   <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($scheduleDetail[0]->Sc_UpdDate) ? $scheduleDetail[0]->Sc_RegDate:$scheduleDetail[0]->Sc_UpdDate}}" readonly> 
+                </div>
+                <hr>
+                <div class="row justify-content-center">
+                  <div class="limit-time-text col-md-2">비고</div>
+                  <textarea id="Sc_Note" class="form-control col-md-10" maxlength="2000" readonly>{{$scheduleDetail[0]->Sc_Note}}</textarea>
                 </div>
                 <hr>
                 <div class="row">
@@ -141,7 +145,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <tbody>
                             @if(isset($jobGusungContents))
                                 @foreach($jobGusungContents as $index=> $data)
-                                  <tr style="text-align: center">
+                                  <tr style="text-align: center" ondblclick="monitor.processDetail('{{$data->Sc_Seq}}','{{$data->Job_Seq}}')">
                                       <td>{{$index+1}}</td>
                                       <td>{{$data->P_FilePath}}</td>
                                       <td>{{$data->P_File}}</td>
