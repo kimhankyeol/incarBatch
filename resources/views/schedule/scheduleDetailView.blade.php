@@ -116,7 +116,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
                 <fieldset class="cistp-fieldset">
                   <legend>구성 프로그램</legend>
-                      <div class="table-list">
+                      <div>
                         <table id="datatable" class="table table-bordered" cellspacing="0">
                           <colgroup>
                             <col width="3%" />
