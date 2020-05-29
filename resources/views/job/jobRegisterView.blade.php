@@ -83,11 +83,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     @include('common.footer')
     {{--content 끝--}}
 <script>
-  $("input:text[numberOnly]").on("keyup", function() {
+   $("input:text[numberOnly]").on("keyup", function() {
     $(this).val($(this).val().replace(/[^0-9]/g,""));
   });    
-</script>
-<script>
   function workLargeChgSel(){
    var WorkLarge =  $('#workLargeVal').val();
         $.ajax({

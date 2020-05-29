@@ -28,8 +28,8 @@ Route::prefix('job')->group(function(){
     Route::get('/jobListView', 'JobController@jobListView');
     //잡 등록 뷰
     Route::get('/jobRegisterView', 'JobController@jobRegisterView');
-    //잡 구성 뷰
-    Route::get('/jobProcessRegisterView','JobController@jobProcessRegisterView');
+    // //잡 구성 뷰
+    // Route::get('/jobProcessRegisterView','JobController@jobProcessRegisterView');
     //잡 상세 뷰
     Route::get('/jobDetailView','JobController@jobDetailView');
     //잡 로그 추가  tail -n 20  40

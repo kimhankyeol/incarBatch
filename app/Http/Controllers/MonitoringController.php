@@ -190,7 +190,7 @@ class MonitoringController extends Controller
                 $pSeqArr .= $result->P_Seq.'||';
             }
             if(isset($result->Sc_LogFile)){
-                $scLogFileArr .= preg_replace("!/home/script/log/(.*?)!is","",$result->Sc_LogFile).'||';
+                $scLogFileArr .= preg_replace("!/home/script/log/(.*?)/!is","",$result->Sc_LogFile).'||';
             }
             if(isset($result->P_ReworkYN)){
                 $scReworkArr .= $result->P_ReworkYN.'||';
