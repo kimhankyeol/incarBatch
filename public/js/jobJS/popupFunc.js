@@ -280,8 +280,6 @@ const popup = {
   reWorkModifi: function (Sc_P_Seq) {
     const Job_Seq = document.getElementById("Job_Seq").value;
     const Sc_Seq = document.getElementById("Sc_Seq").value;
-    console.log(Job_Seq)
-    console.log(Sc_Seq)
     const result = confirm("재작업이 가능하도록 만드시겠습니까?");
     if (result) {
       $.ajax({
@@ -292,8 +290,20 @@ const popup = {
         },
         success: function (data) {
           if (data.result == 1) {
-            window.close();
-            return alert("수정 되었습니다.");
+            alert("수정 되었습니다.");
+            $.ajax({
+              url: "/monitoring/scheduleProcessList",
+              method: "get",
+              data: {
+                "Job_Seq": Job_Seq,
+                "Sc_Seq": Sc_Seq
+              },
+              success: function (resp) {
+                opener.$('#scheduleProcessListTable').html(resp.returnHTML);
+                opener.colResiz();
+                window.close();
+              }
+            })
           } else {
             return alert("실패 하였습니다.");
           }
