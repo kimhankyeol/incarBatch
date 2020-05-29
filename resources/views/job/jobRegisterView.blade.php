@@ -41,7 +41,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <div class="row">
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
                   <div class="col-md-8">
-                    <textarea type="text" id="Job_Sulmyung" class="form-control form-control-sm" placeholder="설명" style="resize: none;" onkeyup="check_text(this);" onkeypress="check_text(this);"></textarea>
+                    <textarea type="text" id="Job_Sulmyung" class="form-control form-control-sm" placeholder="설명" onkeyup="check_text(this);" onkeypress="check_text(this);"></textarea>
                     <span id="text_cnt" class="text_cnt text-gray-500">text_cnt</span>
                   </div>
                 </div>
@@ -83,11 +83,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     @include('common.footer')
     {{--content 끝--}}
 <script>
-  $("input:text[numberOnly]").on("keyup", function() {
+   $("input:text[numberOnly]").on("keyup", function() {
     $(this).val($(this).val().replace(/[^0-9]/g,""));
   });    
-</script>
-<script>
   function workLargeChgSel(){
    var WorkLarge =  $('#workLargeVal').val();
         $.ajax({
@@ -105,7 +103,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         })
   }
   </script>
-    <script>
+  <script>
       $("#Job_Sulmyung").val('');
       $("#text_cnt").html('0 / 2000 Byte');
       function check_text(obj){

@@ -34,26 +34,29 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             </div>
             <div class="card-body">
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">ID</div>
-                  <input type="text" id="Job_UniqueName"  class="col-md-3 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">잡 명</div>
-                  <input type="text" id="Job_Name"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" >
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">ID</div>
+                  <input type="text" id="Job_UniqueName"  class="col-md-4 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 명</div>
+                  <input type="text" id="Job_Name"  class="col-md-4 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" >
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">설명</div>
-                  <textarea type="text" id="Job_Sulmyung" class="col-md-9 form-control form-control-sm" >{{$jobDetail[0]->Job_Sulmyung}}</textarea>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
+                  <div class="col-md-8">
+                    <textarea type="text" id="Job_Sulmyung" class="form-control form-control-sm" placeholder="설명" onkeyup="check_text(this);" onkeypress="check_text(this);"></textarea>
+                    <span id="text_cnt" class="text_cnt text-gray-500">text_cnt</span>
+                  </div>
                 </div>
                 <hr>
                 <div class="row">
                   <div id="codeLargeView" class="outher-code">
                     <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">업무구분</div>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary" >대분류</div>
-                    <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkLargeName}}"/>
+                    <input type="text" class="col-md-2 form-control form-control-sm align-self-center" readonly value="{{$jobDetail[0]->Job_WorkLargeName}}"/>
                     <input type="hidden" id="Job_WorkLargeCtg" value="{{$jobDetail[0]->Job_WorkLargeCtg}}"/>
                     <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">중분류</div>
                     <input type="hidden" id="Job_WorkMediumCtg" value="{{$jobDetail[0]->Job_WorkMediumCtg}}"/>
-                    <input type="text" class="col-md-2 form-control form-control-sm" readonly value="{{$jobDetail[0]->Job_WorkMediumName}}"/>
+                    <input type="text" class="col-md-2 form-control form-control-sm align-self-center" readonly value="{{$jobDetail[0]->Job_WorkMediumName}}"/>
                   </div>
                   <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 상태</div>
                   <table class="table table-bordered m-0 w-auto text-center">
@@ -163,6 +166,18 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         }
       }
     </script>
+    <script>
+      $("#text_cnt").html('0 / 2000 Byte');
+      function check_text(obj){
+          var text_cnt = $(obj).val().length;
+          if(text_cnt > 2000) {
+            event.preventDefault();
+            alert("2000 Byte 이상 작성할 수 없습니다.");
+          } else {
+            $("#text_cnt").html(text_cnt+' / 2000 Byte');
+          }
+      }
+    </script> 
     </div>
   </div>
 </body>

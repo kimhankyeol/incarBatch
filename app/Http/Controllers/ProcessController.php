@@ -119,7 +119,8 @@ class ProcessController extends Controller
                      'P_UpdId'=>1611700,
                      'P_RegDate'=>now(),
                      'P_UpdDate'=>now(),
-                     'P_DeleteYN'=>'1'
+                     'P_DeleteYN'=>'1',
+                     'P_ExeCount'=>'0'
                     ]
                 );
                 return response()->json(array('last_p_seq'=>$last_p_seq, 'fileResult1'=>$fileResult1, 'count'=>$count, 'count2'=>$count2));//성공
