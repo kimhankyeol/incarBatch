@@ -187,276 +187,260 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 {{--content 끝--}}
             </div>
         </div>
-<script type="text/javascript">
-    function handler(){
-        $('#startTime').hide();
-        $('#starttm').hide();
-        $('#dayShow').hide();
-        $('#weekShow').hide();
-        $('#monthShow').hide();
-        $('#yearShow').hide();
-        $('#endTime').hide();
-        var newDt = new Date().format('yyyy-MM-dd');
-        var newTm = new Date().format('HH:mm');
-        $('#startdate').val(newDt);
-        $('#starttm').val(newTm);
-        $('#daysel2').removeAttr('readonly','');
-        $("#lastDay").val(0);
-        $("#lastDay").prop("checked",false);
-       var jugi = $('#jugiChange option:selected').val();
-        if(jugi==1){
-            dateChangeVal(jugi);
-            $('#startTime').show();
-            $('#starttm').show();
-            $('#dayShow').hide();
-            $('#weekShow').hide();
-            $('#monthShow').hide();
-            $('#yearShow').hide();
-            $('#endTime').hide();
-        }else if(jugi==2){
-            dateChangeVal(jugi);
-            $('#startTime').show();
-            $('#starttm').show();
-            $('#dayShow').show();
-            $('#weekShow').hide();
-            $('#monthShow').hide();
-            $('#yearShow').hide();
-            $('#endTime').show();
-        }else if(jugi==3){
-            dateChangeVal(jugi);
-            $('#startTime').show();
-            $('#starttm').show();
-            $('#dayShow').hide();
-            $('#weekShow').show();
-            $('#monthShow').hide();
-            $('#yearShow').hide();
-            $('#endTime').show();
-        }else if(jugi==4){
-            dateChangeVal(jugi);
-            $('#startTime').show();
-            $('#starttm').show();
-            $('#dayShow').hide();
-            $('#weekShow').hide();
-            $('#monthShow').show();
-            $('#yearShow').hide();
-            $('#endTime').show();
-        }else if(jugi==5){
-            dateChangeVal(jugi);
-            $('#startTime').show();
-            $('#starttm').show();
-            $('#dayShow').hide();
-            $('#weekShow').hide();
-            $('#monthShow').hide();
-            $('#yearShow').show();
-            $('#endTime').show();
-        }else if(jugi==6){
-            dateChangeVal(jugi);
+    <script type="text/javascript">
+        function handler(){
             $('#startTime').hide();
             $('#starttm').hide();
             $('#dayShow').hide();
             $('#weekShow').hide();
             $('#monthShow').hide();
             $('#yearShow').hide();
-            $('#endShow').show();
-        }
-    }
-    //주기가  월을 클릭하면 말일 변경30,31,28 
-    function dayChange(){
-        var monthCont="";
-        var mm = new Date($('#startdate').val()).format('MM');
-        for(var j=1 ; j<=12;j++){
-            if(mm==j){
-                $('#monthsel').val(j);
-                $('#monthselDiv').html(j);
+            $('#endTime').hide();
+            var newDt = new Date().format('yyyy-MM-dd');
+            var newTm = new Date().format('HH:mm');
+            $('#startdate').val(newDt);
+            $('#starttm').val(newTm);
+            $('#daysel2').removeAttr('readonly','');
+            $("#lastDay").val(0);
+            $("#lastDay").prop("checked",false);
+        var jugi = $('#jugiChange option:selected').val();
+            if(jugi==1){
+                dateChangeVal(jugi);
+                $('#startTime').show();
+                $('#starttm').show();
+                $('#dayShow').hide();
+                $('#weekShow').hide();
+                $('#monthShow').hide();
+                $('#yearShow').hide();
+                $('#endTime').hide();
+            }else if(jugi==2){
+                dateChangeVal(jugi);
+                $('#startTime').show();
+                $('#starttm').show();
+                $('#dayShow').show();
+                $('#weekShow').hide();
+                $('#monthShow').hide();
+                $('#yearShow').hide();
+                $('#endTime').show();
+            }else if(jugi==3){
+                dateChangeVal(jugi);
+                $('#startTime').show();
+                $('#starttm').show();
+                $('#dayShow').hide();
+                $('#weekShow').show();
+                $('#monthShow').hide();
+                $('#yearShow').hide();
+                $('#endTime').show();
+            }else if(jugi==4){
+                dateChangeVal(jugi);
+                $('#startTime').show();
+                $('#starttm').show();
+                $('#dayShow').hide();
+                $('#weekShow').hide();
+                $('#monthShow').show();
+                $('#yearShow').hide();
+                $('#endTime').show();
+            }else if(jugi==5){
+                dateChangeVal(jugi);
+                $('#startTime').show();
+                $('#starttm').show();
+                $('#dayShow').hide();
+                $('#weekShow').hide();
+                $('#monthShow').hide();
+                $('#yearShow').show();
+                $('#endTime').show();
+            }else if(jugi==6){
+                dateChangeVal(jugi);
+                $('#startTime').hide();
+                $('#starttm').hide();
+                $('#dayShow').hide();
+                $('#weekShow').hide();
+                $('#monthShow').hide();
+                $('#yearShow').hide();
+                $('#endShow').show();
             }
-           }
-    }
-    //시작일시 바뀌면 폴더경로 바뀜
-    function dateChangeVal(jugi){
-        var jugi2 = $('#jugiChange option:selected').val();
-        if(jugi==6){
-            var newDate = new Date().format('yyyyMMdd');
-            var cont = '/home/script/log/'+newDate;
-            $(".logFileNameChg").html(cont);
-        }else{
-            if(jugi2==4){
-                if($("#lastDay").val()=="1"){
-                    var year =new Date($('#startdate').val()).format('yyyy');
-                    var month = new Date($('#startdate').val()).format('MM');
-                    var lastDay = (new Date( year, month, 0) ).getDate();
-                    var cont = '/home/script/log/'+chgDate;
-                    var cont2 = "";
-                    if(month ==2 ){
-                        cont2+= '<option selected>28</option>';
-                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                        cont2+= '<option selected>31</option>';
-                    }else{
-                        cont2+= '<option selected>30</option>';
-                    }
-                    $('#daysel2').attr('readonly','readonly');
-                    $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
-                }else{
-                    var year =new Date($('#startdate').val()).format('yyyy');
-                    var month = new Date($('#startdate').val()).format('MM');
-                    var day = new Date($('#startdate').val()).format('dd');
-                    var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                    var cont = '/home/script/log/'+chgDate;
-                    var cont2 = "";
-                    if(month ==2 ){
-                        for(var i = 1 ; i<=28;i++){
-                            if(day==i){
-                                cont2+= '<option selected>'+i+'</option>';
-                            }else{
-                                cont2+= '<option>'+i+'</option>';
-                            }
-                        }
-                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                        for(var i = 1 ; i<=31;i++){
-                            if(day==i){
-                                cont2+= '<option selected>'+i+'</option>';
-                            }else{
-                                cont2+= '<option>'+i+'</option>';
-                            }
-                        }
-                    }else{
-                        for(var i = 1 ; i<=30;i++){
-                            if(day==i){
-                            cont2+= '<option selected>'+i+'</option>';
-                            }else{
-                                cont2+= '<option>'+i+'</option>';
-                            }
-                        }
-                    }
+        }
+        //주기가  월을 클릭하면 말일 변경30,31,28 
+        function dayChange(){
+            var monthCont="";
+            var mm = new Date($('#startdate').val()).format('MM');
+            for(var j=1 ; j<=12;j++){
+                if(mm==j){
+                    $('#monthsel').val(j);
+                    $('#monthselDiv').html(j);
                 }
-                // $('#daysel2').removeAttr('readonly','');
-                $(".logFileNameChg").html(cont);
-                $('#daysel2').html(cont2);
-            }else if(jugi2==5){
-                if($("#lastDay2").val()=="1"){
-                    var year =new Date($('#startdate').val()).format('yyyy');
-                    var month = new Date($('#startdate').val()).format('MM');
-                    var lastDay = (new Date( year, month, 0) ).getDate();
-                    var cont = '/home/script/log/'+chgDate;
-                    var cont2 = "";
-                    if(month ==2 ){
-                        $('#daysel').val(28);
-                        $('#dayselDiv').html(28);
-                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                        $('#daysel').val(31);
-                        $('#dayselDiv').html(31);
-                    }else{
-                        $('#daysel').val(30);
-                        $('#dayselDiv').html(30);
-                    }
-                    $('#daysel').attr('readonly','readonly');
-                    $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
-                }else{
-                    var year =new Date($('#startdate').val()).format('yyyy');
-                    var month = new Date($('#startdate').val()).format('MM');
-                    var day = new Date($('#startdate').val()).format('dd');
-                    var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                    var cont = '/home/script/log/'+chgDate;
-                    if(month ==2 ){
-                        for(var i = 1 ; i<=28;i++){
-                            if(day==i){
-                                $('#daysel').val(i);
-                                $('#dayselDiv').html(i);
-                            }
-                        }
-                    }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                        for(var i = 1 ; i<=31;i++){
-                            if(day==i){
-                                $('#daysel').val(i);
-                                $('#dayselDiv').html(i);
-                            }
-                        }
-                    }else{
-                        for(var i = 1 ; i<=30;i++){
-                            if(day==i){
-                                $('#daysel').val(i);
-                                $('#dayselDiv').html(i);
-                            }
-                        }
-                    }
-                }
-                var monthCont="";
-                for(var j=1 ; j<=12;j++){
-                    if(month==j){
-                        $('#monthsel').val(j);
-                        $('#monthselDiv').html(j);
-                    }
-                }
-                
-                // $('#daysel2').removeAttr('readonly','');
+            }
+        }
+        //시작일시 바뀌면 폴더경로 바뀜
+        function dateChangeVal(jugi){
+            var jugi2 = $('#jugiChange option:selected').val();
+            if(jugi==6){
+                var newDate = new Date().format('yyyyMMdd');
+                var cont = '/home/script/log/'+newDate;
                 $(".logFileNameChg").html(cont);
             }else{
-                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                var cont = '/home/script/log/'+chgDate;
-                $(".logFileNameChg").html(cont);
-            }
-        }
-        
-    }
-    handler();
-    dayChange();
-    $(document).ready(function(){
-        $(document).on('keyup','input[numberonly]',function(event){
-            $(this).val($(this).val().replace(/[^0-9]/g,""));
-        })
-        $('#jugiChange').hide();
-    })
-    //스케줄 파라미터 체크
-    function scheduleParamCheck(){
-        var scheduleParamIndex=0;
-        if($('input[name=Sc_Param]').length==0){
-           alert('잡이 선택되지 않아 파라미터 체크를 할 수 없습니다.');
-        }else{
-            $('input[name=Sc_Param]').each(function(){
-                if (!$.trim($(this).val()).length) {
-                scheduleParamIndex++;
-                }
-            });
-            if(scheduleParamIndex==0){
-                var cont ="";
-                var strType ="";
-                var errorNumCheck=0;
-                var errorStrCheck=0;
-                for(var i = 0 ; i<$('input[name=Job_Params').length;i++){
-                    if($('input[name=Job_Params').eq(i).val()=="paramNum"){
-                        strType="숫자";
-                        //숫자 타입 입력 안되면 오류 체크
-                        if(!$.isNumeric($('input[name=Sc_Param]').eq(i).val())){
-                            errorNumCheck++;
+                if(jugi2==4){
+                    if($("#lastDay").val()=="1"){
+                        var year =new Date($('#startdate').val()).format('yyyy');
+                        var month = new Date($('#startdate').val()).format('MM');
+                        var lastDay = (new Date( year, month, 0) ).getDate();
+                        var cont = '/home/script/log/'+chgDate;
+                        var cont2 = "";
+                        if(month ==2 ){
+                            cont2+= '<option selected>28</option>';
+                        }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                            cont2+= '<option selected>31</option>';
+                        }else{
+                            cont2+= '<option selected>30</option>';
                         }
+                        $('#daysel2').attr('readonly','readonly');
+                        $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
                     }else{
-                        strType="문자";
-                        if($.isNumeric($('input[name=Sc_Param]').eq(i).val())){
-                            //문자에서는 숫자도 입력가능하니  confirm 으로 한번더 물어봐야됨
-                            errorStrCheck++;
+                        var year =new Date($('#startdate').val()).format('yyyy');
+                        var month = new Date($('#startdate').val()).format('MM');
+                        var day = new Date($('#startdate').val()).format('dd');
+                        var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                        var cont = '/home/script/log/'+chgDate;
+                        var cont2 = "";
+                        if(month ==2 ){
+                            for(var i = 1 ; i<=28;i++){
+                                if(day==i){
+                                    cont2+= '<option selected>'+i+'</option>';
+                                }else{
+                                    cont2+= '<option>'+i+'</option>';
+                                }
+                            }
+                        }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                            for(var i = 1 ; i<=31;i++){
+                                if(day==i){
+                                    cont2+= '<option selected>'+i+'</option>';
+                                }else{
+                                    cont2+= '<option>'+i+'</option>';
+                                }
+                            }
+                        }else{
+                            for(var i = 1 ; i<=30;i++){
+                                if(day==i){
+                                cont2+= '<option selected>'+i+'</option>';
+                                }else{
+                                    cont2+= '<option>'+i+'</option>';
+                                }
+                            }
                         }
                     }
-                    cont+="파라미터 "+parseInt(i+1)+"번 : 설명 -"+$('input[name=jobParamSulArr]').eq(i).val()+" , 타입 - "+strType+" , 입력 값 - "+$('input[name=Sc_Param]').eq(i).val()+"\n";
-                }
-                //타입 에러 없이 입력이 잘되었으면
-                if(errorNumCheck==0&&errorStrCheck==0){
-                    var res = confirm("입력한 정보가 맞습니까 ? \n"+cont+"\n")
-                    if(res == true) {
-                        $('#scChkBtnHideShow').hide();
-                        $('#jobSearchLenz').hide();
-                        $('#scReBtnHideShow').show();
-                        $('#scRegBtnHideShow').show();
-                        $('input[name=Sc_Param]').attr("readonly",true);
+                    // $('#daysel2').removeAttr('readonly','');
+                    $(".logFileNameChg").html(cont);
+                    $('#daysel2').html(cont2);
+                }else if(jugi2==5){
+                    if($("#lastDay2").val()=="1"){
+                        var year =new Date($('#startdate').val()).format('yyyy');
+                        var month = new Date($('#startdate').val()).format('MM');
+                        var lastDay = (new Date( year, month, 0) ).getDate();
+                        var cont = '/home/script/log/'+chgDate;
+                        var cont2 = "";
+                        if(month ==2 ){
+                            $('#daysel').val(28);
+                            $('#dayselDiv').html(28);
+                        }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                            $('#daysel').val(31);
+                            $('#dayselDiv').html(31);
+                        }else{
+                            $('#daysel').val(30);
+                            $('#dayselDiv').html(30);
+                        }
+                        $('#daysel').attr('readonly','readonly');
+                        $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
                     }else{
-                        return false;
-                    } 
-                }else if (errorNumCheck!=0&&errorStrCheck==0){
-                    alert('숫자 타입의 변수가 제대로 입력되지 않았습니다.')
-                    return false;
-                }else if (errorNumCheck==0&&errorStrCheck!=0){
-                    var res2 = confirm('문자 타입의 변수에 숫자로 입력되었습니다. 그래도 진행하시겠습니까?');
-                    if(res2){
+                        var year =new Date($('#startdate').val()).format('yyyy');
+                        var month = new Date($('#startdate').val()).format('MM');
+                        var day = new Date($('#startdate').val()).format('dd');
+                        var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                        var cont = '/home/script/log/'+chgDate;
+                        if(month ==2 ){
+                            for(var i = 1 ; i<=28;i++){
+                                if(day==i){
+                                    $('#daysel').val(i);
+                                    $('#dayselDiv').html(i);
+                                }
+                            }
+                        }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                            for(var i = 1 ; i<=31;i++){
+                                if(day==i){
+                                    $('#daysel').val(i);
+                                    $('#dayselDiv').html(i);
+                                }
+                            }
+                        }else{
+                            for(var i = 1 ; i<=30;i++){
+                                if(day==i){
+                                    $('#daysel').val(i);
+                                    $('#dayselDiv').html(i);
+                                }
+                            }
+                        }
+                    }
+                    var monthCont="";
+                    for(var j=1 ; j<=12;j++){
+                        if(month==j){
+                            $('#monthsel').val(j);
+                            $('#monthselDiv').html(j);
+                        }
+                    }
+                    
+                    // $('#daysel2').removeAttr('readonly','');
+                    $(".logFileNameChg").html(cont);
+                }else{
+                    var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                    var cont = '/home/script/log/'+chgDate;
+                    $(".logFileNameChg").html(cont);
+                }
+            }
+            
+        }
+        handler();
+        dayChange();
+        $(document).ready(function(){
+            $(document).on('keyup','input[numberonly]',function(event){
+                $(this).val($(this).val().replace(/[^0-9]/g,""));
+            })
+            $('#jugiChange').hide();
+        })
+        //스케줄 파라미터 체크
+        function scheduleParamCheck(){
+            var scheduleParamIndex=0;
+            if($('input[name=Sc_Param]').length==0){
+            alert('잡이 선택되지 않아 파라미터 체크를 할 수 없습니다.');
+            }else{
+                $('input[name=Sc_Param]').each(function(){
+                    if (!$.trim($(this).val()).length) {
+                    scheduleParamIndex++;
+                    }
+                });
+                if(scheduleParamIndex==0){
+                    var cont ="";
+                    var strType ="";
+                    var errorNumCheck=0;
+                    var errorStrCheck=0;
+                    for(var i = 0 ; i<$('input[name=Job_Params').length;i++){
+                        if($('input[name=Job_Params').eq(i).val()=="paramNum"){
+                            strType="숫자";
+                            //숫자 타입 입력 안되면 오류 체크
+                            if(!$.isNumeric($('input[name=Sc_Param]').eq(i).val())){
+                                errorNumCheck++;
+                            }
+                        }else{
+                            strType="문자";
+                            if($.isNumeric($('input[name=Sc_Param]').eq(i).val())){
+                                //문자에서는 숫자도 입력가능하니  confirm 으로 한번더 물어봐야됨
+                                errorStrCheck++;
+                            }
+                        }
+                        cont+="파라미터 "+parseInt(i+1)+"번 : 설명 -"+$('input[name=jobParamSulArr]').eq(i).val()+" , 타입 - "+strType+" , 입력 값 - "+$('input[name=Sc_Param]').eq(i).val()+"\n";
+                    }
+                    //타입 에러 없이 입력이 잘되었으면
+                    if(errorNumCheck==0&&errorStrCheck==0){
                         var res = confirm("입력한 정보가 맞습니까 ? \n"+cont+"\n")
-                        if(res == true){
+                        if(res == true) {
                             $('#scChkBtnHideShow').hide();
                             $('#jobSearchLenz').hide();
                             $('#scReBtnHideShow').show();
@@ -464,156 +448,180 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             $('input[name=Sc_Param]').attr("readonly",true);
                         }else{
                             return false;
+                        } 
+                    }else if (errorNumCheck!=0&&errorStrCheck==0){
+                        alert('숫자 타입의 변수가 제대로 입력되지 않았습니다.')
+                        return false;
+                    }else if (errorNumCheck==0&&errorStrCheck!=0){
+                        var res2 = confirm('문자 타입의 변수에 숫자로 입력되었습니다. 그래도 진행하시겠습니까?');
+                        if(res2){
+                            var res = confirm("입력한 정보가 맞습니까 ? \n"+cont+"\n")
+                            if(res == true){
+                                $('#scChkBtnHideShow').hide();
+                                $('#jobSearchLenz').hide();
+                                $('#scReBtnHideShow').show();
+                                $('#scRegBtnHideShow').show();
+                                $('input[name=Sc_Param]').attr("readonly",true);
+                            }else{
+                                return false;
+                            }
+                        }else{
+                            return false;
                         }
-                    }else{
+                    }else if (errorNumCheck!=0&&errorStrCheck!=0){
+                        alert('숫자 / 문자 타입의 변수가 제대로 입력되지 않았습니다.')
                         return false;
                     }
-                }else if (errorNumCheck!=0&&errorStrCheck!=0){
-                    alert('숫자 / 문자 타입의 변수가 제대로 입력되지 않았습니다.')
+
+                
+                }else{
+                    alert('파라미터가 입력되지 않아 파라미터 체크를 할 수 없습니다.') ;
                     return false;
                 }
-
-               
+            
+            }
+        }
+        //되돌리기 
+        function reScheduleParamCheck(){
+            var res = confirm("다시 되돌리시겠습니까? ");
+            if(res){
+                $('#scChkBtnHideShow').show();
+                $('#jobSearchLenz').show();
+                $('#scReBtnHideShow').hide();
+                $('#scRegBtnHideShow').hide();
+                $('input[name=Sc_Param]').attr("readonly",false);
+                $('input[name=Sc_Param]').val("");
             }else{
-                alert('파라미터가 입력되지 않아 파라미터 체크를 할 수 없습니다.') ;
                 return false;
             }
-          
         }
-    }
-    //되돌리기 
-    function reScheduleParamCheck(){
-        var res = confirm("다시 되돌리시겠습니까? ");
-        if(res){
-            $('#scChkBtnHideShow').show();
-            $('#jobSearchLenz').show();
-            $('#scReBtnHideShow').hide();
-            $('#scRegBtnHideShow').hide();
-            $('input[name=Sc_Param]').attr("readonly",false);
-            $('input[name=Sc_Param]').val("");
-        }else{
-            return false;
-        }
-    }
-    //체크 값변경
-    $('#lastDay').change(function(){
-        if ($("#lastDay").is(":checked")) {
-            $("#lastDay").val(1);
-            var year =new Date($('#startdate').val()).format('yyyy');
-            var month = new Date($('#startdate').val()).format('MM');
-            var lastDay = ( new Date( year, month, 0) ).getDate();
+        //체크 값변경
+        $('#lastDay').change(function(){
+            if ($("#lastDay").is(":checked")) {
+                $("#lastDay").val(1);
+                var year =new Date($('#startdate').val()).format('yyyy');
+                var month = new Date($('#startdate').val()).format('MM');
+                var lastDay = ( new Date( year, month, 0) ).getDate();
 
-            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-            var cont = '/home/script/log/'+chgDate;
-            var cont2 = "";
-            if(month ==2 ){
-                cont2+= '<option selected>28</option>';
-            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                cont2+= '<option selected>31</option>';
-            }else{
-                cont2+= '<option selected>30</option>';
-            }
-            $('#daysel2').attr('readonly','readonly');
-            $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
-            $(".logFileNameChg").html(cont);
-            $('#daysel2').html(cont2);
-        } else {
-            $("#lastDay").val(0);
-            var year =new Date($('#startdate').val()).format('yyyy');
-            var month = new Date($('#startdate').val()).format('MM');
-            var day = new Date($('#startdate').val()).format('dd');
-            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-            var cont = '/home/script/log/'+chgDate;
-            var cont2 = "";
-            if(month ==2 ){
-                for(var i = 1 ; i<=28;i++){
-                    if(day==i){
-                        cont2+= '<option selected>'+i+'</option>';
-                    }else{
-                        cont2+= '<option>'+i+'</option>';
+                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                var cont = '/home/script/log/'+chgDate;
+                var cont2 = "";
+                if(month ==2 ){
+                    cont2+= '<option selected>28</option>';
+                }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                    cont2+= '<option selected>31</option>';
+                }else{
+                    cont2+= '<option selected>30</option>';
+                }
+                $('#daysel2').attr('readonly','readonly');
+                $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
+                $(".logFileNameChg").html(cont);
+                $('#daysel2').html(cont2);
+            } else {
+                $("#lastDay").val(0);
+                var year =new Date($('#startdate').val()).format('yyyy');
+                var month = new Date($('#startdate').val()).format('MM');
+                var day = new Date($('#startdate').val()).format('dd');
+                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                var cont = '/home/script/log/'+chgDate;
+                var cont2 = "";
+                if(month ==2 ){
+                    for(var i = 1 ; i<=28;i++){
+                        if(day==i){
+                            cont2+= '<option selected>'+i+'</option>';
+                        }else{
+                            cont2+= '<option>'+i+'</option>';
+                        }
+                    }
+                }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                    for(var i = 1 ; i<=31;i++){
+                        if(day==i){
+                            cont2+= '<option selected>'+i+'</option>';
+                        }else{
+                            cont2+= '<option>'+i+'</option>';
+                        }
+                    }
+                }else{
+                    for(var i = 1 ; i<=30;i++){
+                        if(day==i){
+                            cont2+= '<option selected>'+i+'</option>';
+                        }else{
+                            cont2+= '<option>'+i+'</option>';
+                        }
                     }
                 }
-            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                for(var i = 1 ; i<=31;i++){
-                    if(day==i){
-                        cont2+= '<option selected>'+i+'</option>';
-                    }else{
-                        cont2+= '<option>'+i+'</option>';
-                    }
-                }
-            }else{
-                for(var i = 1 ; i<=30;i++){
-                    if(day==i){
-                        cont2+= '<option selected>'+i+'</option>';
-                    }else{
-                        cont2+= '<option>'+i+'</option>';
-                    }
-                }
+                $('#daysel2').removeAttr('readonly','');
+                $(".logFileNameChg").html(cont);
+                $('#daysel2').html(cont2);
             }
-            $('#daysel2').removeAttr('readonly','');
-            $(".logFileNameChg").html(cont);
-            $('#daysel2').html(cont2);
-        }
-    })
-    $('#lastDay2').change(function(){
-        if ($("#lastDay2").is(":checked")) {
-            $("#lastDay2").val(1);
-            var year =new Date($('#startdate').val()).format('yyyy');
-            var month = new Date($('#startdate').val()).format('MM');
-            var lastDay = ( new Date( year, month, 0) ).getDate();
-            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-            var cont = '/home/script/log/'+chgDate;
-            var cont2 = "";
-            if(month ==2 ){
-                $('#daysel').val(28);
-                $('#dayselDiv').html(28);
-            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                $('#daysel').val(31);
-                $('#dayselDiv').html(31);
-            }else{
-                $('#daysel').val(30);
-                $('#dayselDiv').html(30);
-            }
-            $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
-            $(".logFileNameChg").html(cont);
-        } else {
-            $("#lastDay2").val(0);
-            var month = new Date($('#startdate').val()).format('MM');
-            var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-            var day = new Date($('#startdate').val()).format('dd');
+        })
+        $('#lastDay2').change(function(){
+            if ($("#lastDay2").is(":checked")) {
+                $("#lastDay2").val(1);
+                var year =new Date($('#startdate').val()).format('yyyy');
+                var month = new Date($('#startdate').val()).format('MM');
+                var lastDay = ( new Date( year, month, 0) ).getDate();
+                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                var cont = '/home/script/log/'+chgDate;
+                var cont2 = "";
+                if(month ==2 ){
+                    $('#daysel').val(28);
+                    $('#dayselDiv').html(28);
+                }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                    $('#daysel').val(31);
+                    $('#dayselDiv').html(31);
+                }else{
+                    $('#daysel').val(30);
+                    $('#dayselDiv').html(30);
+                }
+                $('#startdate').val(new Date(year+"-"+month+"-"+lastDay).format('yyyy-MM-dd'));
+                $(".logFileNameChg").html(cont);
+            } else {
+                $("#lastDay2").val(0);
+                var month = new Date($('#startdate').val()).format('MM');
+                var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
+                var day = new Date($('#startdate').val()).format('dd');
 
-            var cont = '/home/script/log/'+chgDate;
-            if(month ==2 ){
-                for(var i = 1 ; i<=28;i++){
-                    if(day==i){
-                        $('#daysel').val(i);
-                        $('#dayselDiv').html(i);
+                var cont = '/home/script/log/'+chgDate;
+                if(month ==2 ){
+                    for(var i = 1 ; i<=28;i++){
+                        if(day==i){
+                            $('#daysel').val(i);
+                            $('#dayselDiv').html(i);
+                        }
+                    }
+                }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                    for(var i = 1 ; i<=31;i++){
+                        if(day==i){
+                            $('#daysel').val(i);
+                            $('#dayselDiv').html(i);
+                        }
+                    }
+                }else{
+                    for(var i = 1 ; i<=30;i++){
+                        if(day==i){
+                            $('#daysel').val(i);
+                            $('#dayselDiv').html(i);
+                        }
                     }
                 }
-            }else if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                for(var i = 1 ; i<=31;i++){
-                    if(day==i){
-                        $('#daysel').val(i);
-                        $('#dayselDiv').html(i);
-                    }
-                }
-            }else{
-                for(var i = 1 ; i<=30;i++){
-                    if(day==i){
-                        $('#daysel').val(i);
-                        $('#dayselDiv').html(i);
-                    }
-                }
+                $('#daysel').removeAttr('readonly','');
+                $(".logFileNameChg").html(cont);
             }
-            $('#daysel').removeAttr('readonly','');
-            $(".logFileNameChg").html(cont);
+        })
+        $('#daysel2').change(function(){
+            var year =new Date($('#startdate').val()).format('yyyy');
+            var month = new Date($('#startdate').val()).format('MM');
+            $('#startdate').val(new Date(year+"-"+month+"-"+$('#daysel2 option:selected').val()).format('yyyy-MM-dd'));
+        })
+        //colResize
+        var colResiz = function(){
+            $("#datatable").colResizable({
+                liveDrag:true, 
+                partialRefresh:true,
+                onDrag:null
+            });
         }
-    })
-    $('#daysel2').change(function(){
-        var year =new Date($('#startdate').val()).format('yyyy');
-        var month = new Date($('#startdate').val()).format('MM');
-        $('#startdate').val(new Date(year+"-"+month+"-"+$('#daysel2 option:selected').val()).format('yyyy-MM-dd'));
-    })
-</script>
+    </script>
     </body>
 </html>

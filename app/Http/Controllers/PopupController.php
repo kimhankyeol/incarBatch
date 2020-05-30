@@ -238,7 +238,7 @@ class PopupController extends Controller
             $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
         if($WorkLarge!="all"){
-            $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
+            $usedMedium = DB::select('CALL Common_jobMediumCode(?)',[$WorkLarge]);
             return view('popup.jobSearchView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium','handle'));
         }else{
             return view('popup.jobSearchView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','handle'));
@@ -247,5 +247,9 @@ class PopupController extends Controller
     // 작업내역 - 작업상세
     public function historyProcessListPopup(Request $request){
         return view('popup.historyProcessListPopup');
+    }
+    //모니터링 - 로그 출력
+    public function monitoringLogPopup(Request $request){
+        return view('popup.monitoringLogPopup');
     }
 }

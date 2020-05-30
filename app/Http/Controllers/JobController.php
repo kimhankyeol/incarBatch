@@ -10,7 +10,8 @@ use App;
 class JobController extends Controller
 {
     //메인화면
-    public function index(){
+    public function index(Request $request){
+        $pointer = $request->input('pointer');
         return view('index');
     }
     //잡 리스트/검색 뷰

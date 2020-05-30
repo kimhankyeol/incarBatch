@@ -357,6 +357,7 @@ const job = {
       success:function(data){
         opener.document.getElementById('jobparams').innerHTML = data.returnHTML;
         opener.document.getElementById('jugiChange').style.display="block";
+        opener.colResiz();
         window.close();
         console.log("성공");
       },error:function(err){

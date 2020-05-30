@@ -310,5 +310,9 @@ const popup = {
         }
       })
     }
+  },
+  //모니터링 로그 팝업
+  processLog:function(scSeq,jobSeq,pSeq){
+    window.open('/popup/monitoringLogPopup?Sc_Seq='+scSeq+'&Job_Seq='+jobSeq+'&P_Seq='+pSeq, '모니터링 로그 출력', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   }
 }
