@@ -90,6 +90,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="limit-time-text col-md-2">비고</div>
                   <textarea id="Sc_Note" class="form-control col-md-10" maxlength="2000" readonly>{{$scheduleDetail[0]->Sc_Note}}</textarea>
                 </div>
+                <hr>
                 <div class="row">
                   <div class="col-md-12 font-weight-bold text-primary">
                     잡 파라미터
@@ -144,7 +145,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <tbody>
                             @if(isset($jobGusungContents))
                                 @foreach($jobGusungContents as $index=> $data)
-                                  <tr style="text-align: center">
+                                  <tr style="text-align: center" ondblclick="monitor.processDetail('{{$data->Sc_Seq}}','{{$data->Job_Seq}}')">
                                       <td>{{$index+1}}</td>
                                       <td>{{$data->P_FilePath}}</td>
                                       <td>{{$data->P_File}}</td>
