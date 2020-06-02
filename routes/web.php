@@ -122,6 +122,8 @@ Route::prefix('popup')->group(function(){
     Route::get('/jobSearchView','PopupController@jobSearchView');
     //작업내역 -> 작업상세
     Route::get('/historyProcessListPopup','PopupController@historyProcessListPopup');
+    //모니터링 로그 출력
+    Route::get('/monitoringLogPopup','PopupController@monitoringLogPopup');
 
 });
 

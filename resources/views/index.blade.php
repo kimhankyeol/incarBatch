@@ -17,9 +17,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     @include('common.sidebar')
     <div id="content-wrapper" class="d-flex flex-column text-center" style="background-image:url('/img/bg.jpg'); background-size: cover">
     </div>
-    @php
-        $file = "log.txt"
-    @endphp
 </body>
 <script>
     $("#sidebarToggle").on('click', function(e) {

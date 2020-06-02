@@ -97,7 +97,7 @@
                         $pfilesplit=explode('.php',$data->P_File);
                       @endphp
                     <td>
-                      <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" type="text" value="{{"/".$pfilesplit[0]."_".$data->Job_Seq."_".$data->JobGusung_Order."_".$data->P_ExeCount.".log"}}"></div>
+                      <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" style="width:100%" type="text" value="{{"/".$pfilesplit[0]."_".$data->Job_Seq."_".$data->JobGusung_Order."_".$data->P_ExeCount.".log"}}"></div>
                     </td>
                   </tr>
                   <input hidden class="scExecJob" value='{{$data->Job_Seq}}'>
