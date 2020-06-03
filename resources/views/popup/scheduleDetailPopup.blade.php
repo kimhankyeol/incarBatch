@@ -151,7 +151,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             @endif
                             </td>
                             <td>
-                              /home/script/log{{$data->Sc_LogFile}}
+                             {{$data->Sc_LogFile}}
                             </td>
                             <td class="text-center">
                               @if(($data->Sc_ReworkYN)==1)
