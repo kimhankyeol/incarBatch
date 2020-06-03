@@ -39,7 +39,7 @@ class ifViewRender {
         array('label' => '잡 등록', 'url' => '/job/jobListView?page=1','icon'=>'fas fa-fw fa-cog'),
         array('label' => '스케줄 관리', 'url' => '/schedule/scheduleListView?page=1','icon'=>'fas fa-fw fa-wrench'),
         array('label' => '모니터링', 'url' => '/monitoring/monitoringView','icon'=>'fas fa-fw fa-wrench'),
-        array('label' => '작업내역', 'url' => '/history/historyListView','icon'=>'fas fa-fw fa-folder')
+        // array('label' => '작업내역', 'url' => '/history/historyListView','icon'=>'fas fa-fw fa-folder')
     );
 
 
