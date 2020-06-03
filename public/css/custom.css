@@ -292,3 +292,36 @@
  padding-top:0.25rem;
  padding-bottom:0.25rem;
 }
+.btn_more_wrap {
+  position: relative;
+  margin-bottom: 42px;
+  padding-top: 18px;
+  border-bottom: 1px solid #e4e8eb;
+}
+
+.btn_more_wrap .btn_more {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  cursor: pointer;
+  color: #505050;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.btn_more_wrap .ico_more {
+  display: inline-block;
+  display: block;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 3px;
+  background-position: -332px 0;
+}
+
+.btn_more_wrap .ico_more {
+  background-image: url(https://s.pstatic.net/static/www/img/uit/2020/sp_main.d9a208.png);
+  background-repeat: no-repeat;
+  background-size: 421px 393px;
+}

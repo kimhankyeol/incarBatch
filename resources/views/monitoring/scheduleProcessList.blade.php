@@ -102,7 +102,7 @@
             <td class="text-center">{{empty($gusungSc->P_TextInput)==1?"N":"Y"}}</td>
             <td class="text-center">{{intval($gusungSc->P_YesangTime/1440)==0?"":intval($gusungSc->P_YesangTime/1440)."일"}}{{intval($gusungSc->P_YesangTime%1440/60)==0?"":intval($gusungSc->P_YesangTime%1440/60)."시간"}}{{intval($gusungSc->P_YesangTime%60)==0?"":intval($gusungSc->P_YesangTime%60)."분"}}</td>
             <td class="text-center">{{intval($gusungSc->P_YesangMaxTime/1440)==0?"":intval($gusungSc->P_YesangMaxTime/1440)."일"}}{{intval($gusungSc->P_YesangMaxTime%1440/60)==0?"":intval($gusungSc->P_YesangMaxTime%1440/60)."시간"}}{{intval($gusungSc->P_YesangMaxTime%60)==0?"":intval($gusungSc->P_YesangMaxTime%60)."분"}}</td>
-            <td class="text-center"><button class="btn btn-sm btn-info"  onclick="popup.processLog('{{$gusungSc->Sc_Seq}}','{{$gusungSc->Job_Seq}}','{{$gusungSc->P_Seq}}')">로그 보기</button></td>
+            <td class="text-center"><button class="btn btn-sm btn-info"  onclick="monitor.processLog('{{$gusungSc->Sc_Seq}}','{{$gusungSc->Job_Seq}}','{{$gusungSc->P_Seq}}')">로그 보기</button></td>
           </tr>
         @endforeach
       </tbody>

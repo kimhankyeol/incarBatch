@@ -223,4 +223,5 @@ class MonitoringController extends Controller
         ]);
         return response()->json(array('pSeqArr'=>$pSeqArr,'scLogFileArr'=>$scLogFileArr,'scReworkArr'=>$scReworkArr,'count'=>$count,'$delResult'=>$delResult,200));
     }
+
 }
