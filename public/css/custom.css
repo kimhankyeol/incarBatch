@@ -1,4 +1,12 @@
+.bodyBgImg{
+  background-image:url('/img/bg.jpg'); 
+  background-size: cover;
+}
+.bodyBgImg #wrapper>div{
+  background-color:#1b1b1b50;
+}
 /* table */
+
 .table {
   table-layout: fixed;
   user-select: none;
@@ -8,7 +16,7 @@
   vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
-  background-color: #4e73df;
+  background-color: #FF9849;
   text-align: center;
   color: #fff;
 }
@@ -211,7 +219,7 @@
 
 /*잡 실행 테이블, 로그 고정*/
 .table-list {
-  min-height: calc((1vh) * 60);
+  min-height: calc((1vh) * 80);
 }
 
 .Job_log {
@@ -324,4 +332,10 @@
   background-image: url(https://s.pstatic.net/static/www/img/uit/2020/sp_main.d9a208.png);
   background-repeat: no-repeat;
   background-size: 421px 393px;
+}
+
+.btn_orange{
+  color:white;
+  background-color:#FF9849;
+  cursor:pointer
 }
