@@ -41,9 +41,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     <option>
                       프로그램 명
                     </option>
-                    <option>
-                      등록자
-                    </option>
                   </select>
                   {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))

@@ -97,27 +97,27 @@ const process = {
                         processFile: processFile,
                         //UseDb: UseDb,
                         retry: retry,
-
                         programName: programName,
                         programExplain: programExplain,
-
                         Pro_YesangTime: Pro_YesangTime,
                         Pro_YesangMaxTime: Pro_YesangMaxTime,
-
                         proParamType: Arr1,
                         proParamSulmyungInput: Arr2,
-
                         P_TextInputCheck: P_TextInputCheck,
                         P_TextInput: P_TextInput,
-
                         P_DevId: P_DevId
                     },
                     success: function (data) {
                         if (data.fileResult1 == true && data.count == 0) {
-                            alert("프로그램이 등록되었습니다.");
-                            location.href = "/process/processDetailView?P_Seq=" + data.last_p_seq;
+                            if(data.result>0){
+                                alert("프로그램이 등록되었습니다.");
+                                location.href = "/process/processListView?page=1";
+                            }else{
+                                alert('프로그램 등록 실패되었습니다.');
+                                return false;
+                            }
                         } else if (data.fileResult1 == false) {
-                            alert("경로가 존재하지 않습니다.");
+                            alert("경로/파일이 존재하지 않습니다.");
                         } else if (data.count2 != 0) {
                             const result = confirm("이미 같은 이름의 파일이 존재합니다. 그래도 등록하시겠습니까?");
                             if (result) {
@@ -238,15 +238,17 @@ const process = {
                         P_DeleteYN: P_DeleteYN
                     },
                     success: function (data) {
-                        if (data.result == 1) {
-                            alert("프로그램이 수정되었습니다.");
-                            // } else if (data.result == "del") {
-                            //     alert("프로그램이 삭제되었습니다.");
-                            //     location.href = "/process/processDetailView";
-                        } else {
-                            alert("프로그램 변경사항이 없습니다.");
+                        if(data.proUsed=="used"){
+                            alert("사용중인 프로그램은 수정이 불가합니다.");
+                            return false;
+                        }else{
+                            if (data.result == 1) {
+                                alert("프로그램이 수정되었습니다.");
+                            } else {
+                                alert("프로그램 변경사항이 없습니다.");
+                            }
+                            location.href = "/process/processDetailView?P_Seq=" + data.P_Seq;
                         }
-                        location.href = "/process/processDetailView?P_Seq=" + data.P_Seq;
                     },
                 });
             }
@@ -320,11 +322,6 @@ const process = {
     },
     //수정
     edit: function () {
-        var programStatus = document.getElementById("programStatus").value;
-        if (programStatus == "사용중") {
-            alert("사용중인 프로그램은 수정할 수 없습니다.");
-            return false;
-        }
         var p_seq = document.getElementById("P_Seq").value;
         var WorkLarge = $('#WorkLarge').val();
         var WorkMedium = $('#WorkMedium').val();
@@ -334,10 +331,10 @@ const process = {
     delete: function () { },
     //파라미터 추가
     addDivParam: function () {
-        // if(document.getElementsByName('proParamType').length>9){
-        //     alert('프로그램 파라미터는 최대 10개 까지 등록가능 합니다.')
-        //     return false;
-        //   }
+        if(document.getElementsByName('proParamType').length>9){
+            alert('프로그램 파라미터는 최대 10개 까지 등록가능 합니다.')
+            return false;
+          }
         var proParamDiv = document.createElement("div");
         var proParamDiv2 = document.createElement("div");
         var delBtnButton = document.createElement("button");

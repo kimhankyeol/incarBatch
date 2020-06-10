@@ -4,15 +4,15 @@
     @if($WorkLarge=="all")
       <option value="all" selected>전체</option>
       @foreach($usedLarge as $ul)
-      <option value="{{$ul->WorkLargeCtg}}">{{$ul->WorkLargeName}}</option>
+      <option value="{{$ul->worklarge}}">{{$ul->worklargename}}</option>
       @endforeach
     @else
     <option value="all">전체</option>
       @foreach($usedLarge as $ul)
-        @if($WorkLarge==$ul->WorkLargeCtg)
-          <option value="{{$ul->WorkLargeCtg}}" selected>{{$ul->WorkLargeName}}</option>
+        @if($WorkLarge==$ul->worklarge)
+          <option value="{{$ul->worklargectg}}" selected>{{$ul->worklargename}}</option>
         @else
-          <option value="{{$ul->WorkLargeCtg}}">{{$ul->WorkLargeName}}</option>
+          <option value="{{$ul->worklargectg}}">{{$ul->worklargename}}</option>
         @endif
       @endforeach
     @endif
@@ -25,15 +25,15 @@
   @if($WorkMedium=="all")
     <option value="all" selected>전체</option>
     @foreach($usedMedium as $um)
-    <option value="{{$um->WorkMediumCtg}}">{{$um->WorkMediumName}}</option>
+    <option value="{{$um->workmediumctg}}">{{$um->workmediumname}}</option>
     @endforeach
   @else
     <option value="all">전체</option>
     @foreach($usedMedium as $um)
-      @if($WorkMedium==$um->WorkMediumCtg)
-      <option value="{{$um->WorkMediumCtg}}" selected>{{$um->WorkMediumName}}</option>
+      @if($WorkMedium==$um->workmediumctg)
+      <option value="{{$um->workmediumctg}}" selected>{{$um->workmediumname}}</option>
       @else
-      <option value="{{$um->WorkMediumCtg}}">{{$um->WorkMediumName}}</option>
+      <option value="{{$um->workmediumctg}}">{{$um->workmediumname}}</option>
       @endif
     @endforeach
   @endif

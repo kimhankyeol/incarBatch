@@ -11,7 +11,7 @@
 
 
 Route::get('/', 'JobController@index');
-
+Route::get('/kim','AdminController@kim');
 // 로그인
 Route::get('/login', function(){
     return view('/common/login');

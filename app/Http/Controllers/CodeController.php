@@ -28,7 +28,7 @@ class CodeController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        $workMediumCtgData=DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge', $WorkLarge)->get();
+        $workMediumCtgData=DB::table('ONLINEBATCH_WORKMEDIUMCODE')->where('WORKLARGE', $WorkLarge)->get();
         // $workMediumCtgData = DB::select('Call Job_searchUsedMediumCode(?)',[$WorkLarge]);
         $returnHTML=view('code.codeMedium',compact('workMediumCtgData','WorkMedium'))->render();
         return response()->json(array('workMediumCtgData'=>$workMediumCtgData,'returnHTML'=>$returnHTML),200);
@@ -49,7 +49,7 @@ class CodeController extends Controller
     public function workDataSelect(Request $request){
         $workLargeVal = $request->input('workLargeVal');
         $workMediumVal = $request->input('workMediumVal');
-        $workFilePath = DB::table('OnlineBatch_WorkMediumCode')->select('FilePath')->where('WorkLarge',$workLargeVal)->where('WorkMedium',$workMediumVal)->get();
+        $workFilePath = DB::table('ONLINEBATCH_WORKMEDIUMCODE')->select('FILEPATH')->where('WORKLARGE',$workLargeVal)->where('WORKMEDIUM',$workMediumVal)->get();
         return response()->json(array('workFilePath'=>$workFilePath));
     }
 }
