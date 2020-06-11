@@ -77,7 +77,6 @@
 }
 
 .cistp-fieldset legend {
-  color: #4e73df !important;
   font-weight: bold;
   width: auto;
   font-size: initial;
@@ -142,7 +141,7 @@
   display: inline-block;
   text-align: center;
   align-self: center;
-  color: #4e73df !important;
+  /* color: #4e73df !important; */
   font-weight: 700 !important;
 }
 
@@ -253,7 +252,8 @@
 }
 
 .hoverTable tr:hover {
-  background-color: rgb(149, 172, 247);
+  /* background-color: #ff9849a1; */
+  background-color: rgb(218, 221, 235);
 }
 
 .progress-percent {
@@ -338,4 +338,8 @@
   color:white;
   background-color:#FF9849;
   cursor:pointer
+}
+
+.bg_orange{
+  background-color:#FF9849;
 }

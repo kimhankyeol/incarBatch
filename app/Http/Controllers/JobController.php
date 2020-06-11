@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
-
 class JobController extends Controller
 {
     //메인화면
@@ -28,10 +27,13 @@ class JobController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
+        $JOB = new App\Job;
+        $COMMON = new App\Common;
 
-        // 사용중인 것만 조회
-        $jobContents = DB::select('CALL Job_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-        $usedLarge = DB::select('CALL Common_LargeCode()');
+        //잡 검색 목록조회
+        $jobContents=$JOB->jobSearchUsedList($searchWord,$WorkLarge,$WorkMedium);
+        //공통코드 대분류 조회 
+        $usedLarge=$COMMON->commonLargeCode();
 
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
@@ -55,9 +57,8 @@ class JobController extends Controller
             $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
         if($WorkLarge!="all"){
-             $usedMedium = DB::select('CALL Common_jobMediumCode(?)',[$WorkLarge]);
-            // $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
-            // $usedMedium =  DB::table('OnlineBatch_WorkMediumCode')->where('WorkLarge', $WorkLarge)->get();
+            // 잡, 프로그램용 공통코드 중분류
+            $usedMedium=$COMMON->jpCommonMediumCode($WorkLarge);
             return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
         }else{
             return view('job.jobListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));
@@ -66,13 +67,51 @@ class JobController extends Controller
     //잡 상세 뷰
     public function jobDetailView(Request $request){
         $job_seq = $request->input('Job_Seq');
-        //프로시저를 통한 잡 상세정보 검색
-        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
-        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
-        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
-        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
-        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$job_seq]);
-        return view('job.jobDetailView',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium','jobStatusCheck'));
+        $JOB = new App\Job;
+        //잡 상세조회
+        $jobDetail =$JOB->jobDetail($job_seq);
+        //잡 예상 최대시간 토탈 조회
+        $jobTotalTime=$JOB->jobTotalTime($job_seq);
+    
+        //잡 상태 체크 프로시저 
+        $query="begin JOBSTATUSCHECK(:jobSeq,:v_end,:v_error,:v_yeyak,:v_exec,:v_wait,:v_result); end;";
+        $WorkLarge = $jobDetail[0]->job_worklargectg;
+        $WorkMedium = $jobDetail[0]->job_workmediumctg;
+        
+        
+        //잡 상태 체크 완료, 오류 ,예약, 실행 ,대기
+        $v_end=0;
+        $v_error=0;
+        $v_yeyak=0;
+        $v_exec=0;
+        $v_wait=0;
+        // 성공 1 , 실패 0 
+        $v_result=0;
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':jobSeq',$job_seq);
+        $stmt->bindParam(':v_end',$v_end);
+        $stmt->bindParam(':v_error',$v_error);
+        $stmt->bindParam(':v_yeyak',$v_yeyak);
+        $stmt->bindParam(':v_exec',$v_exec);
+        $stmt->bindParam(':v_wait',$v_wait);
+        $stmt->bindParam(':v_result',$v_result);
+        $stmt->execute();
+        if($v_result==1){
+            //실행 하고 나면 결과값을 반환 받음
+            $jobStatusCheck=array(
+                "v_end"=>$v_end,
+                "v_error"=>$v_error,
+                "v_yeyak"=>$v_yeyak,
+                "v_exec"=>$v_exec,
+                "v_wait"=>$v_wait
+            );
+           return view('job.jobDetailView',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium','jobStatusCheck'));
+        }else{
+            $msg="잡 상세보기를 조회의 오류가 있습니다.";
+            $url="/job/jobListView?page=1";
+            return view('common.redirect',compact('msg','url'));
+        }
     }
     //잡 등록 뷰
     public function jobRegisterView(){
@@ -80,7 +119,8 @@ class JobController extends Controller
         $searchWord="searchWordNot";
         $WorkLarge="all";
         $WorkMedium="all";
-        $usedLarge = DB::select('CALL Job_RegViewLargeCode');
+        $COMMON = new App\Common;
+        $usedLarge = $COMMON->usedWorkLarge();
         return view('job.jobRegisterView',compact('usedLarge','WorkMedium','WorkLarge'));
     }
     //잡 수정 뷰
@@ -88,24 +128,57 @@ class JobController extends Controller
         $job_seq = $request->input('Job_Seq');
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
-        //프로시저를 통한 잡 상세정보 검색
-        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
-        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
-        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$job_seq]);
-        
-        //잡상태에 따른 분기 처리
-        $exec=$jobStatusCheck[0]->v_exec;
-        $yeyak=$jobStatusCheck[0]->v_yeyak;
-        $error=$jobStatusCheck[0]->v_error;
-        $end=$jobStatusCheck[0]->v_end;
-
-        if($exec==0&&$yeyak==0&&$error==0&&$end==0){
-            return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium','jobTotalTime','jobStatusCheck'));
-        } else {
-            $msg = "잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.";
+        //잡 상세조회
+        $jobDetail =$JOB->jobDetail($job_seq);
+        $WorkLarge = $jobDetail[0]->job_worklargectg;
+        $WorkMedium = $jobDetail[0]->job_workmediumctg;
+        //잡 예상 최대시간 토탈 조회
+        $jobTotalTime=$JOB->jobTotalTime($job_seq);
+        //잡 상태 체크 프로시저 
+        $query3="begin JOBSTATUSCHECK(:jobSeq,:v_end,:v_error,:v_yeyak,:v_exec,:v_wait,:v_result); end;";
+      
+         //잡 상태 체크 완료, 오류 ,예약, 실행 ,대기
+        $v_end=0;
+        $v_error=0;
+        $v_yeyak=0;
+        $v_exec=0;
+        $v_wait=0;
+        // 성공 1 , 실패 0 
+        $v_result=0;
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare($query3);
+        $stmt->bindParam(':jobSeq',$job_seq);
+        $stmt->bindParam(':v_end',$v_end);
+        $stmt->bindParam(':v_error',$v_error);
+        $stmt->bindParam(':v_yeyak',$v_yeyak);
+        $stmt->bindParam(':v_exec',$v_exec);
+        $stmt->bindParam(':v_wait',$v_wait);
+        $stmt->bindParam(':v_result',$v_result);
+        $stmt->execute();
+        if($v_result==1){
+            //실행 하고 나면 결과값을 반환 받음
+            $jobStatusCheck=array(
+                "v_end"=>$v_end,
+                "v_error"=>$v_error,
+                "v_yeyak"=>$v_yeyak,
+                "v_exec"=>$v_exec,
+                "v_wait"=>$v_wait
+            );
+            //잡상태에 따른 분기 처리
+            if($v_exec==0&&$v_yeyak==0&&$v_error==0&&$v_end==0){
+                return view('job.jobUpdateView',compact('jobDetail','WorkLarge','WorkMedium','jobTotalTime','jobStatusCheck'));
+            } else {
+                $msg = "잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.";
+                $url = "/job/jobDetailView?Job_Seq=".$job_seq;
+                return view('common.redirect',compact('msg','url'));
+            }
+        }else{
+            $msg="잡 수정 상세 조회의 오류가 있습니다.";
             $url = "/job/jobDetailView?Job_Seq=".$job_seq;
             return view('common.redirect',compact('msg','url'));
         }
+        
+        
     }
     //잡 등록
     public function jobRegister(Request $request){
@@ -116,35 +189,19 @@ class JobController extends Controller
 
         $Job_Params = $request->input('Job_Params');
         $Job_ParamSulmyungs = $request->input('Job_ParamSulmyungs');
-        $Job_DeleteYN = "n";
-        $Job_GusungVersion = 0;
         //업무 대분류 중분류
         $Job_WorkLargeCtg=$request->input('Job_WorkLargeCtg');
         $Job_WorkMediumCtg=$request->input('Job_WorkMediumCtg');
-
-     
-        //insert 된 last seq 를 조회 해야됨
-        //등록일 CURRENT_TIMESTAMP  db에서 지정
-        $last_job_seq = DB::table('OnlineBatch_Job')->insertGetId(
-            ['Job_Name' => $Job_Name,
-            'Job_Sulmyung'=> $Job_Sulmyung,
-            'Job_RegId'=>$Job_RegId,
-            'Job_RegIP'=>$Job_RegIP,
-            'Job_RegDate'=>now(),
-            'Job_Params'=>$Job_Params,
-            'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
-            'Job_DeleteYN'=>$Job_DeleteYN,
-            'Job_WorkLargeCtg'=>$Job_WorkLargeCtg,
-            'Job_WorkMediumCtg'=>$Job_WorkMediumCtg
-            ]
-        );
+         //DB INSERT
+        $JOB = new App\Job;
+        $result = $JOB->jobInsert($Job_Name,$Job_Sulmyung,$Job_RegId,$Job_RegIP,$Job_Params,$Job_ParamSulmyungs,$Job_WorkLargeCtg,$Job_WorkMediumCtg);
         //등록이 되었으면
-        if($last_job_seq!=""){
+        if($result>0){
             $msg="success"; 
-            return response()->json(array('msg'=>$msg,'lastJobSeq'=>$last_job_seq,'Job_Name'=>$Job_Name),200);
+            return response()->json(array('msg'=>$msg),200);
         }else{
             $msg="failed";
-            return response()->json(array('msg'=>$msg),403);
+            return response()->json(array('msg'=>$msg));
         }
     }
     //잡 수정
@@ -159,36 +216,54 @@ class JobController extends Controller
         //업무 대분류 중분류
         $Job_WorkLargeCtg=$request->input('Job_WorkLargeCtg');
         $Job_WorkMediumCtg=$request->input('Job_WorkMediumCtg');
-        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$Job_Seq]);
-        
+        $query1="begin JOBSTATUSCHECK(:jobSeq,:v_end,:v_error,:v_yeyak,:v_exec,:v_wait,:v_result); end;";
         //잡상태에 따른 분기 처리
-        $exec=$jobStatusCheck[0]->v_exec;
-        $yeyak=$jobStatusCheck[0]->v_yeyak;
-        $error=$jobStatusCheck[0]->v_error;
-        $end=$jobStatusCheck[0]->v_end;
-
-        if($exec==0&&$yeyak==0&&$error==0&&$end==0){
-            $result = DB::table('incar.OnlineBatch_Job')->where('Job_Seq',$Job_Seq)->update([
-                'Job_Name'=>$Job_Name,
-                'Job_Sulmyung'=>$Job_Sulmyung,
-                'Job_UpdId'=>$Job_UpdId,
-                'Job_UpdIP'=>$Job_UpdIP,
-                'Job_Params'=>$Job_Params,
-                'Job_ParamSulmyungs'=>$Job_ParamSulmyungs,
-                'Job_WorkLargeCtg'=>$Job_WorkLargeCtg,
-                'Job_WorkMediumCtg'=>$Job_WorkMediumCtg
-            ]);
-             //변경사항이 있는지 없는지
-            if($result!=0){
-                $msg="success";
-                return response()->json(array('msg'=>$msg),200);
+        $v_end=0;
+        $v_error=0;
+        $v_yeyak=0;
+        $v_exec=0;
+        $v_wait=0;
+        // 성공 1 , 실패 0 
+        $v_result=0;
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare($query1);
+        $stmt->bindParam(':jobSeq',$job_seq);
+        $stmt->bindParam(':v_end',$v_end);
+        $stmt->bindParam(':v_error',$v_error);
+        $stmt->bindParam(':v_yeyak',$v_yeyak);
+        $stmt->bindParam(':v_exec',$v_exec);
+        $stmt->bindParam(':v_wait',$v_wait);
+        $stmt->bindParam(':v_result',$v_result);
+        $stmt->execute();
+        //v_result 1 프로시저 성공 0 실패
+        if($v_result==1){
+            if($v_exec==0&&$v_yeyak==0&&$v_error==0&&$v_end==0){
+                $result = DB::table('incar.OnlineBatch_Job')->where('Job_Seq',$Job_Seq)->update([
+                    'Job_Name'=>$Job_Name,
+                    'Job_Sulmyung'=>$Job_Sulmyung,
+                    'Job_UpdId'=>$Job_UpdId,
+                    'Job_UpdIP'=>$Job_UpdIP,
+                    'Job_UpdDate'=>now(),
+                    'Job_Params'=>$Job_Params,
+                    'Job_ParamSulmyungs'=>$Job_ParamSulmyungs
+                ]);
+                 //변경사항이 있는지 없는지
+                if($result!=0){
+                    $msg="success";
+                    return response()->json(array('msg'=>$msg),200);
+                }else {
+                    $msg="notChg";
+                    return response()->json(array('msg'=>$msg),200);
+                }
             }else {
-                $msg="notChg";
+                $msg = "jobStatus";
                 return response()->json(array('msg'=>$msg),200);
             }
-        }else {
-            $msg = "jobStatus";
+        }else{
+            //프로시저 실행후 에러 났을때 실패 
+            $msg = "procedureError";
             return response()->json(array('msg'=>$msg),200);
         }
+       
     }
 }

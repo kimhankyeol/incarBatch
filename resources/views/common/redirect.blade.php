@@ -11,5 +11,4 @@ if(isset($close)){
         location.href='".$url."';
     </script>");
 }
- 
 @endphp

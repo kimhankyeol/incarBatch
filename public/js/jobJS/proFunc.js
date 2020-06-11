@@ -1,12 +1,12 @@
 //프로세스
 const process = {
     //조회
-    search: function (page) {
+    search: function () {
         var searchWord = $('#searchWord').val();
         var WorkLarge = $('#workLargeVal option:selected').val();
         var WorkMedium = $('#workMediumVal option:selected').val();
         // 대분류 , 중분류 전체 선택일때 아닐떄 경우의 수
-        location.href = "/process/processListView?searchWord=" + searchWord + "&WorkLarge=" + WorkLarge + "&WorkMedium=" + WorkMedium
+        location.href = "/process/processListView?searchWord=" + searchWord + "&WorkLarge=" + WorkLarge + "&WorkMedium=" + WorkMedium +"page=1"
     },
     //등록
     register: function () {
@@ -113,21 +113,16 @@ const process = {
                                 alert("프로그램이 등록되었습니다.");
                                 location.href = "/process/processListView?page=1";
                             }else{
-                                alert('프로그램 등록 실패되었습니다.');
+                                alert('프로그램 등록이 실패되었습니다.');
                                 return false;
                             }
+                        }else if(data.fileResult1 == true && data.count>0) {
+                            alert('동일한 프로그램(경로+파일,DB)이 등록되어 있습니다.');
+                            return false;
                         } else if (data.fileResult1 == false) {
                             alert("경로/파일이 존재하지 않습니다.");
-                        } else if (data.count2 != 0) {
-                            const result = confirm("이미 같은 이름의 파일이 존재합니다. 그래도 등록하시겠습니까?");
-                            if (result) {
-                                if (data.count != 0) {
-                                    alert("해당 경로에 이미 같은 이름의 파일이 존재합니다.");
-                                    return false;
-                                }
-                                alert("프로그램이 등록되었습니다.");
-                            }
-                        }
+                            return false;
+                        } 
                     },
                 });
             }

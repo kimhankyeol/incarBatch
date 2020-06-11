@@ -13,24 +13,19 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
-<body id="page-top">
+<body id="page-top" class="bodyBgImg">
   <div id="wrapper">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
             <div class="container-fluid">
+            <h4 class="h3 my-4 font-weight-bold" style="color:white">프로그램 정보 수정</h4>
                 <div class="card shadow">
-                    <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">프로그램 정보 수정</h5>
-                        <input id="P_UpdIP" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
-                        <input id="P_UpDate" type="hidden" value="{{date("Y-m-d H:i:s")}}"/>
-                        <input id="P_Seq" type="hidden" value="{{$processDetail[0]->p_seq}}"/>
-                    </div>
                     <div class="card-body">
                       <div class="custom-row">
                         <input id="P_Seq" type="hidden" value="{{$processDetail[0]->p_seq}}"/>
@@ -148,8 +143,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
             </div>
         </div>
-        @include('common.footer')
-        {{--content 끝--}}
+        <input id="P_UpdIP" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
+        <input id="P_UpDate" type="hidden" value="{{date("Y-m-d H:i:s")}}"/>
+        <input id="P_Seq" type="hidden" value="{{$processDetail[0]->p_seq}}"/>
       </div>
     </div>
   </body>

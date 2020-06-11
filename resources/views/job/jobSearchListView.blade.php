@@ -1,11 +1,11 @@
 @foreach($data as $jobSc)
-<tr onclick="pageMove.job.detail('jobDetailView','{{$jobSc->Job_Seq}}')" style="text-align: center">
-    <td>{{'job_'.$jobSc->Job_WorkLargeCtg.'_'.$jobSc->Job_WorkMediumCtg.'_'.$jobSc->Job_Seq}}</td>
-    <td>{{$jobSc->Job_WorkLargeName}}</td>
-    <td>{{$jobSc->Job_WorkMediumName}}</td>
-    <td>{{$jobSc->Job_Name}}</td>
-    <td>{{$jobSc->Job_Sulmyung}}</td>
-    <td>{{$jobSc->Job_RegName}}</td>
-    <td>{{$jobSc->Job_RegDate}}</td>
+<tr onclick="pageMove.job.detail('jobDetailView','{{$jobSc->job_seq}}')" style="text-align: center">
+    <td>{{'job_'.$jobSc->job_worklargectg.'_'.$jobSc->job_workmediumctg.'_'.$jobSc->job_seq}}</td>
+    <td>{{$jobSc->job_worklargename}}</td>
+    <td>{{$jobSc->job_workmediumname}}</td>
+    <td>{{$jobSc->job_name}}</td>
+    <td>{{$jobSc->job_sulmyung}}</td>
+    <td>{{$jobSc->job_regname}}</td>
+    <td>{{$jobSc->job_regdate}}</td>
 </tr>
 @endforeach

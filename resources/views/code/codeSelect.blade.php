@@ -10,9 +10,9 @@
     <option value="all">전체</option>
       @foreach($usedLarge as $ul)
         @if($WorkLarge==$ul->worklarge)
-          <option value="{{$ul->worklargectg}}" selected>{{$ul->worklargename}}</option>
+          <option value="{{$ul->worklarge}}" selected>{{$ul->worklargename}}</option>
         @else
-          <option value="{{$ul->worklargectg}}">{{$ul->worklargename}}</option>
+          <option value="{{$ul->worklarge}}">{{$ul->worklargename}}</option>
         @endif
       @endforeach
     @endif

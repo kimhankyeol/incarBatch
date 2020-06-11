@@ -1,11 +1,11 @@
 const job = {
   //조회
-  search: function(page){
+  search: function(){
       var searchWord = $('#searchWord').val();
       var WorkLarge = $('#workLargeVal option:selected').val();
       var WorkMedium = $('#workMediumVal option:selected').val();
       // 대분류 , 중분류 전체 선택일떄 아닐떄 경우의 수
-      location.href="/job/jobListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page="+page;
+      location.href="/job/jobListView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&page=1";
   },
   //등록
   register:function(){
@@ -77,7 +77,7 @@ const job = {
                   success:function(resp){
                     if(resp.msg=="success"){
                       alert("잡이 등록되었습니다.");
-                      location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
+                      location.href="/job/jobListView?page=1";
                     }else{
                       alert("잡 등록 실패");
                       location.href="/job/jobListView";
@@ -115,10 +115,10 @@ const job = {
               success:function(resp){
                 if(resp.msg=="success"){
                     alert("잡이 등록되었습니다.");
-                    location.href="/job/jobDetailView?Job_Seq="+resp.lastJobSeq;
+                    location.href="/job/jobListView?page=1";
                 }else{
                   alert("잡 등록 실패");
-                  location.href="/job/jobListView";
+                  location.href="/job/jobListView?page=1";
                 }
               },error:function(error){
                 console.error(error);
@@ -216,7 +216,7 @@ const job = {
                       }
                     }else{
                       alert("잡 수정 실패");
-                      location.href="/job/jobListView";
+                      location.href="/job/jobListView?page=1";
                     }
                   },error:function(error){
                     console.error(error);

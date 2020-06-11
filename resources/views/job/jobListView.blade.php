@@ -14,13 +14,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <html lang="en">
 @include('common.head')
 <body id="page-top">
-    <div id="wrapper">
+    <div id="wrapper" class="bodyBgImg">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column">
         <!-- Main Content -->
       <div id="content">
         <!-- End of Topbar -->
@@ -28,36 +28,36 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
-          <h4 class="h3 my-4 font-weight-bold text-primary">잡</h4>
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">잡</h4>
           <div class="card shadow mb-4">
             <div class="d-flex justify-content-end card-header py-3">
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group align-items-center">
                    {{-- 업무 구분 대분류 중분류 선택 --}}
-                  <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+                  <div class="text-center align-self-center font-weight-bold mx-2">업무 구분</div>
                   @include("code.codeSelect")
                    {{-- 검색 조건 --}}
-                  <select class="form-control bg-light border-primary small">
+                  <select class="form-control bg-light small">
                     <option>
                       잡명
                     </option>
                   </select>
                   {{-- 검색 단어가 있을떄 없을때 구분  --}}
                   @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
+                    <input id="searchWord" type="text" class="form-control bg-light small" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
                   @elseif(isset($searchWord))
                     @if($searchWord=="searchWordNot")
-                      <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
+                      <input id="searchWord" type="text" value="" class="form-control bg-light small" placeholder="조회" aria-label="Search" >
                     @else
-                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light small" aria-label="Search">
                     @endif
                   @endif
                   <div class="input-group-append">
-                    <div class="btn btn-primary" onclick="job.search('1')">
-                      <i class="fas fa-search fa-sm"></i>
+                    <div class="btn btn_orange"  onclick="job.search()">
+                      <i class="fas fa-search fa-sm" style="color:white"></i>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-primary mx-2" onclick="pageMove.job.register('jobRegisterView')">등록</button>
+                  <button type="button"  class="btn btn_orange mx-2" style="color:white" onclick="pageMove.job.register('jobRegisterView')">등록</button>
                 </div>
               </div>
             </div>
@@ -100,7 +100,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           </div>
         </div>
       </div>
-      @include('common.footer')
     {{--content 끝--}}
     <script>
       function workLargeChgSel(){

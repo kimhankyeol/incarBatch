@@ -13,7 +13,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
-<body id="page-top">
+<body id="page-top" class="bodyBgImg">
   <div id="wrapper">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
@@ -21,14 +21,12 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     {{--사이드바 끝--}}
 
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
             <div class="container-fluid">
+            <h4 class="h3 my-4 font-weight-bold" style="color:white">프로그램 상세 정보</h4>
                 <div class="card shadow">
-                    <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">프로그램 상세 정보</h5>
-                    </div>
                     <div class="card-body">
                       <div class="custom-row">
                           <input id="P_Seq" type="hidden" value="{{$processDetail[0]->p_seq}}"/>
@@ -135,7 +133,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
             </div>
         </div>
-        @include('common.footer')
         {{--content 끝--}}
       </div>
     </div>
@@ -143,7 +140,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     <input id="WorkMedium" hidden  value="{{$processDetail[0]->p_workmediumctg}}" readonly>
   </body>
   </html>
-  @php
+  <!-- @php
     $tabDelimitedLines = explode("\n", $processDetail[0]->p_textinput);
     $myArray = Array();
 
@@ -163,4 +160,4 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     $json = json_encode($myArray);
     echo var_dump($tabDelimitedLines);
     echo var_dump($myArray);
-  @endphp
+  @endphp -->

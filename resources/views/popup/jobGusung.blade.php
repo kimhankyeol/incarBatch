@@ -14,22 +14,22 @@
             <div class="card shadow w-100 mb-2">
               <div class="card-body pt-3 pb-1">
                 <div class="row">
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">ID
+                  <div class="col-md-1 text-center align-self-center font-weight-bold ">ID
                   </div>
-                  <input type="text" id="Job_UniqueName" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">잡
+                  <input type="text" id="Job_UniqueName" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{'job_'.$jobDetail[0]->job_worklargectg.'_'.$jobDetail[0]->job_workmediumctg.'_'.$jobDetail[0]->job_seq}}" readonly>
+                  <div class="col-md-1 text-center align-self-center font-weight-bold ">잡
                     명</div>
-                  <input type="text" id="Job_Name" class="col-md-2 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->Job_Name}}" readonly>
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">설명
+                  <input type="text" id="Job_Name" class="col-md-2 form-control form-control-sm align-self-center" value="{{$jobDetail[0]->job_name}}" readonly>
+                  <div class="col-md-1 text-center align-self-center font-weight-bold ">설명
                   </div>
-                  <textarea type="text" id="Job_Sulmyung" class="col-md-5 form-control form-control-sm" readonly>{{$jobDetail[0]->Job_Sulmyung}}</textarea>
+                  <textarea type="text" id="Job_Sulmyung" class="col-md-5 form-control form-control-sm" readonly>{{$jobDetail[0]->job_sulmyung}}</textarea>
                 </div>
               </div>
               <div class="card-body pt-1 pb3-0">
                 <div id="jobParm" class="row mx-auto jobParm">
                     @php
-                    $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
-                    $jobParamSulArr=explode("||",$jobDetail[0]->Job_ParamSulmyungs);
+                    $jobParamArr=explode("||",$jobDetail[0]->job_params);
+                    $jobParamSulArr=explode("||",$jobDetail[0]->job_paramsulmyungs);
                     for ($i = 0; $i < count($jobParamArr); $i++) { 
                         echo '<p class="my-auto pl-3 small jobParmNum">'.intVal($i+1).') </p>';
                         echo '<input type="text" class="form-control form-control-sm col-md-2 my-1 jobParamSulArr" readonly value="'.$jobParamSulArr[$i].'"/>';
@@ -51,32 +51,29 @@
             <div class="card shadow mb-2">
               <div class="d-flex justify-content-end card-header py-3">
                 <div class="d-inline-flex form-inline w-100 navbar-search">
-                    <h5 class="mr-auto mb-0 font-weight-bold text-primary">프로그램</h5>
+                    <h5 class="mr-auto mb-0 font-weight-bold ">프로그램</h5>
                   <div class="input-group align-items-center">
                     {{-- 대분류 중분류 선택 --}}
                     {{-- <div id="codeLargeView" class="list-code"></div> --}}
                     @include("code.codeSelect")
-                    <select class="form-control bg-light border-primary small">
+                    <select class="form-control bg-light small">
                       <option>
                         프로그램 명
-                      </option>
-                      <option>
-                        등록자
                       </option>
                     </select>
                     {{-- 검색 단어가 있을떄 없을때 구분  --}}
                     @if(!isset($searchWord))
-                    <input id="searchWord" type="text" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search">
+                    <input id="searchWord" type="text" class="form-control bg-light small" placeholder="조회" aria-label="Search">
                     @elseif(isset($searchWord))
                       @if($searchWord=="searchWordNot")
-                        <input id="searchWord" type="text" value="" class="form-control bg-light border-primary small" placeholder="조회" aria-label="Search" >
+                        <input id="searchWord" type="text" value="" class="form-control bg-light small" placeholder="조회" aria-label="Search" >
                       @else
-                        <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light border-primary small" aria-label="Search">
+                        <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control bg-light small" aria-label="Search">
                       @endif
                     @endif
                     <div class="input-group-append">
-                      <div class="btn btn-primary cursor-pointer" onclick="popup.search('1')">
-                        <i class="fas fa-search fa-sm"></i>
+                      <div class="btn btn_orange cursor-pointer" onclick="popup.search('1')">
+                        <i class="fas fa-search fa-sm" style="color:white"></i>
                       </div>
                     </div>
                   </div>
@@ -116,21 +113,21 @@
             </div>
           </div>
           <div class="row">
-            <h5 class="mb-4 font-weight-bold text-primary">구성 리스트</h5>
+            <h5 class="mb-4 font-weight-bold ">구성 리스트</h5>
             <div class="card shadow w-100 mb-2">
               <!-- List -->
               <div class="card-body">
                 {{-- 타이틀 --}}
                 <div class="row text-center">
-                  <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">순서
+                  <div class="right-line col-md-1 p-2 bg_orange text-white font-weight-bold rounded-0">순서
                   </div>
-                  <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+                  <div class="right-line col-md-1 p-2 bg_orange text-white font-weight-bold rounded-0">
                     경로</div>
-                  <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+                  <div class="right-line col-md-1 p-2 bg_orange text-white font-weight-bold rounded-0">
                     프로그램</div>
-                  <div class="right-line col-md-1 p-2 bg-primary text-white font-weight-bold rounded-0">
+                  <div class="right-line col-md-1 p-2 bg_orange text-white font-weight-bold rounded-0">
                     프로그램 명</div>
-                  <div class="right-line col-md-8 p-2 bg-primary text-white font-weight-bold rounded-0">
+                  <div class="right-line col-md-8 p-2 bg_orange text-white font-weight-bold rounded-0">
                     파라미터</div>
                 </div>
                 <div id="gusungList" class="row px-0 gusungList">
@@ -141,7 +138,7 @@
               </div>
             </div>
             <div class="col-md-12 text-center">
-              <button type="button" class="btn btn-info" onclick="popup.gusungAdd({{$jobDetail[0]->Job_Seq}})">등록</button>
+              <button type="button" class="btn btn-info" onclick="popup.gusungAdd({{$jobDetail[0]->job_seq}})">등록</button>
               <button type="button" class="btn btn-danger" onclick="window.close()">취소</button>
             </div>
           </div>
@@ -173,25 +170,23 @@
                 }
                 popup.search(page, WorkLarge, WorkMedium);
             });
-        })
-    </script>
-    <script>
+        });
       function workLargeChgSel(){
        var WorkLarge =  $('#workLargeVal').val();
-            $.ajax({
-              url:"/code/workMediumCtg2",
-              method:"get",
-              data:{
-                "WorkLarge":$('#workLargeVal').val()
-              },
-              success:function(resp){
-                $("#workMediumVal").html(resp.returnHTML);
-              },
-              error:function(error){
-    
-              }
-            })
+        $.ajax({
+          url:"/code/workMediumCtg2",
+          method:"get",
+          data:{
+            "WorkLarge":$('#workLargeVal').val()
+          },
+          success:function(resp){
+            $("#workMediumVal").html(resp.returnHTML);
+          },
+          error:function(error){
+
+          }
+        })
       }
-      </script>
+    </script>
 </body>
 </html>

@@ -24,12 +24,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         <!-- Main Content -->
         <div id="content">
             <div class="container-fluid">
+            <h4 class="h3 my-4 font-weight-bold" style="color:white">프로그램 정보 등록</h4>
+                <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
+                <input id="P_RegId" type="hidden" value="1611698"/>
                 <div class="card shadow">
-                    <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold">프로그램 정보 등록</h5>
-                        <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
-                        <input id="P_RegId" type="hidden" value="1611698"/>
-                    </div>
                     <div class="card-body">
                         <div class="custom-row">
                             {{-- 업무 구분 대분류 중분류 선택 --}}
@@ -121,9 +119,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             $('#P_TextInput').val("");
         }
    });
-  </script>
-<script>
-    function workLargeChgSel(){
+   function workLargeChgSel(){
      var WorkLarge =  $('#workLargeVal').val();
           $.ajax({
             url:"/code/workMediumCtg2",
@@ -139,4 +135,5 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             }
           })
     }
-    </script>
+  </script>
+

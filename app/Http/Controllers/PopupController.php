@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
-use Monolog\Handler\PHPConsoleHandler;
+// use Monolog\Handler\PHPConsoleHandler;
 
 class PopupController extends Controller
 {
@@ -17,11 +17,6 @@ class PopupController extends Controller
     //팝업- 잡 구성
     public function jobGusung(Request $request){
         $Job_Seq = $request->input('Job_Seq');
-        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
-        $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
-        $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
-        $jobName = $jobName[0]->Job_Name;
-
         //////// 최초 및 검색 시 필요한 조건 
         $searchWord = $request -> input('searchWord');
         $WorkLarge = $request->input('WorkLarge');
@@ -35,9 +30,20 @@ class PopupController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-
-        $data = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-        $usedLarge = DB::select('CALL Common_LargeCode()');
+   
+        $JOB = new App\Job;
+        $PROCESS = new App\Process;
+        $COMMON = new App\Common;
+        //잡 구성 리스트 조회 
+        $jobGusungContents = $JOB->jobGusungList($Job_Seq);
+        //잡 상세
+        $jobDetail = $JOB->jobDetail($Job_Seq);
+        //프로그램 검색 조회 (전체 포함)
+        $data = $PROCESS->processSearchUsedList($searchWord,$WorkLarge,$WorkMedium);
+        $usedLarge = $COMMON->commonLargeCode();
+        //잡 명 조회
+        $jobName = DB::table('ONLINEBATCH_JOB')->where("JOB_SEQ",$Job_Seq)->get();
+        $jobName = $jobName[0]->job_name;
         $page=$request->input('page');
           //////// 최초 및 검색 시 필요한 조건 
         return view('/popup/jobGusung',compact('jobGusungContents','jobName','jobDetail','data','searchWord','WorkLarge','WorkMedium','usedLarge'));
@@ -48,38 +54,59 @@ class PopupController extends Controller
         $gusungProcess = $request->input('gusungProcess');
         $gusungData = $request->input('gusungData');
         $JobSM_IP = $_SERVER["REMOTE_ADDR"];
-
-        $gusungCount = DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq);
-        $gusungCount = $gusungCount->count();
-        
-
-        $jobStatusCheck =DB::select('CALL Monitoring_jobStatusCheck(?)',[$Job_Seq]);
-        
-        //잡상태에 따른 분기 처리
-        $exec=$jobStatusCheck[0]->v_exec;
-        $yeyak=$jobStatusCheck[0]->v_yeyak;
-        $error=$jobStatusCheck[0]->v_error;
-        $end=$jobStatusCheck[0]->v_end;
-
-        if($exec==0&&$yeyak==0&&$error==0&&$end==0){
-            if($gusungCount!=0){
-                DB::table('OnlineBatch_JobGusung')->where('Job_Seq',$Job_Seq)->delete();
-                // DB::table('OnlineBatch_StatusMonitoring')->where('Job_Seq',$Job_Seq)->delete();
-            }
-            for($i = 0; $i<count($gusungProcess);$i++){
-                # 잡 구성
-                DB::table('OnlineBatch_JobGusung')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobGusung_Order'=>$i+1,'JobGusung_ParamPos'=>$gusungData[$i]]);
-                //모니터링
-                // DB::table('OnlineBatch_StatusMonitoring')->insert(['Job_Seq'=>$Job_Seq,'P_Seq'=>$gusungProcess[$i],'JobSM_P_Status'=>'102','JobSM_IP'=>$JobSM_IP]);
-            }
-            return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount,"msg"=>'success',"msg2"=>'등록되었습니다.'),200);
-        
-        } else {
-            $msg2 = "잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.";
-            return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount,"msg"=>'failed','msg2'=>$msg2),200);
+        $gusungCount = DB::table('ONLINEBATCH_JOBGUSUNG')->where('Job_Seq',$Job_Seq);
+        if(!empty($gusungCount)){
+            $gusungCount = $gusungCount->count();
         }
-        //return response()->json(array('Job_Seq'=>$Job_Seq,'gusungData'=>$gusungData,'gusungProcess'=>count($gusungProcess),'gusungCount'=>$gusungCount,200)); 
-       // return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount),200);
+       //잡 상태 체크 프로시저 
+       $query="begin JOBSTATUSCHECK(:jobSeq,:v_end,:v_error,:v_yeyak,:v_exec,:v_wait,:v_result); end;";
+       
+       //잡 상태 체크 완료, 오류 ,예약, 실행 ,대기
+       $v_end=0;
+       $v_error=0;
+       $v_yeyak=0;
+       $v_exec=0;
+       $v_wait=0;
+       // 성공 1 , 실패 0 
+       $v_result=0;
+       $pdo = DB::connection('oracle')->getPdo();
+       $stmt = $pdo->prepare($query);
+       $stmt->bindParam(':jobSeq',$job_seq);
+       $stmt->bindParam(':v_end',$v_end);
+       $stmt->bindParam(':v_error',$v_error);
+       $stmt->bindParam(':v_yeyak',$v_yeyak);
+       $stmt->bindParam(':v_exec',$v_exec);
+       $stmt->bindParam(':v_wait',$v_wait);
+       $stmt->bindParam(':v_result',$v_result);
+       $stmt->execute();
+       if($v_result==1){
+           //잡상태에 따른 분기 처리
+           if($v_exec==0&&$v_yeyak==0&&$v_error==0&&$v_end==0){
+                if(!empty($gusungCount)){
+                    if(!empty($gusungProcess)){
+                        DB::table('ONLINEBATCH_JOBGUSUNG')->where('JOB_SEQ',$Job_Seq)->delete();
+                        for($i = 0; $i<count($gusungProcess);$i++){
+                            # 잡 구성
+                            DB::table('ONLINEBATCH_JOBGUSUNG')->insert(['JOB_SEQ'=>$Job_Seq,'P_SEQ'=>$gusungProcess[$i],'JOBGUSUNG_ORDER'=>$i+1,'JOBGUSUNG_PARAMPOS'=>$gusungData[$i]]);
+                        }
+                    }else{
+                        return response()->json(array("msg"=>'count0',"msg2"=>'수정시 잡 구성 개수가 0개 일 수 없습니다.'),200);
+                    }
+                }else {
+                    for($i = 0; $i<count($gusungProcess);$i++){
+                        # 잡 구성
+                        DB::table('ONLINEBATCH_JOBGUSUNG')->insert(['JOB_SEQ'=>$Job_Seq,'P_SEQ'=>$gusungProcess[$i],'JOBGUSUNG_ORDER'=>$i+1,'JOBGUSUNG_PARAMPOS'=>$gusungData[$i]]);
+                    }
+                }
+                return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount,"msg"=>'success',"msg2"=>'등록되었습니다.'),200);
+           }else{
+                $msg2 = "잡이 실행,예약,오류,종료 상태이면 수정할 수 없습니다.";
+                return response()->json(array('count'=>count($gusungProcess),'gusung'=>$gusungCount,"msg"=>'failed','msg2'=>$msg2),200);
+           }
+       }else{
+            $msg2="프로시저 오류";
+            return response()->json(array("msg"=>'procedureError','msg2'=>$msg2),200);
+       }
     }
     //팝업 프로세스 검색조회
     public function popupPsSearch(Request $request){
@@ -95,9 +122,9 @@ class PopupController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        //이렇게 할거면 프로시저에서 if 문으로 쿼리 따로주자
-        // $data=DB::table('OnlineBatch_Job')->where('OnlineBatch_Job.Job_Name','like',"%$searchWord%")->paginate(10);
-        $processContents = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge, $WorkMedium]);
+        $PROCESS = new App\Process;
+        //프로그램 검색 조회 (전체 포함)
+        $processContents = $PROCESS->processSearchUsedList($searchWord,$WorkLarge,$WorkMedium);
         $page=$request->input('page');
             //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,5,$processContents);
@@ -121,24 +148,26 @@ class PopupController extends Controller
         $returnHTML = view('/popup/gusungProcessSearchListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium'))->render();
 
         return response()->json(array('returnHTML'=>$returnHTML,200));
-        //return $data;
 
     }
     //팝업- 잡 실행
     public function jobAction(Request $request){
         $Job_Seq = $request->input('Job_Seq');
-        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
-        $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
-        $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
-        $jobName = $jobName[0]->Job_Name;
+        //잡 구성 리스트 
+        $JOB = new App\Job;
+        //잡 구성 리스트 조회 
+        $jobGusungContents = $JOB->jobGusungList($Job_Seq);
+        $jobDetail = $JOB->jobDetail($Job_Seq);
+        $jobName = DB::table('ONLINEBATCH_JOB')->where("JOB_SEQ",$Job_Seq)->get();
+        $jobName = $jobName[0]->job_name;
 
         //////// 최초 및 검색 시 필요한 조건 
         $searchWord = $request -> input('searchWord');
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
-        $WorkLargeDetail = $jobDetail[0]->Job_WorkLargeCtg;
-        $WorkMediumDetail = $jobDetail[0]->Job_WorkMediumCtg;
-        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$Job_Seq]);
+        $WorkLargeDetail = $jobDetail[0]->job_worklargectg;
+        $WorkMediumDetail = $jobDetail[0]->job_workmediumctg;
+        $jobTotalTime=$JOB->jobTotalTime($Job_Seq);
         if($searchWord==""){
             $searchWord="searchWordNot";
         }
@@ -149,8 +178,11 @@ class PopupController extends Controller
             $WorkMedium="all";
         }
 
-        $data = DB::select('CALL Process_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-        $usedLarge = DB::select('CALL Common_LargeCode()');
+        $PROCESS = new App\Process;
+        $COMMON = new App\Common;
+        //프로그램 검색 조회 (전체 포함)
+        $data = $PROCESS->processSearchUsedList($searchWord,$WorkLarge,$WorkMedium);
+        $usedLarge = $COMMON->commonLargeCode();
         $page=$request->input('page');
           //////// 최초 및 검색 시 필요한 조건 
         return view('popup.jobAction',compact('jobGusungContents','jobTotalTime','jobName','jobDetail','data','searchWord','WorkLarge','WorkMedium','WorkLargeDetail','WorkMediumDetail','usedLarge'));
@@ -158,29 +190,34 @@ class PopupController extends Controller
     // 모니터링- 잡 상세 팝업
     public function jobDetailPopup(Request $request) {
         $job_seq = $request->input('Job_Seq');
-        //프로시저를 통한 잡 상세정보 검색
-        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
-        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
-        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
-        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        $JOB = new App\Job;
+        //잡 상세조회
+        $jobDetail =$JOB->jobDetail($job_seq);
+        $WorkLarge = $jobDetail[0]->job_worklargectg;
+        $WorkMedium = $jobDetail[0]->job_workmediumctg;
+        //잡 예상 최대시간 토탈 조회
+        $jobTotalTime=$JOB->jobTotalTime($job_seq);
         return view('popup.jobDetailPopup',compact('jobDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
+    
     // 모니터링- 잡 스케줄 상세 팝업
     public function scheduleDetailPopup(Request $request) {
         $job_seq = $request->input('Job_Seq');
         $sc_seq = $request->input('Sc_Seq');
-        $jobGusungContents = DB::select('CALL Schedule_programList(?,?)',[$job_seq,$sc_seq]);
-        //$jobGusungContents = DB::table('OnlineBatch_ScheduleProcess')->where('Job_Seq',$job_seq)->where('Sc_Seq',$sc_seq);
-        //프로시저를 통한 잡 상세정보 검색
-        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
-        //프로시저를 통한 스케줄러 상세정보 검색
-        $scheduleDetail=DB::select('CALL Schedule_detail(?,?)',[$sc_seq,$job_seq]);
+        $JOB = new App\Job;
+        $SCHEDULE = new App\Schedule;
+        $jobGusungContents = $SCHEDULE->scheduleProgramList($job_seq,$sc_seq);
+        //잡 상세정보 
+        $jobDetail=$JOB->jobDetail($job_seq);
+        //스케줄러 상세정보
+        $scheduleDetail=$SCHEDULE->scheduleDetail($job_seq,$sc_seq);
 
-        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
-        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
-        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        $WorkLarge = $jobDetail[0]->job_worklargectg;
+        $WorkMedium = $jobDetail[0]->job_workmediumctg;
+        $jobTotalTime=$JOB->jobTotalTime($job_seq);
         return view('popup.scheduleDetailPopup',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
+    ////////////////////////////kimh
     // 모니터링 - 잡 스케줄 프로세스 상세 팝업
     public function processDetailPopup(Request $request) {
         $Sc_Seq = $request->input('Sc_Seq');
@@ -211,10 +248,14 @@ class PopupController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-
+        $PROCESS = new App\Process;
+        $SCHEDULE = new App\Schedule;
+        $COMMON = new App\Common;
         // 사용중인 것만 조회
-        $jobContents = DB::select('CALL Schedule_gusungJobList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-        $usedLarge = DB::select('CALL Common_LargeCode()');
+        $jobContents = $SCHEDULE->scheduleJobGusungList($searchWord,$WorkLarge,$WorkMedium);
+        //프로그램 검색 조회 (전체 포함)
+        $data = $PROCESS->processSearchUsedList($searchWord,$WorkLarge,$WorkMedium);
+        $usedLarge = $COMMON->commonLargeCode();
 
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
@@ -238,7 +279,7 @@ class PopupController extends Controller
             $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
         if($WorkLarge!="all"){
-            $usedMedium = DB::select('CALL Common_jobMediumCode(?)',[$WorkLarge]);
+            $usedMedium = $COMMON->jpCommonMediumCode($WorkLarge);
             return view('popup.jobSearchView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium','handle'));
         }else{
             return view('popup.jobSearchView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','handle'));

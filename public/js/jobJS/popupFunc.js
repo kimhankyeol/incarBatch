@@ -267,7 +267,11 @@ const popup = {
         success: function (data) {
           if (data.msg == "success") {
             return alert(data.msg2), window.close();
-          } else if (data.msg = "failed") {
+          }else if (data.msg == "failed") {
+            return alert(data.msg2);
+          }else if (data.msg == "procedureError"){
+            return alert(data.msg2);
+          }else if(data.msg=="count0"){
             return alert(data.msg2);
           }
         }

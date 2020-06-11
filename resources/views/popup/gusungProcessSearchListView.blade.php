@@ -23,27 +23,27 @@
     @if(isset($data))
     <tbody>
         @foreach($data as $proSc)
-        <tr onclick="popup.selectRow(this)" ondblclick="pageMove.process.detail('processDetailView','{{$proSc->P_Seq}}')">
-            <td class="d-none"><input type="checkbox" class="list-group-item processChecks" value="{{$proSc->P_Seq}}"></td>
-            <td>{{$proSc->P_FileName}}</td>
-            <td>{{$proSc->P_File}}</td>
-            <td>{{$proSc->P_Name}}</td>
+        <tr onclick="popup.selectRow(this)" ondblclick="pageMove.process.detail('processDetailView','{{$proSc->p_seq}}')">
+            <td class="d-none"><input type="checkbox" class="list-group-item processChecks" value="{{$proSc->p_seq}}"></td>
+            <td>{{$proSc->p_filename}}</td>
+            <td>{{$proSc->p_file}}</td>
+            <td>{{$proSc->p_name}}</td>
             <td class="overflow-auto">
                 <li class="d-block col-md-8 p-2 rounded-0" value="1" draggable="true">
                     <label class="m-0">
                         @php
-                        $proParamSulArr=explode("||",$proSc->P_ParamSulmyungs);
-                        if(isset($proSc->P_ParamSulmyungs)) {                   
+                        $proParamSulArr=explode("||",$proSc->p_paramsulmyungs);
+                        if(isset($proSc->p_paramsulmyungs)) {                   
                           for ($i = 0; $i < count($proParamSulArr); $i++) {
-                            echo '<input type="text" class="form-control form-control-sm w-auto d-inline-block" value="'.$proParamSulArr[$i].'"readonly>';
+                            echo intVal($i+1).')<input type="text" class="form-control form-control-sm w-auto d-inline-block" style="margin-right: 15px" value="'.$proParamSulArr[$i].'"readonly>';
                           }
                         }
                         @endphp
                     </label>
                 </li>
             </td>
-            <td class="text-center">{{$proSc->P_TextInputCheck=="1"?"Y":"N"}}</td>
-            <td class="text-center">{{$proSc->P_RegId}}</td>
+            <td class="text-center">{{$proSc->p_textinputcheck=="1"?"Y":"N"}}</td>
+            <td class="text-center">{{$proSc->p_regid}}</td>
         </tr>
         @endforeach
     </tbody>

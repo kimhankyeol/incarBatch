@@ -1,10 +1,10 @@
   <fieldset class="cistp-fieldset ">
     <legend>파라미터 입력</legend>
     <div class="col-md-12">
-          @if(isset($jobDetail[0]->Job_Params))
+          @if(isset($jobDetail[0]->job_params))
             @php
-              $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
-              $jobParamSulArr=explode("||",$jobDetail[0]->Job_ParamSulmyungs);
+              $jobParamArr=explode("||",$jobDetail[0]->job_params);
+              $jobParamSulArr=explode("||",$jobDetail[0]->job_paramsulmyungs);
               for ($i = 0; $i < count($jobParamArr); $i++) {
               echo '<div class="d-inline-flex w-50 delYN mb-2">';
               echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
@@ -58,19 +58,19 @@
                   <tr class="gusungData">
                     <td>
                       <div class="custom-control custom-checkbox small text-center">
-                        <input id="sc_p_{{$data->JobGusung_Order}}" name="P_ExecuteYN" type="checkbox" class="custom-control-input" value="{{ $data->P_Seq }}" checked>
-                        <label class="custom-control-label font-weight-bold text-primary" for="sc_p_{{$data->JobGusung_Order}}"></label>
+                        <input id="sc_p_{{$data->jobgusung_order}}" name="P_ExecuteYN" type="checkbox" class="custom-control-input" value="{{ $data->p_seq }}" checked>
+                        <label class="custom-control-label font-weight-bold text-primary" for="sc_p_{{$data->jobgusung_order}}"></label>
                       </div>
                     </td>
-                    <td>{{$data->P_FilePath}}</td>
-                    <td>{{$data->P_File}}</td>
-                    <td>{{$data->P_Name}}</td>
+                    <td>{{$data->p_filepath}}</td>
+                    <td>{{$data->p_file}}</td>
+                    <td>{{$data->p_name}}</td>
                     <td style="overflow-x:scroll">
-                      @if(isset($data->JobGusung_ParamPos))
+                      @if(isset($data->jobgusung_parampos))
                         @php
-                          $proParamArr=explode("||",$data->P_Params);
-                          $Job_ParamSulmyungs=explode("||",$data->Job_ParamSulmyungs);
-                          $JobGusung_ParamPos=explode("||",$data->JobGusung_ParamPos);
+                          $proParamArr=explode("||",$data->p_params);
+                          $Job_ParamSulmyungs=explode("||",$data->job_paramsulmyungs);
+                          $JobGusung_ParamPos=explode("||",$data->jobgusung_parampos);
                           for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
                             echo '<div class="d-inline-flex w-100 delYN mb-2">'.intVal($i+1).')';
                           if($proParamArr[$i]=="paramNum"){
@@ -84,23 +84,23 @@
                       @endif
                     </td>
                     <td>
-                      @if(($data->P_ReworkYN)==1)
+                      @if(($data->p_reworkyn)==1)
                         <label class="m-0 font-weight-bold text-primary">가능</label>
                       @else
                         <label class="m-0  font-weight-bold text-danger">불가능</label>
                       @endif
-                        <input hidden name="Sc_ReworkYN" value="{{$data->P_ReworkYN}}"/>
+                        <input hidden name="Sc_ReworkYN" value="{{$data->p_reworkyn}}"/>
                     </td>
                       @php
                         $nowDate=new DateTime();
                         $nowDate=$nowDate->format('Ymd');
-                        $pfilesplit=explode('.php',$data->P_File);
+                        $pfilesplit=explode('.php',$data->p_file);
                       @endphp
                     <td>
-                      <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" style="width:100%" type="text" value="{{"/".$pfilesplit[0]."_".$data->Job_Seq."_".$data->JobGusung_Order."_".$data->P_ExeCount.".log"}}"></div>
+                      <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" style="width:100%" type="text" value="{{"/".$pfilesplit[0]."_".$data->job_seq."_".$data->jobgusung_order."_".$data->p_execount.".log"}}"></div>
                     </td>
                   </tr>
-                  <input hidden class="scExecJob" value='{{$data->Job_Seq}}'>
+                  <input hidden class="scExecJob" value='{{$data->job_seqex}}'>
                 @endforeach
               @endIf
             {{-- </div> --}}

@@ -13,38 +13,34 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
-<body id="page-top">
+<body id="page-top" class="bodyBgImg">
   <div id="wrapper">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
             <div class="container-fluid">
+                <h4 class="h3 my-4 font-weight-bold" style="color:white">스케줄 등록</h4>
                 <div class="card shadow">
-                    <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">스케줄 등록</h5>
-                        <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
-                        <input id="P_RegId" type="hidden" value="이수연"/>
-                    </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 Id</div>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold">잡 Id</div>
                             <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center" readonly>
                             <div id ="jobSearchLenz" class="input-group-append">
-                                <div class="btn btn-primary" onclick="pageMove.jobpopup.list('jobSearchView')">
-                                <i class="fas fa-search fa-sm"></i>
+                                <div class="btn btn_orange" onclick="pageMove.jobpopup.list('jobSearchView')">
+                                <i class="fas fa-search fa-sm" style="color:white"></i>
                                 </div>
                             </div>
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">잡 명</div>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold mt-2">잡 명</div>
                             <input id = "jobSc_name" type="text" class="col-md-5 form-control form-control-sm mt-2" readonly>
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold mt-2">스케줄 설명</div>
                             <textarea id="Sc_Sulmyung"  class="col-md-8 form-control form-control-sm mt-2" placeholder="스케줄 설명"></textarea>
                         </div>
                         <hr>
@@ -66,7 +62,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         {{-- 년월시  --}}
                                         <div id="startTime">
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                <span class="font-weight-bold text-primary mx-auto ">시작일시 : </span>
+                                                <span class="font-weight-bold mx-auto ">시작일시 : </span>
                                                 <input id="startdate" type="date" class="form-control col-md-4" onchange = "dateChangeVal()">
                                                 <input id="starttm" type="time" class="form-control col-md-4" >
                                             </div>
@@ -78,7 +74,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div id="dayShow">
                                             <div class="d-inline-flex w-100  align-items-center" >
                                                 <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold text-primary mx-auto">매 : </span>
+                                                    <span class="font-weight-bold mx-auto">매 : </span>
                                                     <input id="Day" type="text" class="form-control col-md-4" numberOnly>
                                                     <span class="col-md-4">일마다</span>
                                                 </div>
@@ -90,7 +86,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div id="weekShow">
                                             <div class="d-inline-flex w-100  align-items-center">
                                                 <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold text-primary mx-auto">주마다 다음 요일에: </span>
+                                                    <span class="font-weight-bold mx-auto">주마다 다음 요일에: </span>
                                                     <label class="mr-3">
                                                         <input name="yoil"  type="checkbox" class="mr-1" value="0"> 일요일
                                                     </label>
@@ -120,13 +116,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div id="monthShow">
                                             <div class="d-inline-flex w-100  align-items-center" id="monthShow">
                                                 <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold text-primary mx-auto">매월: </span>
+                                                    <span class="font-weight-bold mx-auto">매월: </span>
                                                     <select id="daysel2" class="form-control col-md-4">
                                                     </select>
                                                     <span class="col-md-2">일</span>
                                                     <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
                                                         <input id="lastDay" type="checkbox" class="custom-control-input" value="0">
-                                                        <label class="custom-control-label font-weight-bold text-primary" for="lastDay">말일</label>
+                                                        <label class="custom-control-label font-weight-bold" for="lastDay">말일</label>
                                                         <input id="lastDayHidden" type="hidden" class="custom-control-input">
                                                     </div>
                                                 </div>
@@ -138,7 +134,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         <div id="yearShow">
                                             <div class="d-inline-flex w-100  align-items-center" >
                                                 <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold text-primary mx-auto">매년: </span>
+                                                    <span class="font-weight-bold mx-auto">매년: </span>
                                                     <div id ="monthselDiv" class="col-md-2 form-control" readonly></div>
                                                     <input type="hidden" id="monthsel">
                                                     </select>
@@ -148,7 +144,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                     <span class="col-md-1">일</span>
                                                     <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
                                                         <input id="lastDay2" type="checkbox" class="custom-control-input" value="0">
-                                                        <label class="custom-control-label font-weight-bold text-primary" for="lastDay2">말일</label>
+                                                        <label class="custom-control-label font-weight-bold" for="lastDay2">말일</label>
                                                     </div>
                                                     
                                                 </div>
@@ -158,7 +154,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                         </div>
                                         <div id="endTime">
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm" >
-                                                <span class="font-weight-bold text-primary mx-auto">종료일시 : </span>
+                                                <span class="font-weight-bold mx-auto">종료일시 : </span>
                                                 <input id="enddate" type="date" class="form-control col-md-4" value="2020-12-31">
                                                 <input id="endtm" type="time" class="form-control col-md-4" value="00:00">
                                             </div>
@@ -183,7 +179,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                         </div>
                     </div>
                 </div>
-                @include('common.footer')
+                <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
+                <input id="P_RegId" type="hidden" value="1611698"/>
                 {{--content 끝--}}
             </div>
         </div>

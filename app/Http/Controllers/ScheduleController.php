@@ -24,9 +24,11 @@ class scheduleController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        // 사용중인 것만 조회  //프로시저 다시만들어야함 스케줄에 맞는
-        $jobContents = DB::select('CALL Schedule_searchUsedList(?,?,?)',[$searchWord,$WorkLarge,$WorkMedium]);
-        $usedLarge = DB::select('CALL Common_LargeCode()');
+        $SCHEDULE = new App\Schedule;
+        $COMMON = new App\Common;
+        // 사용중인 것만 조회  
+        $jobContents = $SCHEDULE->scheduleUsedList($searchWord,$WorkLarge,$WorkMedium);
+        $usedLarge = $COMMON->commonLargeCode();
         $page=$request->input('page');
         //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
         $PaginationCustom = new App\Http\Controllers\Render\PaginationCustom($page,10,$jobContents);
@@ -48,7 +50,7 @@ class scheduleController extends Controller
             $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
         }
         if($WorkLarge!="all"){
-            $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
+            $usedMedium = $COMMON->jpCommonMediumCode($WorkLarge);
             return view('schedule.scheduleListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium'));
         }else{
             return view('schedule.scheduleListView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge'));
@@ -105,10 +107,12 @@ class scheduleController extends Controller
     // 실행할 잡의 파라미터 불러오기
     public function jobselect(Request $request){
         $Job_Seq = $request->input('job_seq');
-        $jobGusungContents = DB::select('CALL JobGusung_List(?)',[$Job_Seq]);
-        $jobDetail = DB::select('CALL Job_detail(?)',[$Job_Seq]);
-        $jobName = DB::table('OnlineBatch_Job')->where("Job_Seq",$Job_Seq)->get();
-        $jobName = $jobName[0]->Job_Name;
+        $JOB = new App\Job;
+        //잡 구성 리스트 조회 
+        $jobGusungContents = $JOB->jobGusungList($Job_Seq);
+        $jobDetail = $JOB->jobDetail($Job_Seq);
+        $jobName = DB::table('ONLINEBATCH_JOB')->where("JOB_SEQ",$Job_Seq)->get();
+        $jobName = $jobName[0]->job_name;
 
         $returnHTML=view('schedule.scheduleExecParam',compact('jobGusungContents','jobDetail','jobName'))->render();
         return response()->json(array('returnHTML'=>$returnHTML),200);

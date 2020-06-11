@@ -62,8 +62,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
               </div>
             </div>
             <div class="card-body py-3">
-              <div class="table-responsive">
-                <div class="table-responsive">
+              <div class="table-list overflow-auto">
                   <table id="datatable" class="table table-bordered" cellspacing="0">
                     <colgroup>
                       <col width="130px" />
@@ -96,8 +95,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   </table>
                   @if(isset($paginator))
                     {{$paginator->setPath('/process/processListView')->appends(request()->except($searchParams))->links()}}
-                    @endIf
-                </div>
+                  @endIf
               </div>
             </div>
           </div>
