@@ -100,7 +100,7 @@
                       <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" style="width:100%" type="text" value="{{"/".$pfilesplit[0]."_".$data->job_seq."_".$data->jobgusung_order."_".$data->p_execount.".log"}}"></div>
                     </td>
                   </tr>
-                  <input hidden class="scExecJob" value='{{$data->job_seqex}}'>
+                  <input hidden class="scExecJob" value='{{$data->job_seq}}'>
                 @endforeach
               @endIf
             {{-- </div> --}}

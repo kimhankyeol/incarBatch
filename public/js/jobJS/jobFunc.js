@@ -469,19 +469,19 @@ const job = {
           }
           var Sc_Status = "303"
           for(var i=0;i<yoilArr.length;i++){
-            if(yoilArr[i]==0||yoilArr[i]==1){
+            if(yoilArr[i]==1){
               yoilArr[i]="일";
-            }else if(yoilArr[i]==1){
-              yoilArr[i]="월";
             }else if(yoilArr[i]==2){
-              yoilArr[i]="화";
+              yoilArr[i]="월";
             }else if(yoilArr[i]==3){
-              yoilArr[i]="수";
+              yoilArr[i]="화";
             }else if(yoilArr[i]==4){
-              yoilArr[i]="목";
+              yoilArr[i]="수";
             }else if(yoilArr[i]==5){
-              yoilArr[i]="금";
+              yoilArr[i]="목";
             }else if(yoilArr[i]==6){
+              yoilArr[i]="금";
+            }else if(yoilArr[i]==7){
               yoilArr[i]="토";
             }
           }
@@ -569,8 +569,13 @@ const job = {
               'Sc_Bungi3':Sc_Bungi3
             },
             success:function(data){
-                alert("등록되었습니다.");
-                location.href = "/schedule/scheduleListView?page=1";
+                if(data.msg=="success"){
+                  alert("등록되었습니다.");
+                  location.href = "/schedule/scheduleListView?page=1";
+                }else{
+                  alert('스케줄 등록시 에러 발생하였습니다. \n '+data.errmsg);
+                  return false;
+                }
             },error:function(error){
               console.error(error);
             }

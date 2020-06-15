@@ -28,7 +28,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
-          <h4 class="h3 my-4 font-weight-bold" style="color:white">프로그램 정보 수정</h4>
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">스케줄</h4>
           <div class="card shadow mb-4">
             <div class="d-flex justify-content-end card-header py-3">
               <div class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">

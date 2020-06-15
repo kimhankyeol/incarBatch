@@ -97,12 +97,46 @@ class scheduleController extends Controller
         $Sc_Note=null;
         $Sc_Regdate=null;
 
-        //주기 , 요일 , 몇일마다 정보를 받아야됨
 
-        // 이거 프로시저로 만들어야될듯
-        DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$Sc_Crontab,$Job_Seq,$Sc_Sulmyung,$Sc_RegId,$Sc_RegIP,$Sc_CronTime,$Sc_CronEndTime,$Sc_CronSulmyung,$Sc_Status,$Sc_Param,$Sc_Bungi1,$Sc_Bungi2,$Sc_Bungi3,$Sc_UpdId,$Sc_UpdIP,$Sc_Note,$P_Seq,$Log_File,$Sc_ReworkYN,$Sc_Regdate]);
-            return response()->json(array('msg'=>'success'));
-        }
+        //스케줄 등록 프로시저 
+        //첫 등록시에는 SCREGDATE,SCNOTE, 를 넣을 필요없음 재작업돌릴시  SCHEDULEINSERT 프로시저 다시 돌아가는데 그때 넣어줘야됨
+        $query="begin SCHEDULEINSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE); end;";
+    //
+        // 성공 1 , 실패 0 
+     
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':JUGI',$Sc_Crontab);
+        $stmt->bindParam(':JOBSEQ',$Job_Seq);
+        $stmt->bindParam(':SCSULMYUNG',$Sc_Sulmyung);
+        $stmt->bindParam(':SCREGID',$Sc_RegId);
+        $stmt->bindParam(':SCREGIP',$Sc_RegIP);
+        $stmt->bindParam(':SCCRONTIME',$Sc_CronTime);
+        $stmt->bindParam(':SCCRONENDTIME',$Sc_CronEndTime);
+        $stmt->bindParam(':SCCRONSULMYUNG',$Sc_CronSulmyung);
+        $stmt->bindParam(':SCSTATUS',$Sc_Status);
+        $stmt->bindParam(':SCPARAM',$Sc_Param);
+        $stmt->bindParam(':SCBUNGI1',$Sc_Bungi1);
+        $stmt->bindParam(':SCBUNGI2',$Sc_Bungi2);
+        $stmt->bindParam(':SCBUNGI3',$Sc_Bungi3);
+        $stmt->bindParam(':SCUPDID',$Sc_UpdId);
+        $stmt->bindParam(':SCUPDIP',$Sc_UpdIp);
+        $stmt->bindParam(':SCNOTE',$Sc_Note);
+        $stmt->bindParam(':PSEQARR',$P_Seq);
+        $stmt->bindParam(':SCLOGFILEARR',$Log_File);
+        $stmt->bindParam(':SCREWORKARR',$Sc_ReworkYN);
+        $stmt->bindParam(':SCREGDATE',$Sc_Regdate);
+        
+        $stmt->execute();
+        return response()->json(array('msg'=>'success'));
+        // if($v_result==1){
+        //     //성공 
+           
+        // }else{
+        //     //실패
+        //     return response()->json(array('msg'=>'failed'));
+        // }
+    }
         
     // 실행할 잡의 파라미터 불러오기
     public function jobselect(Request $request){

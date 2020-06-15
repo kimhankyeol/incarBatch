@@ -88,25 +88,25 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                                 <div class="d-inline-flex w-100  align-items-center form-control-sm">
                                                     <span class="font-weight-bold mx-auto">주마다 다음 요일에: </span>
                                                     <label class="mr-3">
-                                                        <input name="yoil"  type="checkbox" class="mr-1" value="0"> 일요일
+                                                        <input name="yoil"  type="checkbox" class="mr-1" value="1"> 일요일
                                                     </label>
                                                     <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="1"> 월요일
+                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="2"> 월요일
                                                     </label>
                                                     <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="2"> 화요일
+                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="3"> 화요일
                                                     </label>
                                                     <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="3"> 수요일
+                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="4"> 수요일
                                                     </label>
                                                     <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="4"> 목요일
+                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="5"> 목요일
                                                     </label>
                                                     <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="5"> 금요일
+                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="6"> 금요일
                                                     </label>
                                                     <label class="mr-3">
-                                                        <input name="yoil"  type="checkbox" class="mr-1" value="6"> 토요일
+                                                        <input name="yoil"  type="checkbox" class="mr-1" value="7"> 토요일
                                                     </label>
                                                 </div>
                                             
