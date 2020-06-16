@@ -89,6 +89,7 @@ const process = {
                         ),
                     },
                     url: "/process/processRegister",
+                    async:false,
                     method: "post",
                     data: {
                         WorkLarge: WorkLarge,
@@ -214,6 +215,7 @@ const process = {
                     },
                     url: "/process/processEdit",
                     method: "post",
+                    async:false,
                     data: {
                         p_seq: p_seq,
                         P_UpdIP: P_UpdIP,

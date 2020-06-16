@@ -406,7 +406,22 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         function scheduleParamCheck(){
             var scheduleParamIndex=0;
             if($('input[name=Sc_Param]').length==0){
-            alert('잡이 선택되지 않아 파라미터 체크를 할 수 없습니다.');
+                if($('input[name=P_Param]').length==0&&$('#jobSc_id').val()!=""&&$('#jobSc_name').val()!=""){
+                    var result = confirm('잡 파라미터가 없는 잡입니다 .\n 파라미터 체크를 건너뛰시겠습니까?');
+                    if(result){
+                        $('#scChkBtnHideShow').hide();
+                        $('#jobSearchLenz').hide();
+                        $('#scReBtnHideShow').show();
+                        $('#scRegBtnHideShow').show();
+                        $('input[name=Sc_Param]').attr("readonly",true);
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    alert('잡이 선택되지 않아 파라미터 체크를 할 수 없습니다.');
+                    return false;
+                }
             }else{
                 $('input[name=Sc_Param]').each(function(){
                     if (!$.trim($(this).val()).length) {

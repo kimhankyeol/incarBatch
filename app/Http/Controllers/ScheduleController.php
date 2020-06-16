@@ -95,15 +95,17 @@ class scheduleController extends Controller
         $Sc_UpdId=null;
         $Sc_UpdIP=null;
         $Sc_Note=null;
-        $Sc_Regdate=null;
-
+        $Sc_Regdate=new DateTime();
+        $Sc_Regdate = $Sc_Regdate->format('Y-m-d H:i:s');
+       
 
         //스케줄 등록 프로시저 
         //첫 등록시에는 SCREGDATE,SCNOTE, 를 넣을 필요없음 재작업돌릴시  SCHEDULEINSERT 프로시저 다시 돌아가는데 그때 넣어줘야됨
-        $query="begin SCHEDULEINSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE); end;";
+        $query="begin SCHEDULEINSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE,:V_RESULT); end;";
     //
         // 성공 1 , 실패 0 
-     
+        // $v_errmsg="";
+        $v_result=0;
         $pdo = DB::connection('oracle')->getPdo();
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':JUGI',$Sc_Crontab);
@@ -126,16 +128,17 @@ class scheduleController extends Controller
         $stmt->bindParam(':SCLOGFILEARR',$Log_File);
         $stmt->bindParam(':SCREWORKARR',$Sc_ReworkYN);
         $stmt->bindParam(':SCREGDATE',$Sc_Regdate);
-        
+        $stmt->bindParam(':V_RESULT',$v_result);
+        // $stmt->bindParam(':V_ERRMSG',$v_errmsg);
         $stmt->execute();
-        return response()->json(array('msg'=>'success'));
-        // if($v_result==1){
-        //     //성공 
-           
-        // }else{
-        //     //실패
-        //     return response()->json(array('msg'=>'failed'));
-        // }
+ 
+        if($v_result==1){
+            //성공 
+            return response()->json(array('msg'=>'success'));
+        }else{
+            //실패
+            return response()->json(array('msg'=>'failed'));
+        }
     }
         
     // 실행할 잡의 파라미터 불러오기
@@ -155,26 +158,53 @@ class scheduleController extends Controller
     public function scheduleDetailView(Request $request){
         $job_seq = $request->input('Job_Seq');
         $sc_seq = $request->input('Sc_Seq');
-        $jobGusungContents = DB::select('CALL Schedule_programList(?,?)',[$job_seq,$sc_seq]);
+        
+        //삭제한것인지 아닌지 삭제된것은 0 사용중인것은 1
+        $SC_DELETEYN = DB::TABLE('ONLINEBATCH_SCHEDULE')->where('SC_SEQ',$sc_seq)->value('SC_DELETEYN');
+        if(intVal($SC_DELETEYN) == 0){
+            $msg='삭제된 스케줄입니다.';
+            $url='/schedule/scheduleListView?page=1';
+            return view('common.redirect',compact('msg','url'));
+        }
+
         //$jobGusungContents = DB::table('OnlineBatch_ScheduleProcess')->where('Job_Seq',$job_seq)->where('Sc_Seq',$sc_seq);
         //프로시저를 통한 잡 상세정보 검색
-        $jobDetail=DB::select('CALL Job_detail(?)',[$job_seq]);
+        $JOB = new App\Job;
+        $SCHEDULE = new App\Schedule;
+        $jobGusungContents = $SCHEDULE->scheduleProgramList($job_seq,$sc_seq);
+        
+        $jobDetail = $JOB->jobDetail($job_seq);
         //프로시저를 통한 스케줄러 상세정보 검색
-        $scheduleDetail=DB::select('CALL Schedule_detail(?,?)',[$sc_seq,$job_seq]);
+        
+        $scheduleDetail=$SCHEDULE->scheduleDetail($job_seq,$sc_seq);
 
-        $WorkLarge = $jobDetail[0]->Job_WorkLargeCtg;
-        $WorkMedium = $jobDetail[0]->Job_WorkMediumCtg;
-        $jobTotalTime=DB::select('CALL Job_totalTime(?)',[$job_seq]);
+        $WorkLarge = $jobDetail[0]->job_worklargectg;
+        $WorkMedium = $jobDetail[0]->job_workmediumctg;
+        $jobTotalTime = $JOB->jobTotalTime($job_seq);
         return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
     }
     public function scheduleDump(Request $request){
         $Sc_UpdIP = $_SERVER["REMOTE_ADDR"];
+        $Sc_UpdID = $request->input('Sc_UpdID');
         $Sc_Seq = $request->input('Sc_Seq');
-        DB::table('incar.OnlineBatch_Schedule')->where('Sc_Seq',$Sc_Seq)->update([
-            'Sc_UpdId'=>'1611698',
-            'Sc_UpdIP'=>$Sc_UpdIP,
-            'Sc_DeleteYN'=>0
-        ]);
-        return response()->json(array('Sc_Seq'=>$Sc_Seq));
+        $Sc_Status = DB::table('ONLINEBATCH_SCHEDULE')->where('SC_SEQ',$Sc_Seq)->value('SC_STATUS');
+        $Sc_Status2 = DB::table('ONLINEBATCH_SCHEDULEPROCESS')->where('SC_SEQ',$Sc_Seq)->where('JOBSM_P_STATUS','NOT LIKE','10%')->count();
+        //30 예약상태 거나 90 종료 상태 
+        if(preg_match("/^30/",$Sc_Status)||preg_match("/^90/",$Sc_Status)){
+            if($Sc_Status2==0){
+                DB::table('OnlineBatch_Schedule')->where('SC_SEQ',$Sc_Seq)->update([
+                    'SC_UPDID'=>'1611670',
+                    'SC_UPDIP'=>$Sc_UpdIP,
+                    'Sc_DeleteYN'=>0
+                ]);
+                return response()->json(array('msg'=>'success'));
+            }else{
+                return response()->json(array('msg'=>'failed'));
+            }
+        }else{
+            return response()->json(array('msg'=>'failed'));
+        }
+       
+       
     }
 }

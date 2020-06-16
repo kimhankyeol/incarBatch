@@ -185,6 +185,7 @@ const job = {
                   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                   url:'/job/jobUpdate',
                   method:"post",
+                  async:false,
                   data:{
                       'Job_Seq':Job_Seq,
                       'Job_Name':Job_Name,
@@ -239,6 +240,7 @@ const job = {
               headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
               url:'/job/jobUpdate',
               method:"post",
+              async:false,
               data:{
                   'Job_Seq':Job_Seq,
                   'Job_Name':Job_Name,
@@ -550,6 +552,7 @@ const job = {
           $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url:'/schedule/scheduleRegister',
+            async:false,
             method:"post",
             data:{
               'job_seq':job_seq,
@@ -573,7 +576,8 @@ const job = {
                   alert("등록되었습니다.");
                   location.href = "/schedule/scheduleListView?page=1";
                 }else{
-                  alert('스케줄 등록시 에러 발생하였습니다. \n '+data.errmsg);
+                  // alert('스케줄 등록시 에러 발생하였습니다. \n 에러 발생 원인 : 프로시저 ');
+                  alert('스케줄 등록시 에러 발생하였습니다.');
                   return false;
                 }
             },error:function(error){
@@ -590,30 +594,28 @@ const job = {
  //잡 스케줄 삭제 
  scheduleDump:function(){
   var Sc_Seq=$('#Sc_Seq').val();
-  var Sc_Status=$('#Sc_Status').val();
   var result = confirm('스케줄을 삭제하시겠습니까?');
   if(result){
-    if(Sc_Status==901||Sc_Status==902){
       $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         url:'/schedule/scheduleDump',
         method:"post",
         data:{
           'Sc_Seq':Sc_Seq,
-          'Sc_Status':Sc_Status
+          'Sc_UpdID':1611698
         },
         success:function(data){
-          alert("삭제되었습니다.");
-          console.log(data.Sc_Seq);
-          location.href = "/schedule/scheduleListView";
+          if(data.msg=='success'){
+            alert("삭제되었습니다.");
+            location.href = "/schedule/scheduleListView?page=1";
+          }else{
+            alert('스케줄 잡이 대기 상태가 아니면 수정할 수 없습니다.');
+            return false;
+          }
         },error:function(error){
           console.error(error);
         }
       })
-    }else{
-      alert("스케줄을 삭제할 수 있는 상태가 아닙니다.");
-      return false;
-    }
   }
  },
   //스케줄링 유효성 검사

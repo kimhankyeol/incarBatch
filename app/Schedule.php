@@ -9,7 +9,7 @@ class Schedule extends Model
     //스케줄 검색 목록(전체 포함)
     public function scheduleUsedList($searchWord,$WorkLarge,$WorkMedium){
         $query1="
-        SELECT RNUM,SC_SEQ,JOB_SEQ,SC_REGDATE,SC_STARTTIME,SC_CRONTIME,SC_SULMYUNG,SC_CRONSULMYUNG,SC_REGID,JOB_NAME,JOB_REGID,JOB_REGIP,JOB_REGDATE,JOB_UPDDATE,JOB_DELETEYN,JOB_WORKLARGECTG,JOB_WORKMEDIUMCTG,JOB_WORKLARGENAME,JOB_WORKMEDIUMNAME
+        SELECT RNUM,SC_SEQ,JOB_SEQ,SC_REGDATE,SC_STARTTIME,SC_CRONTIME,SC_SULMYUNG,SC_CRONSULMYUNG,SC_DELETEYN,SC_REGID,JOB_NAME,JOB_REGID,JOB_REGIP,JOB_REGDATE,JOB_UPDDATE,JOB_DELETEYN,JOB_WORKLARGECTG,JOB_WORKMEDIUMCTG,JOB_WORKLARGENAME,JOB_WORKMEDIUMNAME
         FROM (    
             SELECT  
                 ROW_NUMBER() OVER(PARTITION BY obs.JOB_SEQ,obs.SC_REGDATE ORDER BY obs.SC_SEQ,obs.SC_STARTTIME DESC, obs.SC_CRONTIME ASC,obs.JOB_SEQ,obs.SC_REGDATE) AS RNUM,
@@ -20,6 +20,7 @@ class Schedule extends Model
                 obs.SC_CRONTIME,
                 obs.SC_SULMYUNG,
                 obs.SC_CRONSULMYUNG,
+                obs.SC_DELETEYN,
                 (SELECT USER_NAME FROM ONLINEBATCH_USER ou WHERE ou.USER_SAWONNUM =obs.SC_REGID) AS SC_REGID ,
                 obj.JOB_NAME,
                 obj.JOB_REGID,
@@ -43,7 +44,7 @@ class Schedule extends Model
          ) 
         ";
         //검색어 있을떄 
-        $queryAnd =" AND JOB_WORKLARGECTG BETWEEN 1000 AND 1999 AND JOB_DELETEYN = '1' ORDER BY JOB_UPDDATE DESC, JOB_REGDATE DESC, SC_SEQ ,JOB_SEQ  ";
+        $queryAnd =" AND JOB_WORKLARGECTG BETWEEN 1000 AND 1999 AND JOB_DELETEYN = '1' AND SC_DELETEYN=1  ORDER BY JOB_UPDDATE DESC, JOB_REGDATE DESC, SC_SEQ ,JOB_SEQ  ";
         if($searchWord!="searchWordNot"  && $WorkLarge !="all"  && $WorkMedium =="all"){
 
             $query1=$query1." WHERE RNUM=1 AND JOB_NAME like concat('%'||'".$searchWord."','%')  AND JOB_WORKLARGECTG ='".$WorkLarge."'";
@@ -150,7 +151,7 @@ class Schedule extends Model
                 and process.P_WORKLARGECTG = code.WORKMEDIUM) process on
             process.P_SEQ = objg.P_SEQ
             WHERE obsp.JOB_SEQ ='".$jobSeq."' AND obsp.SC_SEQ ='".$scSeq."'
-            ORDER BY objg.JOBGUSUNG_ORDER;
+            ORDER BY objg.JOBGUSUNG_ORDER
         ";
         $jobGusungContents=DB::select($query1);
         return $jobGusungContents;
@@ -163,7 +164,7 @@ class Schedule extends Model
             (SELECT owm.Sulmyung FROM OnlineBatch_WorkMediumCode owm WHERE  owm.WorkLarge =substr(os.Sc_Status,1,2) AND owm.WorkMedium =substr(os.Sc_Status,-1)) as Sc_StatusName,
             (SELECT count(*) FROM OnlineBatch_JobGusung objg WHERE objg.Job_Seq='".$jobSeq."') as gusungCount
         FROM 
-            OnlineBatch_Schedule os WHERE os.Job_Seq = '".$jobSeq."' AND os.Sc_Seq = '".$scSeq."';
+            OnlineBatch_Schedule os WHERE os.Job_Seq = '".$jobSeq."' AND os.Sc_Seq = '".$scSeq."'
         ";
 
         $scheduleDetail=DB::select($query1);

@@ -77,6 +77,7 @@ const code = {
                     },
                     url:"/admin/commonCodeLargeRegister",
                     method:"POST",
+                    async:false,
                     data:{
                        "WorkLarge":WorkLarge.val(),
                        "CodeShortName":CodeShortName.val(),
@@ -150,6 +151,7 @@ const code = {
                     },
                     url:"/admin/commonCodeMediumRegister",
                     method:"POST",
+                    async:false,
                     data:{
                        "WorkLarge":WorkLarge.val(),
                        "WorkMedium":WorkMedium.val(),
@@ -221,6 +223,7 @@ const code = {
                     },
                     url:"/admin/commonCodeMediumUpdate",
                     method:"POST",
+                    async:false,
                     data:{
                        "WorkLarge":WorkLarge.val(),
                        "WorkMedium":WorkMedium.val(),
@@ -410,6 +413,7 @@ const code = {
                     },
                     url:"/admin/commonCodeLargeUpdate",
                     method:"POST",
+                    async:false,
                     data:{
                        "WorkLarge":WorkLarge.val(),
                        "CodeShortName":CodeShortName.val(),

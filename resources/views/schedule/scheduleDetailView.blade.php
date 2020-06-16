@@ -14,13 +14,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <html lang="en">
 @include('common.head')
 <body id="page-top">
-  <div id="wrapper">
+  <div id="wrapper" class="bodyBgImg">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
         <!-- End of Topbar -->
@@ -28,79 +28,74 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- DataTales Example -->
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">스케줄</h4>
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h5 class="m-0 font-weight-bold text-primary">스케줄 정보 상세</h5>
-            </div>
-              <input type="hidden" id="Job_RegID" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$jobDetail[0]->Job_RegId}}" readonly>
-              <input type="hidden" id="Sc_Seq" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$scheduleDetail[0]->Sc_Seq}}" readonly>
-              <input type="hidden" id="Sc_Status" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$scheduleDetail[0]->Sc_Status}}" readonly>
             <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">잡 Id</div>
-                    <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center"  value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq}}" readonly>
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">잡 명</div>
-                    <input id = "jobSc_name" type="text" class="col-md-5 form-control form-control-sm mt-2" value="{{$jobDetail[0]->Job_Name}}" readonly>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">잡 Id</div>
+                    <input id="jobSc_id" type="text" class="col-md-2 form-control form-control-sm align-self-center"  value="{{'job_'.$jobDetail[0]->job_worklargectg.'_'.$jobDetail[0]->job_workmediumctg.'_'.$jobDetail[0]->job_seq}}" readonly>
+                    <div class="col-md-2 text-center align-self-center font-weight-bold mt-2">잡 명</div>
+                    <input id = "jobSc_name" type="text" class="col-md-5 form-control form-control-sm mt-2" value="{{$jobDetail[0]->job_name}}" readonly>
                   </div>
                   <hr>
                   <div class="row">
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 Id</div>
-                    <input id="Sc_Seq" type="text" class="col-md-2 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->Job_WorkLargeCtg.'_'.$jobDetail[0]->Job_WorkMediumCtg.'_'.$jobDetail[0]->Job_Seq.'_'.$scheduleDetail[0]->Sc_Seq.'.sh'}}" readonly>
-                    <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">실행 주기 설명</div>
-                    <input type="text" class="col-md-5 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronSulmyung}}" readonly> 
+                    <div class="col-md-2 text-center align-self-center font-weight-bold mt-2">스케줄 Id</div>
+                    <input type="text" class="col-md-2 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->job_worklargectg.'_'.$jobDetail[0]->job_workmediumctg.'_'.$jobDetail[0]->job_seq.'_'.$scheduleDetail[0]->sc_seq.'.sh'}}" readonly>
+                    <div class="col-md-2 text-center align-self-center font-weight-bold">실행 주기 설명</div>
+                    <input type="text" class="col-md-5 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->sc_cronsulmyung}}" readonly> 
                   </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary mt-2">스케줄 설명</div>
-                  <textarea id="Sc_Sulmyung"  class="col-md-10 form-control form-control-sm mt-2"  maxlength="2000" placeholder="스케줄 설명" readonly>{{$scheduleDetail[0]->Sc_Sulmyung}}</textarea>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold mt-2">스케줄 설명</div>
+                  <textarea id="Sc_Sulmyung"  class="col-md-10 form-control form-control-sm mt-2"  maxlength="2000" placeholder="스케줄 설명" readonly>{{$scheduleDetail[0]->sc_sulmyung}}</textarea>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">시작 시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronTime}}" readonly>
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">종료 시간</div>
-                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_CronEndTime}}" readonly>  
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">시작 시간</div>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->sc_crontime}}" readonly>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">종료 시간</div>
+                  <input type="text" class="col-md-3 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->sc_cronendtime}}" readonly>  
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">스케줄 상태</div>
-                  <input type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->Sc_StatusName}}" readonly>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">스케줄 상태</div>
+                  <input type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->sc_statusname}}" readonly>
                   @if(isset($jobGusungContents))
-                    <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">구성 프로세스 개수</div>
+                    <div class="col-md-3 text-center align-self-center font-weight-bold">구성 프로세스 개수</div>
                     <input type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="{{isset($jobGusungContents) ? count($jobGusungContents):0}}" readonly>
                   @endIf 
                 </div>
                 <hr>
                 <div class="row justify-content-center">
                   <div class="limit-time-text col-md-auto">등록자</div>
-                  <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$scheduleDetail[0]->Sc_RegId}}" readonly>
+                  <input id="P_RegId" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$scheduleDetail[0]->sc_regid}}" readonly>
                   <div class="limit-time-text col-md-auto">등록자IP</div>
-                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$scheduleDetail[0]->Sc_RegIP}}" readonly>
+                  <input id="P_RegIp" type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{$scheduleDetail[0]->sc_regip}}" readonly>
                   <div class="limit-time-text col-md-auto">등록일</div>
-                  <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$scheduleDetail[0]->Sc_RegDate}}" readonly>    
+                  <input id="P_RegDate" type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{$scheduleDetail[0]->sc_regdate}}" readonly>    
                   <div class="limit-time-text col-md-auto">수정자</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($scheduleDetail[0]->Sc_UpdId) ? $scheduleDetail[0]->Sc_RegId:$scheduleDetail[0]->Sc_UpdId}}" readonly>   
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto" value="{{empty($scheduleDetail[0]->sc_updid) ? $scheduleDetail[0]->sc_regid:$scheduleDetail[0]->sc_updid}}" readonly>   
                   <div class="limit-time-text col-md-auto">수정자IP</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($scheduleDetail[0]->Sc_UpdIP) ? $scheduleDetail[0]->Sc_RegIP:$scheduleDetail[0]->Sc_UpdIP}}" readonly>       
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-1 w-auto"  value="{{empty($scheduleDetail[0]->sc_updip) ? $scheduleDetail[0]->sc_regip:$scheduleDetail[0]->sc_updip}}" readonly>       
                   <div class="limit-time-text col-md-auto">수정일</div>
-                  <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($scheduleDetail[0]->Sc_UpdDate) ? $scheduleDetail[0]->Sc_RegDate:$scheduleDetail[0]->Sc_UpdDate}}" readonly> 
+                  <input type="text" class="form-control form-control-sm limit-time-input col-md-auto w-auto" value="{{empty($scheduleDetail[0]->sc_upddate) ? $scheduleDetail[0]->sc_regdate:$scheduleDetail[0]->sc_upddate}}" readonly> 
                 </div>
                 <hr>
                 <div class="row justify-content-center">
                   <div class="limit-time-text col-md-2">비고</div>
-                  <textarea id="Sc_Note" class="form-control col-md-10" maxlength="2000" readonly>{{$scheduleDetail[0]->Sc_Note}}</textarea>
+                  <textarea id="Sc_Note" class="form-control col-md-10" maxlength="2000" readonly>{{$scheduleDetail[0]->sc_note}}</textarea>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-12 font-weight-bold text-primary">
+                  <div class="col-md-12 font-weight-bold">
                     잡 파라미터
                   </div>
                   <hr>
                     <div class="col-md-12" id="jobParams">
-                      @if(isset($jobDetail[0]->Job_Params))
+                      @if(isset($jobDetail[0]->job_params))
                         @php
-                          $jobParamArr=explode("||",$jobDetail[0]->Job_Params);
-                          $jobParamSulArr=explode("||",$scheduleDetail[0]->Sc_Param);
+                          $jobParamArr=explode("||",$jobDetail[0]->job_params);
+                          $jobParamSulArr=explode("||",$scheduleDetail[0]->sc_param);
                           for ($i = 0; $i < count($jobParamArr); $i++) {
                           echo '<div class="d-inline-flex w-50 delYN mb-2">';
                           echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
@@ -145,17 +140,17 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                             <tbody>
                             @if(isset($jobGusungContents))
                                 @foreach($jobGusungContents as $index=> $data)
-                                  <tr style="text-align: center" ondblclick="monitor.processDetail('{{$data->Sc_Seq}}','{{$data->Job_Seq}}')">
+                                  <tr style="text-align: center" ondblclick="monitor.processDetail('{{$data->sc_seq}}','{{$data->job_seq}}')">
                                       <td>{{$index+1}}</td>
-                                      <td>{{$data->P_FilePath}}</td>
-                                      <td>{{$data->P_File}}</td>
-                                      <td>{{$data->P_Name}}</td>
+                                      <td>{{$data->p_filepath}}</td>
+                                      <td>{{$data->p_file}}</td>
+                                      <td>{{$data->p_name}}</td>
                                       <td>
-                                      @if(isset($data->P_Params))
+                                      @if(isset($data->p_params))
                                           @php
-                                          $jobParamSulArr=explode("||",$scheduleDetail[0]->Sc_Param);
+                                          $jobParamSulArr=explode("||",$scheduleDetail[0]->sc_param);
                                           $Job_Params=explode("||",$data->Job_Params);
-                                          $JobGusung_ParamPos=explode("||",$data->JobGusung_ParamPos);
+                                          $JobGusung_ParamPos=explode("||",$data->jobgusung_parampos);
                                           for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
                                               echo '<div class="d-inline-flex w-50 delYN mb-2">';
                                               if($Job_Params[$i]=="paramNum"){
@@ -171,14 +166,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                       @endif
                                       </td>
                                       <td>
-                                        @if(($data->P_ReworkYN)==1)
-                                        <label class="m-0 font-weight-bold text-primary">가능</label>
+                                        @if(($data->p_reworkyn)==1)
+                                        <label class="m-0 font-weight-bold">가능</label>
                                         @else
                                           <label class="m-0  font-weight-bold text-danger">불가능</label>
                                         @endif
                                       </td>
                                       <td>
-                                       {{$data->Sc_LogFile}}
+                                       {{$data->sc_logfile}}
                                       </td>
                                   </tr>
                                   @endforeach
@@ -196,8 +191,10 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           </div>
         </div>
       </div>
-    @include('common.footer')
-    {{--content 끝--}}
+       <input type="hidden" id="Sc_Seq" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$scheduleDetail[0]->sc_seq}}" readonly>
+       {{-- <input type="hidden" id="Job_RegID" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$jobDetail[0]->job_regid}}" readonly>
+        <input type="hidden" id="Sc_Status" class="col-md-2 form-control form-control-sm align-self-center"  value="{{$scheduleDetail[0]->sc_status}}" readonly> --}}
+  {{--content 끝--}}
     <script>
       $("input:text[numberOnly]").on("keyup", function() {
         $(this).val($(this).val().replace(/[^0-9]/g,""));
@@ -210,6 +207,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     </script>
     </div>
   </div>
+  <?php
+  echo var_dump(new DateTime());
+
+  $kim = new DateTime();
+  $kim = $kim->format('Y-m-d H:i:s');
+  echo var_dump($kim);
+  
+  ?>
 </body>
 </html>
 
