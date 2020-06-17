@@ -43,35 +43,39 @@
     </tr>
     </thead>
     <tbody>
+        @php
+        echo var_dump("-------------------------------");   
+         echo var_dump($data);   
+        @endphp
         {{--  조회된 값이 보여주는 위치 --}}
         @if(isset($data))
-            @foreach($data as $monitorSc)
-            <tr class="OneDbClickCss1" data-Job_Seq="{{$monitorSc->Job_Seq}}" data-Sc_Seq="{{$monitorSc->Sc_Seq}}" data-RegDate="{{$monitorSc->Sc_RegDate}}" onclick="monitor.scheduleProcessList({{$monitorSc->Job_Seq}},{{$monitorSc->Sc_Seq}})" ondblclick="monitor.scheduleDetailPopup({{$monitorSc->Job_Seq}},{{$monitorSc->Sc_Seq}})">
-                <td class="text-center">{{$monitorSc->rnum}}</td>
-                <td class="text-center">{{'job_'.$monitorSc->Job_WorkLargeCtg.'_'.$monitorSc->Job_WorkMediumCtg.'_'.$monitorSc->Job_Seq.'_'.$monitorSc->Sc_Seq.'.sh'}}</td>
-                <td>{{$monitorSc->Job_Name}}</td>
-                <td>{{$monitorSc->Sc_Sulmyung}}</td>
-                <td class="text-center">{{$monitorSc->Sc_Status}}</td>
-                <td class="text-center">{{$monitorSc->Sc_CronTime}}</td>
-                <td class="text-center">{{$monitorSc->Sc_StartTime}}</td>
-                <td class="text-center">{{$monitorSc->Sc_EndTime}}</td>
-                <td class="text-center">{{$monitorSc->Status90}}개</td>
-                <td class="text-center">{{$monitorSc->Status20}}개</td>
-                <td class="text-center">{{$monitorSc->Status10}}개</td>
-                <td class="text-center">{{$monitorSc->Status40}}개</td>
+            @foreach($data as $index => $monitorSc)
+            <tr class="OneDbClickCss1" data-Job_Seq="{{$monitorSc->job_seq}}" data-Sc_Seq="{{$monitorSc->sc_seq}}" data-RegDate="{{$monitorSc->sc_regdate}}" onclick="monitor.scheduleProcessList({{$monitorSc->job_seq}},{{$monitorSc->sc_seq}})" ondblclick="monitor.scheduleDetailPopup({{$monitorSc->job_seq}},{{$monitorSc->sc_seq}})">
+                <td class="text-center">{{$index+1}}</td>
+                <td class="text-center">{{'job_'.$monitorSc->job_worklargectg.'_'.$monitorSc->job_workmediumctg.'_'.$monitorSc->job_seq.'_'.$monitorSc->sc_seq.'.sh'}}</td>
+                <td>{{$monitorSc->job_name}}</td>
+                <td>{{$monitorSc->sc_sulmyung}}</td>
+                <td class="text-center">{{$monitorSc->sc_status}}</td>
+                <td class="text-center">{{$monitorSc->sc_crontime}}</td>
+                <td class="text-center">{{$monitorSc->sc_starttime}}</td>
+                <td class="text-center">{{$monitorSc->sc_endtime}}</td>
+                <td class="text-center">{{$monitorSc->status90}}개</td>
+                <td class="text-center">{{$monitorSc->status20}}개</td>
+                <td class="text-center">{{$monitorSc->status10}}개</td>
+                <td class="text-center">{{$monitorSc->status40}}개</td>
                 <td class="overflow-auto" style="text-overflow: clip;">
                   @php
-                    $paramLength = count(explode('||',$monitorSc->Sc_Param));
+                    $paramLength = count(explode('||',$monitorSc->sc_param));
                     for ($i=0; $i < $paramLength; $i++) { 
-                      echo '<p class="form-control form-control-sm d-inline-block w-auto readonly mx-2 my-0">'.explode('||',$monitorSc->Sc_Param)[$i].'</p>';
+                      echo '<p class="form-control form-control-sm d-inline-block w-auto readonly mx-2 my-0">'.explode('||',$monitorSc->sc_param)[$i].'</p>';
                     }
                   @endphp
                 </td>
-                <td class="text-center">{{explode(" ",$monitorSc->Sc_RegDate)[0]}}</td>
-                <td>{{explode(" ",$monitorSc->Sc_Note)[0]}}</td>
+                <td class="text-center">{{explode(" ",$monitorSc->sc_regdate)[0]}}</td>
+                <td>{{explode(" ",$monitorSc->sc_note)[0]}}</td>
                 @php
-                    if(intVal($monitorSc->Status20<=0)) {
-                        if((int)$monitorSc->Status90+(int)$monitorSc->Status40 !=0){
+                    if(intVal($monitorSc->status20<=0)) {
+                        if((int)$monitorSc->status90+(int)$monitorSc->status40 !=0){
                             echo '<td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="monitor.reWorkScheduleChk('.$monitorSc->Sc_Seq.')">재작업</button></td>';
                         } else {
                             echo '<td class="text-center">-</td>';

@@ -57,8 +57,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     if (day < 10) 
         day = "0" + day;
     var today = now.getFullYear() + '-' + month + '-' + day;
-    $('#startDate').val(today);
-    $('#endDate').val(today);
+    $('#cronStartDate').val(today);
+    $('#cronEndDate').val(today);
     var dbclick=false;
     // 모니터 리스트
     $(document).on('click','.OneDbClickCss1',function(event){
@@ -162,11 +162,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
                   @include("code.codeSelect")
                   <div class="input-group align-items-center">
-                    <div class="text-center align-self-center font-weight-bold text-primary mx-2">시작일</div>
+                    <div class="text-center align-self-center font-weight-bold text-primary mx-2">실행일</div>
                      {{-- 검색 조건 --}}
-                     <input type="date" class="form-control form-control-sm" id="startDate">
+                     <input type="date" class="form-control form-control-sm" id="cronStartDate">
                      <span class="form-control-sm"> ~ </span>
-                     <input type="date" class="form-control form-control-sm" id="endDate">
+                     <input type="date" class="form-control form-control-sm" id="cronEndDate">
                   </div>
                    {{-- 검색 조건 --}}
                   <select class="form-control form-control-sm">

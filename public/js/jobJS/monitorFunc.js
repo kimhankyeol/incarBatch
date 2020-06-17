@@ -8,9 +8,13 @@ const monitor = {
     var searchWord = $('#searchWord').val();
     var WorkLarge = $('#workLargeVal option:selected').val();
     var WorkMedium = $('#workMediumVal option:selected').val();
-    var startDate = $('#startDate').val();
-    var endDate = $('#endDate').val();
+    var cronStartDate = $('#cronStartDate').val();
+    var cronEndDate = $('#cronEndDate').val();
     var jobStatusStr = '';
+    if(cronStartDate>cronEndDate){
+      alert('실행 시작 시작 기준이 끝 기준보다 클 수 없습니다.');
+      return false;
+    }
     for (var i = 0; i < jobStatus.length; i++) {
       if (jobStatus[i].checked) {
         jobStatusStr += jobStatus[i].value + ',';
@@ -29,8 +33,8 @@ const monitor = {
         'searchWord': searchWord,
         'WorkLarge': WorkLarge,
         'WorkMedium': WorkMedium,
-        'startDate': startDate,
-        'endDate': endDate,
+        'cronStartDate': cronStartDate,
+        'cronEndDate': cronEndDate,
         'page': page
       },
       success: function (resp) {

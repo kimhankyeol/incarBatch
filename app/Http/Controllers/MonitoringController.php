@@ -12,8 +12,9 @@ class MonitoringController extends Controller
         $searchWord = $request->input('searchWord');
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
+        //실행일 기준검색
+        $cronStartDate = $request->input('cronStartDate');
+        $cronEndDate = $request->input('cronEndDate');
         if($jobStatus==""){
             $jobStatus="20,30,90,40";
         }
@@ -27,10 +28,15 @@ class MonitoringController extends Controller
             $WorkMedium="all";
         }
          // 사용중인 것만 조회
-         $MonitorContents = DB::select('CALL Monitor_searchList(?,?,?,?,?,?)',[$jobStatus,$searchWord,$WorkLarge,$WorkMedium,$startDate,$endDate]);
-         $usedLarge = DB::select('CALL Common_LargeCode()');
-         $page=$request->input('page');
-         if($page==""){
+        
+        $MONITORING = new App\Monitoring;
+        $COMMON = new App\Common;
+        //  $MonitorContents = DB::select('CALL Monitor_searchList(?,?,?,?,?,?)',[$jobStatus,$searchWord,$WorkLarge,$WorkMedium,$startDate,$endDate]);
+        $MonitorContents = $MONITORING->monitoringSearchList($searchWord,$WorkLarge,$WorkMedium,$cronStartDate,$cronEndDate,$jobStatus);
+        $COMMON->commonLargeCode(); 
+        $usedLarge = $COMMON->commonLargeCode();
+        $page=$request->input('page');
+        if($page==""){
             $page="1";
         }
          //커스텀된 페이지네이션 클래스  변수로는 (현재 페이지번호 ,한 페이지에 보여줄 개수 , 조회된정보)
@@ -53,15 +59,15 @@ class MonitoringController extends Controller
              $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
          }
          //등록일 시작선택, 끝 미선택
-         if($startDate!=""&&$endDate==""){
-             $searchDate = array( 'startDate' => $startDate,'endDate' => $endDate);
+         if($cronStartDate!=""&&$cronEndDate==""){
+             $searchDate = array( 'cronStartDate' => $cronStartDate,'cronEndDate' => $cronEndDate);
          }
          //등록일 시작선택, 끝 미선택
-         else if($startDate!=""&&$endDate!=""){
-             $searchDate = array( 'startDate' => $startDate,'endDate' => $endDate);
+         else if($cronStartDate!=""&&$cronEndDate!=""){
+             $searchDate = array( 'cronStartDate' => $cronStartDate,'cronEndDate' => $cronEndDate);
          }
          if($WorkLarge!="all"){
-             $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
+            $usedMedium = $COMMON->jpCommonMediumCode($WorkLarge);
              return view('/monitoring/monitoringView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium','searchDate'));
          }else{
              return view('/monitoring/monitoringView',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','searchDate'));
@@ -73,9 +79,8 @@ class MonitoringController extends Controller
         $searchWord = $request->input('searchWord');
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
-        
+        $cronStartDate = $request->input('cronStartDate');
+        $cronEndDate = $request->input('cronEndDate');
         if($jobStatus==""){
             $jobStatus="20,30,90,40";
         }
@@ -88,17 +93,20 @@ class MonitoringController extends Controller
         if($WorkMedium==""){
             $WorkMedium="all";
         }
-        if($startDate==""){
-            $startDate=null;
+        if($cronStartDate==""){
+            $cronStartDate=null;
         }
-        if($endDate==""){
-            $endDate=null;
+        if($cronEndDate==""){
+            $cronEndDate=null;
         }
          // 사용중인 것만 조회
          #$MonitorContents = DB::select('CALL Monitor_searchList("0/0/0/0", "2", "all", "all", "2020-04-01", "2020-05-11")');
          #$MonitorContents = DB::select('CALL Monitor_searchList(?,?,?,?,?,?)',[$jobStatus,$searchWord,$WorkLarge,$WorkMedium,$startDate,$endDate]);
-         $MonitorContents = DB::select('CALL Monitor_searchList(?, ?, ?, ?, ? ,?)',[$jobStatus,$searchWord,$WorkLarge,$WorkMedium,$startDate,$endDate]);
-         $usedLarge = DB::select('CALL Common_LargeCode()');
+         #$MonitorContents = DB::select('CALL Monitor_searchList(?, ?, ?, ?, ? ,?)',[$jobStatus,$searchWord,$WorkLarge,$WorkMedium,$startDate,$endDate]);
+         $MONITORING = new App\Monitoring;
+         $COMMON = new App\Common;
+         $MonitorContents = $MONITORING->monitoringSearchList($searchWord,$WorkLarge,$WorkMedium,$cronStartDate,$cronEndDate,$jobStatus);
+         $COMMON->commonLargeCode(); 
          $page=$request->input('page');
          if($page==""){
             $page="1";
@@ -123,15 +131,15 @@ class MonitoringController extends Controller
              $searchParams = array( 'searchWord' => $searchWord,'WorkLarge' => $WorkLarge,'WorkMedium' => $WorkMedium);
          }
          //등록일 시작선택, 끝 미선택
-         if($startDate!=""&&$endDate==""){
-             $searchDate = array( 'startDate' => $startDate,'endDate' => $endDate);
+         if($cronStartDate!=""&&$cronEndDate==""){
+             $searchDate = array( 'cronStartDate' => $cronStartDate,'cronEndDate' => $cronEndDate);
          }
          //등록일 시작선택, 끝 미선택
-         else if($startDate!=""&&$endDate!=""){
-             $searchDate = array( 'startDate' => $startDate,'endDate' => $endDate);
+         else if($cronStartDate!=""&&$cronEndDate!=""){
+             $searchDate = array( 'cronStartDate' => $cronStartDate,'cronEndDate' => $cronEndDate);
          }
          if($WorkLarge!="all"){
-             $usedMedium = DB::select('CALL Common_MediumCode(?)',[$WorkLarge]);
+            $usedMedium = $COMMON->jpCommonMediumCode($WorkLarge);
              $returnHTML = view('/monitoring/scheduleList',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','usedMedium','searchDate','jobStatus'))->render();
          }else{
              $returnHTML = view('/monitoring/scheduleList',compact('data','searchWord','searchParams','paginator','WorkLarge','WorkMedium','usedLarge','searchDate','jobStatus'))->render();
