@@ -58,6 +58,23 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
+                  <div class="col-md-6 text-center">
+                    <div class="col-md-12 text-center align-self-center font-weight-bold ">배치 작업 평균 소요시간</div>
+                    <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold ">일 / 시 / 분</div>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center"  value="{{empty($scheduleTotalTime[0]->sc_yesangtime) ? 0:intval($scheduleTotalTime[0]->sc_yesangtime/1440)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" value="{{empty($scheduleTotalTime[0]->sc_yesangtime) ? 0:intval($scheduleTotalTime[0]->sc_yesangtime%1440/60)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center"  value="{{empty($scheduleTotalTime[0]->sc_yesangtime) ? 0:intval($scheduleTotalTime[0]->sc_yesangtime%60)}}" readonly numberOnly>
+                  </div>
+                  <div class="col-md-6 text-center">
+                    <div class="col-md-12 text-center align-self-center font-weight-bold ">배치 작업 최대 소요시간</div>
+                    <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold ">일 / 시 / 분</div>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center"  value="{{empty($scheduleTotalTime[0]->sc_yesangmaxtime) ? 0:intval($scheduleTotalTime[0]->sc_yesangmaxtime/1440)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" value="{{empty($scheduleTotalTime[0]->sc_yesangmaxtime) ? 0:intval($scheduleTotalTime[0]->sc_yesangmaxtime%1440/60)}}" readonly numberOnly>
+                    <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center"  value="{{empty($scheduleTotalTime[0]->sc_yesangmaxtime) ? 0:intval($scheduleTotalTime[0]->sc_yesangmaxtime%60)}}" readonly numberOnly>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
                   <div class="col-md-3 text-center align-self-center font-weight-bold">스케줄 상태</div>
                   <input type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->sc_statusname}}" readonly>
                   @if(isset($jobGusungContents))
@@ -149,7 +166,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                                       @if(isset($data->p_params))
                                           @php
                                           $jobParamSulArr=explode("||",$scheduleDetail[0]->sc_param);
-                                          $Job_Params=explode("||",$data->Job_Params);
+                                          $Job_Params=explode("||",$data->job_params);
                                           $JobGusung_ParamPos=explode("||",$data->jobgusung_parampos);
                                           for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
                                               echo '<div class="d-inline-flex w-50 delYN mb-2">';

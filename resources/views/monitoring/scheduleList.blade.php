@@ -22,8 +22,8 @@
     <thead>
     <tr>
         <th rowspan="2">순서</th>
-        <th rowspan="2">쉘</th>
-        <th rowspan="2">명</th>
+        <th rowspan="2">쉘 명</th>
+        <th rowspan="2">잡 명</th>
         <th rowspan="2">설명</th>
         <th rowspan="2">상태</th>
         <th rowspan="2">시작일</th>
@@ -43,10 +43,6 @@
     </tr>
     </thead>
     <tbody>
-        @php
-        echo var_dump("-------------------------------");   
-         echo var_dump($data);   
-        @endphp
         {{--  조회된 값이 보여주는 위치 --}}
         @if(isset($data))
             @foreach($data as $index => $monitorSc)
@@ -75,8 +71,9 @@
                 <td>{{explode(" ",$monitorSc->sc_note)[0]}}</td>
                 @php
                     if(intVal($monitorSc->status20<=0)) {
+                        //한개라도 실행중이면 재작업 불가
                         if((int)$monitorSc->status90+(int)$monitorSc->status40 !=0){
-                            echo '<td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="monitor.reWorkScheduleChk('.$monitorSc->Sc_Seq.')">재작업</button></td>';
+                            echo '<td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="monitor.reWorkScheduleChk('.$monitorSc->sc_seq.')">재작업</button></td>';
                         } else {
                             echo '<td class="text-center">-</td>';
                         }
@@ -86,11 +83,15 @@
                 @endphp
             </tr>
             @endforeach
-        @endIf 
+       
     </tbody>
 </table>
 {{-- 페이징 이동 경로 --}}
-@if(isset($paginator))
-    {{$paginator->setPath('/monitoring/scheduleList')->appends(request()->except($searchParams))->links()}}
-@endIf
+
+{{-- @if(isset($paginator1)&&(isset($paginator)&&$paginator==null))
+{{$paginator1->setPath('/monitoring/scheduleList')->appends(request()->except($searchParams))->links()}}
+@endIf --}}
+
+
+@endIf 
 

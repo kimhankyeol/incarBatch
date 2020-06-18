@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
+use PDO;
 class JobController extends Controller
 {
     //메인화면
@@ -90,13 +91,14 @@ class JobController extends Controller
         $pdo = DB::connection('oracle')->getPdo();
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':jobSeq',$job_seq);
-        $stmt->bindParam(':v_end',$v_end);
-        $stmt->bindParam(':v_error',$v_error);
-        $stmt->bindParam(':v_yeyak',$v_yeyak);
-        $stmt->bindParam(':v_exec',$v_exec);
-        $stmt->bindParam(':v_wait',$v_wait);
-        $stmt->bindParam(':v_result',$v_result);
+        $stmt->bindParam(':v_end',$v_end,PDO::PARAM_INT);
+        $stmt->bindParam(':v_error',$v_error,PDO::PARAM_INT);
+        $stmt->bindParam(':v_yeyak',$v_yeyak,PDO::PARAM_INT);
+        $stmt->bindParam(':v_exec',$v_exec,PDO::PARAM_INT);
+        $stmt->bindParam(':v_wait',$v_wait,PDO::PARAM_INT);
+        $stmt->bindParam(':v_result',$v_result,PDO::PARAM_INT);
         $stmt->execute();
+       
         if($v_result==1){
             //실행 하고 나면 결과값을 반환 받음
             $jobStatusCheck=array(
@@ -129,6 +131,7 @@ class JobController extends Controller
         $WorkLarge = $request->input('WorkLarge');
         $WorkMedium = $request->input('WorkMedium');
         //잡 상세조회
+        $JOB = new App\Job;
         $jobDetail =$JOB->jobDetail($job_seq);
         $WorkLarge = $jobDetail[0]->job_worklargectg;
         $WorkMedium = $jobDetail[0]->job_workmediumctg;
@@ -147,13 +150,13 @@ class JobController extends Controller
         $v_result=0;
         $pdo = DB::connection('oracle')->getPdo();
         $stmt = $pdo->prepare($query3);
-        $stmt->bindParam(':jobSeq',$job_seq);
-        $stmt->bindParam(':v_end',$v_end);
-        $stmt->bindParam(':v_error',$v_error);
-        $stmt->bindParam(':v_yeyak',$v_yeyak);
-        $stmt->bindParam(':v_exec',$v_exec);
-        $stmt->bindParam(':v_wait',$v_wait);
-        $stmt->bindParam(':v_result',$v_result);
+        $stmt->bindParam(':jobSeq',$job_seq,PDO::PARAM_INT);
+        $stmt->bindParam(':v_end',$v_end,PDO::PARAM_INT);
+        $stmt->bindParam(':v_error',$v_error,PDO::PARAM_INT);
+        $stmt->bindParam(':v_yeyak',$v_yeyak,PDO::PARAM_INT);
+        $stmt->bindParam(':v_exec',$v_exec,PDO::PARAM_INT);
+        $stmt->bindParam(':v_wait',$v_wait,PDO::PARAM_INT);
+        $stmt->bindParam(':v_result',$v_result,PDO::PARAM_INT);
         $stmt->execute();
         if($v_result==1){
             //실행 하고 나면 결과값을 반환 받음
@@ -227,13 +230,13 @@ class JobController extends Controller
         $v_result=0;
         $pdo = DB::connection('oracle')->getPdo();
         $stmt = $pdo->prepare($query1);
-        $stmt->bindParam(':jobSeq',$job_seq);
-        $stmt->bindParam(':v_end',$v_end);
-        $stmt->bindParam(':v_error',$v_error);
-        $stmt->bindParam(':v_yeyak',$v_yeyak);
-        $stmt->bindParam(':v_exec',$v_exec);
-        $stmt->bindParam(':v_wait',$v_wait);
-        $stmt->bindParam(':v_result',$v_result);
+        $stmt->bindParam(':jobSeq',$job_seq,PDO::PARAM_INT);
+        $stmt->bindParam(':v_end',$v_end,PDO::PARAM_INT);
+        $stmt->bindParam(':v_error',$v_error,PDO::PARAM_INT);
+        $stmt->bindParam(':v_yeyak',$v_yeyak,PDO::PARAM_INT);
+        $stmt->bindParam(':v_exec',$v_exec,PDO::PARAM_INT);
+        $stmt->bindParam(':v_wait',$v_wait,PDO::PARAM_INT);
+        $stmt->bindParam(':v_result',$v_result,PDO::PARAM_INT);
         $stmt->execute();
         //v_result 1 프로시저 성공 0 실패
         if($v_result==1){

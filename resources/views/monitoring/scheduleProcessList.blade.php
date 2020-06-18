@@ -37,39 +37,39 @@
         {{--  조회된 값이 보여주는 위치 --}}
         {{-- onclick="popup.processLog('{{$gusungSc->Sc_Seq}}','{{$gusungSc->Job_Seq}}','{{$gusungSc->P_Seq}}')" --}}
         @foreach($processList as $index => $gusungSc )
-          <tr class="OneDbClickCss2" data-Job_Seq="{{$gusungSc->Job_Seq}}" data-Sc_Seq="{{$gusungSc->Sc_Seq}}" data-P_Seq="{{$gusungSc->P_Seq}}"  ondblclick="monitor.processDetail({{$gusungSc->Sc_Seq}},{{$gusungSc->P_Seq}})">
+          <tr class="OneDbClickCss2" data-Job_Seq="{{$gusungSc->job_seq}}" data-Sc_Seq="{{$gusungSc->sc_seq}}" data-P_Seq="{{$gusungSc->p_seq}}"  ondblclick="monitor.processDetail({{$gusungSc->sc_seq}},{{$gusungSc->p_seq}})">
             <td class="text-center">{{$index+1}}</td>
-            <td>{{$gusungSc->P_File}}</td>
-            <td>{{$gusungSc->P_Name}}</td>
-            <td class="text-center">{{$gusungSc->JobSM_P_Status}}</td>
+            <td>{{$gusungSc->p_file}}</td>
+            <td>{{$gusungSc->p_name}}</td>
+            <td class="text-center">{{$gusungSc->jobsm_p_status}}</td>
             <td class="text-center">
-              @if(($gusungSc->Sc_ReworkYN)=='Y')
+              @if(($gusungSc->sc_reworkyn)=='Y')
                 <label class="m-0 font-weight-bold text-primary">가능</label>
               @else
                 <label class="m-0  font-weight-bold text-danger">불가능</label>
               @endif
             </td>
-            <td class="text-center">{{isset($gusungSc->JobSM_P_StartTime)?$gusungSc->JobSM_P_StartTime:""}}</td>
-            <td class="text-center">{{isset($gusungSc->JobSM_P_EndTime)?$gusungSc->JobSM_P_EndTime:""}}</td>
+            <td class="text-center">{{isset($gusungSc->jobsm_p_starttime)?$gusungSc->jobsm_p_starttime:""}}</td>
+            <td class="text-center">{{isset($gusungSc->jobsm_p_endtime)?$gusungSc->jobsm_p_endtime:""}}</td>
             <td>
               @php
-                if(!empty($gusungSc->JobSM_P_StartTime)) {
-                  $maxRunningTime = date("Y-m-d H:i:s", strtotime($gusungSc->JobSM_P_StartTime)+ intval($gusungSc->P_YesangMaxTime*60));
+                if(!empty($gusungSc->jobsm_p_starttime)) {
+                  $maxRunningTime = date("Y-m-d H:i:s", strtotime($gusungSc->jobsm_p_starttime)+ intval($gusungSc->p_yesangmaxtime*60));
                   $nowDateTime = date("Y-m-d H:i:s", time());
 
-                  $r1 = (strtotime($maxRunningTime)-strtotime($gusungSc->JobSM_P_StartTime))/60;
-                  $r2 = (strtotime($nowDateTime)-strtotime($gusungSc->JobSM_P_StartTime))/60;
-                  if($gusungSc->JobSM_P_Status=='오류') {
+                  $r1 = (strtotime($maxRunningTime)-strtotime($gusungSc->jobsm_p_starttime))/60;
+                  $r2 = (strtotime($nowDateTime)-strtotime($gusungSc->jobsm_p_starttime))/60;
+                  if($gusungSc->jobsm_p_status=='오류') {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ERROR</div>';
                     echo '</div>';
                     echo '<p class="p-0 progress-percent text-danger">오류</p>';
-                  } else if (round( $r2 /$r1 *100) > 100 || isset($gusungSc->JobSM_P_EndTime)) {
+                  } else if (round( $r2 /$r1 *100) > 100 || isset($gusungSc->jobsm_p_endime)) {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
                     echo '</div>';
                     echo '<p class="p-0 progress-percent text-primary">100%</p>';
-                  } else if (($maxRunningTime < $nowDateTime && !isset($gusungSc->JobSM_P_EndTime))) {
+                  } else if (($maxRunningTime < $nowDateTime && !isset($gusungSc->jobsm_p_endtime))) {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
                     echo '</div>';
@@ -89,20 +89,20 @@
             </td>
             <td class="overflow-auto">
               @php
-                $paramLength = count(explode('||',$gusungSc->JobGusung_ParamPos));
+                $paramLength = count(explode('||',$gusungSc->jobgusung_parampos));
                 echo '<label class="mx-0 mb-1 row justify-content-center">';
                 for ($i=0; $i < $paramLength; $i++) { 
                   # code...
                   #echo '<p class="form-control form-control-sm d-inline-block col-md-6 overflow-auto border-0 my-0" type="text">파라미터 '.intVal($i+1).' '.explode('||',$gusungSc->Job_ParamSulmyungs)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
-                  echo '<p type="text" class="form-control form-control-sm d-inline-block col-md-8 overflow-auto readonly my-0 readonly">'.explode('||',$gusungSc->Sc_Param)[explode('||',$gusungSc->JobGusung_ParamPos)[$i]].'</p>';
+                  echo '<p type="text" class="form-control form-control-sm d-inline-block col-md-8 overflow-auto readonly my-0 readonly">'.explode('||',$gusungSc->sc_param)[explode('||',$gusungSc->jobgusung_parampos)[$i]].'</p>';
                 }
                 echo '</label>';
               @endphp
             </td>
-            <td class="text-center">{{empty($gusungSc->P_TextInput)==1?"N":"Y"}}</td>
-            <td class="text-center">{{intval($gusungSc->P_YesangTime/1440)==0?"":intval($gusungSc->P_YesangTime/1440)."일"}}{{intval($gusungSc->P_YesangTime%1440/60)==0?"":intval($gusungSc->P_YesangTime%1440/60)."시간"}}{{intval($gusungSc->P_YesangTime%60)==0?"":intval($gusungSc->P_YesangTime%60)."분"}}</td>
-            <td class="text-center">{{intval($gusungSc->P_YesangMaxTime/1440)==0?"":intval($gusungSc->P_YesangMaxTime/1440)."일"}}{{intval($gusungSc->P_YesangMaxTime%1440/60)==0?"":intval($gusungSc->P_YesangMaxTime%1440/60)."시간"}}{{intval($gusungSc->P_YesangMaxTime%60)==0?"":intval($gusungSc->P_YesangMaxTime%60)."분"}}</td>
-            <td class="text-center"><button class="btn btn-sm btn-info"  onclick="monitor.processLog('{{$gusungSc->Sc_Seq}}','{{$gusungSc->Job_Seq}}','{{$gusungSc->P_Seq}}')">로그 보기</button></td>
+            <td class="text-center">{{empty($gusungSc->p_textinput)==1?"N":"Y"}}</td>
+            <td class="text-center">{{intval($gusungSc->p_yesangtime/1440)==0?"":intval($gusungSc->p_yesangtime/1440)."일"}}{{intval($gusungSc->p_yesangtime%1440/60)==0?"":intval($gusungSc->p_yesangtime%1440/60)."시간"}}{{intval($gusungSc->p_yesangtime%60)==0?"":intval($gusungSc->p_yesangtime%60)."분"}}</td>
+            <td class="text-center">{{intval($gusungSc->p_yesangmaxtime/1440)==0?"":intval($gusungSc->p_yesangmaxtime/1440)."일"}}{{intval($gusungSc->p_yesangmaxtime%1440/60)==0?"":intval($gusungSc->p_yesangmaxtime%1440/60)."시간"}}{{intval($gusungSc->p_yesangmaxtime%60)==0?"":intval($gusungSc->p_yesangmaxtime%60)."분"}}</td>
+            <td class="text-center"><button class="btn btn-sm btn-info"  onclick="monitor.processLog('{{$gusungSc->sc_seq}}','{{$gusungSc->job_seq}}','{{$gusungSc->p_seq}}')">로그 보기</button></td>
           </tr>
         @endforeach
       </tbody>

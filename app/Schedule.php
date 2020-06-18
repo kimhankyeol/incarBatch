@@ -121,37 +121,43 @@ class Schedule extends Model
     //스케줄 프로그램 리스트
     public function scheduleProgramList($jobSeq,$scSeq){
         $query1="
-        SELECT 
+ 		SELECT 
             obsp.*,
-            process.P_NAME,
-            process.P_FILE,
-            process.P_PARAMS,
-            process.P_PARAMSULMYUNGS,
-            process.P_REWORKYN,
+            op.P_NAME,
+            op.P_FILE,
+            op.P_PARAMS,
+            op.P_PARAMSULMYUNGS,
+            op.P_REWORKYN,
             objg.JOBGUSUNG_ORDER as p_order,
             objg.JOBGUSUNG_PARAMPOS,
-            process.P_FILEPATH,
+            op.P_FILEPATH,
             job.JOB_PARAMS,
             job.JOB_PARAMSULMYUNGS
         FROM 
             ONLINEBATCH_SCHEDULEPROCESS obsp
-        left join 
+        LEFT JOIN 
             ONLINEBATCH_JOB job on job.JOB_SEQ = obsp.JOB_SEQ
-        INNER JOIN ONLINEBATCH_JOBGUSUNG objg ON
-            obsp.JOB_SEQ = objg.JOB_SEQ
-            AND obsp.P_SEQ = objg.P_SEQ
-        INNER JOIN (
-            select
-                code.FILEPATH as p_filepath,
-                process.*
-            FROM
-                ONLINEBATCH_PROCESS process
-            inner join ONLINEBATCH_WORKMEDIUMCODE code on
-                process.P_WORKLARGECTG = code.WORKLARGE
-                and process.P_WORKLARGECTG = code.WORKMEDIUM) process on
-            process.P_SEQ = objg.P_SEQ
-            WHERE obsp.JOB_SEQ ='".$jobSeq."' AND obsp.SC_SEQ ='".$scSeq."'
-            ORDER BY objg.JOBGUSUNG_ORDER
+        INNER JOIN(
+            SELECT * 
+            FROM ONLINEBATCH_JOBGUSUNG
+            ORDER BY JOBGUSUNG_ORDER 
+        ) objg 
+            ON obsp.JOB_SEQ = objg.JOB_SEQ
+            AND obsp.P_SEQ  = objg.P_SEQ 
+            INNER JOIN (
+                SELECT 
+                    code.FILEPATH  AS P_FILEPATH,
+                    op.* 
+                FROM 
+                    ONLINEBATCH_PROCESS op 
+                INNER JOIN 
+                    ONLINEBATCH_WORKMEDIUMCODE code  
+                ON  op.P_WORKLARGECTG = code.WORKLARGE 
+                AND op.P_WORKMEDIUMCTG =code.WORKMEDIUM 
+            ) op 
+            ON op.P_SEQ =OBJG.P_SEQ  
+        WHERE obsp.JOB_SEQ ='".$jobSeq."' AND obsp.SC_SEQ ='".$scSeq."'
+        ORDER BY objg.JOBGUSUNG_ORDER 
         ";
         $jobGusungContents=DB::select($query1);
         return $jobGusungContents;
@@ -170,18 +176,22 @@ class Schedule extends Model
         $scheduleDetail=DB::select($query1);
         return $scheduleDetail;
     }
-
-
+    //스케줄 토탈 시간
+    public function scheduleTotalTime($jobSeq,$scSeq){
+        $query1="
+        SELECT 
+            obsp.JOB_SEQ AS job_seq , 
+            sum(obp.P_YESANGTIME) AS sc_yesangtime,
+            sum(obp.P_YESANGMAXTIME) AS sc_yesangmaxtime 
+        FROM 
+            ONLINEBATCH_SCHEDULEPROCESS obsp
+        INNER JOIN 
+            ONLINEBATCH_PROCESS obp
+            ON obp.P_SEQ = obsp.P_SEQ
+        WHERE obsp.JOB_SEQ ='".$jobSeq."' AND obsp.SC_SEQ='".$scSeq."'
+        GROUP BY obsp.JOB_SEQ 
+        ";
+        $scheduleTotalTime=DB::select($query1);
+        return $scheduleTotalTime;
+    }
 }
- // SELECT 
-        //     obsc.*,
-        //     obj.*,
-        //     (SELECT owl.SHORTNAME FROM ONLINEBATCH_WORKLARGECODE owl WHERE owl.WORKLARGE = obwmc.WORKLARGE ) as job_worklargename,(SELECT oc.LONGNAME FROM ONLINEBATCH_WORKMEDIUMCODE oc WHERE oc.WORKLARGE =obj.JOB_WORKLARGECTG AND oc.WORKMEDIUM = obj.JOB_WORKMEDIUMCTG) as JOB_WORKMEDIUMNAME 
-        // FROM 
-        //     ONLINEBATCH_SCHEDULE obsc
-        // INNER JOIN 
-        //     ONLINEBATCH_JOB obj ON obj.JOB_SEQ = obsc.JOB_SEQ
-        // INNER JOIN 
-        //     ONLINEBATCH_WORKMEDIUMCODE obwmc ON obj.JOB_WORKLARGECTG = obwmc.WORKLARGE AND obj.JOB_WORKMEDIUMCTG = obwmc.WORKMEDIUM  AND obwmc.USED =1 
-        // INNER JOIN 
-        //     ONLINEBATCH_WORKLARGECODE obwlc ON obwlc.WORKLARGE =obwmc.WORKLARGE AND obwlc.USED =1

@@ -14,6 +14,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <html lang="en">
 @include('common.head')
 <body id="page-top">
+  @php
+   echo var_dump($jobStatusCheck);   
+  @endphp
   <div id="wrapper"  class="bodyBgImg">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}

@@ -60,8 +60,11 @@ const process = {
         if ($('#Pro_YesangMaxTime3').val() == "") {
             $('#Pro_YesangMaxTime3').val(0);
         }
-        var Pro_YesangTime = process.timeCalc($('#Pro_YesangTime1').val(), $('#Pro_YesangTime2').val(), $('#Pro_YesangTime3').val());
-        var Pro_YesangMaxTime = process.timeCalc($('#Pro_YesangMaxTime1').val(), $('#Pro_YesangMaxTime2').val(), $('#Pro_YesangMaxTime3').val());
+    
+        // var Pro_YesangTime = process.timeCalc($('#Pro_YesangTime1').val(), $('#Pro_YesangTime2').val(), $('#Pro_YesangTime3').val());
+        // var Pro_YesangMaxTime = process.timeCalc($('#Pro_YesangMaxTime1').val(), $('#Pro_YesangMaxTime2').val(), $('#Pro_YesangMaxTime3').val());
+        var Pro_YesangTime=parseInt($('#Pro_YesangTime1').val()*1440)+parseInt($('#Pro_YesangTime2').val()*60)+parseInt($('#Pro_YesangTime3').val());
+        var Pro_YesangMaxTime=parseInt($('#Pro_YesangMaxTime1').val()*1440)+parseInt($('#Pro_YesangMaxTime2').val()*60)+parseInt($('#Pro_YesangMaxTime3').val());
         //파라미터 getElementsByName처리하는 부분
         var proParamType = document.getElementsByName("proParamType");
         const proParamSulmyungInput = document.getElementsByName("proParamSulmyungInput");
@@ -172,6 +175,8 @@ const process = {
         if ($('#Pro_YesangMaxTime3').val() == "") {
             $('#Pro_YesangMaxTime3').val(0);
         }
+
+     
         var Pro_YesangTime = process.timeCalc($('#Pro_YesangTime1').val(), $('#Pro_YesangTime2').val(), $('#Pro_YesangTime3').val());
         var Pro_YesangMaxTime = process.timeCalc($('#Pro_YesangMaxTime1').val(), $('#Pro_YesangMaxTime2').val(), $('#Pro_YesangMaxTime3').val());
         //파라미터 getElementsByName처리하는 부분
@@ -300,23 +305,23 @@ const process = {
         }
         return true;
     },
-    timeCalc: function (d, h, m) {
-        if (d == "" && h == "" && m == "") {
-            return 0;
-        } else if (d != "" && h == "" && m == "") {
-            return parseInt(d) * 24 * 60;
-        } else if (d == "" && h != "" && m == "") {
-            return parseInt(h) * 60
-        } else if (d == "" && h == "" && m != "") {
-            return parseInt(m)
-        } else if (d != "" && h != "" && m == "") {
-            return parseInt(d) * 24 * 60 + parseInt(h) * 60;
-        } else if (d == "" && h != "" && m != "") {
-            return parseInt(h) * 60 + parseInt(m);
-        } else if (d != "" && h != "" && m != "") {
-            return parseInt(d) * 24 * 60 + parseInt(h) * 60 + parseInt(m);
-        }
-    },
+    // timeCalc: function (d, h, m) {
+    //     if (d == 0 && h == 0 && m == 0) {
+    //         return 0;
+    //     } else if (d != 0 && h == 0 && m == 0) {
+    //         return parseInt(d) * 24 * 60;
+    //     } else if (d == 0 && h != 0 && m == 0) {
+    //         return parseInt(h) * 60
+    //     } else if (d == 0 && h == 0 && m != 0) {
+    //         return parseInt(m)
+    //     } else if (d != 0 && h != 0 && m == 0) {
+    //         return parseInt(d) * 24 * 60 + parseInt(h) * 60;
+    //     } else if (d == 0 && h != 0 && m != 0) {
+    //         return parseInt(h) * 60 + parseInt(m);
+    //     } else if (d != 0 && h != 0 && m != 0) {
+    //         return parseInt(d) * 24 * 60 + parseInt(h) * 60 + parseInt(m);
+    //     }
+    // },
     //수정
     edit: function () {
         var p_seq = document.getElementById("P_Seq").value;

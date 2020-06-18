@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
+use PDO;
 // use Monolog\Handler\PHPConsoleHandler;
 
 class PopupController extends Controller
@@ -69,16 +70,16 @@ class PopupController extends Controller
        $v_wait=0;
        // 성공 1 , 실패 0 
        $v_result=0;
-       $pdo = DB::connection('oracle')->getPdo();
-       $stmt = $pdo->prepare($query);
-       $stmt->bindParam(':jobSeq',$job_seq);
-       $stmt->bindParam(':v_end',$v_end);
-       $stmt->bindParam(':v_error',$v_error);
-       $stmt->bindParam(':v_yeyak',$v_yeyak);
-       $stmt->bindParam(':v_exec',$v_exec);
-       $stmt->bindParam(':v_wait',$v_wait);
-       $stmt->bindParam(':v_result',$v_result);
-       $stmt->execute();
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':jobSeq',$job_seq);
+        $stmt->bindParam(':v_end',$v_end,PDO::PARAM_INT);
+        $stmt->bindParam(':v_error',$v_error,PDO::PARAM_INT);
+        $stmt->bindParam(':v_yeyak',$v_yeyak,PDO::PARAM_INT);
+        $stmt->bindParam(':v_exec',$v_exec,PDO::PARAM_INT);
+        $stmt->bindParam(':v_wait',$v_wait,PDO::PARAM_INT);
+        $stmt->bindParam(':v_result',$v_result,PDO::PARAM_INT);
+        $stmt->execute();
        if($v_result==1){
            //잡상태에 따른 분기 처리
            if($v_exec==0&&$v_yeyak==0&&$v_error==0&&$v_end==0){
@@ -209,13 +210,13 @@ class PopupController extends Controller
         $jobGusungContents = $SCHEDULE->scheduleProgramList($job_seq,$sc_seq);
         //잡 상세정보 
         $jobDetail=$JOB->jobDetail($job_seq);
-        //스케줄러 상세정보
+        //스케줄러 상세정보pu
         $scheduleDetail=$SCHEDULE->scheduleDetail($job_seq,$sc_seq);
 
         $WorkLarge = $jobDetail[0]->job_worklargectg;
         $WorkMedium = $jobDetail[0]->job_workmediumctg;
-        $jobTotalTime=$JOB->jobTotalTime($job_seq);
-        return view('popup.scheduleDetailPopup',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
+        $scheduleTotalTime=$SCHEDULE->scheduleTotalTime($job_seq,$sc_seq);
+        return view('popup.scheduleDetailPopup',compact('jobDetail','jobGusungContents','scheduleDetail','$scheduleTotalTime','WorkLarge','WorkMedium'));
     }
     ////////////////////////////kimh
     // 모니터링 - 잡 스케줄 프로세스 상세 팝업
@@ -223,7 +224,8 @@ class PopupController extends Controller
         $Sc_Seq = $request->input('Sc_Seq');
         $p_seq = $request->input('P_Seq');
         //프로시저를 통한 프로세스 상세정보 검색
-        $processDetail=DB::select('CALL Monitor_processDetail(?,?)',[$Sc_Seq,$p_seq]);
+        $MONITORING = new App\Monitoring;
+        $processDetail = $MONITORING->monitorProcessDetail($Sc_Seq,$p_seq);
         return view('popup.processDetailPopup',compact('processDetail'));
     }
     // 모니터링 - 잡 스케줄 프로세스 재작업 변경

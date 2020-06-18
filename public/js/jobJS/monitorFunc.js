@@ -22,25 +22,35 @@ const monitor = {
         jobStatusStr += '0,';
       }
     }
+    jobStatusStr=jobStatusStr.substring(0,jobStatusStr.length-1);
+
     if (searchWord == '' || searchWord == undefined) {
       searchWord = "searchWordNot";
     }
-    $.ajax({
-      url: "/monitoring/scheduleList",
-      method: "get",
-      data: {
-        'jobStatus': jobStatusStr.substr(0, jobStatusStr.length - 1),
-        'searchWord': searchWord,
-        'WorkLarge': WorkLarge,
-        'WorkMedium': WorkMedium,
-        'cronStartDate': cronStartDate,
-        'cronEndDate': cronEndDate,
-        'page': page
-      },
-      success: function (resp) {
-        $('#scheduleList').html(resp.returnHTML)
-      }
-    })
+    if (WorkLarge == '' || WorkLarge == undefined) {
+      WorkLarge = "all";
+    }
+    if (WorkMedium == '' || WorkMedium == undefined) {
+      WorkMedium = "all";
+    }
+
+    location.href="/monitoring/monitoringView?searchWord="+searchWord+"&WorkLarge="+WorkLarge+"&WorkMedium="+WorkMedium+"&cronStartDate="+cronStartDate+"&cronEndDate="+cronEndDate+"&jobStatusStr="+jobStatusStr+"&page="+page
+    // $.ajax({
+    //   url: "/monitoring/scheduleList",
+    //   method: "get",
+    //   data: {
+    //     'jobStatus': jobStatusStr.substr(0, jobStatusStr.length - 1),
+    //     'searchWord': searchWord,
+    //     'WorkLarge': WorkLarge,
+    //     'WorkMedium': WorkMedium,
+    //     'cronStartDate': cronStartDate,
+    //     'cronEndDate': cronEndDate,
+    //     'page': page
+    //   },
+    //   success: function (resp) {
+    //     $('#scheduleList').html(resp.returnHTML)
+    //   }
+    // })
   },
   detailList: function (Job_Seq, page) {
     var noneTable = document.getElementById("scheduleProcessList");

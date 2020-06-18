@@ -49,16 +49,16 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     })
   }
   $(document).ready( function() {
-    var now = new Date();
-    var month = (now.getMonth() + 1);               
-    var day = now.getDate();
-    if (month < 10) 
-        month = "0" + month;
-    if (day < 10) 
-        day = "0" + day;
-    var today = now.getFullYear() + '-' + month + '-' + day;
-    $('#cronStartDate').val(today);
-    $('#cronEndDate').val(today);
+    // var now = new Date();
+    // var month = (now.getMonth() + 1);               
+    // var day = now.getDate();
+    // if (month < 10) 
+    //     month = "0" + month;
+    // if (day < 10) 
+    //     day = "0" + day;
+    // var today = now.getFullYear() + '-' + month + '-' + day;
+    // $('#cronStartDate').val(today);
+    // $('#cronEndDate').val(today);
     var dbclick=false;
     // 모니터 리스트
     $(document).on('click','.OneDbClickCss1',function(event){
@@ -80,25 +80,25 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
       }
     })
     // 페이징
-    $(document).on('click', '.pagination .page-link', function (event) {
-      event.preventDefault();
-      var href = $(this).attr('href').split('?')[0];
-      var href_param = $(this).attr('href').split('?')[1];
-      var searchPage = href_param.split('page=')[1];
+    // $(document).on('click', '.pagination .page-link', function (event) {
+    //   event.preventDefault();
+    //   var href = $(this).attr('href').split('?')[0];
+    //   var href_param = $(this).attr('href').split('?')[1];
+    //   var searchPage = href_param.split('page=')[1];
       
-      var scheduleProcessList = document.getElementById("scheduleProcessListTable");
-      scheduleProcessList.style.display = "none";
-      $.ajax({
-        url: href,
-        method: "get",
-        data: {
-          "page": searchPage
-        },
-        success: function (resp) {
-          $('#scheduleListTable').html(resp.returnHTML)
-        }
-      })
-    });
+    //   var scheduleProcessList = document.getElementById("scheduleProcessListTable");
+    //   scheduleProcessList.style.display = "none";
+    //   $.ajax({
+    //     url: href,
+    //     method: "get",
+    //     data: {
+    //       "page": searchPage
+    //     },
+    //     success: function (resp) {
+    //       $('#scheduleListTable').html(resp.returnHTML)
+    //     }
+    //   })
+    // });
     $( document ).ajaxComplete(function( event, request, settings ) {
       colResiz();
     });
@@ -129,44 +129,44 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     })
   });
 </script>
-<body id="page-top">
+<body id="page-top" class="bodyBgImg">
   <div id="wrapper">
     @include('common.sidebar')
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column" style="width: 100%;overflow-x: hidden">
       <div id="content">
         <div class="container-fluid">
-          <h3 class="my-4 font-weight-bold text-primary">모니터링</h3>
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">모니터링</h4>
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <div class="form-inline navbar-search justify-content-end">
                 <div class="input-group align-items-center mb-2 w-100">
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_start" type="checkbox" class="custom-control-input jobStatus" value="20" checked="true">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_start">실행중</label>
+                    <input id="status_start" type="checkbox" class="custom-control-input jobStatus"  @if(explode(",",$jobStatus)[0]=="20") value="20" checked="true"@else value="20"  @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_start">실행중</label>
                   </div>
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_reservation" type="checkbox" class="custom-control-input jobStatus" value="30" checked="true">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_reservation">예약</label>
+                    <input id="status_reservation" type="checkbox" class="custom-control-input jobStatus"  @if(explode(",",$jobStatus)[1]=="30") value="30" checked="true"@else value="30"  @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_reservation">예약</label>
                   </div>
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_end" type="checkbox" class="custom-control-input jobStatus" value="90" checked="true">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_end">완료</label>
+                    <input id="status_end" type="checkbox" class="custom-control-input jobStatus" @if(explode(",",$jobStatus)[2]=="90") value="90" checked="true"@else value="90"  @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_end">완료</label>
                   </div>
                   <div class="mx-1 custom-control custom-checkbox small">
-                    <input id="status_error" type="checkbox" class="custom-control-input jobStatus" value="40" checked="true">
-                    <label class="custom-control-label font-weight-bold text-primary" for="status_error">오류</label>
+                    <input id="status_error" type="checkbox" class="custom-control-input jobStatus" @if(explode(",",$jobStatus)[3]=="40") value="40" checked="true" @else value="40" @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_error">오류</label>
                   </div>
                 </div>
                 <div class="input-group align-items-center">
                    {{-- 업무 구분 대분류 중분류 선택 --}}
-                  <div class="text-center align-self-center font-weight-bold text-primary mx-2">업무 구분</div>
+                  <div class="text-center align-self-center font-weight-bold mx-2">업무 구분</div>
                   @include("code.codeSelect")
                   <div class="input-group align-items-center">
-                    <div class="text-center align-self-center font-weight-bold text-primary mx-2">실행일</div>
+                    <div class="text-center align-self-center font-weight-bold mx-2">실행일</div>
                      {{-- 검색 조건 --}}
-                     <input type="date" class="form-control form-control-sm" id="cronStartDate">
+                    <input type="date" class="form-control form-control-sm" id="cronStartDate" value="{{$cronStartDate}}">
                      <span class="form-control-sm"> ~ </span>
-                     <input type="date" class="form-control form-control-sm" id="cronEndDate">
+                     <input type="date" class="form-control form-control-sm" id="cronEndDate" value="{{$cronEndDate}}">
                   </div>
                    {{-- 검색 조건 --}}
                   <select class="form-control form-control-sm">
@@ -185,8 +185,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     @endif
                   @endif
                   <div class="input-group-append ">
-                    <button type="button" class="btn btn-sm btn-primary" onclick="monitor.search('1')">
-                      <i class="fas fa-search fa-sm"></i>
+                    <button type="button" class="btn btn-sm btn_orange" onclick="monitor.search('1')">
+                      <i class="fas fa-search fa-sm" style="color:white"></i>
                     </button>
                   </div>
                 </div>
@@ -195,10 +195,13 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
             <div class="card-body py-3">
               <div id="scheduleListTable" class="table-responsive overflow-x-scroll" style="height: calc((1vh) * 50);">
                 @include('monitoring.scheduleList')
+                @if(isset($paginator))
+                  {{$paginator->setPath('/monitoring/monitoringView')->appends(request()->except($searchParams))->links()}}
+                @endIf
               </div>
               <div id="reloadBtn" class="custom-control custom-checkbox mt-4 mb-2" style="display:none;" >
                 <input type="checkbox" class="custom-control-input" id="customCheck">
-                <label class="custom-control-label font-weight-bold text-primary" for="customCheck">30초 마다 자동 새로고침</label>
+                <label class="custom-control-label font-weight-bold" for="customCheck">30초 마다 자동 새로고침</label>
               </div>
               <div id="scheduleProcessListTable" class="table-responsive overflow-x-scroll">
                 @include('monitoring.scheduleProcessList')

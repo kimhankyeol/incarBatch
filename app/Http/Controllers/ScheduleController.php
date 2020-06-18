@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
 use DateTime;
+use PDO;
 
 class scheduleController extends Controller
 {
@@ -101,7 +102,7 @@ class scheduleController extends Controller
 
         //스케줄 등록 프로시저 
         //첫 등록시에는 SCREGDATE,SCNOTE, 를 넣을 필요없음 재작업돌릴시  SCHEDULEINSERT 프로시저 다시 돌아가는데 그때 넣어줘야됨
-        $query="begin SCHEDULEINSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE,:V_RESULT); end;";
+        $query="begin SCHEDULE_INSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE,:V_RESULT); end;";
     //
         // 성공 1 , 실패 0 
         // $v_errmsg="";
@@ -128,7 +129,7 @@ class scheduleController extends Controller
         $stmt->bindParam(':SCLOGFILEARR',$Log_File);
         $stmt->bindParam(':SCREWORKARR',$Sc_ReworkYN);
         $stmt->bindParam(':SCREGDATE',$Sc_Regdate);
-        $stmt->bindParam(':V_RESULT',$v_result);
+        $stmt->bindParam(':V_RESULT',$v_result,PDO::PARAM_INT);
         // $stmt->bindParam(':V_ERRMSG',$v_errmsg);
         $stmt->execute();
  
@@ -180,8 +181,9 @@ class scheduleController extends Controller
 
         $WorkLarge = $jobDetail[0]->job_worklargectg;
         $WorkMedium = $jobDetail[0]->job_workmediumctg;
-        $jobTotalTime = $JOB->jobTotalTime($job_seq);
-        return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','jobTotalTime','WorkLarge','WorkMedium'));
+        //스케줄 토탈타임
+        $scheduleTotalTime = $SCHEDULE->scheduleTotalTime($job_seq,$sc_seq);
+        return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','scheduleTotalTime','WorkLarge','WorkMedium'));
     }
     public function scheduleDump(Request $request){
         $Sc_UpdIP = $_SERVER["REMOTE_ADDR"];

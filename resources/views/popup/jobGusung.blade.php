@@ -4,7 +4,7 @@
 {{-- js 라이브러리  --}}
 @include('popup.popupCommon.popupJs')
 <script type="text/javascript" src="/js/colResizable-1.6.js"></script>
-<body class="bg-gradient-primary">
+<body class="bodyPopupBg">
   <div id="content" class="gusung-popup">
     <div class="container-fluid">
       <h4 class="p-2 flex-grow-1 font-weight-bold text-white">잡-프로그램 구성</h4>
@@ -145,7 +145,7 @@
         </div>
       </div>
     </div>
-  </div>
+   </div>
   </div>
   {{-- 구성 추가 --}}
     <script>
