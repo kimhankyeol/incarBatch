@@ -91,10 +91,10 @@ const code = {
                             return false;
                         }else if(data.msg=="success"){
                             alert('코드가 등록되었습니다.');
-                            location.href ="/admin/commonCodeLargeManageView"
+                            location.href ="/admin/commonCodeLargeManageView?page=1"
                         }else if(data.msg=="failed"){
                             alert('코드 등록이 실패되었습니다.');
-                            location.href ="/admin/commonCodeLargeManageView"
+                            location.href ="/admin/commonCodeLargeManageView?page=1"
                         }
                     },
                     error:function(error){
@@ -168,10 +168,10 @@ const code = {
                             return false;
                         }else if(data.msg=="success"){
                             alert('코드가 등록되었습니다.');
-                            location.href ="/admin/commonCodeMediumManageView"
+                            location.href ="/admin/commonCodeMediumManageView?page=1"
                         }else if(data.msg=="failed"){
                             alert('코드 등록이 실패되었습니다.');
-                            location.href ="/admin/commonCodeMediumManageView"
+                            location.href ="/admin/commonCodeMediumManageView?page=1"
                         }else if(data.msg=="folderExist"){
                             alert('이미 폴더경로를 사용중인 코드가 있습니다.');
                             return false;
@@ -236,10 +236,10 @@ const code = {
                     success:function(data){
                         if(data.msg=="success"){
                             alert('중분류 코드를 수정하였습니다.');
-                            location.href="/admin/commonCodeMediumManageView";
+                            location.href="/admin/commonCodeMediumManageView?page=1";
                         }else{
                             alert('코드 수정에 실패했습니다.');
-                             location.href="/admin/commonCodeMediumManageView";
+                             location.href="/admin/commonCodeMediumManageView?page=1";
                         }
                     },
                     error:function(error){
@@ -424,10 +424,10 @@ const code = {
                     success:function(data){
                         if(data.msg=="success"){
                             alert('대분류 코드를 수정하였습니다.');
-                            location.href="/admin/commonCodeLargeManageView";
+                            location.href="/admin/commonCodeLargeManageView?page=1";
                         }else{
                             alert('코드 수정에 실패했습니다.');
-                             location.href="/admin/commonCodeLargeManageView";
+                             location.href="/admin/commonCodeLargeManageView?page=1";
                         }
                     },
                     error:function(error){

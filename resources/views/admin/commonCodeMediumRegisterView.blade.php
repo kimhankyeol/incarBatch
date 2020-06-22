@@ -50,8 +50,8 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                   <div class="col-md-2 text-center align-self-center font-weight-bold">중분류 코드 번호</div>
                   <input type="text" id="WorkMedium"  class="col-md-3 form-control form-control-sm align-self-center" placeholder="예)01">     
                   <div class="input-group-append col-md-2">
-                    <div class="btn btn-primary" onclick="code.commonCodeExist()">
-                      <i class="fas fa-search fa-sm"></i>
+                    <div class="btn btn_orange" onclick="code.commonCodeExist()">
+                      <i class="fas fa-search fa-sm" style="color:white"></i>
                     </div>
                   </div>
                 </div>
