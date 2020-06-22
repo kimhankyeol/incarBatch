@@ -159,10 +159,16 @@ const monitor = {
         "Job_Seq": jobSeq,
         "Sc_Seq": scSeq,
         "RegDate": regDate,
-        "Sc_Note": Sc_Note
+        "Sc_Note": Sc_Note,
+        "Sc_UpdId": '1611698',
       },
       success: function (resp) {
-        location.href = "/monitoring/monitoringView";
+        if(resp.msg=="success"){
+          location.href = "/monitoring/monitoringView?page=1";
+        }else{
+          alert('재작업시 에러 발생하였습니다. \n 에러 발생 원인 :  '+data.msg2);
+          location.href = "/monitoring/monitoringView?page=1";
+        }
       }
     })
   },

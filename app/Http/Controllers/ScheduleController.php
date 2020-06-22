@@ -102,10 +102,10 @@ class scheduleController extends Controller
 
         //스케줄 등록 프로시저 
         //첫 등록시에는 SCREGDATE,SCNOTE, 를 넣을 필요없음 재작업돌릴시  SCHEDULEINSERT 프로시저 다시 돌아가는데 그때 넣어줘야됨
-        $query="begin SCHEDULE_INSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE,:V_RESULT); end;";
+        $query="begin SCHEDULE_INSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE,:V_RESULT,:V_ERRMSG); end;";
     //
         // 성공 1 , 실패 0 
-        // $v_errmsg="";
+        $v_errmsg="";
         $v_result=0;
         $pdo = DB::connection('oracle')->getPdo();
         $stmt = $pdo->prepare($query);
@@ -130,7 +130,7 @@ class scheduleController extends Controller
         $stmt->bindParam(':SCREWORKARR',$Sc_ReworkYN);
         $stmt->bindParam(':SCREGDATE',$Sc_Regdate);
         $stmt->bindParam(':V_RESULT',$v_result,PDO::PARAM_INT);
-        // $stmt->bindParam(':V_ERRMSG',$v_errmsg);
+        $stmt->bindParam(':V_ERRMSG',$v_errmsg,PDO::PARAM_STR,2000);
         $stmt->execute();
  
         if($v_result==1){
@@ -138,7 +138,7 @@ class scheduleController extends Controller
             return response()->json(array('msg'=>'success'));
         }else{
             //실패
-            return response()->json(array('msg'=>'failed'));
+            return response()->json(array('msg'=>'failed','msg2'=>$v_errmsg));
         }
     }
         

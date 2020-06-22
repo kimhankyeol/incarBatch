@@ -14,31 +14,29 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <html lang="en">
 @include('common.head')
 <body id="page-top">
-  <div id="wrapper">
+  <div id="wrapper" class="bodyBgImg" >
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column" style="width:100%">
       <!-- Main Content -->
       <div id="content">
         <!-- End of Topbar -->
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">대분류 코드 상세</h4>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h5 class="m-0 font-weight-bold text-primary">코드 정보 상세</h5>
-            </div>
             <div class="card-body">
                 <hr>
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">대분류 코드</div>
-                  <input type="text" id="WorkLarge"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->WorkLarge}}" readonly>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">사용 여부</div>
-                  @if($commonCodeDetail[0]->Used=="1")
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">대분류 코드</div>
+                  <input type="text" id="WorkLarge"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->worklarge}}" readonly>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">사용 여부</div>
+                  @if($commonCodeDetail[0]->used=="1")
                   <input  id="Used" type="text"  class="col-md-3 form-control form-control-sm align-self-center" value="사용" readonly>
                   @else
                   <input  id="Used" type="text"  class="col-md-3 form-control form-control-sm align-self-center" value="미사용" readonly>
@@ -47,25 +45,24 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
                 
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">코드 명</div>
-                  <input type="text" id="CodeShortName"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->ShortName}}" readonly >
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">코드 전체명</div>
-                  <input type="text" id="CodeLongName"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->LongName}}" readonly>     
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">코드 명</div>
+                  <input type="text" id="CodeShortName"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->shortname}}" readonly >
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">코드 전체명</div>
+                  <input type="text" id="CodeLongName"  class="col-md-3 form-control form-control-sm align-self-center" value="{{$commonCodeDetail[0]->longname}}" readonly>     
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
-                  <textarea type="text" id="CodeSulmyung" class="col-md-10 form-control form-control-sm" style="resize: none;" readonly>{{$commonCodeDetail[0]->Sulmyung}}</textarea>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">설명</div>
+                  <textarea type="text" id="CodeSulmyung" class="col-md-10 form-control form-control-sm" style="resize: none;" readonly>{{$commonCodeDetail[0]->sulmyung}}</textarea>
                 </div>
                 <hr>
               <div class="row justify-content-end">
-                <button type="button" class="mt-3 mr-2 btn btn-success" onclick="pageMove.admin.commonCodeLargeUpdateView('{{$commonCodeDetail[0]->WorkLarge}}')">수정</button>
+                <button type="button" class="mt-3 mr-2 btn btn-success" onclick="pageMove.admin.commonCodeLargeUpdateView('{{$commonCodeDetail[0]->worklarge}}')">수정</button>
                 <button type="button" class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</b>
               </div>
           </div>
         </div>
       </div>
-    @include('common.footer')
     </div>
   </div>
 </body>

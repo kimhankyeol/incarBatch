@@ -13,28 +13,24 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
-<body id="page-top">
+<body id="page-top" class="bodyBgImg">
   <div id="wrapper">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column" style="width:100%">
       <!-- Main Content -->
       <div id="content">
         <!-- End of Topbar -->
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          <!-- Page Heading -->
-          <!-- DataTales Example -->
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">중분류 코드 정보 등록</h4>
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h5 class="m-0 font-weight-bold text-primary">중분류 코드 정보 등록</h5>
-            </div>
             <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">대분류</div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">대분류</div>
                   <select id="WorkLarge" onchange="code.workMediumInfo()" class="col-md-3 form-control form-control-sm align-self-center">
                     @php
                     $i = 0;
@@ -42,16 +38,16 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                     @endphp
                     @foreach ($workLargeCtgData as $code)
                     @if ($i == 0) {
-                        <option value="{{$code->WorkLarge}}" selected>{{$code->ShortName}}</option>  
+                        <option value="{{$code->worklarge}}" selected>{{$code->shortname}}</option>  
                     @else
-                        <option value="{{$code->WorkLarge}}">{{$code->ShortName}}</option>  
+                        <option value="{{$code->worklarge}}">{{$code->shortname}}</option>  
                     @endIf
                     @php
                         $i++;
                     @endphp
                     @endforeach
                   </select>
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">중분류 코드 번호</div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">중분류 코드 번호</div>
                   <input type="text" id="WorkMedium"  class="col-md-3 form-control form-control-sm align-self-center" placeholder="예)01">     
                   <div class="input-group-append col-md-2">
                     <div class="btn btn-primary" onclick="code.commonCodeExist()">
@@ -61,11 +57,11 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-1 text-center align-self-center font-weight-bold text-primary">코드명 </div>
+                  <div class="col-md-1 text-center align-self-center font-weight-bold">코드명 </div>
                   <input type="text" id="CodeShortName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="pc" >
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">코드 전체명</div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">코드 전체명</div>
                   <input type="text" id="CodeLongName"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="전체 pc">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">사용 여부</div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">사용 여부</div>
                   <select  id="Used"  class="col-md-3 form-control form-control-sm align-self-center">
                     <option value="1" selected>사용</option>
                     <option value="0" >미사용</option>
@@ -73,9 +69,9 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 </div>
                 <hr>
                 <div class="row">
-                  <div id="FilePathDiv" class="col-md-2 text-center align-self-center font-weight-bold text-primary">경로</div>
+                  <div id="FilePathDiv" class="col-md-2 text-center align-self-center font-weight-bold">경로</div>
                   <input type="text" id="FilePath"  class="col-md-2 form-control form-control-sm align-self-center" placeholder="/incar/incarproject">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">설명</div>
                   <textarea type="text" id="CodeSulmyung" class="col-md-6 form-control form-control-sm" placeholder="코드 설명" style="resize: none;"></textarea>
                 </div>
                 <hr>
@@ -104,7 +100,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           </div>
         </div>
       </div>
-    @include('common.footer')
     </div>
   </div>
   <script>

@@ -14,35 +14,31 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
 <html lang="en">
 @include('common.head')
 <body id="page-top">
-  <div id="wrapper">
+  <div id="wrapper" class="bodyBgImg">
     {{-- 블레이드 주석 쓰는 법--}}
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
         <!-- End of Topbar -->
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          <!-- Page Heading -->
-          <!-- DataTales Example -->
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">대분류 코드 등록</h4>
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h5 class="m-0 font-weight-bold text-primary">코드 정보 상세</h5>
-            </div>
             <div class="card-body">
                 <hr>
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">대분류 코드</div>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">대분류 코드</div>
                   <input type="text" id="WorkLarge"  class="col-md-1 form-control form-control-sm align-self-center" value="" >
                   <div class="input-group-append col-md-2">
-                    <div class="btn btn-primary" onclick="code.commonCodeLargeExist()">
-                      <i class="fas fa-search fa-sm"></i>
+                    <div class="btn btn_orange" onclick="code.commonCodeLargeExist()">
+                      <i class="fas fa-search fa-sm" style="color:white"></i>
                     </div>
                   </div>
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">사용 여부</div>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">사용 여부</div>
                   <select  id="Used"  class="col-md-3 form-control form-control-sm align-self-center">
                     <option value="1" selected>사용</option>
                     <option value="0" >미사용</option>
@@ -51,14 +47,14 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
                 
                 <div class="row">
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">코드 명</div>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">코드 명</div>
                   <input type="text" id="CodeShortName"  class="col-md-3 form-control form-control-sm align-self-center" value="" >
-                  <div class="col-md-3 text-center align-self-center font-weight-bold text-primary">코드 전체명</div>
+                  <div class="col-md-3 text-center align-self-center font-weight-bold">코드 전체명</div>
                   <input type="text" id="CodeLongName"  class="col-md-3 form-control form-control-sm align-self-center" value="">     
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">설명</div>
+                  <div class="col-md-2 text-center align-self-center font-weight-bold">설명</div>
                   <textarea type="text" id="CodeSulmyung" class="col-md-10 form-control form-control-sm" style="resize: none;" ></textarea>
                 </div>
                 <hr>
@@ -85,7 +81,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
           </div>
         </div>
       </div>
-    @include('common.footer')
     </div>
   </div>
   <script>

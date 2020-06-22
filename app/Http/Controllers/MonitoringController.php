@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App;
+use PDO;
 use DateTime;
 class MonitoringController extends Controller
 {
@@ -180,6 +181,8 @@ class MonitoringController extends Controller
         $Sc_Seq = $request->input('Sc_Seq');
         $RegDate = $request->input('RegDate');
         $Sc_Note = $request->input('Sc_Note');
+        $Sc_UpdId = $request->input('Sc_UpdId');
+        $Sc_UpdIp = $_SERVER["REMOTE_ADDR"];
         // 수정자 id $Sc_UpdId
         // 수정자 ip $Sc_UpdIP
 
@@ -187,48 +190,30 @@ class MonitoringController extends Controller
         // scLogFileArr
         // scReworkArr
         // jobSmPStatus
-        $pSeqArr = "";
-        $scLogFileArr = "";
-        $scReworkArr = "";
-        $count = 0;
-        $delResult = DB::select('CALL Monitor_reWork(?, ?, ?)',[$Job_Seq,$Sc_Seq,$RegDate]);
-        foreach ($delResult as $index => $result) {
-            if(isset($result->P_Seq)){
-                $pSeqArr .= $result->P_Seq.'||';
-            }
-            if(isset($result->Sc_LogFile)){
-                $scLogFileArr .= preg_replace("!/home/script/log/(.*?)/!is","",$result->Sc_LogFile).'||';
-            }
-            if(isset($result->P_ReworkYN)){
-                $scReworkArr .= $result->P_ReworkYN.'||';
-            }
+        $query="begin SCHEDULE_REWORK(:REWORKSCSEQ,:REWORKSCREGDATE,:REWORKJOBSEQ,:SCUPDID,:SCUPDIP,:SCNOTE,:V_RESULT); end;";
+    //
+        // 성공 1 , 실패 0 
+        $v_errmsg="";
+        $v_result=0;
+        $pdo = DB::connection('oracle')->getPdo();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':REWORKSCSEQ',$Sc_Seq);
+        $stmt->bindParam(':REWORKSCREGDATE',$RegDate);
+        $stmt->bindParam(':REWORKJOBSEQ',$Job_Seq);
+        $stmt->bindParam(':SCUPDID',$Sc_UpdId);
+        $stmt->bindParam(':SCUPDIP',$Sc_UpdIp);
+        $stmt->bindParam(':SCNOTE',$Sc_Note);
+        $stmt->bindParam(':V_RESULT',$v_result,PDO::PARAM_INT);
+        $stmt->bindParam(':V_ERRMSG',$v_errmsg,PDO::PARAM_STR,2000);
+        $stmt->execute();
+ 
+        if($v_result==1){
+            //성공 
+            return response()->json(array('msg'=>'success'));
+        }else{
+            //실패
+            return response()->json(array('msg'=>'failed','msg2'=>$v_errmsg));
         }
-        $pSeqArr = substr($pSeqArr,0,-2);
-        $scLogFileArr = substr($scLogFileArr,0,-2);
-        $scReworkArr = substr($scReworkArr,0,-2);
-        $insResult = DB::insert('CALL Schedule_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[
-            $delResult[0]->Sc_Crontab, 
-            $delResult[0]->Job_Seq, 
-            $delResult[0]->Sc_Sulmyung, 
-            $delResult[0]->Sc_RegId, 
-            $delResult[0]->Sc_RegIP, 
-            date("Y-m-d H:i:s"),
-            $delResult[0]->Sc_CronEndTime, 
-            $delResult[0]->Sc_CronSulmyung, 
-            ('30'.$delResult[0]->Sc_Crontab),
-            $delResult[0]->Sc_Param, 
-            $delResult[0]->Sc_Bungi1, 
-            $delResult[0]->Sc_Bungi2, 
-            $delResult[0]->Sc_Bungi3,
-            '이지흠', // Update ID
-            '111.111.111.111', // Update IP
-            $Sc_Note,
-            $pSeqArr,
-            $scLogFileArr,
-            $scReworkArr,
-            $delResult[0]->Sc_RegDate
-        ]);
-        return response()->json(array('pSeqArr'=>$pSeqArr,'scLogFileArr'=>$scLogFileArr,'scReworkArr'=>$scReworkArr,'count'=>$count,'$delResult'=>$delResult,200));
     }
 
 }

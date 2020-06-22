@@ -576,8 +576,8 @@ const job = {
                   alert("등록되었습니다.");
                   location.href = "/schedule/scheduleListView?page=1";
                 }else{
-                  // alert('스케줄 등록시 에러 발생하였습니다. \n 에러 발생 원인 : 프로시저 ');
-                  alert('스케줄 등록시 에러 발생하였습니다.');
+                  alert('스케줄 등록시 에러 발생하였습니다. \n 에러 발생 원인 :  '+data.msg2);
+                  //alert('스케줄 등록시 에러 발생하였습니다.');
                   return false;
                 }
             },error:function(error){
