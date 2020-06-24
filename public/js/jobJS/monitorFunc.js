@@ -108,6 +108,7 @@ const monitor = {
   reWorkScheduleChk: function (Sc_Seq) {
     const Job_Seq = event.target.parentElement.parentElement.getAttribute("data-job_seq");
     const RegDate = event.target.parentElement.parentElement.getAttribute("data-regdate");
+    const Sc_version = event.target.parentElement.parentElement.getAttribute("data-Sc_Version");
     document.getElementById("Sc_Note").value = "";
     $.ajax({
       url: "/monitoring/reWorkScheduleChk",
@@ -140,6 +141,7 @@ const monitor = {
             document.getElementById("jobSeq").value = Job_Seq;
             document.getElementById("scSeq").value = Sc_Seq;
             document.getElementById("regDate").value = RegDate;
+            document.getElementById("scVersion").value = Sc_version;
           }
         }
       }
@@ -151,6 +153,7 @@ const monitor = {
     const scSeq = document.getElementById("scSeq").value;
     const regDate = document.getElementById("regDate").value;
     const Sc_Note = document.getElementById("Sc_Note").value;
+    const Sc_Version = document.getElementById("scVersion").value;
     $.ajax({
       headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
       url: "/monitoring/reWorkSchedule",
@@ -160,6 +163,7 @@ const monitor = {
         "Sc_Seq": scSeq,
         "RegDate": regDate,
         "Sc_Note": Sc_Note,
+        "Sc_Version": Sc_Version,
         "Sc_UpdId": '1611698',
       },
       success: function (resp) {

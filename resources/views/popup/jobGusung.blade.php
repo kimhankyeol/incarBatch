@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 @include('popup.popupCommon.head')
+<script>document.title="잡 구성 팝업"</script>
+
 {{-- js 라이브러리  --}}
 @include('popup.popupCommon.popupJs')
 <script type="text/javascript" src="/js/colResizable-1.6.js"></script>

@@ -396,7 +396,6 @@ const job = {
     var Day = $('#Day').val();//매 n일
      
     var nowDateTime = new Date().format("yyyy-MM-dd HH:mm:ss");
-
     var yoilArr = new Array();
     var Sc_Status = "301";
     //each로 loop를 돌면서 checkbox의 check된 값을 가져와 담아준다.

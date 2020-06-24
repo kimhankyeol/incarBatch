@@ -46,7 +46,7 @@
         {{--  조회된 값이 보여주는 위치 --}}
         @if(isset($data))
             @foreach($data as $index => $monitorSc)
-            <tr class="OneDbClickCss1" data-Job_Seq="{{$monitorSc->job_seq}}" data-Sc_Seq="{{$monitorSc->sc_seq}}" data-RegDate="{{$monitorSc->sc_regdate}}" onclick="monitor.scheduleProcessList({{$monitorSc->job_seq}},{{$monitorSc->sc_seq}})" ondblclick="monitor.scheduleDetailPopup({{$monitorSc->job_seq}},{{$monitorSc->sc_seq}})">
+            <tr class="OneDbClickCss1" data-Job_Seq="{{$monitorSc->job_seq}}" data-Sc_Seq="{{$monitorSc->sc_seq}}" data-RegDate="{{$monitorSc->sc_regdate}}" data-Sc_Version="{{$monitorSc->sc_version}}" onclick="monitor.scheduleProcessList({{$monitorSc->job_seq}},{{$monitorSc->sc_seq}})" ondblclick="monitor.scheduleDetailPopup({{$monitorSc->job_seq}},{{$monitorSc->sc_seq}})">
                 <td class="text-center">{{$index+1}}</td>
                 <td class="text-center">{{'job_'.$monitorSc->job_worklargectg.'_'.$monitorSc->job_workmediumctg.'_'.$monitorSc->job_seq.'_'.$monitorSc->sc_seq.'.sh'}}</td>
                 <td>{{$monitorSc->job_name}}</td>
@@ -68,11 +68,11 @@
                   @endphp
                 </td>
                 <td class="text-center">{{explode(" ",$monitorSc->sc_regdate)[0]}}</td>
-                <td>{{explode(" ",$monitorSc->sc_note)[0]}}</td>
+                <td>{{$monitorSc->sc_note}}</td>
                 @php
                     if(intVal($monitorSc->status20<=0)) {
                         //한개라도 실행중이면 재작업 불가
-                        if((int)$monitorSc->status90+(int)$monitorSc->status40 !=0){
+                        if(((int)$monitorSc->status90+(int)$monitorSc->status40 !=0 )&&(int)$monitorSc->sc_rebutton==0){
                             echo '<td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="monitor.reWorkScheduleChk('.$monitorSc->sc_seq.')">재작업</button></td>';
                         } else {
                             echo '<td class="text-center">-</td>';

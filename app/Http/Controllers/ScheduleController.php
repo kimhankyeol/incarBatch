@@ -206,7 +206,46 @@ class scheduleController extends Controller
         }else{
             return response()->json(array('msg'=>'failed'));
         }
-       
-       
+    }
+    //스케줄 달력보기
+    public function scheduleCalendarView(){
+        return view('schedule.scheduleFullCalendar');
+    }
+    // 달마다 출력되는 스케줄 정보 ajax
+    public function getScheduleInfo(Request $request){
+        $date = $request->input('date');
+        if(empty($date)){
+            $date=new DateTime();
+            $date = $date->format('Y-m');
+        }
+        $SCHEDULE = new App\Schedule;
+        $result = $SCHEDULE->getScheduleInfo($date);
+        
+        $arrResult=array();
+        foreach($result as $index => $value){
+            if($value->sc_status2=='30'){
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#B6F065","borderColor"=>"#B6F065"));
+            }
+            if($value->sc_status2=='40'){
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#F0002B","borderColor"=>"#F0002B"));
+            }
+            if($value->sc_status2=='90'){
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#992CC0","borderColor"=>"#992CC0"));
+            }
+            if($value->sc_status2=='10'){
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#FFCF32","borderColor"=>"#FFCF32"));
+            }
+            if($value->sc_status2=='20'){
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#2E84BB","borderColor"=>"#2E84BB"));
+            }
+        };
+        return response()->json($arrResult);
+
+    }
+    public function getEventInfo(Request $request){
+        $scSeq = $request->input('scSeq');
+        $SCHEDULE = new App\Schedule;
+        $result = $SCHEDULE->getEventInfo($scSeq);
+        return response()->json($result);
     }
 }

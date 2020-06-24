@@ -1,18 +1,7 @@
-<?php
-//분기 처리 해주는 php 위치 
-$ifViewRender = new App\Http\Controllers\Render\IfViewRender;
-$ifViewRender->setRenderInfo($_SERVER['REQUEST_URI']);
-//include 될 blade.php 의 경로 + 파일명을 가져옴
-//title 변경 스크립트  common/head.blade 쓰이는 변수 
-$titleInfo  = $ifViewRender->getHtmlTitle();
-//url 에따른 resource 변경 추가 할떄   common/head.blade 쓰이는 변수 
-$resourceInfo = $ifViewRender->getResource();
-//사이드바 정보   common/sidebar.blade
-$sidebarInfo = $ifViewRender->getSidebarArray();
-?>
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
+<script>document.title="스케줄 상세"</script>
 <body id="page-top">
   <div id="wrapper" class="bodyBgImg">
     {{-- 블레이드 주석 쓰는 법--}}
@@ -202,7 +191,7 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
                 <hr>
               <div class="row justify-content-end">
                 <div class="mt-3 mr-2 btn btn-secondary" onclick="job.scheduleDump()">삭제</div>
-                <div class="mt-3 mr-2 btn btn-danger" onclick="history.back()">취소</div>
+                <div class="mt-3 mr-2 btn btn-danger" onclick="location.href='/schedule/scheduleListView?page=1'">취소</div>
               </div>              
             </div>
           </div>
@@ -224,14 +213,6 @@ $sidebarInfo = $ifViewRender->getSidebarArray();
     </script>
     </div>
   </div>
-  <?php
-  echo var_dump(new DateTime());
-
-  $kim = new DateTime();
-  $kim = $kim->format('Y-m-d H:i:s');
-  echo var_dump($kim);
-  
-  ?>
 </body>
 </html>
 

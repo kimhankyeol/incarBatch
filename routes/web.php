@@ -71,6 +71,13 @@ Route::prefix('schedule')->group(function(){
     Route::get('/jobselect','ScheduleController@jobselect');
     //스케줄 업데이트
     Route::post('/scheduleDump','ScheduleController@scheduleDump');
+    //달력 보기 
+    Route::get('/scheduleCalendarView','ScheduleController@scheduleCalendarView');
+    //스케줄 ajax  getScheduleInfo
+    Route::get('/getScheduleInfo','ScheduleController@getScheduleInfo');
+    //스케줄 event 
+    Route::get('/getEventInfo','ScheduleController@getEventInfo');
+
 });
 
 //모니터링 prefix

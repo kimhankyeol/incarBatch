@@ -1,18 +1,7 @@
-<?php
-//분기 처리 해주는 php 위치 
-$ifViewRender = new App\Http\Controllers\Render\IfViewRender;
-$ifViewRender->setRenderInfo($_SERVER['REQUEST_URI']);
-//include 될 blade.php 의 경로 + 파일명을 가져옴
-//title 변경 스크립트  common/head.blade 쓰이는 변수 
-$titleInfo  = $ifViewRender->getHtmlTitle();
-//url 에따른 resource 변경 추가 할떄   common/head.blade 쓰이는 변수 
-$resourceInfo = $ifViewRender->getResource();
-//사이드바 정보   common/sidebar.blade
-$sidebarInfo = $ifViewRender->getSidebarArray();
-?>
 <!DOCTYPE html>
 <html lang="en">
 @include('common.head')
+<script>document.title="잡 목록"</script>
 <body id="page-top">
     <div id="wrapper" class="bodyBgImg">
     {{-- 블레이드 주석 쓰는 법--}}

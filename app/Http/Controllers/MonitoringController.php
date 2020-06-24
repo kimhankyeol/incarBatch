@@ -181,6 +181,7 @@ class MonitoringController extends Controller
         $Sc_Seq = $request->input('Sc_Seq');
         $RegDate = $request->input('RegDate');
         $Sc_Note = $request->input('Sc_Note');
+        $Sc_Version = $request->input('Sc_Version');
         $Sc_UpdId = $request->input('Sc_UpdId');
         $Sc_UpdIp = $_SERVER["REMOTE_ADDR"];
         // 수정자 id $Sc_UpdId
@@ -190,19 +191,20 @@ class MonitoringController extends Controller
         // scLogFileArr
         // scReworkArr
         // jobSmPStatus
-        $query="begin SCHEDULE_REWORK(:REWORKSCSEQ,:REWORKSCREGDATE,:REWORKJOBSEQ,:SCUPDID,:SCUPDIP,:SCNOTE,:V_RESULT); end;";
+        $query="begin SCHEDULE_REWORK(:REWORKSCSEQ,:REWORKSCREGDATE,:REWORKJOBSEQ,:REWORKSCVERSION,:SCUPDID,:SCUPDIP,:SCNOTE,:V_RESULT,:V_ERRMSG); end;";
     //
         // 성공 1 , 실패 0 
         $v_errmsg="";
         $v_result=0;
         $pdo = DB::connection('oracle')->getPdo();
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':REWORKSCSEQ',$Sc_Seq);
-        $stmt->bindParam(':REWORKSCREGDATE',$RegDate);
-        $stmt->bindParam(':REWORKJOBSEQ',$Job_Seq);
-        $stmt->bindParam(':SCUPDID',$Sc_UpdId);
-        $stmt->bindParam(':SCUPDIP',$Sc_UpdIp);
-        $stmt->bindParam(':SCNOTE',$Sc_Note);
+        $stmt->bindParam(':REWORKSCSEQ',$Sc_Seq,PDO::PARAM_STR);
+        $stmt->bindParam(':REWORKSCREGDATE',$RegDate,PDO::PARAM_STR);
+        $stmt->bindParam(':REWORKJOBSEQ',$Job_Seq,PDO::PARAM_STR);
+        $stmt->bindParam(':REWORKSCVERSION',$Sc_Version,PDO::PARAM_STR);
+        $stmt->bindParam(':SCUPDID',$Sc_UpdId,PDO::PARAM_STR);
+        $stmt->bindParam(':SCUPDIP',$Sc_UpdIp,PDO::PARAM_STR);
+        $stmt->bindParam(':SCNOTE',$Sc_Note,PDO::PARAM_STR);
         $stmt->bindParam(':V_RESULT',$v_result,PDO::PARAM_INT);
         $stmt->bindParam(':V_ERRMSG',$v_errmsg,PDO::PARAM_STR,2000);
         $stmt->execute();

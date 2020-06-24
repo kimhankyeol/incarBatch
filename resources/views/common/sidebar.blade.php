@@ -7,19 +7,39 @@
     {{--$_SERVER['REQUEST_URI']  요청경로 확인--}}
     {{--foreach문은 배열에 입력한 순서대로 나옴--}}
     {{--for문은 1,2,3,4 인덱스 순으로 나옴 --}}
-   <?php
-     //index.blade 에서 선언한 ifViewRender 에서 가져온 사이드바 정보
-    foreach ($sidebarInfo as $r){
-        $r['active']= ($_SERVER['REQUEST_URI'] == $r['url'])? 'nav-item active':'nav-item';
-        echo '<li class="'.$r['active'].'"> <a class="nav-link" href="'.$r['url'].'"><i class="'.$r['icon'].'"></i><span>'.$r['label'].'</span></a></li>';
-    };
-    ?>
+
+    <li class="nav-item"> 
+      <a class="nav-link" href="/process/processListView?page=1">
+        <i></i><span>프로그램 등록</span>
+      </a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="/job/jobListView?page=1">
+        <i></i><span>잡 등록</span>
+      </a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">        <i></i><span>스케줄 관리</span>
+      </a>
+      <div id="collapsePages" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">스케줄 보기</h6>
+          <a class="collapse-item" href="/schedule/scheduleListView?page=1">리스트 보기</a>
+          <a class="collapse-item" href="/schedule/scheduleCalendarView">달력 보기</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="/monitoring/monitoringView?page=1">
+        <i></i><span>모니터링</span>
+      </a>
+    </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePages">
         <i class=""></i>
         <span>관리자</span>
       </a>
-      <div id="collapsePages" class="collapse hide " aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+      <div id="collapsePages2" class="collapse hide " aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">목록</h6>
           <a class="collapse-item" href="/admin/commonCodeLargeManageView?page=1">대분류 설정</a>
