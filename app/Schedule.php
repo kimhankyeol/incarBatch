@@ -130,7 +130,9 @@ class Schedule extends Model
             objg.JOBGUSUNG_PARAMPOS,
             op.P_FILEPATH,
             job.JOB_PARAMS,
-            job.JOB_PARAMSULMYUNGS
+            job.JOB_PARAMSULMYUNGS,
+            op.P_TEXTINPUT,
+            op.P_TEXTINPUTCHECK
         FROM 
             ONLINEBATCH_SCHEDULEPROCESS obsp
         LEFT JOIN 
@@ -236,7 +238,9 @@ class Schedule extends Model
             JOB_WORKLARGECTG,
             JOB_WORKMEDIUMCTG,
             SC_SULMYUNG,
-            SC_CRONSULMYUNG
+            SC_CRONSULMYUNG,
+            SC_STARTTIME,
+            SC_ENDTIME
         FROM (    
           SELECT   
               obs.SC_SEQ,
@@ -248,7 +252,9 @@ class Schedule extends Model
               obj.JOB_WORKLARGECTG,
               obj.JOB_WORKMEDIUMCTG,
               obs.SC_SULMYUNG,
-              obs.SC_CRONSULMYUNG
+              obs.SC_CRONSULMYUNG,
+              obs.SC_STARTTIME,
+              obs.SC_ENDTIME
             FROM 
               ONLINEBATCH_SCHEDULE obs 
             INNER JOIN ONLINEBATCH_JOB obj 

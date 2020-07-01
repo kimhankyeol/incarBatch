@@ -36,9 +36,10 @@
             <col width="6%" />
             <col width="9%" />
             <col width="8%" />
-            <col width="32%" />
+            <col width="20%" />
             <col width="8%" />
             <col width="30%" />
+            <col width="12%" />
           </colgroup>
           <thead>
             <tr>
@@ -49,6 +50,7 @@
               <th>파라미터</th>
               <th>재작업</th>
               <th>로그파일</th>
+              <th>텍스트 파일</th>
             </tr>
           </thead>
           <tbody>
@@ -83,7 +85,7 @@
                         @endphp
                       @endif
                     </td>
-                    <td>
+                    <td style="text-align: center">
                       @if(($data->p_reworkyn)==1)
                         <label class="m-0 font-weight-bold text-primary">가능</label>
                       @else
@@ -97,7 +99,15 @@
                         $pfilesplit=explode('.php',$data->p_file);
                       @endphp
                     <td>
-                      <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}</div><input name="Sc_LogFile" style="width:100%" type="text" value="{{"/".$pfilesplit[0]."_".$data->job_seq."_".$data->jobgusung_order."_".$data->p_execount.".log"}}"></div>
+                      {{-- jobgusungorder 를 pseq로 바꿔야됨 --}}
+                      <div><div class="logFileNameChg" >/home/script/log/{{$nowDate}}/스케줄 번호</div><input name="Sc_LogFile" style="width:100%" type="text" value="{{"/".$pfilesplit[0]."_".$data->job_seq."_".$data->p_seq."_".$data->p_execount.".log"}}"></div>
+                    </td>
+                    <td class="text-center">
+                      @if($data->p_textinputcheck==1)
+                      {{$data->p_textinput}}
+                      @else
+                      -
+                      @endif
                     </td>
                   </tr>
                   <input hidden class="scExecJob" value='{{$data->job_seq}}'>

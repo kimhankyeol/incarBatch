@@ -59,7 +59,12 @@
 
                   $r1 = (strtotime($maxRunningTime)-strtotime($gusungSc->jobsm_p_starttime))/60;
                   $r2 = (strtotime($nowDateTime)-strtotime($gusungSc->jobsm_p_starttime))/60;
-                  if($gusungSc->jobsm_p_status=='오류') {
+                  if($gusungSc->jobsm_p_status=='종료'){
+                    echo '<div class="progress">';
+                    echo '<div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
+                    echo '</div>';
+                    echo '<p class="p-0 progress-percent text-success">100%</p>';
+                  }else if($gusungSc->jobsm_p_status=='오류') {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ERROR</div>';
                     echo '</div>';

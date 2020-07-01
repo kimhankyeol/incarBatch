@@ -381,6 +381,9 @@ const code = {
             },
             success:function(data){
                 $('#processPath').val(data.workFilePath[0].filepath);
+                if($('#P_TextInputCheck').is(":checked")){
+                    $('#P_TextInputFilePath').val(data.workFilePath[0].filepath);
+                }
             },error:function(err){
             }
         })

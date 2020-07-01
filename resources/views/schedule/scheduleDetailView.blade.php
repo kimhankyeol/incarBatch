@@ -29,7 +29,7 @@
                   <hr>
                   <div class="row">
                     <div class="col-md-2 text-center align-self-center font-weight-bold mt-2">스케줄 Id</div>
-                    <input type="text" class="col-md-2 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->job_worklargectg.'_'.$jobDetail[0]->job_workmediumctg.'_'.$jobDetail[0]->job_seq.'_'.$scheduleDetail[0]->sc_seq.'.sh'}}" readonly>
+                    <input type="text" class="col-md-2 form-control form-control-sm mt-2" value="{{'job_'.$jobDetail[0]->job_worklargectg.'_'.$jobDetail[0]->job_workmediumctg.'_'.$jobDetail[0]->job_seq.'_'.$scheduleDetail[0]->sc_seq}}" readonly>
                     <div class="col-md-2 text-center align-self-center font-weight-bold">실행 주기 설명</div>
                     <input type="text" class="col-md-5 form-control form-control-sm align-self-center" value="{{$scheduleDetail[0]->sc_cronsulmyung}}" readonly> 
                   </div>
@@ -124,13 +124,14 @@
                       <div>
                         <table id="datatable" class="table table-bordered" cellspacing="0">
                           <colgroup>
-                            <col width="3%" />
-                            <col width="7%" />
+                            <col width="4%" />
+                            <col width="6%" />
                             <col width="10%" />
                             <col width="10%" />
-                            <col width="40%" />
+                            <col width="30%" />
+                            <col width="15%" />
                             <col width="10%" />
-                            <col width="20%" />
+                            <col width="15%" />
                           </colgroup>
                             <thead>
                               <tr>
@@ -139,6 +140,7 @@
                                 <th>프로그램</th>
                                 <th>프로그램 명</th>
                                 <th>파라미터</th>
+                                <th>텍스트 파일</th>
                                 <th>재작업</th>
                                 <th>로그파일</th>
                               </tr>
@@ -146,12 +148,12 @@
                             <tbody>
                             @if(isset($jobGusungContents))
                                 @foreach($jobGusungContents as $index=> $data)
-                                  <tr style="text-align: center" ondblclick="monitor.processDetail('{{$data->sc_seq}}','{{$data->job_seq}}')">
+                                  <tr style="text-align: center"  ondblclick="monitor.processDetail('{{$data->sc_seq}}','{{$data->p_seq}}')">
                                       <td>{{$index+1}}</td>
                                       <td>{{$data->p_filepath}}</td>
                                       <td>{{$data->p_file}}</td>
                                       <td>{{$data->p_name}}</td>
-                                      <td>
+                                      <td style="overflow-x:scroll">
                                       @if(isset($data->p_params))
                                           @php
                                           $jobParamSulArr=explode("||",$scheduleDetail[0]->sc_param);
@@ -171,6 +173,13 @@
                                               @endphp
                                       @endif
                                       </td>
+                                      <td class="text-center" style="overflow-x:scroll">
+                                        @if($data->p_textinputcheck==1)
+                                          {{$data->p_filepath.'/'.$data->p_textinput}}
+                                        @else
+                                          -
+                                        @endif
+                                      </td>
                                       <td>
                                         @if(($data->p_reworkyn)==1)
                                         <label class="m-0 font-weight-bold">가능</label>
@@ -178,7 +187,7 @@
                                           <label class="m-0  font-weight-bold text-danger">불가능</label>
                                         @endif
                                       </td>
-                                      <td>
+                                      <td style="overflow-x:scroll">
                                        {{$data->sc_logfile}}
                                       </td>
                                   </tr>

@@ -19,39 +19,39 @@
                     <div class="card-body">
                       <div class="custom-row">
                           <input id="P_Seq" type="hidden" value="{{$processDetail[0]->p_seq}}"/>
-                          <div class="text-center align-self-center font-weight-bold text-primary mx-2">대분류</div>
+                          <div class="text-center align-self-center font-weight-bold mx-2">대분류</div>
                           <input id="workLargeVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->p_worklargename}}" style="cursor:not-allowed" readonly>
-                          <div class="text-center align-self-center font-weight-bold text-primary mx-2">중분류</div>
+                          <div class="text-center align-self-center font-weight-bold mx-2">중분류</div>
                           <input id="workMediumVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->p_workmediumname}}" readonly>
-                          <div class="text-center align-self-center font-weight-bold text-primary">프로그램 경로</div>
+                          <div class="text-center align-self-center font-weight-bold">프로그램 경로</div>
                           <input id ="processPath" type="text" class="form-control form-control-sm align-self-center"  value="{{$processDetail[0]->filepath}}" readonly>
                           <input id ="processFile" type="text" class="form-control form-control-sm align-self-center" value="{{$processDetail[0]->p_file}}" readonly>
                           <div class="mx-2 custom-control custom-checkbox small align-middle">
                             <input id="retry" type="checkbox" class="custom-control-input" {{$processDetail[0]->p_reworkyn==1?"checked":""}} value="{{ $processDetail[0]->p_reworkyn }}" onclick = "return false">
-                            <label class="custom-control-label font-weight-bold text-primary" for="retry">재작업</label>
+                            <label class="custom-control-label font-weight-bold" for="retry">재작업</label>
                           </div>
                       </div>
                       <hr>
                       <div class="row w-100 mx-auto">
-                          <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">프로그램 명</div>
+                          <div class="col-md-auto text-center align-self-center font-weight-bold">프로그램 명</div>
                           <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->p_name}}" readonly>
-                          <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">설명</div>
+                          <div class="col-md-auto text-center align-self-center font-weight-bold">설명</div>
                           <textarea id = "programExplain" type="text" class="col-md-5 form-control form-control-sm"  readonly>{{$processDetail[0]->p_sulmyung}}</textarea>
-                          <div class="col-md-auto text-center align-self-center font-weight-bold text-primary">프로그램 상태</div>
+                          <div class="col-md-auto text-center align-self-center font-weight-bold">프로그램 상태</div>
                           <input id ="programStatus" type="text" class="col-md-1 form-control form-control-sm align-self-center text-center font-weight-bold" value="{{$proUsed}}" readonly>
                       </div>
                       <hr>
                       <div class="row w-100 mx-auto">
                         <div class="col-md-6 text-center">
-                          <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 평균 소요시간</div>
-                          <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
+                          <div class="col-md-12 text-center align-self-center font-weight-bold">배치 작업 평균 소요시간</div>
+                          <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold">일 / 시 / 분</div>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime1" value="{{intval($processDetail[0]->p_yesangtime/1440)}}" readonly numberOnly>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime2" value="{{intval($processDetail[0]->p_yesangtime%1440/60)}}" readonly numberOnly>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangTime3" value="{{intval($processDetail[0]->p_yesangtime%60)}}" readonly >
                         </div>
                         <div class="col-md-6 text-center">
-                          <div class="col-md-12 text-center align-self-center font-weight-bold text-primary">배치 작업 최대 소요시간</div>
-                          <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold text-primary">일 / 시 / 분</div>
+                          <div class="col-md-12 text-center align-self-center font-weight-bold">배치 작업 최대 소요시간</div>
+                          <div class="d-inline-block col-md-3 text-center align-self-center font-weight-bold">일 / 시 / 분</div>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime1" value="{{intval($processDetail[0]->p_yesangmaxtime/1440)}}" readonly numberOnly>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime2" value="{{intval($processDetail[0]->p_yesangmaxtime%1440/60)}}" readonly numberOnly>
                           <input type="text" class="d-inline-block col-md-2 form-control form-control-sm align-self-center" id="Pro_YesangMaxTime3" value="{{intval($processDetail[0]->p_yesangmaxtime%60)}}" readonly numberOnly>
@@ -75,27 +75,25 @@
                       <hr>
                       <div class="row w-100 mx-auto">
                         {{-- 업무 구분 대분류 중분류 선택 --}}
-                        <div class="col-md-2 text-center align-self-center font-weight-bold text-primary">텍스트 입력</div>
+                        <div class="col-md-2 text-center align-self-center font-weight-bold">텍스트 입력</div>
                         @if(($processDetail[0]->p_textinputcheck)==1)
-                          <div class="col-md-3 mx-2 custom-control custom-checkbox small">
+                          <div class="col-md-2 custom-control custom-checkbox small">
                               <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->p_textinputcheck }}" onclick = "return false">
-                              <label class="custom-control-label font-weight-bold text-primary" for="P_TextInputCheck">텍스트 입력여부</label>
+                              <label class="custom-control-label font-weight-bold" for="P_TextInputCheck">텍스트 입력여부</label>
                           </div>
+                          <input type="text" class="d-inline-block col-md-8 form-control form-control-sm align-self-center"  value="{{'/home/incar/work'.$processDetail[0]->filepath.'/'.$processDetail[0]->p_textinput}}" readonly>
                           @else
-                          <div class="col-md-3 mx-2 custom-control custom-checkbox small">
+                          <div class="col-md-2 custom-control custom-checkbox small">
                             <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->p_textinputcheck }}" onclick = "return false">
-                            <label class="custom-control-label font-weight-bold text-primary" for="P_TextInputCheck">텍스트 입력여부</label>
+                            <label class="custom-control-label font-weight-bold" for="P_TextInputCheck">텍스트 입력여부</label>
                           </div>
-                        @endif
-                        @if(($processDetail[0]->p_textinputcheck)==1)
-                          <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: 300px" readonly>{{$processDetail[0]->p_textinput}}</textarea>
-                        @else
+                          <input type="text" class="d-inline-block col-md-8 form-control form-control-sm align-self-center" readonly>
                         @endif
                       </div>
                       <hr>
                       {{-- 프로그램변수가 추가되는 부분 --}}
                       <div class="row w-100 mx-auto">
-                        <h6 class="col-md-12 font-weight-bold text-primary">프로그램 파라미터 타입</h6>
+                        <h6 class="col-md-12 font-weight-bold">프로그램 파라미터 타입</h6>
                         @if(isset($processDetail[0]->p_params))
                           @php
                             $proParamArr=explode("||",$processDetail[0]->p_params);
@@ -129,24 +127,3 @@
     <input id="WorkMedium" hidden  value="{{$processDetail[0]->p_workmediumctg}}" readonly>
   </body>
   </html>
-  <!-- @php
-    $tabDelimitedLines = explode("\n", $processDetail[0]->p_textinput);
-    $myArray = Array();
-
-    foreach ($tabDelimitedLines as $lineIndex => $line) {
-        $fields = explode("\t", $line);
-        foreach ($fields as $fieldIndex => $field) {
-            if ($lineIndex == 0) {
-                // assuming first line is header info
-                $headers[] = $field;
-            } else {
-                // put the other lines into an array
-                // in whatever format you want
-                $myArray[$lineIndex - 1][$headers[$fieldIndex]] = $field;
-            }
-        }
-    }
-    $json = json_encode($myArray);
-    echo var_dump($tabDelimitedLines);
-    echo var_dump($myArray);
-  @endphp -->

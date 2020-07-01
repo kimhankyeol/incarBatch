@@ -36,7 +36,7 @@
                             <div class="col-md-2 text-center align-self-center font-weight-bold ">프로그램 명</div>
                             <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" placeholder="프로그램 명">
                             <div class="col-md-2 text-center align-self-center font-weight-bold  mt-2">프로그램 설명</div>
-                            <input id = "programExplain" type="text" class="col-md-6 form-control form-control-sm mt-2" placeholder="설명">
+                            <textarea id = "programExplain"  class="col-md-6 form-control form-control-sm mt-2" placeholder="설명"> </textarea>
                         </div>
                         <hr>
                         <div class="row">
@@ -58,14 +58,16 @@
                         <hr>
                         <div class="row align-items-center">
                              {{-- 업무 구분 대분류 중분류 선택 --}}
-                            <div class="col-md-2 text-center align-self-center font-weight-bold ">텍스트 입력</div>
-                            <div class="col-md-2 mx-2 custom-control custom-checkbox small">
+                            <div class="col-md-2 text-center align-self-center font-weight-bold ">텍스트 파일</div>
+                            <div class="col-md-2 custom-control custom-checkbox small">
                                 <input id="P_TextInputCheck" type="checkbox" class="custom-control-input">
-                                <label class="custom-control-label font-weight-bold " for="P_TextInputCheck">텍스트 입력 여부</label>
+                                <label class="custom-control-label font-weight-bold " for="P_TextInputCheck">텍스트 파일 여부</label>
                             </div>
+                            <input id="P_TextInputFilePath"  type="text" class="col-md-3 form-control form-control-sm align-self-center mt-2" value="" disabled style="margin-right: 10px" >
+                            <input id="P_TextInputFileName"  type="text" class="col-md-3 form-control form-control-sm align-self-center mt-2" value="" disabled >
                         </div>
                         <div class="row">
-                            <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2"  style="height: 300px" disabled ></textarea>
+                           
                         </div>
                         <hr>
                         <div class="row w-100 mx-auto">
@@ -96,16 +98,21 @@
     $(this).val($(this).val().replace(/[^0-9]/g,""));
     }); 
    $('#P_TextInputCheck').click(function(){
-        var chk = $(this).is(":checked");
-        if(chk){
-            $('#P_TextInput').removeAttr("disabled", "");
-            $('#P_TextInput').removeAttr("disabled", "");
-            $('#P_TextInput').val("#주석입니다. 변수1(열) 변수2(열) 변수3(열)");
+        if($('#processPath').val()==""){
+            alert('대분류 및 중분류를 선택해주세요')
+            return false;
         }else{
-         
-            $('#P_TextInput').attr("disabled","disabled");
-            $('#P_TextInput').attr("disabled","disabled");
-            $('#P_TextInput').val("");
+            var chk = $(this).is(":checked");
+            if(chk){
+                $('#P_TextInputFilePath').val($('#processPath').val());
+                $('#P_TextInputFileName').removeAttr("disabled", "");
+                $('#P_TextInput').val();
+            }else{
+                $('#P_TextInputFilePath').attr("disabled","disabled");
+                $('#P_TextInputFileName').attr("disabled","disabled");
+                $('#P_TextInputFilePath').val("");
+                $('#P_TextInputFileName').val("");
+            }
         }
    });
    function workLargeChgSel(){

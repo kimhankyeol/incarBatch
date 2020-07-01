@@ -471,4 +471,10 @@ function file_tail($file, $lineCount ,$searchWord,$setNum) {
     }
     return $lineAdd;
 }
+
+//스케줄 프로그램 텍스트 변수 수정 팝업
+function scProgramTextInputUpdatePopup(Request $request){
+    $P_Seq = $request->input('P_Seq');
+    
+}
 ?>

@@ -108,7 +108,7 @@ const monitor = {
   reWorkScheduleChk: function (Sc_Seq) {
     const Job_Seq = event.target.parentElement.parentElement.getAttribute("data-job_seq");
     const RegDate = event.target.parentElement.parentElement.getAttribute("data-regdate");
-    const Sc_version = event.target.parentElement.parentElement.getAttribute("data-Sc_Version");
+    const Sc_version = event.target.parentElement.parentElement.getAttribute("data-Sc_version");
     document.getElementById("Sc_Note").value = "";
     $.ajax({
       url: "/monitoring/reWorkScheduleChk",
@@ -128,6 +128,7 @@ const monitor = {
             document.getElementById("jobSeq").value = Job_Seq;
             document.getElementById("scSeq").value = Sc_Seq;
             document.getElementById("regDate").value = RegDate;
+            document.getElementById("scVersion").value = Sc_version;
           }
         }
         if (resp.succesCount != 0) {

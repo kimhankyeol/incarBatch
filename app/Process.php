@@ -76,8 +76,8 @@ class Process extends Model
         $query1="
         SELECT 
             P_SEQ,
-            SUM(CASE WHEN substr(JOBSM_P_STATUS,1,2)!=90 THEN 0
-            WHEN substr(JOBSM_P_STATUS,1,2)=90 THEN 1 END) AS usedtotal
+            SUM(CASE WHEN substr(JOBSM_P_STATUS,1,2)!=20 THEN 0
+            WHEN substr(JOBSM_P_STATUS,1,2)=20 THEN 1 END) AS usedtotal
         FROM   
             ONLINEBATCH_SCHEDULEPROCESS
         WHERE
@@ -90,6 +90,11 @@ class Process extends Model
     //프로세스 파일 DB 유무 체크 
     public function processFileDBExist($WorkLarge,$WorkMedium,$processFile){
         $count = DB::table('ONLINEBATCH_PROCESS')->where('P_WORKLARGECTG',$WorkLarge)->where('P_WORKMEDIUMCTG',$WorkMedium)->where('P_FILE',$processFile)->count();
+        return $count;
+    }
+    //프로세스 텍스트 파일 DB 유무 체크 
+    public function textFileDBExist($WorkLarge,$WorkMedium,$P_TextInput){
+        $count = DB::table('ONLINEBATCH_PROCESS')->where('P_WORKLARGECTG',$WorkLarge)->where('P_WORKMEDIUMCTG',$WorkMedium)->where('P_TEXTINPUT',$P_TextInput)->count();
         return $count;
     }
     //프로세스 등록
@@ -147,5 +152,15 @@ class Process extends Model
         $result = DB::insert($query1);
         return $result;
     }
-
+    public function getPTextInput($pSeq){
+        $query1="
+        SELECT 
+            P_TEXTINPUT 
+        FROM 
+            ONLINEBATCH_PROCESS 
+        WHERE 
+            P_SEQ ='".$pSeq."'";
+        $result = DB::SELECT($query1);
+        return $result;
+    }
 }

@@ -314,5 +314,9 @@ const popup = {
         }
       })
     }
+  },
+  // 스케줄 프로그램 텍스트 변수 수정 팝업
+  scProgramTextInputUpdatePopup: function(scSeq,pSeq){
+    window.open('/popup/scProgramTextInputUpdatePopup?Sc_Seq='+scSeq+'&P_Seq='+pSeq, '잡 구성', 'top=10, left=10, width=1400, height=720, status=no, location=no, directories=no, status=no, menubar=no, toolbar=no, scrollbars=yes, resizable=no');
   }
 }

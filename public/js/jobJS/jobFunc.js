@@ -368,6 +368,7 @@ const job = {
     })
   },
   //잡 스케줄 등록 
+  //잡 스케줄 등록시 프로그램의 텍스트입력여부를 판단하여 원래 등록되어있던
   scRegister:function(){
     var P_Seq = [];
     var Log_File = [];
@@ -447,10 +448,10 @@ const job = {
         }else if(jugiNum==2){
           Sc_Bungi1=$('#Day').val();
           
-          //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
-          if(month=="11"||month=="12"){
-            Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
-          }
+          // //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
+          // if(month=="11"||month=="12"){
+          //   Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
+          // }
           if($('#Day').val()==1){
             var Sc_CronSulmyung = hour+":"+min+"에 매일 실행";
             var Sc_Status = "302"
@@ -465,9 +466,9 @@ const job = {
           }).get().join('\|\|');
           Sc_Bungi1=yoilParam;
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
-          if(month=="11"||month=="12"){
-            Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
-          }
+          // if(month=="11"||month=="12"){
+          //   Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
+          // }
           var Sc_Status = "303"
           for(var i=0;i<yoilArr.length;i++){
             if(yoilArr[i]==1){
@@ -505,9 +506,9 @@ const job = {
             Sc_CronSulmyung = "매달"+Sc_Bungi1+"일"+hour+":"+min+" 마다 실행";
           }
           //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
-          if(month=="11"||month=="12"){
-            Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
-          }
+          // if(month=="11"||month=="12"){
+          //   Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
+          // }
           
           var Sc_Status = "304"
         }else if(jugiNum==5){
@@ -531,10 +532,10 @@ const job = {
             }
             Sc_CronSulmyung = "매년 "+Sc_Bungi1+"월 "+Sc_Bungi2+"일 "+hour+":"+min+"마다 실행";
           }
-          //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
-          if(month=="11"||month=="12"){
-            Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
-          }
+          // //11월 12월은 회사일정이 바쁜시기이므로  종료일시+ 3개월 해줘야함
+          // if(month=="11"||month=="12"){
+          //   Sc_CronEndTime.setMonths(Sc_CronEndTime.getMonths()+3);
+          // }
           var Sc_Status = "305"
         }else if(jugiNum==6){
           // var Sc_Crontab = " ";

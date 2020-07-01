@@ -262,7 +262,7 @@
             var jugi2 = $('#jugiChange option:selected').val();
             if(jugi==6){
                 var newDate = new Date().format('yyyyMMdd');
-                var cont = '/home/script/log/'+newDate;
+                var cont = '/home/script/log/'+newDate+'/스케줄 번호';
                 $(".logFileNameChg").html(cont);
             }else{
                 if(jugi2==4){
@@ -270,7 +270,7 @@
                         var year =new Date($('#startdate').val()).format('yyyy');
                         var month = new Date($('#startdate').val()).format('MM');
                         var lastDay = (new Date( year, month, 0) ).getDate();
-                        var cont = '/home/script/log/'+chgDate;
+                        var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                         var cont2 = "";
                         if(month ==2 ){
                             cont2+= '<option selected>28</option>';
@@ -286,7 +286,7 @@
                         var month = new Date($('#startdate').val()).format('MM');
                         var day = new Date($('#startdate').val()).format('dd');
                         var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                        var cont = '/home/script/log/'+chgDate;
+                        var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                         var cont2 = "";
                         if(month ==2 ){
                             for(var i = 1 ; i<=28;i++){
@@ -322,7 +322,7 @@
                         var year =new Date($('#startdate').val()).format('yyyy');
                         var month = new Date($('#startdate').val()).format('MM');
                         var lastDay = (new Date( year, month, 0) ).getDate();
-                        var cont = '/home/script/log/'+chgDate;
+                        var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                         var cont2 = "";
                         if(month ==2 ){
                             $('#daysel').val(28);
@@ -341,7 +341,7 @@
                         var month = new Date($('#startdate').val()).format('MM');
                         var day = new Date($('#startdate').val()).format('dd');
                         var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                        var cont = '/home/script/log/'+chgDate;
+                        var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                         if(month ==2 ){
                             for(var i = 1 ; i<=28;i++){
                                 if(day==i){
@@ -377,7 +377,7 @@
                     $(".logFileNameChg").html(cont);
                 }else{
                     var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                    var cont = '/home/script/log/'+chgDate;
+                    var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                     $(".logFileNameChg").html(cont);
                 }
             }
@@ -505,7 +505,7 @@
                 var lastDay = ( new Date( year, month, 0) ).getDate();
 
                 var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                var cont = '/home/script/log/'+chgDate;
+                var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                 var cont2 = "";
                 if(month ==2 ){
                     cont2+= '<option selected>28</option>';
@@ -524,7 +524,7 @@
                 var month = new Date($('#startdate').val()).format('MM');
                 var day = new Date($('#startdate').val()).format('dd');
                 var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                var cont = '/home/script/log/'+chgDate;
+                var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                 var cont2 = "";
                 if(month ==2 ){
                     for(var i = 1 ; i<=28;i++){
@@ -563,7 +563,7 @@
                 var month = new Date($('#startdate').val()).format('MM');
                 var lastDay = ( new Date( year, month, 0) ).getDate();
                 var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
-                var cont = '/home/script/log/'+chgDate;
+                var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                 var cont2 = "";
                 if(month ==2 ){
                     $('#daysel').val(28);
@@ -583,7 +583,7 @@
                 var chgDate = new Date($('#startdate').val()).format('yyyyMMdd');
                 var day = new Date($('#startdate').val()).format('dd');
 
-                var cont = '/home/script/log/'+chgDate;
+                var cont = '/home/script/log/'+chgDate+'/스케줄 번호';
                 if(month ==2 ){
                     for(var i = 1 ; i<=28;i++){
                         if(day==i){

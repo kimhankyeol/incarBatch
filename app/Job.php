@@ -133,7 +133,9 @@ class Job extends Model
             job.JOB_SEQ,
             process.P_SEQ,
             process.P_REWORKYN,
-            process.P_EXECOUNT
+            process.P_EXECOUNT,
+            process.P_TEXTINPUTCHECK,
+            process.P_TEXTINPUT
         FROM
             ONLINEBATCH_JOBGUSUNG gusung
         left join ONLINEBATCH_JOB job on

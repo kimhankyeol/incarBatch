@@ -207,7 +207,7 @@
     <input type="hidden" id="scVersion">
     <input type="hidden" id="regDate">
     {{--  Modal 모달  --}}
-    <div class="modal fade" id="reworkModal">
+    <div class="modal fade" id="reworkModal" data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

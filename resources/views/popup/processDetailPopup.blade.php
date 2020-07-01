@@ -74,35 +74,26 @@
                     </div>
                     <hr>
                     <div class="row w-100 mx-auto">
+                      <div class="col-md-2 text-center align-self-center font-weight-bold">로그 경로</div>
+                    <input type="text" class="d-inline-block col-md-10 form-control form-control-sm align-self-center" value="{{'/home/script/log'.$processDetail[0]->sc_logfile}}" readonly>
+                    </div>
+                    <hr>
+                    <div class="row w-100 mx-auto">
                       {{-- 업무 구분 대분류 중분류 선택 --}}
-                      <div class="col-md-2 text-center align-self-center font-weight-bold">텍스트 입력</div>
-                      @if(($processDetail[0]->p_textinputcheck)==1)
-                        <div class="col-md-3 mx-2 custom-control custom-checkbox small">
-                            <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->p_textinputcheck }}" onclick = "return false">
-                            <label class="custom-control-label font-weight-bold" for="P_TextInputCheck">텍스트 입력여부</label>
-                        </div>
-                        @else
-                        <div class="col-md-3 mx-2 custom-control custom-checkbox small">
-                          <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->p_textinputcheck }}" onclick = "return false">
-                          <label class="custom-control-label font-weight-bold" for="P_TextInputCheck">텍스트 입력여부</label>
-                        </div>
-                      @endif
-                      @if(($processDetail[0]->p_textinputcheck)==1)
-                        <textarea id="P_TextInput" type="text" class="col-md-12 form-control form-control-sm align-self-center mt-2" style="height: auto" readonly>{{$processDetail[0]->p_textinput}}</textarea>
-                      @else
-                      @endif
+                      <div class="col-md-2 text-center align-self-center font-weight-bold">텍스트 파일</div>
+                      <input type="text" class="d-inline-block col-md-10 form-control form-control-sm align-self-center"  value="{{'/home/incar/work'.$processDetail[0]->filepath.'/'.$processDetail[0]->p_textinput}}" readonly>
                     </div>
                     <hr>
                     {{-- 프로그램변수가 추가되는 부분 --}}
                     <div class="row w-100 mx-auto">
                       <h6 class="col-md-12 font-weight-bold">프로그램 파라미터 타입</h6>
-                      @if(isset($processDetail[0]->P_Params))
+                      @if(isset($processDetail[0]->p_params))
                         @php
                           $proParamArr=explode("||",$processDetail[0]->p_params);
                           $proParamSulArr=explode("||",$processDetail[0]->p_paramsulmyungs);
                           for ($i = 0; $i < count($proParamArr); $i++) {
                             echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                            echo '<div class="col-md-auto small align-self-center text-center">파라미터</div>';
+                            echo '<div class="col-md-auto small align-self-center text-center">'.intVal($i+1).') 파라미터</div>';
                           if($proParamArr[$i]=="paramNum"){
                             echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
                           }else if($proParamArr[$i]=="paramStr"){

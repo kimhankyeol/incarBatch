@@ -20,9 +20,6 @@ class ProcessController extends Controller
         if($searchWord==""){
             $searchWord="searchWordNot";
         }
-
-        
-       
         $PROCESS = new APP\Process;
         $COMMON = new App\Common;
          //프로그램 검색 조회 (전체 포함)
@@ -108,24 +105,42 @@ class ProcessController extends Controller
         $P_RegIp = $_SERVER["REMOTE_ADDR"];
         $P_TextInputCheck=$request->input('P_TextInputCheck');
         $P_TextInput=$request->input('P_TextInput');
+        //텍스트 파일 경로 / 명
+        $P_TextInputFilePath="/home/incar/work".$processPath."/".$P_TextInput;
         $P_RegId='1611698';
        
         //고정경로 + 대분류 중분류에 따른 경로(processPath) + 파일(processFile)
         $P_FilePath="/home/incar/work".$processPath."/".$processFile;
         //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
         $fileResult1 = file_exists($P_FilePath); 
+        $fileResult2 = file_exists($P_TextInputFilePath);
         $PROCESS = new APP\Process;
         $count = $PROCESS->processFileDBExist($WorkLarge,$WorkMedium,$processFile);
-        if($fileResult1){// 경로+파일이 존재하는가?
-            if($count==0){
-               $result = $PROCESS ->processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_TextInput,$P_RegId);
-                return response()->json(array('result'=>$result, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
+        $count2 = $PROCESS->textFileDBExist($WorkLarge,$WorkMedium,$P_TextInput);
+        if($P_TextInputCheck==0){
+            if($fileResult1){// 경로+파일이 존재하는가?
+                if($count==0){
+                   $result = $PROCESS ->processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_TextInput,$P_RegId);
+                    return response()->json(array('pInputCheck'=>$P_TextInputCheck,'result'=>$result, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
+                }else{
+                    return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1,'pInputCheck'=>$P_TextInputCheck));
+                }
             }else{
-                return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1));
+                return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1,'pInputCheck'=>$P_TextInputCheck));
             }
         }else{
-            return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1));
+            if($fileResult1&&$fileResult2){// 경로+파일이 존재하는가?
+                if($count==0&&$count2==0){
+                   $result = $PROCESS ->processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_TextInput,$P_RegId);
+                    return response()->json(array('result'=>$result, 'fileResult1'=>$fileResult1,'fileResult2'=>$fileResult2, 'count'=>$count,'count2'=>$count2,'pInputCheck'=>$P_TextInputCheck));//성공
+                }else{
+                    return response()->json(array('count'=>$count,'count2'=>$count2,'fileResult1'=>$fileResult1,'fileResult2'=>$fileResult2,'pInputCheck'=>$P_TextInputCheck));
+                }
+            }else{
+                return response()->json(array('count'=>$count,'count2'=>$count2,'fileResult1'=>$fileResult1,'fileResult2'=>$fileResult2,'pInputCheck'=>$P_TextInputCheck));
+            }
         }
+       
     }
     //프로세스 수정
     public function processEdit(Request $request){
@@ -153,7 +168,7 @@ class ProcessController extends Controller
                 return response()->json(array('P_Seq'=>$p_seq,'proUsed'=>$proUsed));//성공
             }
         }
-
+        //원격지 파일체크 로직을 넣어야함
         //수정자  ID 넣어야함
         if(intVal($P_TextInputCheck)==1){
             $result = DB::table('ONLINEBATCH_PROCESS')->where('P_SEQ',$p_seq)->update([
@@ -191,12 +206,12 @@ class ProcessController extends Controller
         $PROCESS = new APP\Process;
         //프로세스 상세 조회
         $processDetail=$PROCESS->processDetail($p_seq);
-        //프로세스 사용 미사용 조회
+        //프로세스 실행 미실행 조회
         $processUsed=$PROCESS->processUsed($p_seq);
         if(empty($processUsed)){
-            $proUsed = "미사용";
+            $proUsed = "미실행";
         }else{
-            $proUsed = $processUsed[0]->usedtotal== 0 ? "미사용":"사용";
+            $proUsed = $processUsed[0]->usedtotal== 0 ? "미실행":"실행중";
         }
         
         return view('process.processEditView',compact('processDetail','WorkLarge','WorkMedium','proUsed'));

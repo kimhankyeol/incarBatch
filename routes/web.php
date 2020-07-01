@@ -77,6 +77,8 @@ Route::prefix('schedule')->group(function(){
     Route::get('/getScheduleInfo','ScheduleController@getScheduleInfo');
     //스케줄 event 
     Route::get('/getEventInfo','ScheduleController@getEventInfo');
+    //텍스트변수수정 모달에서 변경유무 상관없이 취소나 close 버튼 누르면 다시원래의 텍스트 입력정보로 돌아옴  
+    Route::get('/pTextInputNotModify','ScheduleController@pTextInputNotModify');
 
 });
 

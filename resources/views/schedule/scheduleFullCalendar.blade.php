@@ -16,10 +16,12 @@ $(function() {
     eventClick:function(e){
       getEventInfo(e.id);
     },
+    dayClick:function(e){
+    },
     header:{
       left:'today',
       center:'title',
-      right:'cusPrevButton,cusNextButton'
+      right:'cusPrevButton,cusNextButton,scheduleRegMove'
     },
     customButtons:{
       today:{
@@ -51,6 +53,12 @@ $(function() {
           let date = moment($('#calendar').fullCalendar('getDate').toString()).format('YYYY-MM');
           arr2 = getScheduleInfo(date);
           $('#calendar').fullCalendar('addEventSource',arr2 );
+        }
+      },
+      scheduleRegMove:{
+        text:'스케줄 등록',
+        click:function(){
+          location.href="/schedule/scheduleRegisterView"
         }
       }
     },
@@ -90,15 +98,25 @@ function getEventInfo(scSeq){
     },
     success:function(resp){
       console.table(resp);
-      cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">스케줄 Id</div><input type="text" class="col-md-8 form-control form-control-sm" value="job_'+resp[0].job_worklargectg+'_'+resp[0].job_workmediumctg+'_'+resp[0].job_seq+'_'+resp[0].sc_seq+'.sh" readonly></div>';
+      if(resp[0].sc_starttime==null){
+        resp[0].sc_starttime='-';
+      }
+      if(resp[0].sc_endtime==null){
+        resp[0].sc_endtime='-';
+      }
+      cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">스케줄 Id</div><input type="text" class="col-md-8 form-control form-control-sm" value="job_'+resp[0].job_worklargectg+'_'+resp[0].job_workmediumctg+'_'+resp[0].job_seq+'_'+resp[0].sc_seq+'" readonly></div>';
       cont+='<br/>';
       cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">잡명</div><input type="text" class="col-md-8 form-control form-control-sm" value="'+resp[0].job_name+'" readonly></div>';
       cont+='<br/>';
       cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">스케줄 상태</div><input type="text" class="col-md-8 form-control form-control-sm align-self-center" value="'+resp[0].sc_status+'" readonly></div>';
       cont+='<br/>';
-      cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">스케줄 설명</div><textarea class="col-md-8 form-control form-control-sm align-self-center" value="'+resp[0].sc_sulmyung+'" readonly></textarea></div>';
+      cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">스케줄 설명</div><textarea class="col-md-8 form-control form-control-sm align-self-center" readonly>'+resp[0].sc_sulmyung+'</textarea></div>';
       cont+='<br/>';
       cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">실행 주기 설명</div><input type="text" class="col-md-8 form-control form-control-sm align-self-center" value="'+resp[0].sc_cronsulmyung+'" readonly></div>';
+      cont+='<br/>';
+      cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">실행 시작일시</div><input type="text" class="col-md-8 form-control form-control-sm align-self-center" value="'+resp[0].sc_starttime+'" readonly></div>';
+      cont+='<br/>';
+      cont+='<div class="row"><div class="col-md-4 text-center align-self-center font-weight-bold">실행 종료일시</div><input type="text" class="col-md-8 form-control form-control-sm align-self-center" value="'+resp[0].sc_endtime+'" readonly></div>';
       cont+='<br/>';
       scEvent.html(cont);
       $('#scEventModal').modal('show');
@@ -136,7 +154,7 @@ function getEventInfo(scSeq){
       </div>
     </div>
     {{--  Modal 모달  --}}
-    <div class="modal fade" id="scEventModal">
+    <div class="modal fade" id="scEventModal" data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

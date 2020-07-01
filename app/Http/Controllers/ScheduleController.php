@@ -240,7 +240,6 @@ class scheduleController extends Controller
             }
         };
         return response()->json($arrResult);
-
     }
     public function getEventInfo(Request $request){
         $scSeq = $request->input('scSeq');
@@ -248,4 +247,12 @@ class scheduleController extends Controller
         $result = $SCHEDULE->getEventInfo($scSeq);
         return response()->json($result);
     }
+    //텍스트변수수정 모달에서 변경유무 상관없이 취소나 close 버튼 누르면 다시원래의 텍스트 입력정보로 돌아옴  
+    public function pTextInputNotModify(Request $request){
+        $pSeq = $request->input('P_Seq');
+        $PROCESS = new App\Process;
+        $result = $PROCESS->getPTextInput($pSeq);
+        return response()->json($result);
+    }
+
 }
