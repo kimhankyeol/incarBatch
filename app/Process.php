@@ -92,13 +92,8 @@ class Process extends Model
         $count = DB::table('ONLINEBATCH_PROCESS')->where('P_WORKLARGECTG',$WorkLarge)->where('P_WORKMEDIUMCTG',$WorkMedium)->where('P_FILE',$processFile)->count();
         return $count;
     }
-    //프로세스 텍스트 파일 DB 유무 체크 
-    public function textFileDBExist($WorkLarge,$WorkMedium,$P_TextInput){
-        $count = DB::table('ONLINEBATCH_PROCESS')->where('P_WORKLARGECTG',$WorkLarge)->where('P_WORKMEDIUMCTG',$WorkMedium)->where('P_TEXTINPUT',$P_TextInput)->count();
-        return $count;
-    }
     //프로세스 등록
-    public function processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_TextInput,$P_RegId){
+    public function processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_FileOutputCheck,$P_PrivateCheck,$P_RegId){
         $query1="
         INSERT INTO 
             ONLINEBATCH_PROCESS 
@@ -122,8 +117,9 @@ class Process extends Model
                 P_PARAMS, 
                 P_PARAMSULMYUNGS, 
                 P_FILE, 
-                P_TEXTINPUT, 
                 P_TEXTINPUTCHECK, 
+                P_FILEOUTPUTCHECK, 
+                P_PRIVATECHECK,
                 P_EXECOUNT
             ) VALUES(
                 P_SEQ.NEXTVAL,
@@ -145,22 +141,12 @@ class Process extends Model
                 '".$proParamType."',
                 '".$proParamSulmyungInput."',
                 '".$processFile."',
-                '".$P_TextInput."',
                 '".$P_TextInputCheck."',
+                '".$P_FileOutputCheck."',
+                '".$P_PrivateCheck."',
                 0
             )";
         $result = DB::insert($query1);
-        return $result;
-    }
-    public function getPTextInput($pSeq){
-        $query1="
-        SELECT 
-            P_TEXTINPUT 
-        FROM 
-            ONLINEBATCH_PROCESS 
-        WHERE 
-            P_SEQ ='".$pSeq."'";
-        $result = DB::SELECT($query1);
         return $result;
     }
 }

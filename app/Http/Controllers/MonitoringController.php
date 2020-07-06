@@ -218,4 +218,31 @@ class MonitoringController extends Controller
         }
     }
 
+    //모니터링 차트 뷰 
+    public function monitoringChartView(Request $request){
+        $monitoringChartDate = $request->input('monitoringChartDate');
+        if($monitoringChartDate == null || $monitoringChartDate == ""){
+            $monitoringChartDate=new DateTime();
+            $monitoringChartDate = $monitoringChartDate->format('Y-m-d');
+        }
+        return view('/monitoring/monitoringChartView',compact('monitoringChartDate'));
+    }
+
+    //모니터링 차트 뷰 데이터 ajax()
+    public function monitoringChartViewData(Request $request){
+        $monitoringChartDate = $request->input('monitoringChartDate');
+        if($monitoringChartDate == null || $monitoringChartDate == "" ){
+            $monitoringChartDate=new DateTime();
+            $monitoringChartDate = $monitoringChartDate->format('Y-m-d');
+        }
+        $MONITORING = new App\Monitoring;
+        //monitortChart 메소드에서 데이터 가공해서 다넘김
+        $chartViewData =$MONITORING->chartViewData($monitoringChartDate);
+        //데이터를 성공적으로 가져오면
+        if($chartViewData!="notSearchData"){
+            // $chartViewData=json_encode($chartViewData);
+        }
+        return response()->json(array('chartViewData'=>$chartViewData,'monitoringChartDate'=>$monitoringChartDate));
+    }
+
 }

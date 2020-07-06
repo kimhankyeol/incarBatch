@@ -11,16 +11,13 @@
 
 
 Route::get('/', 'JobController@index');
-Route::get('/kim','AdminController@kim');
-// 로그인
-Route::get('/login', function(){
-    return view('/common/login');
-});
+// // 로그인 뷰
+// Route::get('/login', function(){
+//     return view('/common/login');
+// });
 
 //로그인 validationCheck
-Route::prefix('/login')->group(function(){
-    Route::get('/loginCheck','LoginController@loginCheck');
-});
+Route::get('/auth/view','AdminController@loginView');
 
 //잡 prefix
 Route::prefix('job')->group(function(){
@@ -94,19 +91,11 @@ Route::prefix('monitoring')->group(function(){
     Route::get('/reWorkScheduleChk','MonitoringController@reWorkScheduleChk');
     // 모니터링 잡 스케줄 재작업
     Route::post('/reWorkSchedule','MonitoringController@reWorkSchedule');
+    // 모니터링 차트 보기
+    Route::get('/monitoringChartView','MonitoringController@monitoringChartView');
+    // 모니터링 차트 데이터 ajax
+    Route::get('/monitoringChartViewData','MonitoringController@monitoringChartViewData');
 });
-
-//히스토리
-Route::prefix('history')->group(function(){
-    //작업 히스토리 뷰
-    Route::get('/historyListView', 'HistoryController@historyListView'); 
-    //작업 히스토리 검색리스트
-    Route::get('/historySearchList','HistoryController@historySearchList');
-});
-
-
-
-
 ////////////팝업///////////////////////////////////////
 Route::prefix('popup')->group(function(){
     //프로세스 상세
@@ -136,11 +125,6 @@ Route::prefix('popup')->group(function(){
     //모니터링 로그 ajax
     Route::get('/monitoringLogMore','PopupController@monitoringLogMore');
 });
-
-
-
-
-
 
 
 //////////////공통 코드 컨트롤러//////////////

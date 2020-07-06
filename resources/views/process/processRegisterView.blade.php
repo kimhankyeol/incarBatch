@@ -9,7 +9,7 @@
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column" style="width:100%">
         <!-- Main Content -->
         <div id="content">
             <div class="container-fluid">
@@ -24,8 +24,8 @@
                             @include("code.codeSelect")
                             {{-- <div class="text-center align-self-center font-weight-bold mx-2">프로그램 ID</div> --}}
                             <div class="text-center align-self-center font-weight-bold">프로그램 경로</div>
-                            <input id ="processPath" type="text" class="form-control form-control-sm align-self-center"readonly>
-                            <input id ="processFile" type="text" class="form-control form-control-sm align-self-center" placeholder="파일명">
+                            <input id ="processPath" type="text" style="width:20%" class="form-control form-control-sm align-self-center mx-2" readonly>
+                            <input id ="processFile" type="text" class="form-control form-control-sm align-self-center mx-2" placeholder="파일명">
                             <div class="mx-1 custom-control custom-checkbox small align-middle">
                                 <input id="retry" type="checkbox" class="custom-control-input" value="0" checked>
                                 <label class="custom-control-label font-weight-bold " for="retry">재작업</label>
@@ -57,17 +57,21 @@
                         </div>
                         <hr>
                         <div class="row align-items-center">
-                             {{-- 업무 구분 대분류 중분류 선택 --}}
-                            <div class="col-md-2 text-center align-self-center font-weight-bold ">텍스트 파일</div>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold ">입력 파일</div>
                             <div class="col-md-2 custom-control custom-checkbox small">
                                 <input id="P_TextInputCheck" type="checkbox" class="custom-control-input">
-                                <label class="custom-control-label font-weight-bold " for="P_TextInputCheck">텍스트 파일 여부</label>
+                                <label class="custom-control-label font-weight-bold " for="P_TextInputCheck">입력 파일 여부</label>
                             </div>
-                            <input id="P_TextInputFilePath"  type="text" class="col-md-3 form-control form-control-sm align-self-center mt-2" value="" disabled style="margin-right: 10px" >
-                            <input id="P_TextInputFileName"  type="text" class="col-md-3 form-control form-control-sm align-self-center mt-2" value="" disabled >
-                        </div>
-                        <div class="row">
-                           
+                           <div class="col-md-2 text-center align-self-center font-weight-bold ">출력 파일</div>
+                           <div class="col-md-2 custom-control custom-checkbox small">
+                               <input id="P_FileOutputCheck" type="checkbox" class="custom-control-input">
+                               <label class="custom-control-label font-weight-bold " for="P_FileOutputCheck">출력 파일 여부</label>
+                           </div>
+                            <div class="col-md-2 text-center align-self-center font-weight-bold private"> 개인정보</div>
+                            <div class="col-md-2 custom-control custom-checkbox small private">
+                                <input id="P_PrivateCheck" type="checkbox" class="custom-control-input">
+                                <label class="custom-control-label font-weight-bold " for="P_PrivateCheck">개인정보 체크</label>
+                            </div>
                         </div>
                         <hr>
                         <div class="row w-100 mx-auto">
@@ -97,24 +101,15 @@
     $("input:text[numberOnly]").on("keyup", function() {
     $(this).val($(this).val().replace(/[^0-9]/g,""));
     }); 
-   $('#P_TextInputCheck').click(function(){
-        if($('#processPath').val()==""){
-            alert('대분류 및 중분류를 선택해주세요')
-            return false;
-        }else{
-            var chk = $(this).is(":checked");
-            if(chk){
-                $('#P_TextInputFilePath').val($('#processPath').val());
-                $('#P_TextInputFileName').removeAttr("disabled", "");
-                $('#P_TextInput').val();
-            }else{
-                $('#P_TextInputFilePath').attr("disabled","disabled");
-                $('#P_TextInputFileName').attr("disabled","disabled");
-                $('#P_TextInputFilePath').val("");
-                $('#P_TextInputFileName').val("");
-            }
+    $('.private').hide();
+    $('#P_FileOutputCheck').change(function(){
+        if($("#P_FileOutputCheck").is(":checked")){
+            $('.private').show();
+        }else if(!$("#P_FileOutputCheck").is(":checked")){
+            $('#P_PrivateCheck').prop("checked", false);
+            $('.private').hide();
         }
-   });
+    })
    function workLargeChgSel(){
      var WorkLarge =  $('#workLargeVal').val();
           $.ajax({

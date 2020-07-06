@@ -9,7 +9,30 @@ class Schedule extends Model
     //스케줄 검색 목록(전체 포함)
     public function scheduleUsedList($searchWord,$WorkLarge,$WorkMedium){
         $query1="
-        SELECT RNUM,SC_SEQ,JOB_SEQ,SC_REGDATE,SC_STARTTIME,SC_CRONTIME,SC_SULMYUNG,SC_CRONSULMYUNG,SC_DELETEYN,SC_REGID,JOB_NAME,JOB_REGID,JOB_REGIP,JOB_REGDATE,JOB_UPDDATE,JOB_DELETEYN,JOB_WORKLARGECTG,JOB_WORKMEDIUMCTG,JOB_WORKLARGENAME,JOB_WORKMEDIUMNAME
+        SELECT 
+            RNUM,
+            SC_SEQ,
+            JOB_SEQ,
+            SC_REGDATE,
+            SC_STARTTIME,
+            SC_CRONTIME,
+            SC_SULMYUNG,
+            SC_CRONSULMYUNG,
+            SC_DELETEYN,
+            SC_REGID,
+            JOB_NAME,
+            JOB_REGID,
+            JOB_REGIP,
+            JOB_REGDATE,
+            JOB_UPDDATE,
+            JOB_DELETEYN,
+            JOB_WORKLARGECTG,
+            JOB_WORKMEDIUMCTG,
+            JOB_WORKLARGENAME,
+            JOB_WORKMEDIUMNAME,
+            SC_LEVEL,
+            SC_PREVSEQ,
+            ISLEAF
         FROM (    
             SELECT  
                 ROW_NUMBER() OVER(PARTITION BY obs.JOB_SEQ,obs.SC_REGDATE ORDER BY obs.SC_STARTTIME DESC NULLS LAST,obs.SC_SEQ,obs.SC_CRONTIME ASC,obs.JOB_SEQ,obs.SC_REGDATE) AS RNUM,
@@ -33,40 +56,48 @@ class Schedule extends Model
                 obj.JOB_WORKLARGECTG,
                 obj.JOB_WORKMEDIUMCTG,
                 (SELECT owl.SHORTNAME FROM ONLINEBATCH_WORKLARGECODE owl WHERE owl.WORKLARGE = obj.JOB_WORKLARGECTG) AS JOB_WORKLARGENAME,
-                (SELECT owm.SHORTNAME FROM ONLINEBATCH_WORKMEDIUMCODE owm WHERE owm.WORKLARGE =obj.JOB_WORKLARGECTG AND owm.WORKMEDIUM = obj.JOB_WORKMEDIUMCTG) AS JOB_WORKMEDIUMNAME
+                (SELECT owm.SHORTNAME FROM ONLINEBATCH_WORKMEDIUMCODE owm WHERE owm.WORKLARGE =obj.JOB_WORKLARGECTG AND owm.WORKMEDIUM = obj.JOB_WORKMEDIUMCTG) AS JOB_WORKMEDIUMNAME,
+                obs.SC_LEVEL,
+                obs.SC_PREVSEQ,
+                CONNECT_BY_ISLEAF as ISLEAF
             FROM ONLINEBATCH_SCHEDULE obs 
             INNER JOIN ONLINEBATCH_JOB obj 
                 ON obj.JOB_SEQ = obs.JOB_SEQ
             INNER JOIN ONLINEBATCH_WORKMEDIUMCODE obwmc 
                 ON obj.JOB_WORKLARGECTG = obwmc.WORKLARGE AND obj.JOB_WORKMEDIUMCTG = obwmc.WORKMEDIUM 
             INNER JOIN ONLINEBATCH_WORKLARGECODE obwlc 
-                ON obwlc.WORKLARGE = obwmc.WORKLARGE AND obwlc.USED=1) ";
+                ON obwlc.WORKLARGE = obwmc.WORKLARGE AND obwlc.USED=1
+            START WITH 
+                obs.SC_PREVSEQ IS NULL  
+            CONNECT BY PRIOR 
+                obs.SC_SEQ = obs.SC_PREVSEQ      
+            ) ";
         //검색어 있을떄 
         $queryAnd =" AND JOB_WORKLARGECTG BETWEEN 1000 AND 1999 AND JOB_DELETEYN = '1' AND SC_DELETEYN=1  ORDER BY JOB_UPDDATE DESC, JOB_REGDATE DESC, SC_SEQ ,JOB_SEQ  ";
         if($searchWord!="searchWordNot"  && $WorkLarge !="all"  && $WorkMedium =="all"){
 
-            $query1=$query1." WHERE RNUM=1 AND JOB_NAME like concat('%'||'".$searchWord."','%')  AND JOB_WORKLARGECTG ='".$WorkLarge."'";
+            $query1=$query1." WHERE RNUM=1 AND JOB_NAME like concat('%'||'".$searchWord."','%')  AND JOB_WORKLARGECTG ='".$WorkLarge."' AND ISLEAF =1 ";
             $query1=$query1.$queryAnd;
 
         }else if($searchWord!="searchWordNot" && $WorkLarge !="all" && $WorkMedium !="all"){
 
-            $query1=$query1." WHERE RNUM=1 AND  JOB_NAME like concat('%'||'".$searchWord."','%') AND JOB_WORKLARGECTG ='".$WorkLarge."' AND JOB_WORKMEDIUMCTG ='".$WorkMedium."'";
+            $query1=$query1." WHERE RNUM=1 AND  JOB_NAME like concat('%'||'".$searchWord."','%') AND JOB_WORKLARGECTG ='".$WorkLarge."' AND JOB_WORKMEDIUMCTG ='".$WorkMedium."' AND ISLEAF =1 ";
             $query1=$query1.$queryAnd;     
 
         }else if($searchWord!="searchWordNot" && $WorkLarge =="all"&& $WorkMedium =="all"){
 
-            $query1=$query1." WHERE RNUM=1 AND  JOB_NAME like concat('%'||'".$searchWord."','%') ";
+            $query1=$query1." WHERE RNUM=1 AND  JOB_NAME like concat('%'||'".$searchWord."','%') AND ISLEAF =1 ";
             $query1=$query1.$queryAnd;
 
         }
         //검색어 없을때
         if($searchWord=="searchWordNot"  && $WorkLarge !="all" && $WorkMedium =="all"){
-            $query1=$query1." WHERE RNUM=1 AND JOB_WORKLARGECTG ='".$WorkLarge."'";
+            $query1=$query1." WHERE RNUM=1 AND JOB_WORKLARGECTG ='".$WorkLarge."' AND ISLEAF =1 ";
             $query1=$query1.$queryAnd;
         }
         if($searchWord=="searchWordNot" && $WorkLarge =="all" && $WorkMedium =="all"){
             // $query1=$query1." WHERE obp.P_WORKLARGECTG ='".$WorkLarge."' AND obp.P_WORKMEDIUMCTG = '".$WorkMedium."'";
-            $query1=$query1."WHERE RNUM=1".$queryAnd;
+            $query1=$query1."WHERE RNUM=1 AND ISLEAF =1 ".$queryAnd;
         }
 
         $jobContents=DB::select($query1);
@@ -131,8 +162,12 @@ class Schedule extends Model
             op.P_FILEPATH,
             job.JOB_PARAMS,
             job.JOB_PARAMSULMYUNGS,
-            op.P_TEXTINPUT,
-            op.P_TEXTINPUTCHECK
+            op.P_TEXTINPUTCHECK,
+            op.P_FILEOUTPUTCHECK,
+            op.P_PRIVATECHECK,
+            op.P_WORKLARGECTG,
+            op.P_WORKMEDIUMCTG,
+            op.P_SULMYUNG
         FROM 
             ONLINEBATCH_SCHEDULEPROCESS obsp
         LEFT JOIN 
@@ -262,6 +297,61 @@ class Schedule extends Model
 
         $result=DB::select($query1);
         return $result;
+    }
+
+    //스케줄 상세 - 스케줄 재작업 히스토리
+    public function scheduleReworkHistory($scSeq){
+        $query1="
+            SELECT 
+                RNUM,
+                SC_SEQ,
+                JOB_SEQ,
+                SC_REGDATE,
+                SC_STARTTIME,
+                SC_ENDTIME,
+                SC_CRONTIME,
+                SC_CRONENDTIME,
+                SC_SULMYUNG,
+                SC_CRONSULMYUNG,
+                SC_DELETEYN,
+                (SELECT SHORTNAME FROM ONLINEBATCH_WORKMEDIUMCODE WHERE WORKLARGE=SUBSTR(SC_STATUS,1,2) AND WORKMEDIUM = CASE WHEN LENGTH(SC_STATUS)=3 THEN SUBSTR(SC_STATUS,3) ELSE SUBSTR(SC_STATUS,3,LENGTH(SC_STATUS)) END ) AS SC_STATUS,
+                SC_REGID,
+                SC_NOTE,
+                SC_LEVEL,
+                SC_PREVSEQ
+            FROM (    
+                SELECT  
+                    ROW_NUMBER() OVER(PARTITION BY obs.JOB_SEQ,obs.SC_REGDATE ORDER BY obs.SC_STARTTIME DESC NULLS LAST,obs.SC_SEQ,obs.SC_CRONTIME ASC,obs.JOB_SEQ,obs.SC_REGDATE) AS RNUM,
+                    obs.SC_SEQ,
+                    obs.JOB_SEQ,
+                    obs.SC_REGDATE,
+                    obs.SC_STARTTIME,
+                    obs.SC_ENDTIME,
+                    obs.SC_CRONTIME,
+                    obs.SC_CRONENDTIME,
+                    obs.SC_SULMYUNG,
+                    obs.SC_CRONSULMYUNG,
+                    obs.SC_DELETEYN,
+                    obs.SC_STATUS,
+                    (SELECT USER_NAME FROM ONLINEBATCH_USER ou WHERE ou.USER_SAWONNUM =obs.SC_REGID) AS SC_REGID ,
+                    obs.SC_NOTE,
+                    obs.SC_LEVEL,
+                    obs.SC_PREVSEQ
+                FROM ONLINEBATCH_SCHEDULE obs 
+                INNER JOIN ONLINEBATCH_JOB obj 
+                    ON obj.JOB_SEQ = obs.JOB_SEQ
+                INNER JOIN ONLINEBATCH_WORKMEDIUMCODE obwmc 
+                    ON obj.JOB_WORKLARGECTG = obwmc.WORKLARGE AND obj.JOB_WORKMEDIUMCTG = obwmc.WORKMEDIUM 
+                INNER JOIN ONLINEBATCH_WORKLARGECODE obwlc 
+                    ON obwlc.WORKLARGE = obwmc.WORKLARGE AND obwlc.USED=1
+                START WITH 
+                    obs.SC_SEQ = '".$scSeq."'  
+                CONNECT BY PRIOR  
+                    obs.SC_PREVSEQ = obs.SC_SEQ 
+                ) 
+            WHERE RNUM=1 ";
+            $result=DB::select($query1);
+            return $result;
     }
 
 }

@@ -374,17 +374,22 @@ const job = {
     var Log_File = [];
     var Sc_ReworkYN=[];
 
-    var P_ExecuteYN = document.getElementsByName("P_ExecuteYN");
+    var P_ExecuteYN = $('select[name=P_ExecuteYN]');
     var scRework = document.getElementsByName("Sc_ReworkYN");
     var logFile = document.getElementsByName("Sc_LogFile");
 
+    //P_ExecuteYN check 에서 selected 로 바뀜
+    console.table(P_ExecuteYN.length);
+    console.table(P_ExecuteYN);
     for (var i = 0; i < P_ExecuteYN.length; i++) {
-      if(P_ExecuteYN[i].checked){
-        P_Seq.push(P_ExecuteYN[i].value);
-        Sc_ReworkYN.push(scRework[i].value);
-        Log_File.push(logFile[i].value);
-      }
+        if($('select[name=P_ExecuteYN] option:selected').eq(i).val()!='notExecute'){
+          P_Seq.push(P_ExecuteYN[i].value);
+          Sc_ReworkYN.push(scRework[i].value);
+          Log_File.push(logFile[i].value);
+        }
     }
+    
+   
     P_Seq =P_Seq.join('\|\|');
     Log_File =Log_File.join('\|\|');
     Sc_ReworkYN =Sc_ReworkYN.join('\|\|');
@@ -585,7 +590,7 @@ const job = {
             }
           })
         }else{
-          alert("실행할 프로그램을 선택해주세요");
+          alert('스케줄에 프로그램의 실행여부는 1개 이상이어야 합니다.');
           return false;
         }
       }

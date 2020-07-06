@@ -370,8 +370,6 @@ const code = {
     },
     //업무 분류별 경로
     workDataSelect:function(){
-        console.log($('#workLargeVal option:selected').val());
-        console.log($('#workMediumVal option:selected').val());
         $.ajax({
             url:"/code/workDataSelect",
             method:"get",
@@ -380,10 +378,7 @@ const code = {
                 workMediumVal : $('#workMediumVal option:selected').val()
             },
             success:function(data){
-                $('#processPath').val(data.workFilePath[0].filepath);
-                if($('#P_TextInputCheck').is(":checked")){
-                    $('#P_TextInputFilePath').val(data.workFilePath[0].filepath);
-                }
+                $('#processPath').val("/home/batch"+data.workFilePath[0].filepath+"/program");
             },error:function(err){
             }
         })

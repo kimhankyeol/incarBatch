@@ -17,15 +17,17 @@
             <h4 class="h3 my-4 font-weight-bold" style="color:white">프로그램 상세 정보</h4>
                 <div class="card shadow">
                     <div class="card-body">
-                      <div class="custom-row">
-                          <input id="P_Seq" type="hidden" value="{{$processDetail[0]->p_seq}}"/>
-                          <div class="text-center align-self-center font-weight-bold mx-2">대분류</div>
-                          <input id="workLargeVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->p_worklargename}}" style="cursor:not-allowed" readonly>
-                          <div class="text-center align-self-center font-weight-bold mx-2">중분류</div>
-                          <input id="workMediumVal" type="text" class="form-control form-control-sm mx-2" value="{{$processDetail[0]->p_workmediumname}}" readonly>
-                          <div class="text-center align-self-center font-weight-bold">프로그램 경로</div>
-                          <input id ="processPath" type="text" class="form-control form-control-sm align-self-center"  value="{{$processDetail[0]->filepath}}" readonly>
-                          <input id ="processFile" type="text" class="form-control form-control-sm align-self-center" value="{{$processDetail[0]->p_file}}" readonly>
+                      <div class="row w-100 mx-auto">
+                          <div class="text-center align-self-center font-weight-bold  col-md-2">대분류</div>
+                          <input id="workLargeVal" type="text" class="form-control form-control-sm  col-md-4" value="{{$processDetail[0]->p_worklargename}}" style="cursor:not-allowed" readonly>
+                          <div class="text-center align-self-center font-weight-bold   col-md-2">중분류</div>
+                          <input id="workMediumVal" type="text" class="form-control form-control-sm  col-md-4" value="{{$processDetail[0]->p_workmediumname}}" readonly>
+                      </div>
+                      <hr>
+                      <div class="row w-100 mx-auto">
+                          <div class="text-center align-self-center font-weight-bold col-md-2">프로그램 경로</div>
+                          <input id ="processPath" type="text" class="form-control form-control-sm align-self-center col-md-4"  value="{{"/home/batch".$processDetail[0]->filepath."/program"}}" readonly>
+                          <input id ="processFile" type="text" class="form-control form-control-sm align-self-center col-md-3" value="{{$processDetail[0]->p_file}}" readonly>
                           <div class="mx-2 custom-control custom-checkbox small align-middle">
                             <input id="retry" type="checkbox" class="custom-control-input" {{$processDetail[0]->p_reworkyn==1?"checked":""}} value="{{ $processDetail[0]->p_reworkyn }}" onclick = "return false">
                             <label class="custom-control-label font-weight-bold" for="retry">재작업</label>
@@ -33,12 +35,15 @@
                       </div>
                       <hr>
                       <div class="row w-100 mx-auto">
-                          <div class="col-md-auto text-center align-self-center font-weight-bold">프로그램 명</div>
-                          <input id="programName" type="text" class="col-md-2 form-control form-control-sm align-self-center" value="{{$processDetail[0]->p_name}}" readonly>
-                          <div class="col-md-auto text-center align-self-center font-weight-bold">설명</div>
-                          <textarea id = "programExplain" type="text" class="col-md-5 form-control form-control-sm"  readonly>{{$processDetail[0]->p_sulmyung}}</textarea>
-                          <div class="col-md-auto text-center align-self-center font-weight-bold">프로그램 상태</div>
-                          <input id ="programStatus" type="text" class="col-md-1 form-control form-control-sm align-self-center text-center font-weight-bold" value="{{$proUsed}}" readonly>
+                        <div class="col-md-2 text-center align-self-center font-weight-bold">프로그램 명</div>
+                        <input id="programName" type="text" class="col-md-4 form-control form-control-sm align-self-center" value="{{$processDetail[0]->p_name}}" readonly>
+                        <div class="col-md-2 text-center align-self-center font-weight-bold">프로그램 상태</div>
+                        <input id ="programStatus" type="text" class="col-md-1 form-control form-control-sm align-self-center text-center font-weight-bold" value="{{$proUsed}}" readonly>
+                      </div>
+                      <hr>
+                      <div class="row w-100 mx-auto">
+                        <div class="col-md-2 text-center align-self-center font-weight-bold">설명</div>
+                        <textarea id = "programExplain" type="text" class="col-md-10 form-control form-control-sm"  readonly>{{$processDetail[0]->p_sulmyung}}</textarea>
                       </div>
                       <hr>
                       <div class="row w-100 mx-auto">
@@ -74,20 +79,42 @@
                       </div>
                       <hr>
                       <div class="row w-100 mx-auto">
-                        {{-- 업무 구분 대분류 중분류 선택 --}}
-                        <div class="col-md-2 text-center align-self-center font-weight-bold">텍스트 입력</div>
+                        <div class="col-md-3 text-center align-self-center font-weight-bold">입력 파일</div>
                         @if(($processDetail[0]->p_textinputcheck)==1)
                           <div class="col-md-2 custom-control custom-checkbox small">
                               <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->p_textinputcheck }}" onclick = "return false">
-                              <label class="custom-control-label font-weight-bold" for="P_TextInputCheck">텍스트 입력여부</label>
+                              <label class="custom-control-label font-weight-bold" for="P_TextInputCheck">입력 파일여부</label>
                           </div>
-                          <input type="text" class="d-inline-block col-md-8 form-control form-control-sm align-self-center"  value="{{'/home/incar/work'.$processDetail[0]->filepath.'/'.$processDetail[0]->p_textinput}}" readonly>
                           @else
                           <div class="col-md-2 custom-control custom-checkbox small">
                             <input id="P_TextInputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->p_textinputcheck }}" onclick = "return false">
                             <label class="custom-control-label font-weight-bold" for="P_TextInputCheck">텍스트 입력여부</label>
                           </div>
-                          <input type="text" class="d-inline-block col-md-8 form-control form-control-sm align-self-center" readonly>
+                        @endif
+                        <div class="col-md-2 text-center align-self-center font-weight-bold">출력 파일</div>
+                        @if(($processDetail[0]->p_fileoutputcheck)==1)
+                          <div class="col-md-3 custom-control custom-checkbox small">
+                              <input id="P_FileOutputCheck" type="checkbox" class="custom-control-input" checked="checked" value="{{ $processDetail[0]->p_fileoutputcheck }}" onclick = "return false">
+                              <label class="custom-control-label font-weight-bold" for="P_FileOutputCheck">출력 파일여부</label>
+                          </div>
+                          @else
+                          <div class="col-md-2 custom-control custom-checkbox small">
+                            <input id="P_FileOutputCheck" type="checkbox" class="custom-control-input" value="{{ $processDetail[0]->p_fileoutputcheck }}" onclick = "return false">
+                            <label class="custom-control-label font-weight-bold" for="P_FileOutputCheck">출력 파일여부</label>
+                          </div>
+                        @endif
+                        @if(($processDetail[0]->p_privatecheck)==1)
+                          <div class="col-md-2 text-center align-self-center font-weight-bold private"> 개인정보</div>
+                          <div class="col-md-2 custom-control custom-checkbox small private">
+                              <input id="P_PrivateCheck" type="checkbox" checked="checked" value="{{ $processDetail[0]->p_privatecheck }}" readonly class="custom-control-input">
+                              <label class="custom-control-label font-weight-bold " for="P_PrivateCheck">개인정보 체크</label>
+                          </div>
+                        @else
+                          <div class="col-md-2 text-center align-self-center font-weight-bold private"> 개인정보</div>
+                          <div class="col-md-2 custom-control custom-checkbox small private">
+                              <input id="P_PrivateCheck" type="checkbox" value="{{ $processDetail[0]->p_privatecheck }}" readonly class="custom-control-input">
+                              <label class="custom-control-label font-weight-bold " for="P_PrivateCheck">개인정보 체크</label>
+                          </div>
                         @endif
                       </div>
                       <hr>
@@ -113,7 +140,7 @@
                         </div>
                       <hr>
                       <div class="row justify-content-end">
-                        <input type="button" class="mt-3 mr-2 btn btn-info" value="수정" onclick="process.edit()"/>
+                        <input type="button" class="mt-3 mr-2 btn btn-info" value="수정" onclick="process.edit('{{$processDetail[0]->p_seq}}')"/>
                         <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="location.href = '/process/processListView'"/>
                       </div>
                     </div>

@@ -9,7 +9,7 @@
     @include('common.sidebar')
     {{--사이드바 끝--}}
     {{--content 시작--}}
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column" style="width: 100%">
         <!-- Main Content -->
         <div id="content">
             <div class="container-fluid">
@@ -34,137 +34,134 @@
                         </div>
                         <hr>
                         <div class="row mb-3">
-                            <div class="card-body">
-                                <fieldset class="cistp-fieldset">
-                                    <legend>실행주기</legend>
-                                    <div class="d-inline-table  col-md-2 right-line">
-                                        <select id="jugiChange" class="form-control form-control-sm w-100" onchange="handler()">
-                                            <option value="6" selected>즉시</option>
-                                            <option value="1">한번</option>
-                                            <option value="2">매일</option>
-                                            <option value="3">매주</option>
-                                            <option value="4">매월</option>
-                                            <option value="5">매년</option>
-                                        </select>
+                            <fieldset class="cistp-fieldset">
+                                <legend>실행주기</legend>
+                                <div class="d-inline-table  col-md-2 right-line">
+                                    <select id="jugiChange" class="form-control form-control-sm w-100" onchange="handler()">
+                                        <option value="6" selected>즉시</option>
+                                        <option value="1">한번</option>
+                                        <option value="2">매일</option>
+                                        <option value="3">매주</option>
+                                        <option value="4">매월</option>
+                                        <option value="5">매년</option>
+                                    </select>
+                                </div>
+                                <div class="d-inline-table col-md-8">
+                                    {{-- 년월시  --}}
+                                    <div id="startTime">
+                                        <div class="d-inline-flex w-100  align-items-center form-control-sm">
+                                            <span class="font-weight-bold mx-auto ">시작일시 : </span>
+                                            <input id="startdate" type="date" class="form-control col-md-4" onchange = "dateChangeVal()">
+                                            <input id="starttm" type="time" class="form-control col-md-4" >
+                                        </div>
                                     </div>
-                                    <div class="d-inline-table col-md-8">
-                                        {{-- 년월시  --}}
-                                        <div id="startTime">
+                                    <div class="d-inline-flex w-100  align-items-center"></div>
+                                    {{-- 분기 처리 --}}
+                                    {{-- 매일 --}}
+                                    <div id="dayShow">
+                                        <div class="d-inline-flex w-100  align-items-center" >
                                             <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                <span class="font-weight-bold mx-auto ">시작일시 : </span>
-                                                <input id="startdate" type="date" class="form-control col-md-4" onchange = "dateChangeVal()">
-                                                <input id="starttm" type="time" class="form-control col-md-4" >
+                                                <span class="font-weight-bold mx-auto">매 : </span>
+                                                <input id="Day" type="text" class="form-control col-md-4" numberOnly>
+                                                <span class="col-md-4">일마다</span>
                                             </div>
                                         </div>
                                         <div class="d-inline-flex w-100  align-items-center">
                                         </div>
-                                        {{-- 분기 처리 --}}
-                                        {{-- 매일 --}}
-                                        <div id="dayShow">
-                                            <div class="d-inline-flex w-100  align-items-center" >
-                                                <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold mx-auto">매 : </span>
-                                                    <input id="Day" type="text" class="form-control col-md-4" numberOnly>
-                                                    <span class="col-md-4">일마다</span>
-                                                </div>
+                                    </div>
+                                    {{-- 매주 --}}
+                                    <div id="weekShow">
+                                        <div class="d-inline-flex w-100  align-items-center">
+                                            <div class="d-inline-flex w-100  align-items-center form-control-sm">
+                                                <span class="font-weight-bold mx-auto">주마다 다음 요일에: </span>
+                                                <label class="mr-3">
+                                                    <input name="yoil"  type="checkbox" class="mr-1" value="1"> 일요일
+                                                </label>
+                                                <label class="mr-3">
+                                                    <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="2"> 월요일
+                                                </label>
+                                                <label class="mr-3">
+                                                    <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="3"> 화요일
+                                                </label>
+                                                <label class="mr-3">
+                                                    <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="4"> 수요일
+                                                </label>
+                                                <label class="mr-3">
+                                                    <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="5"> 목요일
+                                                </label>
+                                                <label class="mr-3">
+                                                    <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="6"> 금요일
+                                                </label>
+                                                <label class="mr-3">
+                                                    <input name="yoil"  type="checkbox" class="mr-1" value="7"> 토요일
+                                                </label>
                                             </div>
-                                            <div class="d-inline-flex w-100  align-items-center">
-                                            </div>
-                                        </div>
-                                        {{-- 매주 --}}
-                                        <div id="weekShow">
-                                            <div class="d-inline-flex w-100  align-items-center">
-                                                <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold mx-auto">주마다 다음 요일에: </span>
-                                                    <label class="mr-3">
-                                                        <input name="yoil"  type="checkbox" class="mr-1" value="1"> 일요일
-                                                    </label>
-                                                    <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="2"> 월요일
-                                                    </label>
-                                                    <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="3"> 화요일
-                                                    </label>
-                                                    <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="4"> 수요일
-                                                    </label>
-                                                    <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="5"> 목요일
-                                                    </label>
-                                                    <label class="mr-3">
-                                                        <input name="yoil" checked="checked" type="checkbox" class="mr-1" value="6"> 금요일
-                                                    </label>
-                                                    <label class="mr-3">
-                                                        <input name="yoil"  type="checkbox" class="mr-1" value="7"> 토요일
-                                                    </label>
-                                                </div>
-                                            
-                                            </div>
-                                        </div>
-                                        {{-- 매월 --}}
-                                        <div id="monthShow">
-                                            <div class="d-inline-flex w-100  align-items-center" id="monthShow">
-                                                <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold mx-auto">매월: </span>
-                                                    <select id="daysel2" class="form-control col-md-4">
-                                                    </select>
-                                                    <span class="col-md-2">일</span>
-                                                    <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
-                                                        <input id="lastDay" type="checkbox" class="custom-control-input" value="0">
-                                                        <label class="custom-control-label font-weight-bold" for="lastDay">말일</label>
-                                                        <input id="lastDayHidden" type="hidden" class="custom-control-input">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-inline-flex w-100  align-items-center">
-                                            </div>
-                                        </div>
-                                        {{-- 매년 --}}
-                                        <div id="yearShow">
-                                            <div class="d-inline-flex w-100  align-items-center" >
-                                                <div class="d-inline-flex w-100  align-items-center form-control-sm">
-                                                    <span class="font-weight-bold mx-auto">매년: </span>
-                                                    <div id ="monthselDiv" class="col-md-2 form-control" readonly></div>
-                                                    <input type="hidden" id="monthsel">
-                                                    </select>
-                                                    <span class="col-md-1">월</span>
-                                                    <div id ="dayselDiv" class="col-md-2 form-control" readonly></div>
-                                                    <input type="hidden" id ="daysel" class="col-md-2 form-control"/>
-                                                    <span class="col-md-1">일</span>
-                                                    <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
-                                                        <input id="lastDay2" type="checkbox" class="custom-control-input" value="0">
-                                                        <label class="custom-control-label font-weight-bold" for="lastDay2">말일</label>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="d-inline-flex w-100  align-items-center">
-                                            </div>
-                                        </div>
-                                        <div id="endTime">
-                                            <div class="d-inline-flex w-100  align-items-center form-control-sm" >
-                                                <span class="font-weight-bold mx-auto">종료일시 : </span>
-                                                <input id="enddate" type="date" class="form-control col-md-4" value="2020-12-31">
-                                                <input id="endtm" type="time" class="form-control col-md-4" value="00:00">
-                                            </div>
-                                            <div class="d-inline-flex w-100  align-items-center">
-                                            </div>
-                                        </div>
+                                        
                                         </div>
                                     </div>
-                                    <hr>
-                                    <div class="card-body" id="jobparams">
-                                        @include('schedule.scheduleExecParam')
+                                    {{-- 매월 --}}
+                                    <div id="monthShow">
+                                        <div class="d-inline-flex w-100  align-items-center" id="monthShow">
+                                            <div class="d-inline-flex w-100  align-items-center form-control-sm">
+                                                <span class="font-weight-bold mx-auto">매월: </span>
+                                                <select id="daysel2" class="form-control col-md-4">
+                                                </select>
+                                                <span class="col-md-2">일</span>
+                                                <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
+                                                    <input id="lastDay" type="checkbox" class="custom-control-input" value="0">
+                                                    <label class="custom-control-label font-weight-bold" for="lastDay">말일</label>
+                                                    <input id="lastDayHidden" type="hidden" class="custom-control-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-inline-flex w-100  align-items-center">
+                                        </div>
                                     </div>
-                                    <hr>
-                                    <div class="row justify-content-end">
-                                        <input type="button" id="scChkBtnHideShow" class="mt-3 mr-2 btn btn-success" value="파라미터 체크" onclick="scheduleParamCheck()" />
-                                        <input type="button" id="scReBtnHideShow" class="mt-3 mr-2 btn btn-success" style="display:none"  value="되돌리기" onclick="reScheduleParamCheck()" />
-                                        <input type="button" id="scRegBtnHideShow" class="mt-3 mr-2 btn btn-primary" style="display:none"  value="등록" onclick="job.scRegister()" />
-                                        <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
+                                    {{-- 매년 --}}
+                                    <div id="yearShow">
+                                        <div class="d-inline-flex w-100  align-items-center" >
+                                            <div class="d-inline-flex w-100  align-items-center form-control-sm">
+                                                <span class="font-weight-bold mx-auto">매년: </span>
+                                                <div id ="monthselDiv" class="col-md-2 form-control" readonly></div>
+                                                <input type="hidden" id="monthsel">
+                                                </select>
+                                                <span class="col-md-1">월</span>
+                                                <div id ="dayselDiv" class="col-md-2 form-control" readonly></div>
+                                                <input type="hidden" id ="daysel" class="col-md-2 form-control"/>
+                                                <span class="col-md-1">일</span>
+                                                <div class="mx-1 custom-control custom-checkbox small align-middle col-md-2">
+                                                    <input id="lastDay2" type="checkbox" class="custom-control-input" value="0">
+                                                    <label class="custom-control-label font-weight-bold" for="lastDay2">말일</label>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="d-inline-flex w-100  align-items-center">
+                                        </div>
                                     </div>
-                                </fieldset>
+                                    <div id="endTime">
+                                        <div class="d-inline-flex w-100  align-items-center form-control-sm" >
+                                            <span class="font-weight-bold mx-auto">종료일시 : </span>
+                                            <input id="enddate" type="date" class="form-control col-md-4" value="2020-12-31">
+                                            <input id="endtm" type="time" class="form-control col-md-4" value="00:00">
+                                        </div>
+                                        <div class="d-inline-flex w-100  align-items-center"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <hr>
+                        <div class="row mb-3" >
+                            <div id="jobparams" style="width:100%">
+                                @include('schedule.scheduleExecParam')
                             </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <input type="button" id="scChkBtnHideShow" class="mt-3 mr-2 btn btn-success" value="파라미터 체크" onclick="scheduleParamCheck()" />
+                            <input type="button" id="scReBtnHideShow" class="mt-3 mr-2 btn btn-success" style="display:none"  value="되돌리기" onclick="reScheduleParamCheck()" />
+                            <input type="button" id="scRegBtnHideShow" class="mt-3 mr-2 btn btn-primary" style="display:none"  value="등록" onclick="job.scRegister()" />
+                            <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
+                        </div>
                         </div>
                     </div>
                 </div>

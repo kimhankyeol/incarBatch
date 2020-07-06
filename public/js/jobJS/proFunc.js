@@ -25,7 +25,17 @@ const process = {
         } else {
             $("#P_TextInputCheck").val(0);
         }
-
+        if ($("#P_FileOutputCheck").is(":checked")) {
+            $("#P_FileOutputCheck").val(1);
+        } else {
+            $("#P_FileOutputCheck").val(0);
+        }
+        if ($("#P_PrivateCheck").is(":checked")) {
+            $("#P_PrivateCheck").val(1);
+        } else {
+            $("#P_PrivateCheck").val(0);
+        }
+        P_PrivateCheck
         var WorkLarge = $('#workLargeVal option:selected').val();
         var WorkMedium = $('#workMediumVal option:selected').val();
 
@@ -39,9 +49,9 @@ const process = {
         // 프로그램 개발자 ID
         var P_DevId = "1611700";
         var P_TextInputCheck = $('#P_TextInputCheck').val();
-        var P_TextInputFilePath = $('#P_TextInputFilePath').val();
-        var P_TextInputFileName = $('#P_TextInputFileName').val();
-
+        var P_FileOutputCheck = $('#P_FileOutputCheck').val();
+        var P_PrivateCheck = $('#P_PrivateCheck').val();
+     
   
         //시간계산 분단위 ()
         if ($('#Pro_YesangTime1').val() == "") {
@@ -80,7 +90,7 @@ const process = {
         const Arr2 = res2.join("||"); //input
         //     //유효성 검사 함수로
         //var provalcheck = process.validation(WorkLarge, WorkMedium, UseDb, processFile, programName, programExplain, Pro_YesangTime, Pro_YesangMaxTime, proParamType, Arr2);
-        var provalcheck = process.validation(WorkLarge, WorkMedium, processFile, programName, programExplain, Pro_YesangTime, Pro_YesangMaxTime, proParamType, Arr2,P_TextInputCheck,P_TextInputFilePath,P_TextInputFileName);
+        var provalcheck = process.validation(WorkLarge, WorkMedium, processFile, programName, programExplain, Pro_YesangTime, Pro_YesangMaxTime, proParamType, Arr2);
         if (provalcheck) {
             var con = confirm("프로그램을 등록하시겠습니까?");
             if (con == true) {
@@ -107,45 +117,29 @@ const process = {
                         proParamType: Arr1,
                         proParamSulmyungInput: Arr2,
                         P_TextInputCheck: P_TextInputCheck,
-                        P_TextInput: P_TextInputFileName,
+                        P_FileOutputCheck: P_FileOutputCheck,
+                        P_PrivateCheck:P_PrivateCheck,
                         P_DevId: P_DevId
                     },
                     success: function (data) {
-                        if(data.pInputCheck==0){
-                            if (data.fileResult1 == true && data.count == 0) {
-                                if(data.result>0){
-                                    alert("프로그램이 등록되었습니다.");
-                                    location.href = "/process/processListView?page=1";
-                                }else{
-                                    alert('프로그램 등록이 실패되었습니다.');
-                                    return false;
-                                }
-                            }else if(data.fileResult1 == true && data.count>0) {
-                                alert('동일한 프로그램(경로+파일,DB)이 등록되어 있습니다.');
-                                return false;
-                            } else if (data.fileResult1 == false) {
-                                alert("경로/파일이 존재하지 않습니다.");
-                                return false;
-                            } 
-                        }else if(data.pInputCheck==1){
-                            if(data.fileResult1 == true &&  data.fileResult1 == true && data.count == 0 && data.count2 == 0){
-                                if(data.result>0){
-                                    alert("프로그램이 등록되었습니다.");
-                                    location.href = "/process/processListView?page=1";
-                                }else{
-                                    alert('프로그램 등록이 실패되었습니다.');
-                                    return false;
-                                }
-                            }else if(data.fileResult1 == true && data.fileResult1 == true  && (data.count>0 || data.count2>0)){
-                                alert('동일한 프로그램(프로그램 , 텍스트파일)이 등록되어 있습니다.');
-                                return false;
-                            }else if (data.fileResult1 == false || data.fileResult2 == false){
-                                alert("경로/파일 (프로그램 , 텍스트파일)이 존재하지 않습니다.");
-                                alert(data.fileResult);
+                       if(data.msg=="success"){
+                            alert('프로그램을 등록하였습니다.');
+                            location.href="/process/processListView?page=1"
+                       }else if(data.msg=="failed"){
+                           var result = confirm('프로그램 등록을 실패했습니다. \n 프로그램 목록화면으로 돌아가겠습니까?');
+                           if(result){
+                            location.href="/process/processListView?page=1";
+                           }else{
+                               return false;
+                           }
+                       }else if(data.msg=="fileNotFound"){
+                            var result = confirm('서버내의 프로그램 파일이 존재하지 않습니다. \n 프로그램 목록화면으로 돌아가겠습니까?');
+                            if(result){
+                                location.href="/process/processListView?page=1";
+                            }else{
                                 return false;
                             }
-                        }
-                     
+                       }
                     },
                 });
             }
@@ -158,13 +152,8 @@ const process = {
         } else {
             $("#retry").val(0);
         }
-
-        if ($("#P_TextInputCheck").is(":checked")) {
-            $("#P_TextInputCheck").val(1);
-        } else {
-            $("#P_TextInputCheck").val(0);
-        }
         var p_seq = $('#P_Seq').val();
+        var processFile = $('#processFile').val();
         var programName = $('#programName').val();
         var programExplain = $('#programExplain').val();
         var WorkLarge = $('#P_WorkLargeCtg').val();
@@ -173,9 +162,6 @@ const process = {
         var retry = $("#retry").val();
         var P_UpdIP = $('#P_UpdIP').val();
         var P_UpDate = $('#P_UpDate').val();
-        var P_TextInputCheck = $('#P_TextInputCheck').val();
-        var P_TextInputFilePath = $('#P_TextInputFilePath').val();
-        var P_TextInputFileName = $('#P_TextInputFileName').val();
         //시간계산 분단위 ()
         if ($('#Pro_YesangTime1').val() == "") {
             $('#Pro_YesangTime1').val(0);
@@ -199,21 +185,24 @@ const process = {
         var Pro_YesangTime=parseInt($('#Pro_YesangTime1').val()*1440)+parseInt($('#Pro_YesangTime2').val()*60)+parseInt($('#Pro_YesangTime3').val());
         var Pro_YesangMaxTime=parseInt($('#Pro_YesangMaxTime1').val()*1440)+parseInt($('#Pro_YesangMaxTime2').val()*60)+parseInt($('#Pro_YesangMaxTime3').val());
         //파라미터 getElementsByName처리하는 부분
-        var proParamType = document.getElementsByName("proParamType");
-        const proParamSulmyungInput = document.getElementsByName("proParamSulmyungInput");
-        const res1 = [];
-        const res2 = [];
+        // var proParamType = document.getElementsByName("proParamType");
+        // const proParamSulmyungInput = document.getElementsByName("proParamSulmyungInput");
+        // const res1 = [];
+        // const res2 = [];
 
-        for (var i = 0; i < proParamType.length; i++) {
-            res1.push(proParamType[i].value);
-        }
-        for (var i = 0; i < proParamSulmyungInput.length; i++) {
-            res2.push(proParamSulmyungInput[i].value);
-        }
-        const Arr1 = res1.join("||"); //type
-        const Arr2 = res2.join("||"); //input
+        // for (var i = 0; i < proParamType.length; i++) {
+        //     res1.push(proParamType[i].value);
+        // }
+        // for (var i = 0; i < proParamSulmyungInput.length; i++) {
+        //     res2.push(proParamSulmyungInput[i].value);
+        // }
+        // const Arr1 = res1.join("||"); //type
+        // const Arr2 = res2.join("||"); //input
+        //유효성 true로 타기위해
+        var proParamType='update';
+        var proParamSulmyungInput='update';
         //유효성 검사 함수로
-        var provalcheck = process.validation(WorkLarge, WorkMedium, processFile, programName, programExplain, Pro_YesangTime, Pro_YesangMaxTime, proParamType, Arr2,P_TextInputCheck,P_TextInputFilePath,P_TextInputFileName);
+        var provalcheck = process.validation(WorkLarge, WorkMedium, processFile, programName, programExplain, Pro_YesangTime, Pro_YesangMaxTime, proParamType, proParamSulmyungInput);
         if (provalcheck) {
             if (parm == "upd") {
                 var con = confirm("프로그램을 수정 하시겠습니까?");
@@ -234,15 +223,16 @@ const process = {
                     async:false,
                     data: {
                         p_seq: p_seq,
+                        processFile:processFile,
                         P_UpdIP: P_UpdIP,
                         P_UpDate: P_UpDate,
                         retry: retry,
-                        proParamType: Arr1,
-                        proParamSulmyungInput: Arr2,
+                        // proParamType: Arr1,
+                        // proParamSulmyungInput: Arr2,
                         Pro_YesangTime: Pro_YesangTime,
                         Pro_YesangMaxTime: Pro_YesangMaxTime,
-                        P_TextInputCheck: P_TextInputCheck,
-                        P_TextInput: P_TextInputFileName,
+                        programName: programName,
+                        programExplain:programExplain,
                         P_DeleteYN: P_DeleteYN
                     },
                     success: function (data) {
@@ -264,7 +254,12 @@ const process = {
     },
     //프로세스 유효성 검사
     //validation: function (programName, programExplain, workMediumCtg, workLargeCtg, UseDb, processFile, Pro_YesangTime, Pro_YesangMaxTime, proParamType, Arr2) {
-    validation: function (WorkLarge, WorkMedium, processFile, programName, programExplain, Pro_YesangTime, Pro_YesangMaxTime, proParamType, proParamSulmyung,P_TextInputCheck,P_TextInputFilePath,P_TextInputFileName) {
+    validation: function (WorkLarge, WorkMedium, processFile, programName, programExplain, Pro_YesangTime, Pro_YesangMaxTime, proParamType, proParamSulmyung) {
+        var pathHeader = processFile.lastIndexOf("\\");
+        var pathMiddle = processFile.lastIndexOf(".");
+        var pathEnd = processFile.length;
+        var fileName = processFile.substring(pathHeader+1, pathMiddle);
+        var extName = processFile.substring(pathMiddle+1, pathEnd);
         if (WorkLarge == "all") {
             alert('업무 대분류를 선택해주세요');
             return false;
@@ -274,6 +269,8 @@ const process = {
         } else if (processFile == "") {
             alert("파일명을 입력하세요");
             return false;
+        } else if (extName!="php"){
+            alert('파일의 확장자를 확인해주세요 \n 예)program.php');
         } else if (programName == "") {
             alert("프로그램 명을 입력하세요");
             return false;
@@ -291,12 +288,6 @@ const process = {
             return false;
         } else if (parseInt(Pro_YesangMaxTime) < parseInt(Pro_YesangTime)) {
             alert('프로그램 예상 시간이 프로그램 최대 예상 시간보다 길 수 없습니다. ');
-            return false;
-        } else if(P_TextInputCheck==1&&P_TextInputFilePath == ""){
-            alert('텍스트 파일 경로가 입력되지 않았습니다.')
-            return false;
-        } else if(P_TextInputCheck==1&&P_TextInputFileName == ""){
-            alert('텍스트 파일 명이 입력되지 않았습니다.')
             return false;
         } else if (proParamType.length == 0) {
             var con = confirm("프로그램 파라미터가 없습니다. 이대로 진행하시겠습니까?");
@@ -335,8 +326,7 @@ const process = {
     //     }
     // },
     //수정
-    edit: function () {
-        var p_seq = document.getElementById("P_Seq").value;
+    edit: function (p_seq) {
         var WorkLarge = $('#WorkLarge').val();
         var WorkMedium = $('#WorkMedium').val();
         location.href = "/process/processEditView" + "?P_Seq=" + p_seq + "&WorkLarge=" + WorkLarge + "&WorkMedium=" + WorkMedium;

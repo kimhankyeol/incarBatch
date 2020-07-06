@@ -2,6 +2,15 @@
 <html lang="en">
 @include('common.head')
 <script>document.title="스케줄 상세"</script>
+<link rel="stylesheet" href="/css/tab.css">
+<script>
+function tabHideShow(pSeq){
+  $('.tab-pane').removeClass('active show');
+  $('.gpLi').removeClass('active')
+  $('#'+pSeq).addClass('active show');
+  $('#gpLi'+pSeq).addClass('active');
+}
+</script>
 <body id="page-top">
   <div id="wrapper" class="bodyBgImg">
     {{-- 블레이드 주석 쓰는 법--}}
@@ -92,7 +101,7 @@
                   <textarea id="Sc_Note" class="form-control col-md-10" maxlength="2000" readonly>{{$scheduleDetail[0]->sc_note}}</textarea>
                 </div>
                 <hr>
-                <div class="row">
+                {{-- <div class="row">
                   <div class="col-md-12 font-weight-bold">
                     잡 파라미터
                   </div>
@@ -116,87 +125,58 @@
                           }
                         @endphp
                       @endif
-                  </div>
-                </div>
-                <hr>
-                <fieldset class="cistp-fieldset">
-                  <legend>구성 프로그램</legend>
-                      <div>
-                        <table id="datatable" class="table table-bordered" cellspacing="0">
-                          <colgroup>
-                            <col width="4%" />
-                            <col width="6%" />
-                            <col width="10%" />
-                            <col width="10%" />
-                            <col width="30%" />
-                            <col width="15%" />
-                            <col width="10%" />
-                            <col width="15%" />
-                          </colgroup>
-                            <thead>
-                              <tr>
-                                <th>순서</th>
-                                <th>경로</th>
-                                <th>프로그램</th>
-                                <th>프로그램 명</th>
-                                <th>파라미터</th>
-                                <th>텍스트 파일</th>
-                                <th>재작업</th>
-                                <th>로그파일</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            @if(isset($jobGusungContents))
-                                @foreach($jobGusungContents as $index=> $data)
-                                  <tr style="text-align: center"  ondblclick="monitor.processDetail('{{$data->sc_seq}}','{{$data->p_seq}}')">
-                                      <td>{{$index+1}}</td>
-                                      <td>{{$data->p_filepath}}</td>
-                                      <td>{{$data->p_file}}</td>
-                                      <td>{{$data->p_name}}</td>
-                                      <td style="overflow-x:scroll">
-                                      @if(isset($data->p_params))
-                                          @php
-                                          $jobParamSulArr=explode("||",$scheduleDetail[0]->sc_param);
-                                          $Job_Params=explode("||",$data->job_params);
-                                          $JobGusung_ParamPos=explode("||",$data->jobgusung_parampos);
-                                          for ($i = 0; $i < count($JobGusung_ParamPos); $i++) {
-                                              echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                                              if($Job_Params[$i]=="paramNum"){
-                                                echo ($i+1).")   ";
-                                                echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="숫자" readonly/>';
-                                              }else if($Job_Params[$i]=="paramStr"){
-                                                echo ($i+1).")   ";
-                                                echo '<input type="text" name="pro_Params" class="col-md-3 form-control form-control-sm" placeholder="문자" readonly/>';
-                                              }
-                                                echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$JobGusung_ParamPos[$i]].'" readonly></div>';
-                                              }
-                                              @endphp
-                                      @endif
-                                      </td>
-                                      <td class="text-center" style="overflow-x:scroll">
-                                        @if($data->p_textinputcheck==1)
-                                          {{$data->p_filepath.'/'.$data->p_textinput}}
-                                        @else
-                                          -
-                                        @endif
-                                      </td>
-                                      <td>
-                                        @if(($data->p_reworkyn)==1)
-                                        <label class="m-0 font-weight-bold">가능</label>
-                                        @else
-                                          <label class="m-0  font-weight-bold text-danger">불가능</label>
-                                        @endif
-                                      </td>
-                                      <td style="overflow-x:scroll">
-                                       {{$data->sc_logfile}}
-                                      </td>
-                                  </tr>
-                                  @endforeach
-                              @endIf
-                            </tbody>
-                        </table>
                     </div>
+                  </div>
+                <hr> --}}
+                <fieldset class="cistp-fieldset">
+                  <legend>파라미터 입력</legend>
+                  <div class="col-md-12">
+                        @if(isset($jobDetail[0]->job_params))
+                          @php
+                            $jobParamArr=explode("||",$jobDetail[0]->job_params);
+                            $jobParamSulArr=explode("||",$jobDetail[0]->job_paramsulmyungs);
+                            for ($i = 0; $i < count($jobParamArr); $i++) {
+                            echo '<div class="d-inline-flex w-50 delYN mb-2">';
+                            echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터 '.intVal($i+1).')</div>';
+                            if($jobParamArr[$i]=="paramNum"){
+                              echo '<input type="text" class="col-md-2  form-control form-control-sm" placeholder="숫자" readonly/>';
+                              echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'" numberonly> </div>' ;
+                              echo '<input type="hidden" name="Job_Params"  value="'.$jobParamArr[$i].'"/>';
+                              echo '<input type="hidden" name="jobParamSulArr" value="'.$jobParamSulArr[$i].'"/>';
+                            }else if($jobParamArr[$i]=="paramStr"){
+                              echo '<input type="text" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';
+                              echo '<input type="text" name="Sc_Param" class="col-md-6 form-control form-control-sm" placeholder="'.$jobParamSulArr[$i].'"> </div>' ;
+                              echo '<input type="hidden" name="Job_Params"  value="'.$jobParamArr[$i].'"/>';
+                              echo '<input type="hidden" name="jobParamSulArr" value="'.$jobParamSulArr[$i].'"/>';
+                            }
+                            }
+                          @endphp
+                        @endif
+                      </div>
                 </fieldset>
+             
+              <fieldset class="cistp-fieldset">
+                <legend>구성 프로그램</legend>
+                @if(isset($jobGusungContents))
+                  <ul class="nav nav-tabs">
+                    @foreach($jobGusungContents as $index => $data)
+                      @if($index==0)
+                        <li id="{{'gpLi'.$data->p_seq}}" class="active gpLi"><a class="active" href="{{'#'.$data->p_seq}}"  onclick="tabHideShow('{{$data->p_seq}}')"  data-toggle="tab">{{intVal($index+1)."번 프로그램 : ".$data->p_file}}</a></li>
+                      @else
+                        <li id="{{'gpLi'.$data->p_seq}}" class="gpLi"><a href="{{'#'.$data->p_seq}}" data-toggle="tab"  onclick="tabHideShow('{{$data->p_seq}}')">{{intVal($index+1)."번 프로그램 : ".$data->p_file}}</a></li>
+                      @endif
+                    @endforeach
+                  </ul>
+                  <div class="tab-content">
+                    @foreach($jobGusungContents as $index => $data)
+                      @include('schedule.scheduleGusungProgramDetailTabView')
+                    @endforeach
+                  </div>
+                  <input hidden class="scExecJob" value=''>
+                @endif
+              </fieldset>
+                
+            
                 <hr>
               <div class="row justify-content-end">
                 <div class="mt-3 mr-2 btn btn-secondary" onclick="job.scheduleDump()">삭제</div>

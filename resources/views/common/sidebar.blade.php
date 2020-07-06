@@ -19,7 +19,8 @@
       </a>
     </li>
     <li class="nav-item"> 
-      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">        <i></i><span>스케줄 관리</span>
+      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">        
+        <i></i><span>스케줄 관리</span>
       </a>
       <div id="collapsePages" class="collapse hide" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
@@ -30,16 +31,24 @@
       </div>
     </li>
     <li class="nav-item"> 
-      <a class="nav-link" href="/monitoring/monitoringView?page=1">
-        <i></i><span>모니터링</span>
+      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePages2">
+        <i class=""></i>
+        <span>모니터링</span>
       </a>
+      <div id="collapsePages2" class="collapse hide " aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">목록</h6>
+          <a class="collapse-item" href="/monitoring/monitoringView?page=1">리스트 보기</a>
+          <a class="collapse-item" href="/monitoring/monitoringChartView">모니터링 상태 차트로 보기</a>
+        </div>
+      </div>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePages">
+      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages3" aria-expanded="true" aria-controls="collapsePages3">
         <i class=""></i>
         <span>관리자</span>
       </a>
-      <div id="collapsePages2" class="collapse hide " aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+      <div id="collapsePages3" class="collapse hide " aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">목록</h6>
           <a class="collapse-item" href="/admin/commonCodeLargeManageView?page=1">대분류 설정</a>

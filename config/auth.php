@@ -42,9 +42,8 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver'=>'token',
             'provider' => 'users',
-            'hash' => false,
         ],
     ],
 
@@ -72,8 +71,8 @@ return [
         ],
 
         // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        //     'driver' => 'oracle',
+        //     'table' => 'ONLINEBATCH_USER',
         // ],
     ],
 

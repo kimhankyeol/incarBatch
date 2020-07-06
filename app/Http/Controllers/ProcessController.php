@@ -104,57 +104,39 @@ class ProcessController extends Controller
         $P_DevId=$request->input('P_DevId');
         $P_RegIp = $_SERVER["REMOTE_ADDR"];
         $P_TextInputCheck=$request->input('P_TextInputCheck');
-        $P_TextInput=$request->input('P_TextInput');
-        //텍스트 파일 경로 / 명
-        $P_TextInputFilePath="/home/incar/work".$processPath."/".$P_TextInput;
+        $P_FileOutputCheck=$request->input('P_FileOutputCheck');
+        $P_PrivateCheck=$request->input('P_PrivateCheck');
         $P_RegId='1611698';
        
         //고정경로 + 대분류 중분류에 따른 경로(processPath) + 파일(processFile)
-        $P_FilePath="/home/incar/work".$processPath."/".$processFile;
+        $P_FilePath=$processPath."/".$processFile;
         //서버에 해당 경로가 존재하는지, 경로 속에 파일이 있는지
         $fileResult1 = file_exists($P_FilePath); 
-        $fileResult2 = file_exists($P_TextInputFilePath);
         $PROCESS = new APP\Process;
         $count = $PROCESS->processFileDBExist($WorkLarge,$WorkMedium,$processFile);
-        $count2 = $PROCESS->textFileDBExist($WorkLarge,$WorkMedium,$P_TextInput);
-        if($P_TextInputCheck==0){
-            if($fileResult1){// 경로+파일이 존재하는가?
-                if($count==0){
-                   $result = $PROCESS ->processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_TextInput,$P_RegId);
-                    return response()->json(array('pInputCheck'=>$P_TextInputCheck,'result'=>$result, 'fileResult1'=>$fileResult1, 'count'=>$count));//성공
-                }else{
-                    return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1,'pInputCheck'=>$P_TextInputCheck));
-                }
+        if($fileResult1){
+            if($count>0){
+                return response()->json(array('msg'=>'failed'));
             }else{
-                return response()->json(array('count'=>$count,'fileResult1'=>$fileResult1,'pInputCheck'=>$P_TextInputCheck));
+                $result = $PROCESS ->processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_FileOutputCheck,$P_PrivateCheck,$P_RegId);
+                return response()->json(array('msg'=>'success'));
             }
         }else{
-            if($fileResult1&&$fileResult2){// 경로+파일이 존재하는가?
-                if($count==0&&$count2==0){
-                   $result = $PROCESS ->processInsert($WorkLarge,$WorkMedium,$processFile,$retry,$programName,$programExplain ,$Pro_YesangTime,$Pro_YesangMaxTime,$proParamType,$proParamSulmyungInput,$P_DevId,$P_RegIp,$P_TextInputCheck,$P_TextInput,$P_RegId);
-                    return response()->json(array('result'=>$result, 'fileResult1'=>$fileResult1,'fileResult2'=>$fileResult2, 'count'=>$count,'count2'=>$count2,'pInputCheck'=>$P_TextInputCheck));//성공
-                }else{
-                    return response()->json(array('count'=>$count,'count2'=>$count2,'fileResult1'=>$fileResult1,'fileResult2'=>$fileResult2,'pInputCheck'=>$P_TextInputCheck));
-                }
-            }else{
-                return response()->json(array('count'=>$count,'count2'=>$count2,'fileResult1'=>$fileResult1,'fileResult2'=>$fileResult2,'pInputCheck'=>$P_TextInputCheck));
-            }
+            return response()->json(array('msg'=>'fileNotFound'));
         }
-       
+         
     }
     //프로세스 수정
     public function processEdit(Request $request){
         $p_seq = $request->input('p_seq');
         $P_ReworkYN=$request->input('retry');
         // $P_UseDB=$request->input('UseDb');
+        $P_ProgramName=$request->input('programName');
+        $P_ProgramExplain=$request->input('programExplain');
         $P_YesangTime=$request->input('Pro_YesangTime');
         $P_YesangMaxTime=$request->input('Pro_YesangMaxTime');
-        $P_Params=$request->input('proParamType');
-        $P_ParamSulmyungs=$request->input('proParamSulmyungInput');
         $P_UpdIP=$request->input('P_UpdIP');
         $P_UpDate = $request->input('P_UpDate');
-        $P_TextInputCheck = $request->input('P_TextInputCheck');
-        $P_TextInput=$request->input('P_TextInput');
         $P_DeleteYN=$request->input('P_DeleteYN');
         //프로그램이 사용중이면 수정x
         $PROCESS = new APP\Process;
@@ -170,30 +152,16 @@ class ProcessController extends Controller
         }
         //원격지 파일체크 로직을 넣어야함
         //수정자  ID 넣어야함
-        if(intVal($P_TextInputCheck)==1){
-            $result = DB::table('ONLINEBATCH_PROCESS')->where('P_SEQ',$p_seq)->update([
-                'P_REWORKYN'=>$P_ReworkYN,
-                'P_YESANGTIME'=>$P_YesangTime,
-                'P_YESANGMAXTIME'=>$P_YesangMaxTime,
-                'P_PARAMS'=>$P_Params,
-                'P_PARAMSULMYUNGS'=>$P_ParamSulmyungs,
-                'P_UPDIP'=>$P_UpdIP,
-                'P_UPDDATE'=>now(),
-                'P_TEXTINPUT'=>$P_TextInput,
-                'P_TEXTINPUTCHECK'=>$P_TextInputCheck
-            ]);
-        }else if(intVal($P_TextInputCheck)==0){
-            $result = DB::table('ONLINEBATCH_PROCESS')->where('P_SEQ',$p_seq)->update([
-                'P_REWORKYN'=>$P_ReworkYN,
-                'P_YESANGTIME'=>$P_YesangTime,
-                'P_YESANGMAXTIME'=>$P_YesangMaxTime,
-                'P_PARAMS'=>$P_Params,
-                'P_PARAMSULMYUNGS'=>$P_ParamSulmyungs,
-                'P_UPDIP'=>$P_UpdIP,
-                'P_UPDDATE'=>now(),
-                'P_TEXTINPUTCHECK'=>$P_TextInputCheck
-            ]);
-        }
+        $result = DB::table('ONLINEBATCH_PROCESS')->where('P_SEQ',$p_seq)->update([
+            'P_REWORKYN'=>$P_ReworkYN,
+            'P_YESANGTIME'=>$P_YesangTime,
+            'P_YESANGMAXTIME'=>$P_YesangMaxTime,
+            'P_SULMYUNG'=>$P_ProgramExplain,
+            'P_NAME'=>$P_ProgramName,
+            'P_UPDIP'=>$P_UpdIP,
+            'P_UPDDATE'=>now()
+        ]);
+       
         
         return response()->json(array('result'=>$result,'P_Seq'=>$p_seq,'proUsed'=>$proUsed));//성공
     }

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 class Monitoring extends Model
 {
     //모니터링 조회
@@ -163,7 +164,6 @@ class Monitoring extends Model
           OBS.SC_PARAM,
           OBP.P_PARAMS,
           OBP.P_PARAMSULMYUNGS,
-          OBP.P_TEXTINPUT,
           OBP.P_YESANGTIME,
           OBP.P_YESANGMAXTIME,
           (SELECT CASE WHEN OBSP.SC_REWORKYN='1' THEN 'Y' ELSE 'N'END AS SC_REWORKYN FROM DUAL) AS SC_REWORKYN
@@ -244,5 +244,118 @@ class Monitoring extends Model
      $reWorkCount=DB::select($query1);
      return $reWorkCount;
     }
- 
+    //모니터링 차트 데이터 
+    public function chartViewData($date){
+      $query1 = "
+        SELECT 
+          RNUM,
+          SC_SEQ,
+          JOB_SEQ,
+          (SELECT SHORTNAME FROM ONLINEBATCH_WORKMEDIUMCODE WHERE WORKLARGE=SUBSTR(SC_STATUS,1,2) AND WORKMEDIUM = CASE WHEN LENGTH(SC_STATUS)=3 THEN SUBSTR(SC_STATUS,3) ELSE SUBSTR(SC_STATUS,3,LENGTH(SC_STATUS)) END ) AS SC_STATUS,
+          ISLEAF,
+          SC_CRONTIME,
+          SC_DELETEYN
+        FROM (    
+          SELECT   
+              ROW_NUMBER() OVER(PARTITION BY obs.JOB_SEQ,obs.SC_REGDATE ORDER BY obs.SC_STARTTIME DESC NULLS LAST, obs.SC_CRONTIME ASC) AS RNUM,
+              obs.SC_SEQ,
+              obs.JOB_SEQ,
+              obs.SC_STATUS,
+              CONNECT_BY_ISLEAF as ISLEAF,
+              obs.SC_CRONTIME,
+              obs.SC_DELETEYN 
+            FROM 
+              ONLINEBATCH_SCHEDULE obs 
+            INNER JOIN ONLINEBATCH_JOB obj 
+              ON obj.JOB_SEQ = obs.JOB_SEQ  
+            START WITH 
+              obs.SC_PREVSEQ IS NULL  
+            CONNECT BY PRIOR 
+              obs.SC_SEQ = obs.SC_PREVSEQ    
+          ) SCT 
+          WHERE 
+            RNUM=1 AND SC_DELETEYN =1 AND ISLEAF=1 AND TO_CHAR(SC_CRONTIME,'YYYY-MM-DD') = '".$date."'";
+      $result=DB::select($query1);
+      $newArrResult ="";
+      $newArrResult2 = "";
+      if(count($result)!=0){
+        foreach ($result as $row){
+          $newArrResult =$this->monitoringScheduleProcessGusung($row->job_seq,$row->sc_seq);
+          if($newArrResult!="notSearchData"){
+            $newArrResult2 = $newArrResult2.substr($newArrResult,0,strlen($newArrResult)-1).",";
+          }else{
+            return "notSearchData";
+          }
+        }
+      }else if(count($result)==0){
+        return "notSearchData";
+      }
+      return "[".substr($newArrResult2,0,strlen($newArrResult2)-1)."]";
+    }
+     //모니터링 차트  프로그램 시간 ,정보 구하는 메서드
+    public function monitoringScheduleProcessGusung($jobSeq,$scSeq){
+      $query1="
+        SELECT 
+            obsp.SC_SEQ,
+            obsp.P_SEQ,
+            obsp.JOB_SEQ,
+            SUBSTR(obsp.JOBSM_P_STATUS,1,2) AS JOBSM_P_STATUS,
+            TO_CHAR(obs.SC_CRONTIME,'YYYY-MM-DD HH24:MI') AS SC_CRONTIME,
+            (SELECT obp.P_Name FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_Name,
+            (SELECT obj.Job_WorkLargeCtg FROM OnlineBatch_Job obj WHERE obj.Job_Seq = objg.Job_Seq ) AS WorkLarge,
+            (SELECT obj.Job_WorkMediumCtg FROM OnlineBatch_Job obj WHERE obj.Job_Seq = objg.Job_Seq ) AS WorkMedium,
+            objg.JobGusung_Order AS JobGusung_Order,
+             (SELECT owm.Sulmyung FROM OnlineBatch_WorkMediumCode owm WHERE  owm.WorkLarge =substr(obs.Sc_Status,1,2) AND owm.WorkMedium =substr(obs.Sc_Status,-1)) as Sc_StatusName,
+            (SELECT obp.P_YESANGTIME FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_YESANGTIME,
+            (SELECT obp.P_YESANGMAXTIME FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_YESANGMAXTIME
+        FROM 
+            OnlineBatch_ScheduleProcess obsp
+        INNER JOIN 
+            OnlineBatch_JobGusung objg 
+            ON objg.Job_Seq = obsp.Job_Seq AND objg.P_Seq =obsp.P_Seq 
+        INNER JOIN 
+            OnlineBatch_Schedule obs
+            ON obs.Job_Seq =obsp.Job_Seq AND obs.Sc_Seq =obsp.Sc_Seq 
+        WHERE 
+            obsp.Job_Seq ='".$jobSeq."' AND obsp.Sc_Seq ='".$scSeq."'
+        ORDER BY 
+            objg.JobGusung_Order";
+   
+    $programStartTime = "";
+    $programEndTime ="";
+    $arrResult="";
+    $arrResult2="";
+    $result=DB::select($query1);
+    if(count($result)!=0){
+      foreach($result as $i => $row){
+        if($i==0){
+          $programStartTime = $row->sc_crontime;
+          $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
+          $programEndTime = date("Y-m-d H:i",$programEndTime );
+        }else{
+          $programStartTime = $programEndTime;
+          $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
+          $programEndTime = date("Y-m-d H:i",$programEndTime);
+        }
+        if($row->jobsm_p_status=='10'){
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#FFCF32","pstatus":"'.$row->jobsm_p_status.'"},';
+        }
+        if($row->jobsm_p_status=='20'){
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#2E84BB","pstatus":"'.$row->jobsm_p_status.'"},';
+        }
+        if($row->jobsm_p_status=='40'){
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#F0002B","pstatus":"'.$row->jobsm_p_status.'"},';
+        }
+        if($row->jobsm_p_status=='90'){
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#992CC0","pstatus":"'.$row->jobsm_p_status.'"},';
+        }
+  
+        $arrResult2=$arrResult2.$arrResult;
+        $i++;
+      }
+    }else {
+      $arrResult2="notSearchData";
+    }
+    return $arrResult2;
+  }
 }

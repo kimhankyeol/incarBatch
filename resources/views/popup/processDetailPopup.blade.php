@@ -74,14 +74,20 @@
                     </div>
                     <hr>
                     <div class="row w-100 mx-auto">
-                      <div class="col-md-2 text-center align-self-center font-weight-bold">로그 경로</div>
-                    <input type="text" class="d-inline-block col-md-10 form-control form-control-sm align-self-center" value="{{'/home/script/log'.$processDetail[0]->sc_logfile}}" readonly>
+                      {{-- 업무 구분 대분류 중분류 선택 --}}
+                      <div class="col-md-2 text-center align-self-center font-weight-bold">입력 파일</div>
+                      {{-- <input type="text" class="d-inline-block col-md-10 form-control form-control-sm align-self-center"  value="{{'/home/incar/work'.$processDetail[0]->filepath.'/'.$processDetail[0]->p_textinput}}" readonly> --}}
                     </div>
                     <hr>
                     <div class="row w-100 mx-auto">
                       {{-- 업무 구분 대분류 중분류 선택 --}}
-                      <div class="col-md-2 text-center align-self-center font-weight-bold">텍스트 파일</div>
-                      <input type="text" class="d-inline-block col-md-10 form-control form-control-sm align-self-center"  value="{{'/home/incar/work'.$processDetail[0]->filepath.'/'.$processDetail[0]->p_textinput}}" readonly>
+                      <div class="col-md-2 text-center align-self-center font-weight-bold">출력 파일</div>
+                      {{-- <input type="text" class="d-inline-block col-md-10 form-control form-control-sm align-self-center"  value="{{'/home/incar/work'.$processDetail[0]->filepath.'/'.$processDetail[0]->p_textinput}}" readonly> --}}
+                    </div>
+                    <hr>
+                    <div class="row w-100 mx-auto">
+                      <div class="col-md-2 text-center align-self-center font-weight-bold">로그 경로</div>
+                    <input type="text" class="d-inline-block col-md-10 form-control form-control-sm align-self-center" value="{{'/home/script/log'.$processDetail[0]->sc_logfile}}" readonly>
                     </div>
                     <hr>
                     {{-- 프로그램변수가 추가되는 부분 --}}

@@ -178,12 +178,14 @@ class scheduleController extends Controller
         //프로시저를 통한 스케줄러 상세정보 검색
         
         $scheduleDetail=$SCHEDULE->scheduleDetail($job_seq,$sc_seq);
+        //재작업 히스토리
+        $scheduleReworkHistory=$SCHEDULE->scheduleReworkHistory($sc_seq);
 
         $WorkLarge = $jobDetail[0]->job_worklargectg;
         $WorkMedium = $jobDetail[0]->job_workmediumctg;
         //스케줄 토탈타임
         $scheduleTotalTime = $SCHEDULE->scheduleTotalTime($job_seq,$sc_seq);
-        return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','scheduleTotalTime','WorkLarge','WorkMedium'));
+        return view('schedule.scheduleDetailView',compact('jobDetail','jobGusungContents','scheduleDetail','scheduleTotalTime','WorkLarge','WorkMedium','scheduleReworkHistory'));
     }
     public function scheduleDump(Request $request){
         $Sc_UpdIP = $_SERVER["REMOTE_ADDR"];

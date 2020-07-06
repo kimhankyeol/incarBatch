@@ -135,7 +135,11 @@ class Job extends Model
             process.P_REWORKYN,
             process.P_EXECOUNT,
             process.P_TEXTINPUTCHECK,
-            process.P_TEXTINPUT
+            process.P_FILEOUTPUTCHECK,
+            process.P_WORKLARGECTG,
+            process.P_WORKMEDIUMCTG,
+            process.P_PRIVATECHECK,
+            process.P_SULMYUNG
         FROM
             ONLINEBATCH_JOBGUSUNG gusung
         left join ONLINEBATCH_JOB job on
