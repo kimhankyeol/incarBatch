@@ -299,15 +299,18 @@ class Monitoring extends Model
             obsp.SC_SEQ,
             obsp.P_SEQ,
             obsp.JOB_SEQ,
+            obsp.JOBSM_P_STARTTIME,
+            obsp.JOBSM_P_ENDTIME,
             SUBSTR(obsp.JOBSM_P_STATUS,1,2) AS JOBSM_P_STATUS,
             TO_CHAR(obs.SC_CRONTIME,'YYYY-MM-DD HH24:MI') AS SC_CRONTIME,
             (SELECT obp.P_Name FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_Name,
             (SELECT obj.Job_WorkLargeCtg FROM OnlineBatch_Job obj WHERE obj.Job_Seq = objg.Job_Seq ) AS WorkLarge,
             (SELECT obj.Job_WorkMediumCtg FROM OnlineBatch_Job obj WHERE obj.Job_Seq = objg.Job_Seq ) AS WorkMedium,
             objg.JobGusung_Order AS JobGusung_Order,
-             (SELECT owm.Sulmyung FROM OnlineBatch_WorkMediumCode owm WHERE  owm.WorkLarge =substr(obs.Sc_Status,1,2) AND owm.WorkMedium =substr(obs.Sc_Status,-1)) as Sc_StatusName,
+             (SELECT owm.LongName FROM OnlineBatch_WorkMediumCode owm WHERE  owm.WorkLarge =substr(obsp.JOBSM_P_STATUS,1,2) AND owm.WorkMedium =substr(obsp.JOBSM_P_STATUS,-1)) as JOBSM_P_STATUSNAME,
             (SELECT obp.P_YESANGTIME FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_YESANGTIME,
-            (SELECT obp.P_YESANGMAXTIME FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_YESANGMAXTIME
+            (SELECT obp.P_YESANGMAXTIME FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_YESANGMAXTIME,
+            (SELECT obp.P_FILE FROM OnlineBatch_Process obp WHERE obp.P_Seq=objg.P_Seq) as P_FILE
         FROM 
             OnlineBatch_ScheduleProcess obsp
         INNER JOIN 
@@ -329,25 +332,36 @@ class Monitoring extends Model
     if(count($result)!=0){
       foreach($result as $i => $row){
         if($i==0){
-          $programStartTime = $row->sc_crontime;
-          $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
-          $programEndTime = date("Y-m-d H:i",$programEndTime );
-        }else{
-          $programStartTime = $programEndTime;
-          $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
-          $programEndTime = date("Y-m-d H:i",$programEndTime);
+          //프로그램의 시작시간과 종료시간이 값이 둘다 있을떄는 진행시간을 구할수 있지만 없을떄는 예상시간으로 프로그램 예상 진행시간을 구해서 나타냄
+          if($row->jobsm_p_starttime!=null && $row->jobsm_p_endtime!=null){
+            $programStartTime = $row->jobsm_p_starttime;
+            $programEndTime = $row->jobsm_p_endtime;
+          }else{
+            $programStartTime = $row->sc_crontime;
+            $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
+            $programEndTime = date("Y-m-d H:i",$programEndTime );
+          }
+        }else{ 
+          if($row->jobsm_p_starttime!=null && $row->jobsm_p_endtime!=null){
+            $programStartTime = $row->jobsm_p_starttime;
+            $programEndTime = $row->jobsm_p_endtime;
+          }else{
+            $programStartTime = $programEndTime;
+            $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
+            $programEndTime = date("Y-m-d H:i",$programEndTime);
+          }
         }
         if($row->jobsm_p_status=='10'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#FFCF32","pstatus":"'.$row->jobsm_p_status.'"},';
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#FFCF32","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
         }
         if($row->jobsm_p_status=='20'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#2E84BB","pstatus":"'.$row->jobsm_p_status.'"},';
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#2E84BB","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
         }
         if($row->jobsm_p_status=='40'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#F0002B","pstatus":"'.$row->jobsm_p_status.'"},';
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#F0002B","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
         }
         if($row->jobsm_p_status=='90'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#992CC0","pstatus":"'.$row->jobsm_p_status.'"},';
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#992CC0","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
         }
   
         $arrResult2=$arrResult2.$arrResult;

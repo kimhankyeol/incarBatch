@@ -19,7 +19,9 @@
 const chart = {
     gantt:function(monitorResultObject){
         am4core.ready(function() {
-            console.table(JSON.parse(monitorResultObject));
+      
+            var length = JSON.parse(monitorResultObject).length-1;
+            console.table(JSON.parse(monitorResultObject)[length].end);
             // Themes begin
             am4core.useTheme(am4themes_animated);
             // Themes end
@@ -43,14 +45,14 @@ const chart = {
             dateAxis.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm";
             dateAxis.renderer.minGridDistance = 70;
             dateAxis.baseInterval = { count: 30, timeUnit: "minute" };
-            dateAxis.max = new Date().getTime();
+   
             dateAxis.strictMinMax = true;
             dateAxis.renderer.tooltipLocation = 0;
 
             var series1 = chart.series.push(new am4charts.ColumnSeries());
             series1.columns.template.width = am4core.percent(80);
             series1.columns.template.height = am4core.percent(50);
-            series1.columns.template.tooltipText = "{name}: {openDateX} - {dateX}";
+            series1.columns.template.tooltipText = "스케줄 번호 : {name} \n 프로그램 명 : {pfile} \n 프로그램 상태 : {pstatus}";
 
             series1.dataFields.openDateX = "start";
             series1.dataFields.dateX = "end";
