@@ -6,7 +6,7 @@ const process = {
         var WorkLarge = $('#workLargeVal option:selected').val();
         var WorkMedium = $('#workMediumVal option:selected').val();
         // 대분류 , 중분류 전체 선택일때 아닐떄 경우의 수
-        location.href = "/process/processListView?searchWord=" + searchWord + "&WorkLarge=" + WorkLarge + "&WorkMedium=" + WorkMedium +"page=1"
+        location.href = "/process/processListView?searchWord=" + searchWord + "&WorkLarge=" + WorkLarge + "&WorkMedium=" + WorkMedium +"&page=1"
     },
     //등록
     register: function () {

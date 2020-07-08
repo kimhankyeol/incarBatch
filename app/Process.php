@@ -46,6 +46,10 @@ class Process extends Model
             // $query1=$query1." WHERE obp.P_WORKLARGECTG ='".$WorkLarge."' AND obp.P_WORKMEDIUMCTG = '".$WorkMedium."'";
             $query1=$query1.$queryAnd;
         }
+        if($searchWord=="searchWordNot"  && $WorkLarge !="all" && $WorkMedium !="all"){
+            $query1=$query1."WHERE obp.P_WorkLargeCtg ='".$WorkLarge."' AND obp.P_WorkMediumCtg='".$WorkMedium."'";
+            $query1=$query1.$queryAnd;
+        }
         $processContents = DB::select($query1);
         return $processContents;
     }
