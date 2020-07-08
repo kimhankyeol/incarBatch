@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+@include('common.head')
+<script>document.title="모니터링 리스트"</script>
+<script>$(function(){$("#scheduleList").colResizable({onDrag:null,liveDrag:true});});</script>
+<script>
+	var colResiz = function(){
+    const scTable = document.getElementById("scheduleListTable");
+    const scpTable = document.getElementById("scheduleProcessListTable");
+    if(!scTable.children[0]) {
+      $("#scheduleList").colResizable({
+        liveDrag:true, 
+        partialRefresh:true,
+        onDrag:null
+      });
+    }
+    if(!scpTable.children[2]) {
+      $("#scheduleProcessList").colResizable({
+        liveDrag:true, 
+        partialRefresh:true,
+        onDrag:null
+      });
+    }
+	}
+</script>
+<script>
+  function workLargeChgSel(){
+    var WorkLarge =  $('#workLargeVal').val();
+    $.ajax({
+      url:"/code/workMediumCtg",
+      method:"get",
+      data:{
+        "WorkLarge":WorkLarge
+      },
+      success:function(resp){
+        $("#workMediumVal").html(resp.returnHTML);
+      }
+    })
+  }
+  $(document).ready( function() {
+    // var now = new Date();
+    // var month = (now.getMonth() + 1);               
+    // var day = now.getDate();
+    // if (month < 10) 
+    //     month = "0" + month;
+    // if (day < 10) 
+    //     day = "0" + day;
+    // var today = now.getFullYear() + '-' + month + '-' + day;
+    // $('#cronStartDate').val(today);
+    // $('#cronEndDate').val(today);
+    var dbclick=false;
+    // 모니터 리스트
+    $(document).on('click','.OneDbClickCss1',function(event){
+      var OneDbClickCss = $('.OneDbClickCss1').index(this);
+      //tr 색 바꾸기  활성된거
+      if($('.OneDbClickCss1').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'})){
+          $('.OneDbClickCss1').eq(OneDbClickCss).css({'background-color':'rgb(218, 221, 235)'});
+      }else {
+          $('.OneDbClickCss1').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'});
+      }
+    })
+    $(document).on('click','.OneDbClickCss2',function(event){
+      var OneDbClickCss = $('.OneDbClickCss2').index(this);
+      //tr 색 바꾸기  활성된거
+      if($('.OneDbClickCss2').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'})){
+          $('.OneDbClickCss2').eq(OneDbClickCss).css({'background-color':'rgb(218, 221, 235)'});
+      }else {
+          $('.OneDbClickCss2').not(OneDbClickCss).css({'background-color':'rgb(255, 255, 255)'});
+      }
+    })
+    // 페이징
+    // $(document).on('click', '.pagination .page-link', function (event) {
+    //   event.preventDefault();
+    //   var href = $(this).attr('href').split('?')[0];
+    //   var href_param = $(this).attr('href').split('?')[1];
+    //   var searchPage = href_param.split('page=')[1];
+      
+    //   var scheduleProcessList = document.getElementById("scheduleProcessListTable");
+    //   scheduleProcessList.style.display = "none";
+    //   $.ajax({
+    //     url: href,
+    //     method: "get",
+    //     data: {
+    //       "page": searchPage
+    //     },
+    //     success: function (resp) {
+    //       $('#scheduleListTable').html(resp.returnHTML)
+    //     }
+    //   })
+    // });
+    $( document ).ajaxComplete(function( event, request, settings ) {
+      colResiz();
+    });
+    $(document).on('click', '#customCheck', function (event) {
+      const customCheck = document.getElementById("customCheck").checked;
+      if(customCheck) {
+        refreshScheduleProcessList = setInterval(function() {
+          const Job_Seq = document.getElementById("jobSeq").value;
+          const Sc_Seq = document.getElementById("scSeq").value;
+          if (customCheck &&Job_Seq.length != 0 && Sc_Seq.length != 0) {
+            $.ajax({
+              url: "/monitoring/scheduleProcessList",
+              method: "get",
+              data: {
+                "Job_Seq": Job_Seq,
+                "Sc_Seq": Sc_Seq
+              },
+              success: function (resp) {
+                $('#scheduleProcessListTable').html(resp.returnHTML);
+              }
+            })
+            colResiz();
+          }
+        }, 30000);
+      } else {
+        clearInterval(refreshScheduleProcessList);
+      }
+    })
+  });
+</script>
+<body id="page-top" class="bodyBgImg">
+  <div id="wrapper">
+    @include('common.sidebar')
+    <div class="d-flex flex-column" style="width: 100%;overflow-x: hidden">
+      <div id="content">
+        <div class="container-fluid">
+          <h4 class="h3 my-4 font-weight-bold" style="color:white">모니터링</h4>
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <div class="form-inline navbar-search justify-content-end">
+                <div class="input-group align-items-center mb-2 w-100">
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_start" type="checkbox" class="custom-control-input jobStatus"  @if(explode(",",$jobStatus)[0]=="20") value="20" checked="true"@else value="20"  @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_start">실행중</label>
+                  </div>
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_reservation" type="checkbox" class="custom-control-input jobStatus"  @if(explode(",",$jobStatus)[1]=="30") value="30" checked="true"@else value="30"  @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_reservation">예약</label>
+                  </div>
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_end" type="checkbox" class="custom-control-input jobStatus" @if(explode(",",$jobStatus)[2]=="90") value="90" checked="true"@else value="90"  @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_end">완료</label>
+                  </div>
+                  <div class="mx-1 custom-control custom-checkbox small">
+                    <input id="status_error" type="checkbox" class="custom-control-input jobStatus" @if(explode(",",$jobStatus)[3]=="40") value="40" checked="true" @else value="40" @endif>
+                    <label class="custom-control-label font-weight-bold" for="status_error">오류</label>
+                  </div>
+                </div>
+                <div class="input-group align-items-center">
+                   {{-- 업무 구분 대분류 중분류 선택 --}}
+                  <div class="text-center align-self-center font-weight-bold mx-2">업무 구분</div>
+                  @include("code.codeSelect")
+                  <div class="input-group align-items-center">
+                    <div class="text-center align-self-center font-weight-bold mx-2">실행일</div>
+                     {{-- 검색 조건 --}}
+                    <input type="date" class="form-control form-control-sm" id="cronStartDate" value="{{$cronStartDate}}">
+                     <span class="form-control-sm"> ~ </span>
+                     <input type="date" class="form-control form-control-sm" id="cronEndDate" value="{{$cronEndDate}}">
+                  </div>
+                   {{-- 검색 조건 --}}
+                  <select class="form-control form-control-sm">
+                    <option>
+                      잡명
+                    </option>
+                  </select>
+                  {{-- 검색 단어가 있을떄 없을때 구분  --}}
+                  @if(!isset($searchWord))
+                    <input id="searchWord" type="text" class="form-control form-control-sm" placeholder="조회" aria-label="Search" value="{{$searchWord}}">
+                  @elseif(isset($searchWord))
+                    @if($searchWord=="searchWordNot")
+                      <input id="searchWord" type="text" value="" class="form-control form-control-sm" placeholder="조회" aria-label="Search" >
+                    @else
+                      <input id="searchWord" type="text" value="{{$searchWord}}" class="form-control form-control-sm" aria-label="Search">
+                    @endif
+                  @endif
+                  <div class="input-group-append ">
+                    <button type="button" class="btn btn-sm btn_orange" onclick="monitor.search('1')">
+                      <i class="fas fa-search fa-sm" style="color:white"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body py-3">
+              <div id="scheduleListTable" class="table-responsive overflow-x-scroll" style="height: calc((1vh) * 50);">
+                @include('monitoring.scheduleList')
+                @if(isset($paginator))
+                  {{$paginator->setPath('/monitoring/monitoringView')->appends(request()->except($searchParams))->links()}}
+                @endIf
+              </div>
+              <div id="reloadBtn" class="custom-control custom-checkbox mt-4 mb-2" style="display:none;" >
+                <input type="checkbox" class="custom-control-input" id="customCheck">
+                <label class="custom-control-label font-weight-bold" for="customCheck">30초 마다 자동 새로고침</label>
+              </div>
+              <div id="scheduleProcessListTable" class="table-responsive overflow-x-scroll">
+                @include('monitoring.scheduleProcessList')
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{-- 잡시퀀스 , 스케줄시퀀스,프로그램 시퀀스 --}}
+    <input type="hidden" id="jobSeq">
+    <input type="hidden" id="scSeq">
+    <input type="hidden" id="pSeq">
+    <input type="hidden" id="scVersion">
+    <input type="hidden" id="regDate">
+    {{--  Modal 모달  --}}
+    <div class="modal fade" id="reworkModal" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold modal-title text-danger">재작업</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <textarea id="Sc_Note" class="form-control" maxlength="2000" placeholder="재작업 사유" onkeyup="check_text(this);" onkeypress="check_text(this);"> </textarea>
+            <span id="text_cnt" class="d-block text-right text-gray-500">text_cnt</span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" onclick="monitor.reWorkSchedule()">재작업</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $("#Sc_Note").val('');
+      $("#text_cnt").html('0 / 2000 Byte');
+      function check_text(obj){
+        var text_cnt = $(obj).val().length;
+        if(text_cnt >= 2000) {
+          event.preventDefault();
+          alert("2000 Byte 이상 작성할 수 없습니다.");
+        }
+        $("#text_cnt").html(text_cnt+' / 2000 Byte');
+      }
+    </script> 
+</body>
+</html>
+
