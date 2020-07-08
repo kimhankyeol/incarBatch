@@ -101,33 +101,7 @@ function tabHideShow(pSeq){
                   <textarea id="Sc_Note" class="form-control col-md-10" maxlength="2000" readonly>{{$scheduleDetail[0]->sc_note}}</textarea>
                 </div>
                 <hr>
-                {{-- <div class="row">
-                  <div class="col-md-12 font-weight-bold">
-                    잡 파라미터
-                  </div>
-                  <hr>
-                    <div class="col-md-12" id="jobParams">
-                      @if(isset($jobDetail[0]->job_params))
-                        @php
-                          $jobParamArr=explode("||",$jobDetail[0]->job_params);
-                          $jobParamSulArr=explode("||",$scheduleDetail[0]->sc_param);
-                          for ($i = 0; $i < count($jobParamArr); $i++) {
-                          echo '<div class="d-inline-flex w-50 delYN mb-2">';
-                          echo '<div class="col-md-3 small align-self-center text-center">잡 파라미터</div>';
-                          if($jobParamArr[$i]=="paramDate"){
-                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="날짜" readonly/>';
-                          }else if($jobParamArr[$i]=="paramNum"){
-                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="숫자" readonly/>';
-                          }else if($jobParamArr[$i]=="paramStr"){
-                            echo '<input type="text" name="Job_Params" class="col-md-2 form-control form-control-sm" placeholder="문자" readonly/>';
-                          }
-                          echo '<input type="text" name="Job_paramSulmyungs" class="col-md-6 form-control form-control-sm" value="'.$jobParamSulArr[$i].'" readonly> </div>' ;
-                          }
-                        @endphp
-                      @endif
-                    </div>
-                  </div>
-                <hr> --}}
+                
                 <fieldset class="cistp-fieldset">
                   <legend>파라미터 입력</legend>
                   <div class="col-md-12">
@@ -154,7 +128,7 @@ function tabHideShow(pSeq){
                         @endif
                       </div>
                 </fieldset>
-             
+  
               <fieldset class="cistp-fieldset">
                 <legend>구성 프로그램</legend>
                 @if(isset($jobGusungContents))
@@ -172,11 +146,44 @@ function tabHideShow(pSeq){
                       @include('schedule.scheduleGusungProgramDetailTabView')
                     @endforeach
                   </div>
-                  <input hidden class="scExecJob" value=''>
                 @endif
               </fieldset>
-                
-            
+              <fieldset class="cistp-fieldset">
+                <legend>스케줄 재작업 히스토리</legend>
+                  <table id="datatable" class="table table-bordered" cellspacing="0">
+                    <colgroup>
+                      <col width="8%" />
+                      <col width="30%" />
+                      <col width="16%" />
+                      <col width="16%" />
+                      <col width="10%" />
+                      <col width="20%" />
+                    </colgroup>
+                      <thead>
+                        <tr>
+                          <th>스케줄 번호</th>
+                          <th>스케줄 설명</th>
+                          <th>스케줄 시작 일시</th>
+                          <th>스케줄 종료 일시</th>
+                          <th>상태</th>
+                          <th>비고</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($scheduleReworkHistory as $i => $value)
+                          <tr class="text-center" style="{{(count($scheduleReworkHistory)==intVal($i+1)) ? "background-color:#eaecf4":"" }}">
+                              <td>{{$value->sc_seq}}</td>
+                              <td><textarea class="form-control" style="width:100%" readonly>{{$value->sc_sulmyung}}</textarea></td>
+                              <td>{{$value->sc_starttime}}</td>
+                              <td>{{$value->sc_endtime}}</td>
+                              <td>{{$value->sc_status}}</td>
+                              <td>{{$value->sc_note}}</td>
+                            </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+              </fieldset>
+              
                 <hr>
               <div class="row justify-content-end">
                 <div class="mt-3 mr-2 btn btn-secondary" onclick="job.scheduleDump()">삭제</div>

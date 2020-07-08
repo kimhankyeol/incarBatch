@@ -54,11 +54,15 @@
             <td>
               @php
                 if(!empty($gusungSc->jobsm_p_starttime)) {
-                  $maxRunningTime = date("Y-m-d H:i:s", strtotime($gusungSc->jobsm_p_starttime)+ intval($gusungSc->p_yesangmaxtime*60));
-                  $nowDateTime = date("Y-m-d H:i:s", time());
+                  $maxRunningTime = strtotime("+".$gusungSc->p_yesangmaxtime." minutes ".$gusungSc->jobsm_p_starttime);
+                  $pstarttime =strtotime($gusungSc->jobsm_p_starttime);
+                  // $maxRunningTime = date("Y-m-d H:i:s", strtotime($gusungSc->jobsm_p_starttime)+ intval($gusungSc->p_yesangmaxtime*60));
+                  $nowDateTime = strtotime(date("Y-m-d H:i"));
 
-                  $r1 = (strtotime($maxRunningTime)-strtotime($gusungSc->jobsm_p_starttime))/60;
-                  $r2 = (strtotime($nowDateTime)-strtotime($gusungSc->jobsm_p_starttime))/60;
+
+                  $progressResult =round(($nowDateTime-$pstarttime)/($maxRunningTime-$pstarttime)*100,1);
+                  // $r1 = ($maxRunningTime-strtotime($gusungSc->jobsm_p_starttime))/60;
+                  // $r2 = (strtotime($nowDateTime)-strtotime($gusungSc->jobsm_p_starttime))/60;
                   if($gusungSc->jobsm_p_status=='종료'){
                     echo '<div class="progress">';
                     echo '<div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
@@ -69,7 +73,7 @@
                     echo '<div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ERROR</div>';
                     echo '</div>';
                     echo '<p class="p-0 progress-percent text-danger">오류</p>';
-                  } else if (round( $r2 /$r1 *100) > 100 || isset($gusungSc->jobsm_p_endime)) {
+                  } else if ($progressResult> 100 || isset($gusungSc->jobsm_p_endime)) {
                     echo '<div class="progress">';
                     echo '<div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>';
                     echo '</div>';
@@ -81,9 +85,9 @@
                     echo '<p class="p-0 progress-percent text-danger">지연</p>';
                   } else {
                     echo '<div class="progress">';
-                    echo '<div class="progress-bar bg-success" role="progressbar" style="width: '.round( $r2 /$r1 *100).'%;" aria-valuenow="'.round( $r2 /$r1 *100).'" aria-valuemin="0" aria-valuemax="'.round( $r2 /$r1 *100).'"></div>';
+                    echo '<div class="progress-bar bg-success" role="progressbar" style="width: '.$progressResult.'%;" aria-valuenow="'.$progressResult.'" aria-valuemin="0" aria-valuemax="'.$progressResult.'"></div>';
                     echo '</div>';
-                    echo '<p class="p-0 progress-percent text-success">'.round( $r2 /$r1 *100).'%</p>';
+                    echo '<p class="p-0 progress-percent text-success">'.$progressResult.'%</p>';
                   }
                 } else {
                   echo '<div class="progress">';

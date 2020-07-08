@@ -372,20 +372,26 @@ const job = {
   scRegister:function(){
     var P_Seq = [];
     var Log_File = [];
-    var Sc_ReworkYN=[];
+    var Sc_ReworkYN = [];
+    var Sc_TextInputFileArr = [];
 
     var P_ExecuteYN = $('select[name=P_ExecuteYN]');
     var scRework = document.getElementsByName("Sc_ReworkYN");
     var logFile = document.getElementsByName("Sc_LogFile");
+    var Sc_TextInputFile = document.getElementsByName("Sc_TextInputFile");
 
     //P_ExecuteYN check 에서 selected 로 바뀜
-    console.table(P_ExecuteYN.length);
-    console.table(P_ExecuteYN);
+
     for (var i = 0; i < P_ExecuteYN.length; i++) {
         if($('select[name=P_ExecuteYN] option:selected').eq(i).val()!='notExecute'){
           P_Seq.push(P_ExecuteYN[i].value);
           Sc_ReworkYN.push(scRework[i].value);
           Log_File.push(logFile[i].value);
+          if($('input[name=P_TextInputCheck]').eq(i).val()=="0"){
+            Sc_TextInputFileArr.push('notInputFile');
+          }else{
+            Sc_TextInputFileArr.push(Sc_TextInputFile[i].value);
+          }
         }
     }
     
@@ -393,6 +399,7 @@ const job = {
     P_Seq =P_Seq.join('\|\|');
     Log_File =Log_File.join('\|\|');
     Sc_ReworkYN =Sc_ReworkYN.join('\|\|');
+    Sc_TextInputFileArr = Sc_TextInputFileArr.join('\|\|');
     // return false;
     var jobSc_id = $('#jobSc_id').val();//잡 id
     var job_seq = $('.scExecJob').eq(0).val();//잡 seq
@@ -574,7 +581,8 @@ const job = {
               'Sc_ReworkYN':Sc_ReworkYN,
               'Sc_Bungi1':Sc_Bungi1,
               'Sc_Bungi2':Sc_Bungi2,
-              'Sc_Bungi3':Sc_Bungi3
+              'Sc_Bungi3':Sc_Bungi3,
+              'Sc_TextInputFileArr':Sc_TextInputFileArr
             },
             success:function(data){
                 if(data.msg=="success"){

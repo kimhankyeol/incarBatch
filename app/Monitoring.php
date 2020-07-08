@@ -276,8 +276,10 @@ class Monitoring extends Model
           WHERE 
             RNUM=1 AND SC_DELETEYN =1 AND ISLEAF=1 AND TO_CHAR(SC_CRONTIME,'YYYY-MM-DD') = '".$date."'";
       $result=DB::select($query1);
+
       $newArrResult ="";
       $newArrResult2 = "";
+      
       if(count($result)!=0){
         foreach ($result as $row){
           $newArrResult =$this->monitoringScheduleProcessGusung($row->job_seq,$row->sc_seq);
@@ -290,6 +292,7 @@ class Monitoring extends Model
       }else if(count($result)==0){
         return "notSearchData";
       }
+      //JSON STRING 형태로 내보냄
       return "[".substr($newArrResult2,0,strlen($newArrResult2)-1)."]";
     }
      //모니터링 차트  프로그램 시간 ,정보 구하는 메서드
@@ -336,37 +339,59 @@ class Monitoring extends Model
           if($row->jobsm_p_starttime!=null && $row->jobsm_p_endtime!=null){
             $programStartTime = $row->jobsm_p_starttime;
             $programEndTime = $row->jobsm_p_endtime;
-          }else{
+          }else if($row->jobsm_p_starttime!=null && $row->jobsm_p_endtime==null){
+            $programStartTime = $row->jobsm_p_starttime;
+            $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
+            $programEndTime = date("Y-m-d H:i",$programEndTime );
+          }else if($row->jobsm_p_starttime==null && $row->jobsm_p_endtime==null){
             $programStartTime = $row->sc_crontime;
             $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
             $programEndTime = date("Y-m-d H:i",$programEndTime );
           }
-        }else{ 
+        }else if($i!=0){  
           if($row->jobsm_p_starttime!=null && $row->jobsm_p_endtime!=null){
-            $programStartTime = $row->jobsm_p_starttime;
+            $programStartTime =$programEndTime;
             $programEndTime = $row->jobsm_p_endtime;
-          }else{
+          }else if($row->jobsm_p_starttime!=null && $row->jobsm_p_endtime==null){
+            $programStartTime = $programEndTime;
+            $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
+            $programEndTime = date("Y-m-d H:i",$programEndTime );
+          }else if($row->jobsm_p_starttime==null && $row->jobsm_p_endtime==null){
             $programStartTime = $programEndTime;
             $programEndTime = strtotime("+".$row->p_yesangmaxtime." minutes ".$programStartTime);
             $programEndTime = date("Y-m-d H:i",$programEndTime);
           }
         }
+       
+        
+
+        //프로그램 상태에 따른 json 결과값 다르게
         if($row->jobsm_p_status=='10'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#FFCF32","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#FFCF32","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'","progress":"0"},';
         }
-        if($row->jobsm_p_status=='20'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#2E84BB","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
+        else if($row->jobsm_p_status=='20'){
+          //진행률은 
+          /*
+            (현재시간 - 프로그램 시작시간) / (프로그램 종료시간 - 프로그램 시작시간 )    1에 가까워 져야 100%가 됨
+          */
+          $a = strtotime(date("Y-m-d H:i"))-strtotime($programStartTime);
+          $b = strtotime($programEndTime)-strtotime($programStartTime);
+          if( $a<=0){
+            $progressResult=100;
+          }else if($a>0){
+            $progressResult = round($a/$b*100,1);
+          }
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#2E84BB","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'","progress":"'.$progressResult.'"},';
         }
-        if($row->jobsm_p_status=='40'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#F0002B","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
+        else if($row->jobsm_p_status=='40'){
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#F0002B","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'","progress":"0"},';
         }
-        if($row->jobsm_p_status=='90'){
-          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#992CC0","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'"},';
+        elseif($row->jobsm_p_status=='90'){
+          $arrResult = $arrResult.'{"name":"'.$row->sc_seq.'","start":"'.$programStartTime.'","end":"'.$programEndTime.'","color":"#992CC0","pstatus":"'.$row->jobsm_p_statusname.'","pfile":"'.$row->p_file.'","progress":"100"},';
         }
-  
-        $arrResult2=$arrResult2.$arrResult;
         $i++;
       }
+      $arrResult2=$arrResult;
     }else {
       $arrResult2="notSearchData";
     }

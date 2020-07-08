@@ -16,7 +16,20 @@ $(function() {
     eventClick:function(e){
       getEventInfo(e.id);
     },
-    dayClick:function(e){
+    dayClick:function(date){
+      var cont = '<div class="row"><div class="col-md-2 text-center align-self-center font-weight-bold">스케줄</div><div class="col-md-5 text-center align-self-center font-weight-bold">설명</div><div class="col-md-3 text-center align-self-center font-weight-bold">상태</div><div class="col-md-2 text-center align-self-center font-weight-bold">상세보기</div></div>';
+      $.each(arr,function(index,value){
+        if(value.start.substr(0,10)==date.format("YYYY-MM-DD")){
+          if(value.end==null){
+            value.end="";
+          }
+          cont+='<div class="row"><input type="text" class="col-md-2 form-control form-control-sm"  value="'+value.id+'" readonly><input type="text" class="col-md-5 form-control form-control-sm"  value="'+value.title+'" readonly><input type="text" class="col-md-3 form-control form-control-sm"  value="'+value.scStatus+'" readonly><a class="col-md-2 btn btn_orange form-control form-control-sm" style="cursor:pointer" href="/schedule/scheduleDetailView?Sc_Seq='+value.scSeq+'&Job_Seq='+value.jobSeq+'">상세</a></div>';
+          cont+='<br/>';
+        }
+      })
+      $('#scDay').html(cont);
+      // console.table(date.format("YYYY-MM-DD"));
+      $('#scDayModal').modal('show');
     },
     header:{
       left:'today',
@@ -162,6 +175,22 @@ function getEventInfo(scSeq){
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body" id="scEvent">
+          </div>
+          <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-info" onclick="">스케줄 상세보기</button> --}}
+            <button type="button" class="btn btn_orange" data-dismiss="modal">취소</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="scDayModal" data-keyboard="false" data-backdrop="static" >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold modal-title">일 정보</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body" id="scDay">
           </div>
           <div class="modal-footer">
             {{-- <button type="button" class="btn btn-info" onclick="">스케줄 상세보기</button> --}}

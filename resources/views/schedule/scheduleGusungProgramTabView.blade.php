@@ -52,7 +52,7 @@ $pfilesplit=explode('.php',$data->p_file);
             <div class="row w-100 mx-auto" style="padding-bottom:15px">
                 {{-- 입력파일 txt 의 경로는 프로그램의 업무대분류 중분류를 가져와야함  파일업로드는 나중에 개발 일단은 .txt 파일 서버에있는지 없는지 판단--}}
                 <div class="text-center align-self-center font-weight-bold  col-md-2">입력 파일</div>
-                <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/data'}}</div><input name="Sc_TextInputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{"/".$pfilesplit[0].".txt"}}" readonly>
+                <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/data/'}}</div><input name="Sc_TextInputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{$pfilesplit[0].".txt"}}" readonly>
             </div>
         @else
             <div class="row w-100 mx-auto" style="padding-bottom:15px">
@@ -65,7 +65,7 @@ $pfilesplit=explode('.php',$data->p_file);
         <div class="row w-100 mx-auto" style="padding-bottom:15px">
             {{-- 출력파일 csv의 경로는 프로그램의 업무대분류 중분류를 가져와야함   나중에 개발 일단은 .csv 파일 서버에있는지 없는지 판단--}}
             <div class="text-center align-self-center font-weight-bold  col-md-2">출력 파일</div>
-            <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/result'}}</div><input name="Sc_FileOutputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{"/".$pfilesplit[0]."_프로그램실행시각.csv"}}" readonly>
+            <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/result/'}}</div><input name="Sc_FileOutputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{$pfilesplit[0]."_프로그램실행시각.csv"}}" readonly>
         </div>
     @else 
         <div class="row w-100 mx-auto" style="padding-bottom:15px">
@@ -92,4 +92,5 @@ $pfilesplit=explode('.php',$data->p_file);
         {{-- jobgusungorder 를 pseq로 바꿔야됨 --}}
         <div class="logFileNameChg form-control form-control-sm col-md-5" readonly>/home/script/log/{{$nowDate}}/스케줄 번호</div><input name="Sc_LogFile" class="col-md-5" type="text" value="{{"/".$pfilesplit[0]."_".$data->job_seq."_".$data->p_seq."_".$data->p_execount.".log"}}">
     </div>
+    <input hidden name="P_TextInputCheck" value="{{$data->p_textinputcheck}}">
 </div>

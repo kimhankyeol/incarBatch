@@ -44,7 +44,7 @@ $pfilesplit=explode('.php',$data->p_file);
             <div class="row w-100 mx-auto" style="padding-bottom:15px">
                 {{-- 입력파일 txt 의 경로는 프로그램의 업무대분류 중분류를 가져와야함  파일업로드는 나중에 개발 일단은 .txt 파일 서버에있는지 없는지 판단--}}
                 <div class="text-center align-self-center font-weight-bold  col-md-2">입력 파일</div>
-                <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/data'}}</div><input name="Sc_TextInputFile" class="form-control form-control-sm col-md-5" type="text"  value="" readonly>
+                <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/data/'}}</div><input name="Sc_TextInputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{$data->sc_p_textinputfile}}" readonly>
             </div>
         @else
             <div class="row w-100 mx-auto" style="padding-bottom:15px">
@@ -57,7 +57,7 @@ $pfilesplit=explode('.php',$data->p_file);
         <div class="row w-100 mx-auto" style="padding-bottom:15px">
             {{-- 출력파일 csv의 경로는 프로그램의 업무대분류 중분류를 가져와야함   나중에 개발 일단은 .csv 파일 서버에있는지 없는지 판단--}}
             <div class="text-center align-self-center font-weight-bold  col-md-2">출력 파일</div>
-            <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/result'}}</div><input name="Sc_FileOutputFile" class="form-control form-control-sm col-md-5" type="text"  value="" readonly>
+            <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/result/'}}</div><input name="Sc_FileOutputFile" class="form-control form-control-sm col-md-5" type="text"  value="" readonly>
         </div>
          {{-- 개인정보 유무 --}}
         @if($data->p_privatecheck==1)

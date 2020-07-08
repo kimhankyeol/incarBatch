@@ -21,11 +21,10 @@ const chart = {
         am4core.ready(function() {
       
             var length = JSON.parse(monitorResultObject).length-1;
-            console.table(JSON.parse(monitorResultObject)[length].end);
             // Themes begin
             am4core.useTheme(am4themes_animated);
             // Themes end
-
+            console.table(JSON.parse(monitorResultObject));
             var chart = am4core.create("chartdiv", am4charts.XYChart);
             chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
             
@@ -45,15 +44,17 @@ const chart = {
             dateAxis.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm";
             dateAxis.renderer.minGridDistance = 70;
             dateAxis.baseInterval = { count: 30, timeUnit: "minute" };
+
+            // dateAxis.min = new Date("2020-07-08 00:00:00").getTime();
+            // dateAxis.max = new Date("2020-07-08 23:59:59").getTime();
    
             dateAxis.strictMinMax = true;
             dateAxis.renderer.tooltipLocation = 0;
 
             var series1 = chart.series.push(new am4charts.ColumnSeries());
-            series1.columns.template.width = am4core.percent(80);
+            series1.columns.template.width = am4core.percent(100);
             series1.columns.template.height = am4core.percent(50);
-            series1.columns.template.tooltipText = "스케줄 번호 : {name} \n 프로그램 명 : {pfile} \n 프로그램 상태 : {pstatus}";
-
+            series1.columns.template.tooltipText = "스케줄 번호 : {name} \n 프로그램 명 : {pfile} \n 프로그램 상태 : {pstatus} \n 프로그램 실행 시작일시 : {start} \n 진행률 : {progress} %";
             series1.dataFields.openDateX = "start";
             series1.dataFields.dateX = "end";
             series1.dataFields.categoryY = "name";
@@ -63,6 +64,7 @@ const chart = {
             series1.columns.template.strokeWidth = 3;
             series1.columns.template.stroke = "red";
             chart.scrollbarX = new am4core.Scrollbar();
+
 
             }); // end am4core.ready()
      }

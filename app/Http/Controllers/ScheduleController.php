@@ -84,6 +84,7 @@ class scheduleController extends Controller
         $Sc_Bungi1 =$request->input('Sc_Bungi1'); //주기번호에 따른 파라미터(분기 처리 할거)
         $Sc_Bungi2 =$request->input('Sc_Bungi2');//주기번호에 따른 파라미터(분기 처리 할거)
         $Sc_Bungi3 =$request->input('Sc_Bungi3');//주기번호에 따른 파라미터(분기 처리 할거)
+        $Sc_TextInputFileArr=$request->input('Sc_TextInputFileArr');
         if($Sc_Bungi1==""){
             $Sc_Bungi1=null;
         }
@@ -102,7 +103,7 @@ class scheduleController extends Controller
 
         //스케줄 등록 프로시저 
         //첫 등록시에는 SCREGDATE,SCNOTE, 를 넣을 필요없음 재작업돌릴시  SCHEDULEINSERT 프로시저 다시 돌아가는데 그때 넣어줘야됨
-        $query="begin SCHEDULE_INSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE,:V_RESULT,:V_ERRMSG); end;";
+        $query="begin SCHEDULE_INSERT(:JUGI,:JOBSEQ,:SCSULMYUNG,:SCREGID,:SCREGIP,:SCCRONTIME,:SCCRONENDTIME,:SCCRONSULMYUNG,:SCSTATUS,:SCPARAM,:SCBUNGI1,:SCBUNGI2,:SCBUNGI3,:SCUPDID,:SCUPDIP,:SCNOTE,:PSEQARR,:SCLOGFILEARR,:SCREWORKARR,:SCREGDATE,:SCPINPUTFILEARR,:V_RESULT,:V_ERRMSG); end;";
     //
         // 성공 1 , 실패 0 
         $v_errmsg="";
@@ -129,6 +130,7 @@ class scheduleController extends Controller
         $stmt->bindParam(':SCLOGFILEARR',$Log_File);
         $stmt->bindParam(':SCREWORKARR',$Sc_ReworkYN);
         $stmt->bindParam(':SCREGDATE',$Sc_Regdate);
+        $stmt->bindParam(':SCPINPUTFILEARR',$Sc_TextInputFileArr);
         $stmt->bindParam(':V_RESULT',$v_result,PDO::PARAM_INT);
         $stmt->bindParam(':V_ERRMSG',$v_errmsg,PDO::PARAM_STR,2000);
         $stmt->execute();
@@ -225,20 +227,21 @@ class scheduleController extends Controller
         
         $arrResult=array();
         foreach($result as $index => $value){
+            $starttime = ($value->sc_starttime==""||$value->sc_starttime==null) ? $value->sc_crontime : $value->sc_starttime ;
             if($value->sc_status2=='30'){
-                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#B6F065","borderColor"=>"#B6F065"));
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$starttime,"end"=>$value->sc_endtime,"backgroundColor"=>"#B6F065","borderColor"=>"#B6F065","scStatus"=>$value->sc_status,"jobSeq"=>$value->job_seq,"scSeq"=>$value->sc_seq));
             }
             if($value->sc_status2=='40'){
-                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#F0002B","borderColor"=>"#F0002B"));
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$starttime,"end"=>$value->sc_endtime,"backgroundColor"=>"#F0002B","borderColor"=>"#F0002B","scStatus"=>$value->sc_status,"jobSeq"=>$value->job_seq,"scSeq"=>$value->sc_seq));
             }
             if($value->sc_status2=='90'){
-                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#992CC0","borderColor"=>"#992CC0"));
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$starttime,"end"=>$value->sc_endtime,"backgroundColor"=>"#992CC0","borderColor"=>"#992CC0","scStatus"=>$value->sc_status,"jobSeq"=>$value->job_seq,"scSeq"=>$value->sc_seq));
             }
             if($value->sc_status2=='10'){
-                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#FFCF32","borderColor"=>"#FFCF32"));
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$starttime,"end"=>$value->sc_endtime,"backgroundColor"=>"#FFCF32","borderColor"=>"#FFCF32","scStatus"=>$value->sc_status,"jobSeq"=>$value->job_seq,"scSeq"=>$value->sc_seq));
             }
             if($value->sc_status2=='20'){
-                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$value->sc_crontime,"end"=>$value->sc_crontime,"backgroundColor"=>"#2E84BB","borderColor"=>"#2E84BB"));
+                array_push($arrResult,array("title"=>$value->job_name."(".$value->sc_status.")","id"=>$value->sc_seq,"start"=>$starttime,"end"=>$value->sc_endtime,"backgroundColor"=>"#2E84BB","borderColor"=>"#2E84BB","scStatus"=>$value->sc_status,"jobSeq"=>$value->job_seq,"scSeq"=>$value->sc_seq));
             }
         };
         return response()->json($arrResult);
