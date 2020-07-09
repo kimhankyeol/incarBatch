@@ -374,12 +374,19 @@ const job = {
     var Log_File = [];
     var Sc_ReworkYN = [];
     var Sc_TextInputFileArr = [];
+    var Sc_InputFilesArr = [];
 
     var P_ExecuteYN = $('select[name=P_ExecuteYN]');
     var scRework = document.getElementsByName("Sc_ReworkYN");
     var logFile = document.getElementsByName("Sc_LogFile");
+    //입력 파일경로 
+
+    //파일명 
     var Sc_TextInputFile = document.getElementsByName("Sc_TextInputFile");
 
+    //파일경로 파일명을 통해 중복체크 할 것
+    var Sc_InputFile = $('input[name=Sc_InputFile]');
+    
     //P_ExecuteYN check 에서 selected 로 바뀜
 
     for (var i = 0; i < P_ExecuteYN.length; i++) {
@@ -390,24 +397,22 @@ const job = {
           if($('input[name=P_TextInputCheck]').eq(i).val()=="0"){
             Sc_TextInputFileArr.push('notInputFile');
           }else{
+            Sc_InputFilesArr.push(Sc_InputFile[i].files[0]);
             Sc_TextInputFileArr.push(Sc_TextInputFile[i].value);
           }
         }
     }
-    
-   
     P_Seq =P_Seq.join('\|\|');
     Log_File =Log_File.join('\|\|');
     Sc_ReworkYN =Sc_ReworkYN.join('\|\|');
     Sc_TextInputFileArr = Sc_TextInputFileArr.join('\|\|');
+    
     // return false;
     var jobSc_id = $('#jobSc_id').val();//잡 id
     var job_seq = $('.scExecJob').eq(0).val();//잡 seq
-    var jobSc_name = $('#jobSc_name').val();//잡 명
     var Sc_Sulmyung = $('#Sc_Sulmyung').val();// 스케줄 설명
 
     var Day = $('#Day').val();//매 n일
-     
     var nowDateTime = new Date().format("yyyy-MM-dd HH:mm:ss");
     var yoilArr = new Array();
     var Sc_Status = "301";
@@ -560,7 +565,41 @@ const job = {
           Sc_CronTime = Sc_CronTime.format('yyyy-MM-dd HH:mm:ss');
           Sc_CronEndTime = Sc_CronTime;
         }
+        //ajaxForm 사용위해 데이터를 formData에다 담는다.
+        // var formData = new FormData();
+        // formData.append("job_seq", job_seq);
+        // formData.append("Sc_Sulmyung",Sc_Sulmyung);
+        // formData.append("Sc_Crontab",jugiNum);
+        // formData.append("Sc_Param",Sc_Param);
+        // formData.append("Sc_Status",Sc_Status);
+        // formData.append("Sc_RegId",1611698);
+        // formData.append("Sc_CronTime",Sc_CronTime);
+        // formData.append("Sc_CronEndTime",Sc_CronEndTime);
+        // formData.append("Sc_CronSulmyung",Sc_CronSulmyung);
+        // formData.append("P_Seq",P_Seq);
+        // formData.append("Log_File",Log_File);
+        // formData.append("Sc_ReworkYN",Sc_ReworkYN);
+        // formData.append("Sc_Bungi1",Sc_Bungi1);
+        // formData.append("Sc_Bungi2",Sc_Bungi2);
+        // formData.append("Sc_Bungi3",Sc_Bungi3);
+        // formData.append("Sc_TextInputFileArr",Sc_TextInputFileArr);
+        // if(Sc_InputFile.length!=0){
+        //       formData.append("fileObj",Sc_InputFilesArr);
+        // }
+           
+
         if(P_Seq.length!=0){
+          // $('#scheduleRegForm').ajaxForm({
+          //   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          //   url:'/schedule/scheduleRegister',
+          //   async:false,
+          //   method:"post",
+          //   data:formData,
+          //   enctype: "multipart/form-data",
+          //   success:function(resp){
+          //     console.table(resp)
+          //   }
+          // })
           $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url:'/schedule/scheduleRegister',

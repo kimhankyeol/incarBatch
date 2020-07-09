@@ -8,6 +8,12 @@
     {{--사이드바 시작--}}
     @include('common.sidebar')
     {{--사이드바 끝--}}
+    <script>
+    function scInputFileChg(fileName,id){
+        let file = fileName.substring(fileName.lastIndexOf('\\')+1,fileName.length);
+        $('#'+id).val(file);
+    }
+    </script>
     {{--content 시작--}}
     <div class="d-flex flex-column" style="width: 100%">
         <!-- Main Content -->
@@ -154,23 +160,35 @@
                         <div class="row mb-3" >
                             <div id="jobparams" style="width:100%">
                                 @include('schedule.scheduleExecParam')
+                                <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
+                                <input id="P_RegId" type="hidden" value="1611698"/>
                             </div>
                         </div>
+                        {{-- <form id="scheduleRegForm" method='post' enctype="multipart/form-data">
+                        </form> --}}
+                            {{-- 
+                            --}}
                         <div class="row justify-content-end">
                             <input type="button" id="scChkBtnHideShow" class="mt-3 mr-2 btn btn-success" value="파라미터 체크" onclick="scheduleParamCheck()" />
                             <input type="button" id="scReBtnHideShow" class="mt-3 mr-2 btn btn-success" style="display:none"  value="되돌리기" onclick="reScheduleParamCheck()" />
                             <input type="button" id="scRegBtnHideShow" class="mt-3 mr-2 btn btn-primary" style="display:none"  value="등록" onclick="job.scRegister()" />
                             <input type="button" class="mt-3 mr-2 btn btn-danger" value="취소" onclick="history.back()"/>
                         </div>
-                        </div>
                     </div>
                 </div>
-                <input id="P_RegIp" type="hidden" value="{{$_SERVER["REMOTE_ADDR"]}}"/>
-                <input id="P_RegId" type="hidden" value="1611698"/>
-                {{--content 끝--}}
             </div>
+            {{--content 끝--}}
         </div>
+    </div>
     <script type="text/javascript">
+        handler();
+        dayChange();
+        $(document).ready(function(){
+            $(document).on('keyup','input[numberonly]',function(event){
+                $(this).val($(this).val().replace(/[^0-9]/g,""));
+            })
+            $('#jugiChange').hide();
+        })
         function handler(){
             $('#startTime').hide();
             $('#starttm').hide();
@@ -380,14 +398,6 @@
             }
             
         }
-        handler();
-        dayChange();
-        $(document).ready(function(){
-            $(document).on('keyup','input[numberonly]',function(event){
-                $(this).val($(this).val().replace(/[^0-9]/g,""));
-            })
-            $('#jugiChange').hide();
-        })
         //스케줄 파라미터 체크
         function scheduleParamCheck(){
             var scheduleParamIndex=0;
@@ -620,6 +630,7 @@
                 onDrag:null
             });
         }
+
     </script>
     </body>
 </html>

@@ -3,6 +3,7 @@ $nowDate=new DateTime();
 $nowDate=$nowDate->format('Ymd');
 $pfilesplit=explode('.php',$data->p_file);
 @endphp
+
 <div class="{{$index==0 ? "tab-pane fade active show":"tab-pane fade hide"}}" id="{{$data->p_seq}}" style="padding-top:15px">
     <div class="row w-100 mx-auto" style="padding-bottom:15px">
         <div class="text-center align-self-center font-weight-bold  col-md-2">프로그램 명(한글)</div>
@@ -52,12 +53,15 @@ $pfilesplit=explode('.php',$data->p_file);
             <div class="row w-100 mx-auto" style="padding-bottom:15px">
                 {{-- 입력파일 txt 의 경로는 프로그램의 업무대분류 중분류를 가져와야함  파일업로드는 나중에 개발 일단은 .txt 파일 서버에있는지 없는지 판단--}}
                 <div class="text-center align-self-center font-weight-bold  col-md-2">입력 파일</div>
-                <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/data/'}}</div><input name="Sc_TextInputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{$pfilesplit[0].".txt"}}" readonly>
+                <div class="form-control form-control-sm col-md-2" name='Sc_InputPath' readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/data/'}}</div>
+                <input id="{{'scInputFile_'.$data->p_seq}}"  name="Sc_TextInputFile" class="form-control form-control-sm col-md-5" type="text"  value="" readonly>
+                <input type='file' name='Sc_InputFile' onchange="scInputFileChg(this.value,'{{'scInputFile_'.$data->p_seq}}')" >
+                  
             </div>
         @else
             <div class="row w-100 mx-auto" style="padding-bottom:15px">
                 <div class="text-center align-self-center font-weight-bold  col-md-2">입력 파일</div>
-                <div class="form-control form-control-sm col-md-10" readonly>프로그램에는 입력 받는 파일이 없습니다.</div>
+                <div class="form-control form-control-sm col-md-10" name='Sc_InputFile' readonly>프로그램에는 입력 받는 파일이 없습니다.</div>
             </div>
         @endif
     {{-- 출력파일 유무 --}}
@@ -65,7 +69,7 @@ $pfilesplit=explode('.php',$data->p_file);
         <div class="row w-100 mx-auto" style="padding-bottom:15px">
             {{-- 출력파일 csv의 경로는 프로그램의 업무대분류 중분류를 가져와야함   나중에 개발 일단은 .csv 파일 서버에있는지 없는지 판단--}}
             <div class="text-center align-self-center font-weight-bold  col-md-2">출력 파일</div>
-            <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/result/'}}</div><input name="Sc_FileOutputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{$pfilesplit[0]."스케줄번호.csv"}}" readonly>
+            <div class="form-control form-control-sm col-md-5" readonly>{{'/home/batch/'.$data->p_worklargectg.'/'.$data->p_workmediumctg.'/result/'}}</div><input name="Sc_FileOutputFile" class="form-control form-control-sm col-md-5" type="text"  value="{{$pfilesplit[0]."_스케줄번호.csv"}}" readonly>
         </div>
     @else 
         <div class="row w-100 mx-auto" style="padding-bottom:15px">

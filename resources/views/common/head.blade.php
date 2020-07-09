@@ -16,6 +16,7 @@
   <link href="/css/foopicker.css" rel="stylesheet">
   <link href="/fullcalendar/fullcalendar.css" rel="stylesheet">
   <script type="text/javascript" src="/vendor/jquery/jquery.js"></script>
+  <script type="text/javascript" src="/vendor/jquery/jquery.form.min.js"></script>
   <script src="/vendor/bootstrap/js/popper.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/jobJS/dateFormat.js"></script>

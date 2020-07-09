@@ -85,6 +85,7 @@ class scheduleController extends Controller
         $Sc_Bungi2 =$request->input('Sc_Bungi2');//주기번호에 따른 파라미터(분기 처리 할거)
         $Sc_Bungi3 =$request->input('Sc_Bungi3');//주기번호에 따른 파라미터(분기 처리 할거)
         $Sc_TextInputFileArr=$request->input('Sc_TextInputFileArr');
+        
         if($Sc_Bungi1==""){
             $Sc_Bungi1=null;
         }
@@ -137,7 +138,7 @@ class scheduleController extends Controller
  
         if($v_result==1){
             //성공 
-            return response()->json(array('msg'=>'success'));
+            return response()->json(array('msg'=>'success','ss'=>$_FILES['fileObj']));
         }else{
             //실패
             return response()->json(array('msg'=>'failed','msg2'=>$v_errmsg));
