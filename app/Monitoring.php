@@ -377,7 +377,7 @@ class Monitoring extends Model
           $a = strtotime(date("Y-m-d H:i"))-strtotime($programStartTime);
           $b = strtotime($programEndTime)-strtotime($programStartTime);
           if( $a<=0){
-            $progressResult=100;
+            $progressResult=0;
           }else if($a>0){
             $progressResult = round($a/$b*100,1);
           }
